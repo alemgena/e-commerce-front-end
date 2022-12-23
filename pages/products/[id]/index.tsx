@@ -2,7 +2,7 @@ import { Fragment, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { FiArrowLeft } from 'react-icons/fi';
-import { IoIosCall } from 'react-icons/io';
+import { IoIosCall, IoIosCloseCircle } from 'react-icons/io';
 import { BsFillChatLeftTextFill, BsHeart, BsChevronUp } from 'react-icons/bs';
 import { BiShare } from 'react-icons/bi';
 import { MdOutlineReport } from 'react-icons/md';
@@ -54,6 +54,7 @@ const colors = ['#ffffff', '#F62424', '#043CBE', '#5E5E5E', '#000000'];
 
 const ProductDetailPage = () => {
   const [activeImage, setActiveImage] = useState(images[0]);
+  const [showContact, setShowContact] = useState(false);
   return (
     <Fragment>
       <Head>
@@ -97,28 +98,53 @@ const ProductDetailPage = () => {
               <p className="mb-4 text-sm text-blue-800">BelayAb Motors</p>
               <h2 className="font-roboto-light text-xl">21,999,000.00 ETB</h2>
             </div>
-            <div className="flex gap-6 rounded-md bg-white p-4 font-roboto-light shadow-sm">
-              <button className="flex-grow rounded-full bg-blue-800 py-2 text-white">
-                Make an Offer
-              </button>
-              <button className="flex items-center gap-2 rounded-full bg-white py-2 px-4 font-roboto-medium text-blue-800 ring-2 ring-blue-800">
-                <IoIosCall />
-                <p>Call</p>
-              </button>
-              <button className="flex items-center gap-2 rounded-full bg-white py-2 px-4 font-roboto-medium text-blue-800 ring-2 ring-blue-800">
-                <BsFillChatLeftTextFill />
-                <p>Chat</p>
-              </button>
-              <button className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400">
-                <BsHeart />
-              </button>
-              <button className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400">
-                <BiShare />
-              </button>
-              <button className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400">
-                <MdOutlineReport />
-              </button>
-            </div>
+            {showContact ? (
+              <div className="flex items-center justify-between  rounded-md bg-white p-4 font-roboto-light shadow-sm">
+                <div className="flex items-center gap-6">
+                  <img
+                    src="/images/product/product.png"
+                    className="h-12 w-12 rounded-full object-cover"
+                  />
+                  <div>
+                    <h2 className="font-roboto-medium text-sm">Abebe Kebede</h2>
+                    <p className="font-roboto-medium   text-blue-800">
+                      09 11 12 13 14
+                    </p>
+                  </div>
+                </div>
+                <IoIosCloseCircle
+                  className="cursor-pointer text-2xl text-gray-400"
+                  onClick={() => setShowContact(false)}
+                />
+              </div>
+            ) : (
+              <div className="flex gap-6 rounded-md bg-white p-4 font-roboto-light shadow-sm">
+                <button className="flex-grow rounded-full bg-blue-800 py-2 text-white">
+                  Make an Offer
+                </button>
+                <button
+                  onClick={() => setShowContact(true)}
+                  className="flex items-center gap-2 rounded-full bg-white py-2 px-4 font-roboto-medium text-blue-800 ring-2 ring-blue-800"
+                >
+                  <IoIosCall />
+                  <p>Call</p>
+                </button>
+                <button className="flex items-center gap-2 rounded-full bg-white py-2 px-4 font-roboto-medium text-blue-800 ring-2 ring-blue-800">
+                  <BsFillChatLeftTextFill />
+                  <p>Chat</p>
+                </button>
+                <button className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400">
+                  <BsHeart />
+                </button>
+                <button className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400">
+                  <BiShare />
+                </button>
+                <button className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400">
+                  <MdOutlineReport />
+                </button>
+              </div>
+            )}
+
             <div className="flex justify-between gap-6 rounded-md bg-white p-4 font-roboto-light shadow-sm">
               <div className="flex items-center gap-14">
                 <h6 className="font-roboto-medium">Color</h6>
