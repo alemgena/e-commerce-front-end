@@ -1,3 +1,6 @@
+/** @type {import('tailwindcss').Config} */
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 module.exports = {
   mode: 'jit',
   content: [
@@ -8,10 +11,21 @@ module.exports = {
   important: true,
   darkMode: 'class', // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Roboto-Regular', ...defaultTheme.fontFamily.sans],
+        serif: ['Roboto-Regular', ...defaultTheme.fontFamily.serif],
+        mono: ['Roboto-Regular', ...defaultTheme.fontFamily.mono],
+        'roboto-bold': ['Roboto-Bold', ...defaultTheme.fontFamily.sans],
+        'roboto-medium': ['Roboto-Medium', ...defaultTheme.fontFamily.sans],
+        'roboto-regular': ['Roboto-Regular', ...defaultTheme.fontFamily.sans],
+        'roboto-light': ['Roboto-Light', ...defaultTheme.fontFamily.sans],
+      },
+    },
   },
+
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require('tailwind-scrollbar-hide')],
 };
