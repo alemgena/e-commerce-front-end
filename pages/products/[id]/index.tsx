@@ -1,4 +1,5 @@
 import { Fragment, useState } from 'react';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { FiArrowLeft } from 'react-icons/fi';
 import { IoIosCall } from 'react-icons/io';
@@ -6,6 +7,10 @@ import { BsFillChatLeftTextFill, BsHeart, BsChevronUp } from 'react-icons/bs';
 import { BiShare } from 'react-icons/bi';
 import { MdOutlineReport } from 'react-icons/md';
 import { Disclosure } from '@headlessui/react';
+
+const Map = dynamic(() => import('@/components/map').then((mod) => mod.Map), {
+  ssr: false,
+});
 
 const images = [
   {
@@ -81,6 +86,9 @@ const ProductDetailPage = () => {
                   onClick={() => setActiveImage(image)}
                 />
               ))}
+            </div>
+            <div className="mt-10 overflow-hidden rounded-sm">
+              <Map center={[9.005401, 38.763611]} />
             </div>
           </div>
           <div className="flex flex-col gap-6">
