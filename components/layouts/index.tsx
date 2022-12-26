@@ -1,6 +1,6 @@
 import Head from 'next/head';
 
-import Navbar from './header/navbar';
+import Header from '../Header';
 
 type Props = { children: React.ReactNode };
 
@@ -10,8 +10,9 @@ export function Layout({ children }: Props) {
       <Head>
         <title>Layouts Example</title>
       </Head>
-      <Navbar />
-      <main>{children}</main>
+      <Header />
+
+      <main className="flex-grow  md:mt-40">{children}</main>
     </>
   );
 }
