@@ -31,15 +31,15 @@ const Carousel = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative ">
       <Slider {...settings}>
         {sliderContent.map((slideContent) => {
           return <Slide key={slideContent.ID} {...slideContent} />;
         })}
       </Slider>
       <>
-        <div className="absolute top-1/2 right-4 rounded-full bg-palette-card/80 p-1 text-[0.8rem] shadow-lg drop-shadow-lg md:right-3 md:text-[1.8rem] lg:right-8" />
-        <div className="absolute top-1/2 left-4  rounded-full bg-palette-card/80 p-1 text-[0.8rem] shadow-lg drop-shadow-lg md:left-3 md:text-[1.8rem] lg:left-8" />
+        <div className="bg-palette-card/80 absolute top-1/2 right-4 rounded-full p-1 text-[0.8rem] shadow-lg drop-shadow-lg md:right-3 md:text-[1.8rem] lg:right-8" />
+        <div className="bg-palette-card/80 absolute top-1/2  left-4 rounded-full p-1 text-[0.8rem] shadow-lg drop-shadow-lg md:left-3 md:text-[1.8rem] lg:left-8" />
       </>
     </div>
   );

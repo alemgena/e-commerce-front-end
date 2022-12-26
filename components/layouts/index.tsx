@@ -12,7 +12,7 @@ export function Layout({ children }: Props) {
       </Head>
       <Header />
 
-      <main className="flex-grow  md:mt-40">{children}</main>
+      <main className="flex-grow  md:mt-20">{children}</main>
     </>
   );
 }
