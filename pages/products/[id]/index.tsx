@@ -1,12 +1,12 @@
 import { Fragment, useState } from 'react';
-import dynamic from 'next/dynamic';
-import Head from 'next/head';
+import { BiShare } from 'react-icons/bi';
+import { BsChevronUp, BsFillChatLeftTextFill, BsHeart } from 'react-icons/bs';
 import { FiArrowLeft } from 'react-icons/fi';
 import { IoIosCall, IoIosCloseCircle } from 'react-icons/io';
-import { BsFillChatLeftTextFill, BsHeart, BsChevronUp } from 'react-icons/bs';
-import { BiShare } from 'react-icons/bi';
 import { MdOutlineReport } from 'react-icons/md';
 import { Disclosure } from '@headlessui/react';
+import dynamic from 'next/dynamic';
+import Head from 'next/head';
 
 const Map = dynamic(() => import('@/components/map').then((mod) => mod.Map), {
   ssr: false,
@@ -52,11 +52,11 @@ const options = [
 
 const colors = ['#ffffff', '#F62424', '#043CBE', '#5E5E5E', '#000000'];
 
-const ProductDetailPage = () => {
+function ProductDetailPage() {
   const [activeImage, setActiveImage] = useState(images[0]);
   const [showContact, setShowContact] = useState(false);
   return (
-    <Fragment>
+    <>
       <Head>
         <title>Product Detail</title>
         <link rel="icon" href="/favicon.ico" />
@@ -253,8 +253,8 @@ const ProductDetailPage = () => {
           </div>
         </div>
       </div>
-    </Fragment>
+    </>
   );
-};
+}
 
 export default ProductDetailPage;
