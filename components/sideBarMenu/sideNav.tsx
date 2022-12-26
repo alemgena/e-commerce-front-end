@@ -5,8 +5,6 @@ import React, { forwardRef } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { useRouter } from 'next/router';
 
-import Logo from '../header/Logo';
-
 interface Props {
   // eslint-disable-next-line react/require-default-props
   state?: string;
@@ -29,7 +27,7 @@ const SideNav = forwardRef<HTMLDivElement, Props>(({ state, onClose }, ref) => (
       <IoClose />
     </div>
     <div className="pt-5 pb-3 ltr:pl-4 rtl:pr-5" onClick={onClose}>
-      <Logo />
+      <img src="/images/logo.svg" />
     </div>
     <hr />
   </div>
