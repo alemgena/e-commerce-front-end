@@ -5,17 +5,14 @@ import React from 'react';
 // });
 import { BiCart, BiHeart, BiMessage } from 'react-icons/bi';
 
-import Menu from '../menu';
-
 // import { AiFillPlusCircle } from 'react-icons/ai';
 import Logo from './Logo';
 import SearchBar from './SearchBar';
 
 const index = () => (
-  <header className="md:bg-palette-fill left-0 right-0 top-0 z-[1000] pt-4 shadow-sm md:fixed">
+  <header className="md:bg-palette-fill left-0 right-0 top-0 z-[1000]  pt-4 shadow-sm md:fixed">
     <div className="mb-2 flex flex-col md:px-4">
       <div className="relative flex items-center justify-between md:order-2  md:mt-2">
-        <Menu />
         <div className="md:hidden">
           <Logo />
         </div>
