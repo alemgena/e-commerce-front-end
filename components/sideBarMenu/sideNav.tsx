@@ -5,7 +5,7 @@ import React, { forwardRef } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { useRouter } from 'next/router';
 
-import Logo from '../Header/Logo';
+import Logo from '../header/Logo';
 
 interface Props {
   // eslint-disable-next-line react/require-default-props

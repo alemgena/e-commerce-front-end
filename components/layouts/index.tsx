@@ -1,19 +1,13 @@
-import Head from 'next/head';
-
-import Header from '../Header';
+import { Fragment } from 'react';
+import { Header } from '../header';
 
 type Props = { children: React.ReactNode };
 
-export function Layout({ children }: Props) {
+export const Layout = ({ children }: Props) => {
   return (
-    <>
-      <Head>
-        <title>Layouts Example</title>
-      </Head>
+    <Fragment>
       <Header />
-
-      <main className="flex-grow  md:mt-20">{children}</main>
-    </>
+      <main>{children}</main>
+    </Fragment>
   );
-}
-export default Layout;
+};
