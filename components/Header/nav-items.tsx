@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { BiHeart, BiMessage } from 'react-icons/bi';
+import { AuthModal } from '../auth';
 export const NavItems = () => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="flex items-center gap-8">
       <button className="flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-800 via-blue-600 to-blue-500 px-4 py-2 text-white">
@@ -16,9 +19,13 @@ export const NavItems = () => {
         <BiHeart size={30} className="cursor-pointer text-gray-900" />
       </div>
 
-      <button className="rounded-md border-2 border-blue-800 px-8 py-1 text-blue-800 hover:bg-blue-800 hover:text-white">
+      <button
+        onClick={() => setIsOpen(true)}
+        className="rounded-md border-2 border-blue-800 px-8 py-1 text-blue-800 hover:bg-blue-800 hover:text-white"
+      >
         Login
       </button>
+      <AuthModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </div>
   );
 };

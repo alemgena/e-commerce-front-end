@@ -9,6 +9,7 @@ import '../styles/globals.css';
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Layout>
+      <div id="react-modals" />
       <Component {...pageProps} />
     </Layout>
   );
