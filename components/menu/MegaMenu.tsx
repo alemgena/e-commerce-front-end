@@ -1,54 +1,37 @@
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable prettier/prettier */
+/* eslint-disable import/order */
 /* eslint-disable jsx-a11y/mouse-events-have-key-events */
 import React, { useRef, useState } from 'react';
 import { GoGrabber } from 'react-icons/go';
+import { useDispatch, useSelector } from 'react-redux';
 import { Transition } from 'react-transition-group';
 
 import MenusContainer from './MenuContainer';
 
-// import MenusContainer from './MenuContainer';
-
-export interface IMegaMenuShow {
-  isMegaMenuOpen: boolean;
-}
-
-export interface IMegaMenuRootState {
-  megaMenu: IMegaMenuShow;
-}
-
 function MegaMenu() {
   const nodeRef = useRef<HTMLDivElement>(null);
-  const [isMegaMenuOpen, setisMegaMenuOpen] = useState(false);
-  function showMegaMenuHandler() {
-    setisMegaMenuOpen(true);
-  }
-  function closeMegaMenuHandler() {
-    setisMegaMenuOpen(false);
+
+  const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
+  function MegaMenuHandler() {
+    setIsMegaMenuOpen(!isMegaMenuOpen);
   }
 
   return (
-    <div
-      className="flex items-center"
-      onMouseOver={showMegaMenuHandler}
-      onMouseOut={closeMegaMenuHandler}
-    >
-      <div className="flex cursor-pointer items-center font-bold">
-        <GoGrabber style={{ fontSize: '2rem' }} />
-        <h3 className=" mr-2 ltr:ml-1 rtl:mr-1">category goods</h3>
+    <div className="flex items-center" onClick={MegaMenuHandler}>
+      <div className=" ml-10 flex cursor-pointer items-center font-roboto-bold hover:text-blue-400">
+        <h3 className="ltr:ml-1 rtl:mr-1">category goods</h3>
       </div>
-      <div className=" mr-2  flex cursor-pointer items-center font-bold hover:bg-blue-600 ">
+      <div className="flex cursor-pointer items-center px-3 font-roboto-bold hover:text-blue-400">
         <h3 className="ltr:ml-1 rtl:mr-1">Featured Products</h3>
       </div>
-
-      <div className=" mr-2 flex cursor-pointer items-center font-bold hover:bg-blue-600">
-        <h3 className="ltr:ml-1 rtl:mr-1">Best Selling</h3>
+      <div className="flex cursor-pointer items-center px-3 font-roboto-bold hover:text-blue-400">
+        <h3 className="ltr:ml-1 rtl:mr-1">Discount</h3>
       </div>
-
-      <div className="mr-2 flex cursor-pointer items-center font-bold hover:bg-blue-600 ">
-        <h3 className="ltr:ml-1 rtl:mr-1">Discount </h3>
-      </div>
-      <div className="mr-2 flex cursor-pointer items-center font-bold hover:bg-blue-600 ">
+      <div className="flex cursor-pointer items-center font-roboto-bold hover:text-blue-400">
         <h3 className="ltr:ml-1 rtl:mr-1">Habesha</h3>
       </div>
+
       <Transition
         nodeRef={nodeRef}
         in={isMegaMenuOpen!}
@@ -64,14 +47,14 @@ function MegaMenu() {
                   state === 'entering'
                     ? 'animate-fadeEntering'
                     : state === 'entered'
-                    ? 'opacity-100'
+                    ? 'opacity-30'
                     : 'animate-fadeExit'
                 }
                 `}
-              onClick={closeMegaMenuHandler}
+              onClick={MegaMenuHandler}
             />
-            <div className="bg-palette-card absolute top-full left-0 right-0 z-[110] rounded-br-lg rounded-bl-lg shadow-md">
-              <MenusContainer />
+            <div className="absolute left-0  right-0 z-[110] mt-10 w-1/4  rounded-br-lg rounded-bl-lg bg-blue-50 shadow-md">
+              <MenusContainer closeMegaHandler={MegaMenuHandler} />
             </div>
           </div>
         )}

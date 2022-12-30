@@ -1,13 +1,22 @@
+/* eslint-disable import/order */
 import { Fragment } from 'react';
-import { Header } from '../header';
+import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
+import NextNProgress from 'nextjs-progressbar';
+
+import { Header } from '../Header';
+
+import store from '@/store/index';
 
 type Props = { children: React.ReactNode };
 
-export const Layout = ({ children }: Props) => {
+export function Layout({ children }: Props) {
   return (
-    <Fragment>
+    <Provider store={store}>
+      <NextNProgress height={7} />
       <Header />
       <main>{children}</main>
-    </Fragment>
+      <ToastContainer autoClose={2000} hideProgressBar position="top-right" />
+    </Provider>
   );
-};
+}

@@ -28,4 +28,4 @@ export const NavItems = () => {
       <AuthModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </div>
   );
-};
+}

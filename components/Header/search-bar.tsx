@@ -1,7 +1,9 @@
+/* eslint-disable no-shadow */
+/* eslint-disable react/no-array-index-key */
 import { Fragment, useState } from 'react';
-import { Listbox, Transition } from '@headlessui/react';
-import { MdOutlineArrowDropDown } from 'react-icons/md';
 import { AiOutlineCheck } from 'react-icons/ai';
+import { MdOutlineArrowDropDown } from 'react-icons/md';
+import { Listbox, Transition } from '@headlessui/react';
 
 const cities = [
   { name: 'All Ethiopia' },
@@ -12,7 +14,7 @@ const cities = [
   { name: 'Arba Minch' },
 ];
 
-export const SearchBar = () => {
+export function SearchBar() {
   const [selected, setSelected] = useState(cities[0]);
 
   return (
@@ -71,4 +73,4 @@ export const SearchBar = () => {
       />
     </div>
   );
-};
+}

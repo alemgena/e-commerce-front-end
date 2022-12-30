@@ -1,7 +1,8 @@
+/* eslint-disable jsx-a11y/alt-text */
 import { NavItems } from './nav-items';
 import { SearchBar } from './search-bar';
 
-export const Header = () => {
+export function Header() {
   return (
     <div className="flex w-full items-center justify-between bg-white px-12 py-3">
       <div className="flex items-center gap-16">
@@ -11,4 +12,4 @@ export const Header = () => {
       <NavItems />
     </div>
   );
-};
+}

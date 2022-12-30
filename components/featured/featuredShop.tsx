@@ -4,12 +4,12 @@
 import React from 'react';
 
 const featuredShop = () => (
-  <div className=" bg-white px-12 pb-32">
+  <div className=" bg-white px-12 pb-12">
     <h2 className="mb-5 rounded-md bg-white pl-2 font-bold shadow-sm">
       FEATURED SHOP
     </h2>
     <div className="flex flex-col gap-8">
-      <div className="scrollbar-hide flex w-full gap-4 overflow-x-auto">
+      <div className="flex w-full gap-4 overflow-x-auto scrollbar-hide">
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((data) => (
           <div key={data.toString()} className="w-52 flex-shrink-0">
             <img
