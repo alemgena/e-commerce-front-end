@@ -44,18 +44,7 @@ function MegaMenu() {
       >
         {(state) => (
           <div ref={nodeRef} className="z-[100]">
-            <div
-              className={`fixed inset-0 top-[8.2rem] bg-gray-600/60
-                ${
-                  state === 'entering'
-                    ? 'animate-fadeEntering'
-                    : state === 'entered'
-                    ? 'opacity-30'
-                    : 'animate-fadeExit'
-                }
-                `}
-              onClick={MegaMenuHandler}
-            />
+            <div onClick={MegaMenuHandler} />
             <div className="absolute left-0  right-0 z-[110] mt-10 w-1/4  rounded-br-lg rounded-bl-lg bg-blue-50 shadow-md">
               <MenusContainer closeMenuMegaHandler={MegaMenuHandler} />
             </div>
