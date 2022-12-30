@@ -18,7 +18,7 @@ export function SearchBar() {
   const [selected, setSelected] = useState(cities[0]);
 
   return (
-    <div className="flex font-roboto-regular">
+    <div className="z-[100] flex font-roboto-regular">
       <Listbox value={selected} onChange={setSelected}>
         <div className="relative">
           <Listbox.Button className="flex w-40  justify-between gap-2 rounded-l-lg bg-blue-800 py-3 px-3 font-roboto-light text-sm text-white  ">

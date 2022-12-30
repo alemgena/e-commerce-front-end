@@ -16,7 +16,7 @@ export function Layout({ children }: Props) {
       <NextNProgress height={7} />
       <Header />
       <main>{children}</main>
-      <ToastContainer autoClose={2000} hideProgressBar position="top-right" />
+      <ToastContainer autoClose={200} hideProgressBar position="top-right" />
     </Provider>
   );
 }
