@@ -18,14 +18,17 @@ function MegaMenu() {
   }
 
   return (
-    <div className="flex items-center" onClick={MegaMenuHandler}>
-      <div className=" ml-10 flex cursor-pointer items-center font-roboto-bold hover:text-blue-400">
-        <h3 className="ltr:ml-1 rtl:mr-1">category goods</h3>
+    <div className="flex items-center">
+      <div
+        onClick={MegaMenuHandler}
+        className=" ml-10 flex cursor-pointer items-center font-roboto-bold hover:text-blue-400"
+      >
+        <h3 className="cursor-pointer ltr:ml-1 rtl:mr-1">category goods</h3>
       </div>
       <div className="flex cursor-pointer items-center px-3 font-roboto-bold hover:text-blue-400">
         <h3 className="ltr:ml-1 rtl:mr-1">Featured Products</h3>
       </div>
-      <div className="flex cursor-pointer items-center px-3 font-roboto-bold hover:text-blue-400">
+      <div className="flex cursor-pointer  items-center px-3 font-roboto-bold hover:text-blue-400">
         <h3 className="ltr:ml-1 rtl:mr-1">Discount</h3>
       </div>
       <div className="flex cursor-pointer items-center font-roboto-bold hover:text-blue-400">
@@ -34,7 +37,7 @@ function MegaMenu() {
 
       <Transition
         nodeRef={nodeRef}
-        in={isMegaMenuOpen!}
+        in={isMegaMenuOpen}
         timeout={300}
         mountOnEnter
         unmountOnExit
@@ -54,7 +57,7 @@ function MegaMenu() {
               onClick={MegaMenuHandler}
             />
             <div className="absolute left-0  right-0 z-[110] mt-10 w-1/4  rounded-br-lg rounded-bl-lg bg-blue-50 shadow-md">
-              <MenusContainer closeMegaHandler={MegaMenuHandler} />
+              <MenusContainer closeMenuMegaHandler={MegaMenuHandler} />
             </div>
           </div>
         )}
