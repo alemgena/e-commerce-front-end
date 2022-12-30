@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react/no-unused-prop-types */
 /* eslint-disable react/require-default-props */
 /* eslint-disable no-unused-vars */
@@ -15,18 +16,13 @@ interface Props {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const SideNav = forwardRef<HTMLDivElement, Props>(({ state, onClose }, ref) => (
+const SideNav = forwardRef<HTMLDivElement, Props>(({ state }, ref) => (
   <div
     ref={ref}
     className="bg-palette-card fixed top-0 z-[1000] h-screen w-[90%] max-w-[380px] origin-left overflow-y-auto shadow-md "
   >
-    <div
-      className="absolute top-3 cursor-pointer text-4xl ltr:left-0 ltr:ml-[85%]   rtl:right-0 rtl:mr-[85%] "
-      onClick={onClose}
-    >
-      <IoClose />
-    </div>
-    <div className="pt-5 pb-3 ltr:pl-4 rtl:pr-5" onClick={onClose}>
+    <div className="absolute top-3 cursor-pointer text-4xl ltr:left-0 ltr:ml-[85%]   rtl:right-0 rtl:mr-[85%] " />
+    <div className="pt-5 pb-3 ltr:pl-4 rtl:pr-5">
       <img src="/images/logo.svg" />
     </div>
     <hr />

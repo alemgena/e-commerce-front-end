@@ -29,7 +29,7 @@ function Featured() {
         FEATURED PRODUCTS
       </h2>
       <div className="flex flex-col gap-8">
-        <div className="scrollbar-hide flex w-full gap-4 overflow-x-auto">
+        <div className="flex w-full gap-4 overflow-x-auto scrollbar-hide">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((data, index) => (
             <Link href={`/products/${index}`}>
               <div key={data.toString()} className="w-52 flex-shrink-0">
@@ -48,12 +48,12 @@ function Featured() {
                     </div>
                   </div>
                   <div className="h-0.5 w-full bg-gray-200" />
-                  <div className="font-roboto-light  flex  gap-6 rounded-md p-2">
+                  <div className="flex  gap-6  rounded-md p-2 font-roboto-light">
                     <button className=" rounded-full bg-blue-800 px-3 py-2 text-sm text-white">
                       Make Offer
                     </button>
 
-                    <button className="font-roboto-light flex flex-grow items-center  justify-center text-xl text-gray-400">
+                    <button className="flex flex-grow items-center justify-center  font-roboto-light text-xl text-gray-400">
                       <BsHeart />
                     </button>
                   </div>
