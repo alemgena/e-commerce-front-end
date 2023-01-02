@@ -1,12 +1,17 @@
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { BiHeart, BiMessage } from 'react-icons/bi';
 import { AuthModal } from '../auth';
 export const NavItems = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
   return (
     <div className="flex items-center gap-8">
-      <button className="flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-800 via-blue-600 to-blue-500 px-4 py-2 text-white">
+      <button
+        onClick={() => router.push('/sell/products/create')}
+        className="flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-800 via-blue-600 to-blue-500 px-4 py-2 text-white"
+      >
         <AiOutlinePlusCircle size={20} /> <p>Sell</p>
       </button>
       <div className="flex gap-4">
@@ -28,4 +33,4 @@ export const NavItems = () => {
       <AuthModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </div>
   );
-}
+};
