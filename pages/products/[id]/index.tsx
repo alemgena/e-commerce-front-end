@@ -61,7 +61,7 @@ function ProductDetailPage() {
         <title>Product Detail</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className=" bg-gray-200 px-12 pb-32">
+      <div className=" bg-gray-50 px-12 pb-32">
         <div className="flex items-center gap-2 py-4  text-xl">
           <FiArrowLeft />
           <h2>Product Detail</h2>
