@@ -3,8 +3,10 @@ import { FiArrowLeft } from 'react-icons/fi';
 import { RiPencilFill } from 'react-icons/ri';
 import { AiFillMinusCircle } from 'react-icons/ai';
 import { FaEye, FaShare } from 'react-icons/fa';
+import { useRouter } from 'next/router';
 
 const ProductsPage = () => {
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -47,7 +49,11 @@ const ProductsPage = () => {
                 </div>
               </div>
               <div className="flex justify-between gap-10 bg-gray-100 px-10 py-4">
-                <RiPencilFill size={25} className="cursor-pointer" />
+                <RiPencilFill
+                  size={25}
+                  className="cursor-pointer"
+                  onClick={() => router.push('/sell/products/123/edit')}
+                />
                 <AiFillMinusCircle size={25} className="cursor-pointer" />
               </div>
             </div>
