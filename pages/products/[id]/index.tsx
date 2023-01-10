@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import { BiShare } from 'react-icons/bi';
 import { BsChevronUp, BsFillChatLeftTextFill, BsHeart } from 'react-icons/bs';
 import { FiArrowLeft } from 'react-icons/fi';
