@@ -46,7 +46,7 @@ export const sliderContent = [
     title: 'Variety in choice',
     description:
       'When it comes to Beauty and Efficiency. We specialize in providing stationery and office sets that are beautiful and high quality.',
-    bgImg: "url('/images/stationery-banner.webp')",
+    bgImg: "url('/images/Image 29.png')",
     url: '/',
   },
 ];

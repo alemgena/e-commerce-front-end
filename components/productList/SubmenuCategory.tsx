@@ -11,7 +11,7 @@ function SubmenuCategory() {
   const { category } = router.query;
 
   function onClickHandler(name: string) {
-    router.push('/Clothing/T-shirt');
+    router.push('/products/cars/toyota');
   }
 
   return;

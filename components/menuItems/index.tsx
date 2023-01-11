@@ -81,7 +81,7 @@ const MenuItems: React.FC<Props> = (props) => {
               ) : null}
             </div>
           ) : (
-            <Link href={`/${item.category}`}>
+            <Link href={`/products/category/${item.category}`}>
               <a
                 className={`mt-3 flex cursor-pointer items-center  px-5 text-sm ${
                   index === activeMenuItemIndex ? 'md:text-palette-primary' : ''

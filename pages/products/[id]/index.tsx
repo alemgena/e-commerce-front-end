@@ -7,6 +7,7 @@ import { MdOutlineReport } from 'react-icons/md';
 import { Disclosure } from '@headlessui/react';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
+import Link from 'next/link';
 
 const Map = dynamic(() => import('@/components/map').then((mod) => mod.Map), {
   ssr: false,
@@ -119,9 +120,11 @@ function ProductDetailPage() {
               </div>
             ) : (
               <div className="flex gap-6 rounded-md bg-white p-4 font-roboto-light shadow-sm">
-                <button className="flex-grow rounded-full bg-blue-800 py-2 text-white">
-                  Make an Offer
-                </button>
+                <Link href="/chat">
+                  <button className="flex-grow rounded-full bg-blue-800 py-2 text-white">
+                    Make an Offer
+                  </button>
+                </Link>
                 <button
                   onClick={() => setShowContact(true)}
                   className="flex items-center gap-2 rounded-full bg-white py-2 px-4 font-roboto-medium text-blue-800 ring-2 ring-blue-800"

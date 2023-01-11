@@ -11,7 +11,7 @@ interface Props {
 }
 const Slide: React.FC<Props> = ({ title, description, bgImg, url }) => (
   <div
-    className="relative mx-10 mt-20 h-[20vh] w-[100%] bg-cover bg-center bg-no-repeat md:h-[20vh]"
+    className="relative mx-10 mt-10 h-[20vh] w-[100%] bg-cover bg-center bg-no-repeat md:h-[20vh]"
     style={{ backgroundImage: `${bgImg}` }}
   />
 );
