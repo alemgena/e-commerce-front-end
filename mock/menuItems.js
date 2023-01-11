@@ -82,7 +82,7 @@ const menuItems = [
   {
     category: 'Electronics',
     icon: BsLaptop,
-    categoryImg: 'laptop-transparent-png-pictures-icons-and-png-40-1.png',
+    categoryImg: 'laptop-transparent-png-pictures-icons-and-png-40.png',
     productsGroup: [
       {
         mainCategory: 'Electronics',
