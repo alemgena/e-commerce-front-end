@@ -1,5 +1,9 @@
+/* eslint-disable react/function-component-definition */
 import { useState } from 'react';
+
 import { CustomModal } from '../modal';
+
+import { ForgotPassword } from './forgotPassword';
 import { Login } from './login';
 import { Register } from './register';
 
@@ -44,7 +48,12 @@ export const AuthModal: React.FC<IAuthModalProps> = (props) => {
               onClose={onClose}
               setCurrentTab={(tab: CurrentTab) => setCurrentTab(tab)}
             />
-          ) : null}
+          ) : (
+            <ForgotPassword
+              onClose={onClose}
+              setCurrentTab={(tab: CurrentTab) => setCurrentTab(tab)}
+            />
+          )}
         </div>
       </div>
     </CustomModal>
