@@ -14,16 +14,16 @@ interface Props {
 const ThemeItem: React.FC<Props> = ({ theme, Icon, currentTheme }) => {
   const { setTheme } = useTheme();
 
-  function onThemeClickHandler() {
-    setTheme(theme);
-  }
+  // function onThemeClickHandler() {
+  //   setTheme(theme);
+  // }
 
   return (
     <div
       className={`flex items-center justify-start py-1 ${
         currentTheme && currentTheme === theme ? 'font-bold' : ''
       }`}
-      onClick={onThemeClickHandler}
+      // onClick={onThemeClickHandler}
     >
       <button className="border-none" aria-label="theme-toggle" role="button">
         <Icon
