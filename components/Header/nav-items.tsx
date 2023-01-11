@@ -1,11 +1,12 @@
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { BiHeart, BiMessage } from 'react-icons/bi';
 import { IoIosNotificationsOutline } from 'react-icons/io';
+import { useRouter } from 'next/router';
+
 import { AuthModal } from '../auth';
 
-export const NavItems = () => {
+export function NavItems() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   return (
@@ -23,7 +24,12 @@ export const NavItems = () => {
             <p>1</p>
           </div>
         </button>
-        <BiHeart size={30} className="cursor-pointer text-gray-900" />
+
+        <BiHeart
+          onClick={() => router.push('/favorite')}
+          size={30}
+          className="cursor-pointer text-gray-900"
+        />
         <button
           className="relative"
           onClick={() => router.push('/notification')}
@@ -44,4 +50,4 @@ export const NavItems = () => {
       <AuthModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </div>
   );
-};
+}
