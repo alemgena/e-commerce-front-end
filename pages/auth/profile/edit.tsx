@@ -1,10 +1,12 @@
-import Head from 'next/head';
-import { FiArrowLeft, FiMail } from 'react-icons/fi';
-import { RxAvatar } from 'react-icons/rx';
-import { MdPhone, MdLockOutline } from 'react-icons/md';
 import { FaRegUser } from 'react-icons/fa';
+import { FiArrowLeft, FiMail } from 'react-icons/fi';
+import { MdLockOutline, MdPhone } from 'react-icons/md';
+import { RxAvatar } from 'react-icons/rx';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
 
-const EditProfilePage = () => {
+function EditProfilePage() {
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -74,6 +76,14 @@ const EditProfilePage = () => {
                 />
               </div>
             </div>
+            <div className="flex w-full gap-16">
+              <button
+                onClick={() => router.push('/changePassword')}
+                className="flex items-center gap-2 self-end rounded-md bg-blue-800 px-10 py-2 font-roboto-regular  text-white"
+              >
+                Change Password
+              </button>
+            </div>
             <button className="flex items-center gap-2 self-end rounded-md bg-blue-800 px-10 py-2 font-roboto-regular  text-white">
               Update
             </button>
@@ -82,6 +92,6 @@ const EditProfilePage = () => {
       </div>
     </>
   );
-};
+}
 
 export default EditProfilePage;
