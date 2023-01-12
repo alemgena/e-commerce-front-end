@@ -12,6 +12,7 @@ import Featured from '@/components/featured/FeaturedProducts';
 import FeaturedShop from '@/components/featured/featuredShop';
 import Menu from '@/components/menu';
 import NewArrival from '@/components/newArrival';
+import NewsLetterSubscription from '@/components/NewsLetterSubscription';
 
 export default function Index() {
   return (
@@ -23,6 +24,7 @@ export default function Index() {
       <FeaturedShop />
       <CategoryShop />
       <NewArrival />
+      <NewsLetterSubscription />
     </>
   );
 }
