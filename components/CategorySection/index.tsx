@@ -8,7 +8,7 @@ const index = () => (
   <div className="ml-30 mt-20 grid grid-cols-6 gap-2 pl-20">
     {menuItems.map((data) => (
       <div>
-        <Link href="/products/category/cars/toyota">
+        <Link href="/subcategory">
           <div className="h-30 relative block w-40 rounded-full bg-gray-50">
             <img
               alt="name"

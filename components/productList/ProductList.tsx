@@ -34,7 +34,7 @@ const ProductList: React.FC<Props> = ({ productList }) => {
     <div>
       <Breadcrumb />
       <SubmenuCategory />
-      <div className="w-full xl:max-w-[2100px]">
+      <div className="mb-52 w-full xl:max-w-[2100px]">
         <div className="grid grid-cols-6 gap-4 md:grid-cols-12 md:gap-2">
           {[1, 2, 3, 4].map((d, index) => (
             <Card key={index} />

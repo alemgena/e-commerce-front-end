@@ -13,7 +13,7 @@ export const sliderContent = [
     title: 'Modern Home',
     description:
       'enjoy beautiful moments of satisfaction and peace with your loved ones at home with products designed according to the most recent and prominent styles.',
-    bgImg: "url('/images/house-banner.webp')",
+    bgImg: "url('/images/NoPath - Copy (14).png')",
     url: '/',
   },
 
