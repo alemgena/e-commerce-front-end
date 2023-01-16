@@ -24,7 +24,7 @@ const Carousel = () => {
     nextArrow: <NextArrow to="next" />,
     prevArrow: <PrevArrow to="prev" />,
     appendDots: (dots: string) => (
-      <div className="z-[100] bg-transparent !pb-[40px]">
+      <div className="z-[100] bg-white  !pb-[40px]">
         <ul> {dots} </ul>
       </div>
     ),
