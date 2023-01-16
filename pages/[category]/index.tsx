@@ -25,7 +25,7 @@ const categoryPage: NextPage<{
 }> = ({ products }) => (
   <>
     <Breadcrumb />
-    <div className="ml-30 mt-20 grid grid-cols-6 gap-2 pl-20">
+    <div className="ml-30 mb-20 mt-5 grid grid-cols-6 gap-2 pl-20">
       {menuItems.map((data) => (
         <div>
           <Link href="/category/cars">
