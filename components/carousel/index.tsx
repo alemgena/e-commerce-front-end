@@ -32,7 +32,7 @@ const Carousel = () => {
 
   return (
     <div className="relative ">
-      <Slider {...settings}>
+      <Slider className="h-64" {...settings}>
         {sliderContent.map((slideContent) => {
           return <Slide key={slideContent.ID} {...slideContent} />;
         })}
