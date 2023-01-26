@@ -1,9 +1,10 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/alt-text */
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import { BsHeart } from 'react-icons/bs';
 import Link from 'next/link';
-
+import {RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import {GET_PRODUCTS_BY_FEATURED} from '../../types'
 export interface IProduct {
   image: any;
   name: string;
@@ -20,9 +21,12 @@ export interface IProduct {
 }
 
 function Featured() {
-  // const { width } = useWindowDimensions();
-  // const numProductToShow = width >= 1536 ? 12 : 8;
-
+  const dispatch = useDispatch();
+  const products = useSelector((state:RootStateOrAny) => state.featuredProducts.featuredProducts);
+  useEffect(() => {
+    dispatch({ type: GET_PRODUCTS_BY_FEATURED, featured: true })
+  }, []);
+  console.log(products)
   return (
     <div className=" bg-white px-12 pb-20 pt-10">
       <h2 className="rounded-md  bg-white py-3 pl-2 font-bold shadow-sm">

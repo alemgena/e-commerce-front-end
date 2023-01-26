@@ -7,7 +7,6 @@ const initialState: IActiveMenuItem = {
   activeMenuItemIndex: 0,
   activeMenuItemText: '',
 };
-
 const activeMenuItemSlice = createSlice({
   name: 'activeMenuItem',
   initialState,
@@ -20,7 +19,5 @@ const activeMenuItemSlice = createSlice({
     },
   },
 });
-
 export const activeMenuItemActions = activeMenuItemSlice.actions;
-
 export default activeMenuItemSlice.reducer;

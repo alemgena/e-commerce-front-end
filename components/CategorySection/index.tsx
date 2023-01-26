@@ -1,14 +1,23 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import Link from 'next/link';
 
 import menuItems from '@/mock/menuItems';
-
-const index = () => (
+import { RootStateOrAny,useDispatch, useSelector } from "react-redux";
+import {GET_CATEGORIES} from '../../types'
+const index = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: GET_CATEGORIES })
+  }, []);
+  return(
   <div className="ml-30 mt-20 grid grid-cols-6 gap-2 pl-20">
     {menuItems.map((data) => (
       <div>
-        <Link href="/subcategory">
+        <Link  href={{
+            pathname: "/subcategory",
+            query:{id: "63b4814aa17482b61cefe62d"}, // the data
+          }}>
           <div className="h-30 relative block w-40 rounded-full bg-gray-50">
             <img
               alt="name"
@@ -22,6 +31,7 @@ const index = () => (
       </div>
     ))}
   </div>
-);
+)
+    }
 
 export default index;
