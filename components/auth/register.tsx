@@ -13,6 +13,7 @@ export const Register: React.FC<IRegisterProps> = ({
   onClose,
   setCurrentTab,
 }) => {
+  
   return (
     <div className="flex flex-col gap-14">
       <div className="flex items-center justify-between">

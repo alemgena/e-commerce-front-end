@@ -10,7 +10,6 @@ productInfo=JSON.parse(localStorage.getItem('products')!)
     products: productInfo,
     isLoading: false,
     error:""
-    
   },
   reducers: {
     setProducts: (state, action) => {

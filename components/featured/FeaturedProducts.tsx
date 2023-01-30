@@ -5,6 +5,7 @@ import { BsHeart } from 'react-icons/bs';
 import Link from 'next/link';
 import {RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import {GET_PRODUCTS_BY_FEATURED} from '../../types'
+import { Url } from '@/utils/url';
 export interface IProduct {
   image: any;
   name: string;
@@ -19,14 +20,18 @@ export interface IProduct {
   timeStamp?: number;
   starRating: number;
 }
-
 function Featured() {
+  const[productData,setProductData]=useState<any>([])
   const dispatch = useDispatch();
   const products = useSelector((state:RootStateOrAny) => state.featuredProducts.featuredProducts);
   useEffect(() => {
-    dispatch({ type: GET_PRODUCTS_BY_FEATURED, featured: true })
+  //  dispatch({ type: GET_PRODUCTS_BY_FEATURED, featured: true })
   }, []);
-  console.log(products)
+  useEffect(() => {
+  if(products.data){
+setProductData(products.data)
+  }
+  }, [products]);
   return (
     <div className=" bg-white px-12 pb-20 pt-10">
       <h2 className="rounded-md  bg-white py-3 pl-2 font-bold shadow-sm">
@@ -34,16 +39,16 @@ function Featured() {
       </h2>
       <div className="flex flex-col gap-8">
         <div className="flex w-full gap-4 overflow-x-auto scrollbar-hide">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((data, index) => (
+          {productData.map((data:any,index) => (
             <Link href={`/products/${index}`}>
               <div key={data.toString()} className="w-52 flex-shrink-0">
                 <img
-                  src="/images/NoPath - Copy (15)-3.png"
+                  src={`${Url}/${data.imagesURL[0]}`}
                   className="h-52 w-full object-cover"
                 />
                 <div className="bg-white">
                   <div className="flex flex-col gap-3 p-2">
-                    <h6 className="text-sm text-gray-500">Samsung A51</h6>
+                    <h6 className="text-sm text-gray-500">{data.name}</h6>
                     <div className="flex items-center justify-between">
                       <h6 className="font-roboto-bold ">19,450 ETB</h6>
                       <h6 className="rounded-full bg-gray-100 px-3 py-1">
