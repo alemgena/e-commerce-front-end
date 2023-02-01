@@ -5,7 +5,6 @@ import { FiArrowLeft } from 'react-icons/fi';
 import { MdDelete } from 'react-icons/md';
 import Head from 'next/head';
 import Link from 'next/link';
-
 function FavoritePage() {
   return (
     <>

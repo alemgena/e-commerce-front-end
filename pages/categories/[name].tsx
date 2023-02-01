@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import { GetStaticPaths, GetStaticProps } from 'next';
 
-import ProductList from '../../../../components/productList/ProductList';
+import ProductList from '../../components/productList/ProductList';
 
 export interface IProduct {
   image: any;
@@ -19,7 +19,7 @@ export interface IProduct {
 const categoryPage: NextPage<{
   products: IProduct[];
 }> = ({ products }) => (
-  <div>rrrrrrrrr
+  <div>
     <ProductList productList={products} />
   </div>
 );

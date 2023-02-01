@@ -55,4 +55,4 @@ export const products = [
     _type: 'product',
     _updatedAt: '2022-06-29T13:16:46Z',
   },
-  
+]

@@ -15,7 +15,7 @@ function CategoryShop() {
       <div className="grid grid-cols-4 gap-y-8 gap-x-1 bg-white">
         {menuItems.map((data) => (
           <Link
-            href="/category/cars"
+            href={`categories/${data.category}`}
             key={data.toString()}
             className=" h-45 rounded-lg border border-gray-200 bg-white pb-10 shadow-md dark:border-gray-700 dark:bg-gray-800"
           >

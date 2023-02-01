@@ -10,6 +10,7 @@ import {
 } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 import {rootSaga} from '../redux/sagas'
+import favorite from './favorite'
 let sagaMiddleware = createSagaMiddleware();
 const store = configureStore({
   reducer: {
@@ -18,7 +19,8 @@ const store = configureStore({
     products:productReducer,
     categories:categorieReducer,
     featuredProducts:featuredProducts,
-    subCategories:subCategories
+    subCategories:subCategories,
+    favorite:favorite
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware)
 });

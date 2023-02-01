@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BiShare } from 'react-icons/bi';
 import { BsChevronUp, BsFillChatLeftTextFill, BsHeart } from 'react-icons/bs';
 import { FiArrowLeft } from 'react-icons/fi';
@@ -8,7 +8,12 @@ import { Disclosure } from '@headlessui/react';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import Link from 'next/link';
-
+import { useDispatch } from 'react-redux';
+import { ADD_PRODUCT_FAVORITE } from '@/types';
+import { useRouter } from 'next/router';
+import NextLink from 'next/link';
+import { Url } from '@/utils/url';
+import { RootStateOrAny, useSelector } from 'react-redux';
 const Map = dynamic(() => import('@/components/map').then((mod) => mod.Map), {
   ssr: false,
 });
@@ -54,8 +59,40 @@ const options = [
 const colors = ['#ffffff', '#F62424', '#043CBE', '#5E5E5E', '#000000'];
 
 function ProductDetailPage() {
-  const [activeImage, setActiveImage] = useState(images[0]);
+  const dispatch=useDispatch()
+  const [product, setProduct] = useState();
+  const router = useRouter();
+  const { id } = router.query;
+  const [activeImage, setActiveImage] = useState([]);
+  const [productImage, setProductImage] = useState();
+  const [relatedProducts, setRelatedProducts] = useState<any>([]);
   const [showContact, setShowContact] = useState(false);
+  const products = useSelector(
+    (state: RootStateOrAny) => state.featuredProducts.featuredProducts
+  );
+  useEffect(() => {
+    if (products.data) {
+      let found = products.data.find(function (element: any) {
+        return element.id == id;
+      });
+      setRelatedProducts(
+        products.data.filter(
+          (product: any) =>
+            product.subCategory === found.subCategory && product.id != found.id
+        )
+      );
+      setProduct(found);
+      setProductImage(found.imagesURL[0]);
+      setActiveImage(found.imagesURL);
+    }
+  }, [id]);
+  const addFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const favorite = {
+      product: product.id,
+      user: '63d1fcc866e4b7f7e3acd8f',
+    };
+    dispatch({ type: ADD_PRODUCT_FAVORITE, data: favorite });
+  };
   return (
     <>
       <Head>
@@ -70,22 +107,21 @@ function ProductDetailPage() {
         <div className="grid grid-cols-2 gap-12 pb-20">
           <div>
             <img
-              src={activeImage.url}
+              src={`${Url}/${productImage}`}
               width="960px"
               height="600px"
               className="overflow-hidden rounded-sm object-cover"
             />
             <div className="mt-6  grid grid-cols-4 gap-6">
-              {images.map((image) => (
+              {activeImage.map((image) => (
                 <img
-                  key={image.id}
-                  src={image.url}
+                  src={`${Url}/${image}`}
                   width="full"
                   height="130px"
                   className={`cursor-pointer overflow-hidden rounded-sm object-cover ${
                     activeImage.id === image.id && 'ring-2 ring-blue-800'
                   } `}
-                  onClick={() => setActiveImage(image)}
+                  onClick={() => setProductImage(image)}
                 />
               ))}
             </div>
@@ -136,7 +172,10 @@ function ProductDetailPage() {
                   <BsFillChatLeftTextFill />
                   <p>Chat</p>
                 </button>
-                <button className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400">
+                <button
+                  onClick={(e) => addFavorite(e)}
+                  className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400"
+                >
                   <BsHeart />
                 </button>
                 <button className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400">
@@ -224,15 +263,15 @@ function ProductDetailPage() {
         <div className="flex flex-col gap-8">
           <h2 className="font-roboto-bold text-xl">RELATED PRODUCTS</h2>
           <div className="flex w-full gap-4 overflow-x-auto scrollbar-hide">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((data) => (
+            {relatedProducts.map((data) => (
               <div key={data.toString()} className="w-52 flex-shrink-0">
                 <img
-                  src="/images/product/related-product.png"
+                  src={`${Url}/${data.imagesURL[0]}`}
                   className="h-52 w-full object-cover"
                 />
                 <div className="bg-white">
                   <div className="flex flex-col gap-3 p-2">
-                    <h6 className="text-sm text-gray-500">Samsung A51</h6>
+                    <h6 className="text-sm text-gray-500">{data.name}</h6>
                     <div className="flex items-center justify-between">
                       <h6 className="font-roboto-bold ">19,450 ETB</h6>
                       <h6 className="rounded-full bg-gray-100 px-3 py-1">

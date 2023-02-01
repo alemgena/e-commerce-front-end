@@ -6,6 +6,7 @@ import Link from 'next/link';
 import {RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import {GET_PRODUCTS_BY_FEATURED} from '../../types'
 import { Url } from '@/utils/url';
+import NextLink from 'next/link';
 export interface IProduct {
   image: any;
   name: string;
@@ -40,7 +41,7 @@ setProductData(products.data)
       <div className="flex flex-col gap-8">
         <div className="flex w-full gap-4 overflow-x-auto scrollbar-hide">
           {productData.map((data:any,index) => (
-            <Link href={`/products/${index}`}>
+            <NextLink href={`/products/${data.id}`} passHref>
               <div key={data.toString()} className="w-52 flex-shrink-0">
                 <img
                   src={`${Url}/${data.imagesURL[0]}`}
@@ -68,7 +69,7 @@ setProductData(products.data)
                   </div>
                 </div>
               </div>
-            </Link>
+            </NextLink>
           ))}
         </div>
       </div>
