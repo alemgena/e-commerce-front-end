@@ -19,7 +19,7 @@ export interface IProduct {
 const categoryPage: NextPage<{
   products: IProduct[];
 }> = ({ products }) => (
-  <div>rrrrrrrrr
+  <div>
     <ProductList productList={products} />
   </div>
 );

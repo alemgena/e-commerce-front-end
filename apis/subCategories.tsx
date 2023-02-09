@@ -1,3 +1,3 @@
 import axios from 'axios'
-import { Url } from '@/utils/url'
-export const getSubCategorieAPI = async (id:string) => axios.get(`${Url}api/subcategories/${id}`)
+import { Ur2 } from '@/utils/url'
+export const getSubCategorieAPI = async (id:string) => axios.get(`${Ur2}api/subcategories/${id}`)

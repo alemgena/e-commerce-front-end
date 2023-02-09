@@ -7,6 +7,7 @@ export default function FetchData() {
         useEffect(() => {
           dispatch({ type: GET_PRODUCTS_BY_FEATURED, featured: true })
           dispatch({ type: GET_CATEGORIES })
+          dispatch({type:GET_PRODUCTS})
          // dispatch({type:GET_PRODUCTS})
         }, []);
   return (

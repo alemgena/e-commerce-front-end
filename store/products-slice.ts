@@ -1,13 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-let productInfo
-if (typeof window !== 'undefined') {
-  // Perform localStorage action
-productInfo=JSON.parse(localStorage.getItem('products')!)
-}
  const productsSlice = createSlice({
   name: "products",
   initialState: {
-    products: productInfo,
+    products: [],
     isLoading: false,
     error:""
   },

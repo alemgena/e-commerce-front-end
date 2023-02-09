@@ -17,26 +17,6 @@ import { RootStateOrAny, useSelector } from 'react-redux';
 const Map = dynamic(() => import('@/components/map').then((mod) => mod.Map), {
   ssr: false,
 });
-
-const images = [
-  {
-    id: 'p-1',
-    url: '/images/product/product.png',
-  },
-  {
-    id: 'p-2',
-    url: '/images/product/product.png',
-  },
-  {
-    id: 'p-3',
-    url: '/images/product/product.png',
-  },
-  {
-    id: 'p-4',
-    url: '/images/product/product.png',
-  },
-];
-
 const options = [
   {
     id: 'o-1',
@@ -59,7 +39,7 @@ const options = [
 const colors = ['#ffffff', '#F62424', '#043CBE', '#5E5E5E', '#000000'];
 
 function ProductDetailPage() {
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
   const [product, setProduct] = useState();
   const router = useRouter();
   const { id } = router.query;
@@ -70,26 +50,32 @@ function ProductDetailPage() {
   const products = useSelector(
     (state: RootStateOrAny) => state.featuredProducts.featuredProducts
   );
+  //favorite
+  const favorite = useSelector(
+    (state: RootStateOrAny) => state.favorite
+  );
   useEffect(() => {
     if (products.data) {
       let found = products.data.find(function (element: any) {
         return element.id == id;
       });
-      setRelatedProducts(
-        products.data.filter(
-          (product: any) =>
-            product.subCategory === found.subCategory && product.id != found.id
-        )
-      );
-      setProduct(found);
-      setProductImage(found.imagesURL[0]);
-      setActiveImage(found.imagesURL);
+      if (found) {
+        setRelatedProducts(
+          products.data.filter(
+            (product: any) =>
+              product.subCategory === found.subCategory &&
+              product.id != found.id
+          )
+        );
+        setProduct(found);
+        setProductImage(found.imagesURL[0]);
+        setActiveImage(found.imagesURL);
+      }
     }
   }, [id]);
   const addFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
     const favorite = {
       product: product.id,
-      user: '63d1fcc866e4b7f7e3acd8f',
     };
     dispatch({ type: ADD_PRODUCT_FAVORITE, data: favorite });
   };
@@ -133,7 +119,7 @@ function ProductDetailPage() {
             <div className="rounded-md bg-white px-4 py-6 shadow-sm">
               <h2 className="font-roboto-medium text-xl">Tesla Model X</h2>
               <p className="mb-4 text-sm text-blue-800">BelayAb Motors</p>
-              <h2 className="font-roboto-light text-xl">21,999,000.00 ETB</h2>
+              <h2 className="font-roboto-light text-xl">{product?.price}</h2>
             </div>
             {showContact ? (
               <div className="flex items-center justify-between  rounded-md bg-white p-4 font-roboto-light shadow-sm">
@@ -178,6 +164,8 @@ function ProductDetailPage() {
                 >
                   <BsHeart />
                 </button>
+                {favorite.favorite && <>product is add to favourite list</>}
+                {favorite.error && <>{favorite.error.message}</>}
                 <button className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400">
                   <BiShare />
                 </button>
@@ -207,22 +195,13 @@ function ProductDetailPage() {
             </div>
             <div className="rounded-md bg-white px-4 py-6 shadow-sm">
               <h2 className="mb-4 font-roboto-medium text-lg">Description</h2>
-              <p className="text-sm text-gray-600">
-                Quick, high-tech, and featuring a flashy gimmick in its
-                Falcon-wing rear doors, it presents a unique-but-expensive
-                proposition in the growing EV-crossover segment. The Model X
-                comes standard with two electric motors making a total of 670
-                horsepower and all-wheel drive; a three-motor version called
-                Plaid makes an astounding 1020 horsepower and is said to shoot
-                to 60 mph in just 2.5 seconds. That mega-motor version will be
-                available in late 2022 according to Tesla.
-              </p>
+              <p className="text-sm text-gray-600">{product?.description}</p>
             </div>
             <div className="  rounded-md bg-white p-4 font-roboto-light shadow-sm">
               <h2 className="mb-4 font-roboto-bold text-lg">Store Detail</h2>
               <div className="flex items-center gap-6">
                 <img
-                  src="/images/product/product.png"
+                  src={`${Url}/${productImage}`}
                   className="h-16 w-16 rounded-full object-cover"
                 />
                 <div>
@@ -263,7 +242,7 @@ function ProductDetailPage() {
         <div className="flex flex-col gap-8">
           <h2 className="font-roboto-bold text-xl">RELATED PRODUCTS</h2>
           <div className="flex w-full gap-4 overflow-x-auto scrollbar-hide">
-            {relatedProducts.map((data) => (
+            {relatedProducts.map((data: any) => (
               <div key={data.toString()} className="w-52 flex-shrink-0">
                 <img
                   src={`${Url}/${data.imagesURL[0]}`}
@@ -273,7 +252,7 @@ function ProductDetailPage() {
                   <div className="flex flex-col gap-3 p-2">
                     <h6 className="text-sm text-gray-500">{data.name}</h6>
                     <div className="flex items-center justify-between">
-                      <h6 className="font-roboto-bold ">19,450 ETB</h6>
+                      <h6 className="font-roboto-bold ">{data.price}</h6>
                       <h6 className="rounded-full bg-gray-100 px-3 py-1">
                         Used
                       </h6>

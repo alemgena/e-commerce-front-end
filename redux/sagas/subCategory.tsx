@@ -6,6 +6,8 @@ export function* getSubCategories(action:any):any {
     try{
     yield put(subCategoriesAction.setIsLoading(true))
     const response = yield getSubCategorieAPI(action.id)
+     console.log(action.id);
+    console.log(response.data)
     yield put(subCategoriesAction.setSubCategories(response.data))
     yield put(subCategoriesAction.setIsLoading(false))
     }

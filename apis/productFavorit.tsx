@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { Url } from '@/utils/url';
+import { Ur2 } from '@/utils/url';
+import { config } from '@/utils/heder';
 export const addFavoriteApi = async (data: string) =>
-  axios.post(`${Url}api/favourites`,data);
+  axios.post(`${Ur2}api/favourites`, data,config);
 export const getFavouriteAPI = async (id: string) =>
-  axios.get(`${Url}api/favourites/${id}`);
+  axios.get(`${Ur2}api/favourites`);

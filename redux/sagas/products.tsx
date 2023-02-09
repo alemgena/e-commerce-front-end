@@ -8,8 +8,7 @@ export function* getProducts():any {
     yield put(productAction.setIsLoading(true))
     const response = yield getProductsAPI()
     yield put(productAction.setProducts(response.data))
-    yield put(productAction.setIsLoading(false))
-    localStorage.setItem("products", JSON.stringify(response.data))
+    yield put(productAction.setIsLoading(false));
     }
     catch(error:any){
         yield put(productAction.setError(error.response.data.error))

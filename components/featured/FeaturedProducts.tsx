@@ -40,7 +40,7 @@ setProductData(products.data)
       </h2>
       <div className="flex flex-col gap-8">
         <div className="flex w-full gap-4 overflow-x-auto scrollbar-hide">
-          {productData.map((data:any,index) => (
+          {productData.map((data:any) => (
             <NextLink href={`/products/${data.id}`} passHref>
               <div key={data.toString()} className="w-52 flex-shrink-0">
                 <img
