@@ -48,7 +48,7 @@ function ProductDetailPage() {
   const [relatedProducts, setRelatedProducts] = useState<any>([]);
   const [showContact, setShowContact] = useState(false);
   const products = useSelector(
-    (state: RootStateOrAny) => state.featuredProducts.featuredProducts
+    (state: RootStateOrAny) => state.products.products
   );
   //favorite
   const favorite = useSelector(
