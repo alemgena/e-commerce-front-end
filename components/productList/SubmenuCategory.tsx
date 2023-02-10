@@ -14,7 +14,7 @@ function SubmenuCategory() {
     router.push('/products/cars/toyota');
   }
 
-  return;
+  return
   <div className="mb-6 flex flex-col md:items-center">
     <h3 className="mb-3 text-center md:mb-6 md:text-2xl">categories</h3>
     <div className="flex flex-wrap justify-center">
@@ -27,7 +27,7 @@ function SubmenuCategory() {
         </h4>
       </div>
     </div>
-  </div>;
+  </div>
+  
 }
-
 export default SubmenuCategory;

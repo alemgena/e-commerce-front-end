@@ -9,7 +9,7 @@
 /* eslint-disable react/function-component-definition */
 import React from 'react';
 import { HiChevronRight } from 'react-icons/hi';
-import { useDispatch, useSelector } from 'react-redux';
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 
 import { useWindowDimensions } from '@/hooks/useWindowDimensions';
@@ -17,7 +17,7 @@ import { IActiveMenuItemRootState } from '@/lib/types/activeMenuItem';
 import { IDropDown } from '@/lib/types/dropDown';
 import menuItems from '@/mock/menuItems';
 import { megaMenuActions } from '@/store/megaMenu-slice';
-
+import { Ur2 } from '@/utils/url';
 interface Props {
   onClick?: (
     submenu: IDropDown[] | undefined,
@@ -49,12 +49,16 @@ const MenuItems: React.FC<Props> = (props) => {
     (state: IActiveMenuItemRootState) =>
       state.activeMenuItem.activeMenuItemIndex
   );
+  console.log(width)
+   const categories = useSelector(
+     (state: RootStateOrAny) => state.categories.categories
+   );
   return (
     <ul className="rounded-lg">
-      {menuItems.map((item, index) => (
+      {categories.data.map((item:any, index:number) => (
         <li
           className="transition-color hover:text-palette-primary py-3 font-bold duration-300 md:py-3"
-          key={item.category}
+          key={item.name}
         >
           {width <= 768 ? (
             <div
@@ -62,55 +66,51 @@ const MenuItems: React.FC<Props> = (props) => {
                 index === activeMenuItemIndex ? 'md:text-palette-primary' : ''
               }`}
               onClick={() =>
-                onMenuItemClickHandler(item.productsGroup, item.category, index)
+                onMenuItemClickHandler(item.subcategory, item.name, index)
               }
               onMouseOver={() =>
-                props.onMouseOver?.(item.productsGroup, index, item.category)
+                props.onMouseOver?.(item.subcategory, index, item.name)
               }
             >
               {/* <item.icon className="h-6 w-6 " /> */}
               <div
                 className={`mx-4 grow ${
-                  !item.productsGroup ? 'font-normal text-gray-400' : ''
+                  !item.subcategory ? 'font-normal text-gray-400' : ''
                 }`}
               >
-                {item.category}
+                {item.name}
               </div>
-              {item.productsGroup ? (
+              {item.subcategory ? (
                 <ArrowDirection style={{ fontSize: '1rem' }} />
               ) : null}
             </div>
           ) : (
-            <Link href={`/category/${item.category}`}>
+            <Link href={`/category/${item.name}`}>
               <a
                 className={`mt-3 flex cursor-pointer items-center  px-5 text-sm ${
                   index === activeMenuItemIndex ? 'md:text-palette-primary' : ''
                 }`}
                 onClick={() =>
-                  onMenuItemClickHandler(
-                    item.productsGroup,
-                    item.category,
-                    index
-                  )
+                  onMenuItemClickHandler(item.subcategory, item.name, index)
                 }
                 onMouseOver={() =>
-                  props.onMouseOver?.(item.productsGroup, index, item.category)
+                  props.onMouseOver?.(item.subcategory, index, item.name)
                 }
               >
                 {/* <item.icon className="h-6 w-6 " /> */}
                 <img
-                  src={`/images/${item.categoryImg}`}
+                  src={`${Ur2}/${item.imageURL}`}
                   className="h-10  rounded-full object-cover"
                 />
                 <div
                   className={`mx-4 grow px-1 ${
-                    !item.productsGroup ? 'font-normal text-gray-400' : ''
+                    !item.subcategory.length ? 'font-normal text-gray-400' : ''
                   }`}
                 >
-                  {item.category}
+                  {item.name}
                 </div>
-                {item.productsGroup ? (
-                  <ArrowDirection style={{ fontSize: '1rem' }} />
+                {item.subcategory.length ? (
+                  <ArrowDirection style={{ fontSize: '1.5rem' }} />
                 ) : null}
               </a>
             </Link>

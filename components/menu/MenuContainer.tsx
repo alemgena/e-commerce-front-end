@@ -14,19 +14,23 @@ import SubMenu from './subMenu';
 
 function MenusContainer({ closeMenuMegaHandler }) {
   const [subMenuItems, setSubMenuItems] = useState<IDropDown[]>();
+  const[mainTitle,setMainTitle]=useState<string>()
   const dispatch = useDispatch();
   function activeItem(
     submenuList: IDropDown[] | undefined,
     activeItemIndex: number,
     activeItemName: string
   ) {
+    console.log(subMenuItems)
     setSubMenuItems(submenuList);
+    setMainTitle(activeItemName)
+    console.log(activeItemIndex)
     dispatch(activeMenuItemActions.setActiveMenuItemIndex(activeItemIndex));
     dispatch(activeMenuItemActions.setActiveMenuItemText(activeItemName));
   }
 
   useEffect(() => {
-    setSubMenuItems(menuItems[0].productsGroup);
+   // setSubMenuItems(menuItems[0].productsGroup);
     return () => {
       dispatch(activeMenuItemActions.setActiveMenuItemIndex(0));
       dispatch(activeMenuItemActions.setActiveMenuItemText('digital'));
@@ -45,7 +49,7 @@ function MenusContainer({ closeMenuMegaHandler }) {
         </div>
         <MenuItems onMouseOver={activeItem} />
       </nav>
-      <SubMenu mainTitle={menuItems[0].category} subMenuItems={subMenuItems} />
+      <SubMenu mainTitle={mainTitle} subMenuItems={subMenuItems} />
     </div>
   );
 }
