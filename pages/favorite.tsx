@@ -1,11 +1,18 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react/button-has-type */
 import { BsHeart } from 'react-icons/bs';
+import React,{useEffect,useState} from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
 import { MdDelete } from 'react-icons/md';
 import Head from 'next/head';
 import Link from 'next/link';
+import { GET_FAVOURITE } from '@/types';
+import { useDispatch } from 'react-redux';
 function FavoritePage() {
+      const dispatch = useDispatch();
+        useEffect(() => {
+dispatch({type:GET_FAVOURITE})
+        },[])
   return (
     <>
       <Head>

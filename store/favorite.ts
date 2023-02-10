@@ -3,12 +3,16 @@ const favoriteSlice = createSlice({
   name: 'favorite',
   initialState: {
     favorite: null,
+    products: [],
     isLoading: false,
     error: '',
   },
   reducers: {
     setFavorite: (state, action) => {
       state.favorite = action.payload;
+    },
+    setProducts: (state, action) => {
+      state.products = action.payload;
     },
     setIsLoading: (state, action) => {
       state.isLoading = action.payload;
