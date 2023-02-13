@@ -34,15 +34,15 @@ setProductData(products.data)
   }
   }, [products]);
   return (
-    <div className=" bg-white px-12 pb-20 pt-10">
+    <div className=" -ml-10  mr-12  bg-white px-12 pb-20 pt-10">
       <h2 className="rounded-md  bg-white py-3 pl-2 font-bold shadow-sm">
         FEATURED PRODUCTS
       </h2>
       <div className="flex flex-col gap-8">
-        <div className="flex w-full gap-4 overflow-x-auto scrollbar-hide">
-          {productData.map((data:any) => (
+        <div className="grid gap-y-5 gap-x-10 md:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4 2xl:grid-cols-5 ">
+          {productData.map((data: any) => (
             <NextLink href={`/products/${data.id}`} passHref>
-              <div key={data.toString()} className="w-52 flex-shrink-0">
+              <div key={data.toString()} className="mr-96 w-52 ">
                 <img
                   src={`${Url}/${data.imagesURL[0]}`}
                   className="h-52 w-full object-cover"

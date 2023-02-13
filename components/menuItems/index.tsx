@@ -55,7 +55,9 @@ const MenuItems: React.FC<Props> = (props) => {
    );
   return (
     <ul className="rounded-lg">
-      {categories.data.map((item:any, index:number) => (
+      {categories.data&&
+      <>
+      {categories.data.map((item: any, index: number) => (
         <li
           className="transition-color hover:text-palette-primary py-3 font-bold duration-300 md:py-3"
           key={item.name}
@@ -103,20 +105,32 @@ const MenuItems: React.FC<Props> = (props) => {
                   className="h-10  rounded-full object-cover"
                 />
                 <div
-                  className={`mx-4 grow px-1 ${
-                    !item.subcategory.length ? 'font-normal text-gray-400' : ''
+                  className={`mr-4 ml-5 grow px-1 ${
+                    !item.productsGroup ? 'font-normal text-gray-400' : ''
                   }`}
                 >
-                  {item.name}
+                  <span className="w-full overflow-hidden font-normal leading-4">
+                    {item.name}
+                  </span>
+                  <div className="flex flex-row justify-center">
+                    <span className="text-black-100 flex min-h-fit w-full  font-roboto-light font-thin">
+                      {' '}
+                      232 <span className="pl-1 "> Ads</span>
+                    </span>
+                  </div>
                 </div>
                 {item.subcategory.length ? (
-                  <ArrowDirection style={{ fontSize: '1.5rem' }} />
+                  <ArrowDirection
+                    style={{ marginLeft: 150, fontSize: '3rem' }}
+                  />
                 ) : null}
               </a>
             </Link>
           )}
         </li>
       ))}
+</>
+      }
     </ul>
   );
 };

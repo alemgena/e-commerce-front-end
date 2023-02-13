@@ -2,7 +2,7 @@
 /* eslint-disable no-script-url */
 /* eslint-disable react/jsx-no-script-url */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Breadcrumb from '@/components/BreadCrumb';
 import Carousel from '@/components/carousel';
@@ -15,16 +15,20 @@ import NewArrival from '@/components/newArrival';
 import NewsLetterSubscription from '@/components/NewsLetterSubscription';
 
 export default function Index() {
+  const [domLoaded, setDomLoaded] = useState(false);
+
+  useEffect(() => {
+    setDomLoaded(true);
+  }, []);
+
   return (
     <>
-      <Menu />
-      <Carousel />
-      <CategroySection />
-      <Featured />
-      <FeaturedShop />
-      <CategoryShop />
-      <NewArrival />
-      <NewsLetterSubscription />
+      {domLoaded && (
+        <>
+          <Menu />
+          <NewsLetterSubscription />
+        </>
+      )}
     </>
   );
 }
