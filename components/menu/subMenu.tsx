@@ -25,33 +25,23 @@ const SubMenu: React.FC<Props> = ({ subMenuItems, mainTitle }) => {
 
   return (
     <div
-      className="flex w-full flex-col bg-gray-300 px-6 py-5"
-      style={{ backgroundColor: '#F5F5F5' }}
+      className="  flex  flex-col bg-gray-300 py-5 pr-60"
+      // style={{ backgroundColor: '#F5F5F5' }}
     >
       <div className="hover:text-palette-primary transition-color flex items-center duration-300">
-        {subMenuItems ? (
-          <Link href={`/${activeMenuItemText}`}>
-            <a
-              className="lrt:mr-4 block font-roboto-bold text-lg text-[16px] rtl:ml-4 "
-              onClick={() => dispatch(megaMenuActions.closeMegaMenu())}
-            >
-              {mainTitle}
-            </a>
-          </Link>
-        ) : null}
       </div>
       <br />
-      <div className="relative flex flex-col md:columns-[188px] xl:max-w-4xl   ">
+      <div className="relative flex flex-col pl-3 md:columns-[188px] xl:max-w-4xl  ">
         {subMenuItems && activeMenuItemText ? (
           <>
             {subMenuItems.map((menuTitle: any, index) => (
               <div
-                className="justif-center flex flex-row py-3"
+                className="ml-3 flex flex-row justify-center  py-3"
                 key={`${menuTitle}-${index}`}
               >
                 <img
                   src={`${Ur2}/${menuTitle.imageURL[0]}`}
-                  className="h-10  rounded-full object-cover"
+                  className="mr-5  h-10 rounded-full object-cover"
                 />
                 <Link
                   href={{
@@ -59,12 +49,18 @@ const SubMenu: React.FC<Props> = ({ subMenuItems, mainTitle }) => {
                     query: { name: menuTitle.name },
                   }}
                 >
-                  <a
-                    className="border-palette-primary hover:text-palette-primary transition-color  rounded-sm px-2 text-sm font-bold duration-300 ltr:mb-1 ltr:border-l-4 rtl:mt-1 rtl:border-b-4"
-                    onClick={() => dispatch(megaMenuActions.closeMegaMenu())}
-                  >
-                    {`${menuTitle.name}`}
-                  </a>
+                  <div className="flex w-full flex-col">
+                    <a
+                      className=" w-fullpx-2  mb-1 text-sm font-bold "
+                      onClick={() => dispatch(megaMenuActions.closeMegaMenu())}
+                    >
+                      {`${menuTitle.name}`}
+                    </a>
+                    <span className=" flex flex-row justify-center">
+                      {' '}
+                      23444 <span className="ml-2"> Ads</span>
+                    </span>
+                  </div>
                 </Link>
               </div>
             ))}

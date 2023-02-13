@@ -16,12 +16,12 @@ const Carousel = () => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 1,
+    slidesToShow: 0,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 5000,
     cssEase: 'linear',
-    nextArrow: <NextArrow to="next" />,
+    // nextArrow: <NextArrow to="next" />,
     prevArrow: <PrevArrow to="prev" />,
     appendDots: (dots: string) => (
       <div className="z-[100] bg-white  !pb-[40px]">
@@ -31,16 +31,45 @@ const Carousel = () => {
   };
 
   return (
-    <div className="relative ">
-      <Slider className="h-64" {...settings}>
-        {sliderContent.map((slideContent) => {
-          return <Slide key={slideContent.ID} {...slideContent} />;
-        })}
-      </Slider>
-      <>
-        <div className="bg-palette-card/80 absolute top-1/2 right-4 rounded-full p-1 text-[0.8rem] shadow-lg drop-shadow-lg md:right-3 md:text-[1.8rem] lg:right-8" />
-        <div className="bg-palette-card/80 absolute top-1/2  left-4 rounded-full p-1 text-[0.8rem] shadow-lg drop-shadow-lg md:left-3 md:text-[1.8rem] lg:left-8" />
-      </>
+    <div className="relative w-full overflow-hidden">
+      <div
+        className="relative   w-full rounded-sm bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/images/Image 29.png')" }}
+      >
+        <a
+          className="ml-28 flex  flex-row items-end justify-start  gap-3 pb-20
+        "
+        >
+          <div className="mb-5">
+            <svg
+              viewBox="0 0 500 500"
+              xmlSpace="preserve"
+              width="100"
+              height="100"
+              xmlns="http://www.w3.org/2000/svg"
+              className="mt-9"
+            >
+              <polygon
+                points="500,250 473.216,279.409 491.536,314.718 458.049,336.172 466.532,375.03 428.619,387.055     426.778,426.778 387.044,428.619 375.02,466.543 336.161,458.049 314.707,491.547 279.409,473.226 250,500 220.581,473.226     185.282,491.547 163.818,458.049 124.959,466.543 112.945,428.619 73.222,426.778 71.371,387.044 33.458,375.021 41.941,336.172     8.453,314.718 26.774,279.409 0,250 26.774,220.591 8.453,185.282 41.941,163.829 33.458,124.97 71.371,112.956 73.222,73.222     112.956,71.381 124.97,33.468 163.829,41.952 185.282,8.463 220.581,26.784 250,0 279.409,26.784 314.718,8.463 336.172,41.962     375.03,33.468 387.044,71.381 426.778,73.232 428.619,112.966 466.532,124.98 458.049,163.839 491.536,185.282 473.216,220.591       "
+                style={{ fill: '#16C710' }}
+              />
+            </svg>
+            <h1 className="-mt-16 ml-7 font-roboto-bold text-2xl text-white">
+              {' '}
+              15 %{' '}
+            </h1>
+          </div>
+
+          <div className="flex flex-col">
+            <h3 className="font-roboto-bold text-2xl text-white">
+              Buy with Discount
+            </h3>
+            <p style={{ color: '#16C710' }} className="font-roboto-bold">
+              Jackets,T-shirts,Bags
+            </p>
+          </div>
+        </a>
+      </div>
     </div>
   );
 };
