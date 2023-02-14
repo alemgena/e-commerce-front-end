@@ -5,7 +5,8 @@ import { MdCall, MdLockOutline, MdPhone } from 'react-icons/md';
 import { FORGET_PASSWORD } from '@/types';
 import { CurrentTab } from './modal';
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
-
+import Notify from '../../components/Ui/Notify';
+import Notification from '../../components/Ui/Notification';
 interface IRegisterProps {
   onClose: () => void;
   setCurrentTab: (tab: CurrentTab) => void;
@@ -16,15 +17,32 @@ export const ForgotPassword: React.FC<IRegisterProps> = ({
   setCurrentTab,
 }) => {
   const dispatch = useDispatch();
-  const { error, passwordRecovered } = useSelector(
+  const { error, passwordRecovered, isLoading } = useSelector(
     (state: RootStateOrAny) => state.recoverPassword
   );
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState<string>();
+  const[submit,setSubmit]=useState(false)
+   const { NotifyMessage, notify, setNotify } = Notify();
+    useEffect(() => {
+      if (error && submit) {
+        NotifyMessage({
+          message: error.message,
+          type: 'error',
+        });
+      }
+    }, [error]);
+    useEffect(() => {
+      if (passwordRecovered && submit) {
+        NotifyMessage({
+          message: `Your new password is sent to ${email}. Check your email`,
+          type: 'success',
+        });
+      }
+    }, [passwordRecovered]);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('Rrrrr');
     dispatch({ type: FORGET_PASSWORD, email: { email: email } });
-    console.log('Rrrrr');
+ setSubmit(true)
   };
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.currentTarget.value);
@@ -33,22 +51,16 @@ export const ForgotPassword: React.FC<IRegisterProps> = ({
     <div className="mb-24 flex flex-col gap-14 ">
       <div className="mb-12 flex items-center justify-between">
         <h5 className="font-roboto-medium text-lg">Reset Password</h5>
-        <div>{error.message && <span>{error.message}</span>}</div>
-        <div>
-          {passwordRecovered && (
-            <span>Your new password is sent to {email}. Check your email</span>
-          )}
-        </div>
+        <Notification notify={notify} setNotify={setNotify} />
         <span className=" cursor-pointer" onClick={onClose}>
           <AiOutlineClose />
         </span>
       </div>
       <div>
         <p className="content-center font-roboto-medium">
-          Enter phone Number and Reset Your Password
+          Enter Email and Reset Your Password
         </p>
       </div>
-
       <div>
         <form
           className="flex flex-col gap-28 "
@@ -66,9 +78,14 @@ export const ForgotPassword: React.FC<IRegisterProps> = ({
               onChange={onChange}
             />
           </div>
+          {isLoading?
+          <button className="rounded-full bg-blue-800 py-2  font-roboto-light text-lg text-white">
+            Reseting ....
+          </button>:
           <button className="rounded-full bg-blue-800 py-2  font-roboto-light text-lg text-white">
             Reset
           </button>
+}
         </form>
       </div>
     </div>

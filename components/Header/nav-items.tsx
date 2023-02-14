@@ -47,7 +47,7 @@ export function NavItems() {
       >
         Login
       </button>
-      <AuthModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <AuthModal isOpen={isOpen} setOpen={setIsOpen} onClose={() => setIsOpen(false)} />
     </div>
   );
 }

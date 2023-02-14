@@ -7,35 +7,47 @@ import { MdLockOutline, MdPhone } from 'react-icons/md';
 import { CurrentTab } from './modal';
 import { LOGIN } from '@/types';
 import { loginAction } from '../../store/login';
+import Notify from '../../components/Ui/Notify'
+import Notification from '../../components/Ui/Notification'
 interface ILoginProps {
   onClose: () => void;
   setCurrentTab: (tab: CurrentTab) => void;
+  setOpen:boolean
 }
-export const Login: React.FC<ILoginProps> = ({ onClose, setCurrentTab }) => {
+export const Login: React.FC<ILoginProps> = ({ onClose,setOpen, setCurrentTab }) => {
+    const { NotifyMessage, notify, setNotify } = Notify();
   const dispatch = useDispatch();
-  const [loginClick, setLoginError] = React.useState(false);
+  const [submit, setSubmit] = React.useState(false);
   const { email, password } = useSelector(
     (state: RootStateOrAny) => state.login.inputValues
   );
-  const { error, loggedUser } = useSelector(
+  const { error, loggedUser, isLoading } = useSelector(
     (state: RootStateOrAny) => state.login
   );
   useEffect(() => {
-    console.log(error.message);
-    console.log(loggedUser);
-  }, []);
-
+     if (error && submit) {
+       NotifyMessage({
+         message: error.message,
+         type: 'error',
+       });
+     }
+  
+  }, [error]);
+  useEffect(() => {
+    if (loggedUser && submit) {
+  setOpen(false)
+    }
+  }, [loggedUser]);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch({ type: LOGIN, data: { email: email, password: password } });
-    setLoginError(true);
+    setSubmit(true);
   };
   return (
     <div className="flex flex-col gap-14">
       <div className="flex items-center justify-between">
         <h5 className="font-roboto-medium text-lg">Login</h5>
-        <div>{error.message && <span>{error.message}</span>}</div>
-        <div>{loggedUser && <span>successfully login</span>}</div>
+        <Notification notify={notify} setNotify={setNotify} />
         <span className=" cursor-pointer" onClick={onClose}>
           <AiOutlineClose />
         </span>
@@ -69,9 +81,19 @@ export const Login: React.FC<ILoginProps> = ({ onClose, setCurrentTab }) => {
               className="flex-grow py-1 focus:outline-none"
             />
           </div>
-          <button className="rounded-full bg-blue-800 py-2 font-roboto-light text-lg text-white">
+          {isLoading?
+          <button
+          disabled
+            className="rounded-full bg-blue-800 py-2 font-roboto-light text-lg text-white"
+          >
+            LOGGING ....
+          </button>:
+          <button
+            className="rounded-full bg-blue-800 py-2 font-roboto-light text-lg text-white"
+          >
             LOGIN
           </button>
+}
         </form>
         <div className="mt-4 flex flex-col items-center gap-4 font-roboto-regular text-sm">
           <p
