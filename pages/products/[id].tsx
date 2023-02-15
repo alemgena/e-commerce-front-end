@@ -40,10 +40,10 @@ const colors = ['#ffffff', '#F62424', '#043CBE', '#5E5E5E', '#000000'];
 
 function ProductDetailPage() {
   const dispatch = useDispatch();
-  const [product, setProduct] = useState();
+  const [product, setProduct] = useState<any>();
   const router = useRouter();
   const { id } = router.query;
-  const [activeImage, setActiveImage] = useState([]);
+  const [activeImage, setActiveImage] = useState<any>([]);
   const [productImage, setProductImage] = useState();
   const [relatedProducts, setRelatedProducts] = useState<any>([]);
   const [showContact, setShowContact] = useState(false);
@@ -99,7 +99,7 @@ function ProductDetailPage() {
               className="overflow-hidden rounded-sm object-cover"
             />
             <div className="mt-6  grid grid-cols-4 gap-6">
-              {activeImage.map((image) => (
+              {activeImage.map((image:any) => (
                 <img
                   src={`${Ur2}/${image}`}
                   width="full"
