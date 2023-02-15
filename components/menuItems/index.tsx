@@ -17,6 +17,7 @@ import { IActiveMenuItemRootState } from '@/lib/types/activeMenuItem';
 import { IDropDown } from '@/lib/types/dropDown';
 import menuItems from '@/mock/menuItems';
 import { megaMenuActions } from '@/store/megaMenu-slice';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Ur2 } from '@/utils/url';
 interface Props {
   onClick?: (
@@ -82,7 +83,7 @@ const MenuItems: React.FC<Props> = (props) => {
               >
                 {item.name}
               </div>
-              {item.subcategory ? (
+              {item.subcategory.length ? (
                 <ArrowDirection style={{ fontSize: '1rem' }} />
               ) : null}
             </div>
@@ -121,7 +122,7 @@ const MenuItems: React.FC<Props> = (props) => {
                 </div>
                 {item.subcategory.length ? (
                   <ArrowDirection
-                    style={{ marginLeft: 150, fontSize: '3rem' }}
+                    style={{ marginLeft: 100, fontSize: '3rem' }}
                   />
                 ) : null}
               </a>

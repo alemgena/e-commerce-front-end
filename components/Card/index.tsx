@@ -6,7 +6,7 @@ import { BsHeart } from 'react-icons/bs';
 // import StarRatingComponent from 'react-star-rating-component';
 // import Image from 'next/image';
 import Link from 'next/link';
-import { Url } from '@/utils/url';
+import { Ur2} from '@/utils/url';
 import NextLink from 'next/link';
 // import ProductPrice from '../ProductPrice';
 import CardActions from './CardActions';
@@ -28,13 +28,14 @@ export interface IProduct {
 }
 
 const Card = ({product}) => {
+  console.log(product.imagesURL[0]);
   return (
     <div className="bg-palette-card relative col-span-6 my-1 flex rounded-xl shadow-xl ltr:mr-2 rtl:ml-1 sm:col-span-3 md:col-span-4  md:my-4 md:mx-6 lg:col-span-3 2xl:col-span-2">
       {product && (
         <NextLink href={`/products/${product.id}`} passHref>
           <div className="w-full flex-shrink-0">
             <img
-              src={`${Url}/${product.imagesURL[0]}`}
+              src={`${Ur2}/${product.imagesURL[0]}`}
               className="h-52 w-full object-cover"
             />
             <div className="bg-white">

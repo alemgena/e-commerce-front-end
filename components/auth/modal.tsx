@@ -10,14 +10,14 @@ import { Register } from './register';
 interface IAuthModalProps {
   isOpen: boolean;
   onClose: () => void;
+  setOpen:boolean
 }
 
 export type CurrentTab = 'Login' | 'Register' | 'ForgotPassword';
 
 export const AuthModal: React.FC<IAuthModalProps> = (props) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, setOpen } = props;
   const [currentTab, setCurrentTab] = useState<CurrentTab>('Login');
-
   return (
     <CustomModal
       isOpen={isOpen}
@@ -40,6 +40,7 @@ export const AuthModal: React.FC<IAuthModalProps> = (props) => {
         <div className="w-1/2 py-6 px-12">
           {currentTab === 'Login' ? (
             <Login
+              setOpen={setOpen}
               onClose={onClose}
               setCurrentTab={(tab: CurrentTab) => setCurrentTab(tab)}
             />

@@ -45,7 +45,7 @@ const SubMenu: React.FC<Props> = ({ subMenuItems, mainTitle }) => {
                 />
                 <Link
                   href={{
-                    pathname: '/category/subCategory',
+                    pathname: '/products',
                     query: { name: menuTitle.name },
                   }}
                 >
