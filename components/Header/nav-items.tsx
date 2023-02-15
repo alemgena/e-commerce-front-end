@@ -3,12 +3,20 @@ import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { BiHeart, BiMessage } from 'react-icons/bi';
 import { IoIosNotificationsOutline } from 'react-icons/io';
 import { useRouter } from 'next/router';
-
 import { AuthModal } from '../auth';
-
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
+import { loginAction } from '@/store/login';
 export function NavItems() {
+    const {loggedUser } = useSelector(
+      (state: RootStateOrAny) => state.login
+    );
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const dispatch=useDispatch()
+  const handleLogout=()=>{
+    localStorage.removeItem("userInfo")
+    dispatch(loginAction.setLoggedUser(''))
+  }
   return (
     <div className="flex items-center gap-8">
       <button
@@ -40,13 +48,21 @@ export function NavItems() {
           </div>
         </button>
       </div>
-
-      <button
-        onClick={() => setIsOpen(true)}
-        className="rounded-md border-2 border-blue-800 px-8 py-1 text-blue-800 hover:bg-blue-800 hover:text-white"
-      >
-        Login
-      </button>
+      {loggedUser ? (
+        <button
+          onClick={() => handleLogout()}
+          className="rounded-md border-2 border-blue-800 px-8 py-1 text-blue-800 hover:bg-blue-800 hover:text-white"
+        >
+          Logout
+        </button>
+      ) : (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="rounded-md border-2 border-blue-800 px-8 py-1 text-blue-800 hover:bg-blue-800 hover:text-white"
+        >
+          Login
+        </button>
+      )}
       <AuthModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </div>
   );
