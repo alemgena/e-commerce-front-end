@@ -17,7 +17,12 @@
   },
   "dependencies": {
     "@badrap/bar-of-progress": "^0.1.2",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
     "@headlessui/react": "^1.7.7",
+    "@mui/icons-material": "^5.11.0",
+    "@mui/material": "^5.11.8",
+    "@mui/styles": "^5.11.7",
     "@reduxjs/toolkit": "^1.8.1",
     "@types/axios": "^0.14.0",
     "@types/react-icons": "^3.0.0",
