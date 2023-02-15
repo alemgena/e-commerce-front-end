@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { BiHeart, BiMessage } from 'react-icons/bi';
 import { IoIosNotificationsOutline } from 'react-icons/io';
@@ -11,7 +11,7 @@ export function NavItems() {
       (state: RootStateOrAny) => state.login
     );
   const [isOpen, setIsOpen] = useState(false);
-  
+  const[isLogin,setIsLogin]=useState(true)
   const router = useRouter();
   const dispatch=useDispatch()
   const handleLogout=()=>{
@@ -19,6 +19,11 @@ export function NavItems() {
     localStorage.removeItem("token")
     dispatch(loginAction.setLoggedUser(''))
   }
+   useEffect(() => {
+      if (loggedUser) {
+       setIsLogin(true)
+      }
+    }, []);
   return (
     <div className="flex items-center gap-8">
       <button
@@ -50,13 +55,15 @@ export function NavItems() {
           </div>
         </button>
       </div>
-      {loggedUser ? (
+      
+      {isLogin && loggedUser ? (
         <button
           onClick={() => handleLogout()}
           className="rounded-md border-2 border-blue-800 px-8 py-1 text-blue-800 hover:bg-blue-800 hover:text-white"
         >
           Logout
         </button>
+
       ) : (
         <button
           onClick={() => setIsOpen(true)}
