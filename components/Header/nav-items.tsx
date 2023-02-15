@@ -11,6 +11,7 @@ export function NavItems() {
       (state: RootStateOrAny) => state.login
     );
   const [isOpen, setIsOpen] = useState(false);
+  
   const router = useRouter();
   const dispatch=useDispatch()
   const handleLogout=()=>{
@@ -63,8 +64,11 @@ export function NavItems() {
           Login
         </button>
       )}
-      <AuthModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-
+      <AuthModal
+        setOpen={setIsOpen}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
     </div>
   );
 }

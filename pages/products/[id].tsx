@@ -201,7 +201,7 @@ function ProductDetailPage() {
               <h2 className="mb-4 font-roboto-bold text-lg">Store Detail</h2>
               <div className="flex items-center gap-6">
                 <img
-                  src={`${Url}/${productImage}`}
+                  src={`${Ur2}/${productImage}`}
                   className="h-16 w-16 rounded-full object-cover"
                 />
                 <div>
