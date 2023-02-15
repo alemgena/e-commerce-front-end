@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import { ADD_PRODUCT_FAVORITE } from '@/types';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
-import { Url } from '@/utils/url';
+import { Ur2, Url } from '@/utils/url';
 import { RootStateOrAny, useSelector } from 'react-redux';
 const Map = dynamic(() => import('@/components/map').then((mod) => mod.Map), {
   ssr: false,
@@ -93,7 +93,7 @@ function ProductDetailPage() {
         <div className="grid grid-cols-2 gap-12 pb-20">
           <div>
             <img
-              src={`${Url}/${productImage}`}
+              src={`${Ur2}/${productImage}`}
               width="960px"
               height="600px"
               className="overflow-hidden rounded-sm object-cover"
@@ -101,7 +101,7 @@ function ProductDetailPage() {
             <div className="mt-6  grid grid-cols-4 gap-6">
               {activeImage.map((image) => (
                 <img
-                  src={`${Url}/${image}`}
+                  src={`${Ur2}/${image}`}
                   width="full"
                   height="130px"
                   className={`cursor-pointer overflow-hidden rounded-sm object-cover ${
@@ -245,7 +245,7 @@ function ProductDetailPage() {
             {relatedProducts.map((data: any) => (
               <div key={data.toString()} className="w-52 flex-shrink-0">
                 <img
-                  src={`${Url}/${data.imagesURL[0]}`}
+                  src={`${Ur2}/${data.imagesURL[0]}`}
                   className="h-52 w-full object-cover"
                 />
                 <div className="bg-white">

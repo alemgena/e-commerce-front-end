@@ -5,7 +5,7 @@ import { BsHeart } from 'react-icons/bs';
 import Link from 'next/link';
 import {RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import {GET_PRODUCTS_BY_FEATURED} from '../../types'
-import { Url } from '@/utils/url';
+import { Ur2, Url } from '@/utils/url';
 import NextLink from 'next/link';
 export interface IProduct {
   image: any;
@@ -44,7 +44,7 @@ setProductData(products.data)
             <NextLink href={`/products/${data.id}`} passHref>
               <div key={data.toString()} className="mr-96 w-52 ">
                 <img
-                  src={`${Url}/${data.imagesURL[0]}`}
+                  src={`${Ur2}/${data.imagesURL[0]}`}
                   className="h-52 w-full object-cover"
                 />
                 <div className="bg-white">
