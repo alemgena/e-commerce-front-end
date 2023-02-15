@@ -21,7 +21,7 @@ export function* getFavourite(): any {
     yield put(favoriteAction.setIsLoading(false));
   } catch (error: any) {
     console.log(error)
-    yield put(favoriteAction.setError(error.response.data.error));
+    yield put(favoriteAction.setFavouriteError(error.response.data.error));
     yield put(favoriteAction.setIsLoading(false));
   }
 }

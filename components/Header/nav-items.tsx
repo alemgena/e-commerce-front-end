@@ -16,6 +16,7 @@ export function NavItems() {
   const dispatch=useDispatch()
   const handleLogout=()=>{
     localStorage.removeItem("userInfo")
+    localStorage.removeItem("token")
     dispatch(loginAction.setLoggedUser(''))
   }
   return (
