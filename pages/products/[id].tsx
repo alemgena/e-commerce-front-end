@@ -14,6 +14,8 @@ import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import { Ur2, Url } from '@/utils/url';
 import { RootStateOrAny, useSelector } from 'react-redux';
+import Notify from '@/components/Ui/Notify';
+import Notification from '@/components/Ui/Notification';
 const Map = dynamic(() => import('@/components/map').then((mod) => mod.Map), {
   ssr: false,
 });
@@ -78,7 +80,26 @@ function ProductDetailPage() {
       product: product.id,
     };
     dispatch({ type: ADD_PRODUCT_FAVORITE, data: favorite });
+    setSubmit(true)
   };
+    const [submit, setSubmit] = useState(false);
+    const { NotifyMessage, notify, setNotify } = Notify();
+    useEffect(() => {
+      if (favorite.error && submit) {
+        NotifyMessage({
+          message:favorite. error.message,
+          type: 'error',
+        });
+      }
+    }, [favorite.error]);
+    useEffect(() => {
+      if (favorite.favorite && submit) {
+        NotifyMessage({
+          message: 'product is add to favourite list',
+          type: 'success',
+        });
+      }
+    }, [favorite.favorite]);
   return (
     <>
       <Head>
@@ -90,6 +111,7 @@ function ProductDetailPage() {
           <FiArrowLeft />
           <h2>Product Detail</h2>
         </div>
+
         <div className="grid grid-cols-2 gap-12 pb-20">
           <div>
             <img
@@ -99,7 +121,7 @@ function ProductDetailPage() {
               className="overflow-hidden rounded-sm object-cover"
             />
             <div className="mt-6  grid grid-cols-4 gap-6">
-              {activeImage.map((image:any) => (
+              {activeImage.map((image: any) => (
                 <img
                   src={`${Ur2}/${image}`}
                   width="full"
@@ -164,8 +186,7 @@ function ProductDetailPage() {
                 >
                   <BsHeart />
                 </button>
-                {favorite.favorite && <>product is add to favourite list</>}
-                {favorite.error && <>{favorite.error.message}</>}
+                <Notification notify={notify} setNotify={setNotify} />
                 <button className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400">
                   <BiShare />
                 </button>

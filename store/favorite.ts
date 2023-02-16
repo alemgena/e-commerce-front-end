@@ -6,10 +6,14 @@ const favoriteSlice = createSlice({
     products: [],
     isLoading: false,
     error: '',
+    viewFavouritError: '',
   },
   reducers: {
     setFavorite: (state, action) => {
       state.favorite = action.payload;
+    },
+    setFavouriteError: (state, action) => {
+      state.viewFavouritError = action.payload;
     },
     setProducts: (state, action) => {
       state.products = action.payload;
