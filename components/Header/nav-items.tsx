@@ -7,17 +7,19 @@ import { AuthModal } from '../auth';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { loginAction } from '@/store/login';
 export function NavItems() {
-    const {loggedUser } = useSelector(
+    const { loggedUser, isUserLogged } = useSelector(
       (state: RootStateOrAny) => state.login
     );
   const [isOpen, setIsOpen] = useState(false);
-  const[isLogin,setIsLogin]=useState(true)
+  const[isLogin,setIsLogin]=useState(false)
   const router = useRouter();
   const dispatch=useDispatch()
   const handleLogout=()=>{
     localStorage.removeItem("userInfo")
     localStorage.removeItem("token")
     dispatch(loginAction.setLoggedUser(''))
+    dispatch(loginAction.setIsUserLogged(false))
+    setIsLogin(false)
   }
    useEffect(() => {
       if (loggedUser) {
@@ -55,15 +57,14 @@ export function NavItems() {
           </div>
         </button>
       </div>
-      
-      {isLogin && loggedUser ? (
+
+      {isLogin || isUserLogged ? (
         <button
           onClick={() => handleLogout()}
           className="rounded-md border-2 border-blue-800 px-8 py-1 text-blue-800 hover:bg-blue-800 hover:text-white"
         >
           Logout
         </button>
-
       ) : (
         <button
           onClick={() => setIsOpen(true)}
