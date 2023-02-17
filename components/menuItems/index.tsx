@@ -19,6 +19,7 @@ import menuItems from '@/mock/menuItems';
 import { megaMenuActions } from '@/store/megaMenu-slice';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Ur2 } from '@/utils/url';
+import NoRecord from '../Ui/Norecords'
 interface Props {
   onClick?: (
     submenu: IDropDown[] | undefined,
@@ -56,7 +57,7 @@ const MenuItems: React.FC<Props> = (props) => {
    );
   return (
     <ul className="rounded-lg">
-      {categories.data&&
+      {categories.data?
       <>
       {categories.data.map((item: any, index: number) => (
         <li
@@ -122,7 +123,7 @@ const MenuItems: React.FC<Props> = (props) => {
                 </div>
                 {item.subcategory.length ? (
                   <ArrowDirection
-                    style={{ marginLeft: 100, fontSize: '3rem' }}
+                    style={{ marginLeft: 80, fontSize: '2.5rem' }}
                   />
                 ) : null}
               </a>
@@ -130,7 +131,8 @@ const MenuItems: React.FC<Props> = (props) => {
           )}
         </li>
       ))}
-</>
+</>:
+<NoRecord col={5} />
       }
     </ul>
   );
