@@ -7,6 +7,7 @@ import {RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import {GET_PRODUCTS_BY_FEATURED} from '../../types'
 import { Ur2, Url } from '@/utils/url';
 import NextLink from 'next/link';
+import Norecords from '../Ui/Norecords';
 export interface IProduct {
   image: any;
   name: string;
@@ -38,6 +39,7 @@ setProductData(products.data)
       <h2 className="rounded-md  bg-white py-3 pl-2 font-bold shadow-sm">
         FEATURED PRODUCTS
       </h2>
+      {products.data?
       <div className="flex flex-col gap-8">
         <div className="grid gap-y-5 gap-x-10 md:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4 2xl:grid-cols-5 ">
           {productData.map((data: any) => (
@@ -73,6 +75,9 @@ setProductData(products.data)
           ))}
         </div>
       </div>
+:
+<Norecords col={5} />
+      }
     </div>
   );
 }

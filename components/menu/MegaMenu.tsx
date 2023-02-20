@@ -28,7 +28,7 @@ function MegaMenu() {
 
       <div className="">
         <div className="z-[100]">
-          <div className=" absolute z-[110]   w-80 rounded-br-lg rounded-bl-lg bg-blue-50 shadow-md">
+          <div className=" w-85 absolute z-[110] max-h-96 overflow-y-auto  rounded-br-lg  rounded-bl-lg bg-blue-50 shadow-md scrollbar-hide hover:overscroll-contain">
             <MenusContainer />
           </div>
         </div>
