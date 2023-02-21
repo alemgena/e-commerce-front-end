@@ -8,6 +8,7 @@ import {GET_PRODUCTS_BY_FEATURED} from '../../types'
 import { Ur2, Url } from '@/utils/url';
 import NextLink from 'next/link';
 import Norecords from '../Ui/Norecords';
+import PageSpinner from '../Ui/PageSpinner';
 export interface IProduct {
   image: any;
   name: string;
@@ -27,19 +28,22 @@ function Featured() {
   const dispatch = useDispatch();
   const products = useSelector((state:RootStateOrAny) => state.featuredProducts.featuredProducts);
   useEffect(() => {
-  //  dispatch({ type: GET_PRODUCTS_BY_FEATURED, featured: true })
-  }, []);
-  useEffect(() => {
   if(products.data){
 setProductData(products.data)
   }
   }, [products]);
+  const {isLoading}= useSelector((state:RootStateOrAny) => state.featuredProducts)
   return (
+    <>
+    {isLoading?
+    <PageSpinner/>:
     <div className=" -ml-10  mr-12  bg-white px-12 pb-20 pt-10">
       <h2 className="rounded-md  bg-white py-3 pl-2 font-bold shadow-sm">
         FEATURED PRODUCTS
       </h2>
       {products.data?
+      <>
+      {products.data.length?
       <div className="flex flex-col gap-8">
         <div className="grid gap-y-5 gap-x-10 md:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4 2xl:grid-cols-5 ">
           {productData.map((data: any) => (
@@ -78,7 +82,12 @@ setProductData(products.data)
 :
 <Norecords col={5} />
       }
+      </>:
+      <Norecords col={5}/>
+    }
     </div>
+}
+    </>
   );
 }
 

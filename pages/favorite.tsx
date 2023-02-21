@@ -11,18 +11,14 @@ import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { Ur2 } from '@/utils/url';
 import { useRouter } from 'next/router';
 import { favoriteAction } from '@/store/favorite';
+import Norecords from '@/components/Ui/Norecords';
 function FavoritePage() {
   const router=useRouter()
    const favorite = useSelector((state: RootStateOrAny) => state.favorite);
-   const [products,setProducts]=useState<any>([])
       const dispatch = useDispatch();
         useEffect(() => {
 dispatch({type:GET_FAVOURITE})
         },[])
-           useEffect(() => {
-            if(favorite.products)
-         setProducts(favorite.products)
-           }, [favorite.products]);
       
                useEffect(() => {
                  if (favorite.viewFavouritError){
@@ -41,10 +37,10 @@ dispatch({type:GET_FAVOURITE})
           <FiArrowLeft />
           <h2 className="font-roboto-medium ">Favorites</h2>
         </div>
-
+      {favorite.products.data?(
         <div className="mt-4 flex flex-col gap-8">
           <div className="flex w-full gap-4 ">
-            {favorite.products.data && (
+            {favorite.products.data.length?(
               <>
                 {favorite.products.data.map((data, index) => (
                   <Link href={`/products/${index}`}>
@@ -86,10 +82,13 @@ dispatch({type:GET_FAVOURITE})
                     </div>
                   </Link>
                 ))}
-              </>
-            )}
+              </>):(
+            <Norecords col={5}/>)}
           </div>
         </div>
+      ):(
+        <Norecords col={5}/>
+      )}
       </div>
     </>
   );

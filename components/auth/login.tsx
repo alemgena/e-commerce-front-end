@@ -40,7 +40,7 @@ export const Login: React.FC<ILoginProps> = ({ onClose,setOpen, setCurrentTab })
   }, [loggedUser]);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch({ type: LOGIN, data: { email: email, password: password } });
+    dispatch({ type: LOGIN, data: { input: email, password: password } });
     setSubmit(true);
   };
   return (

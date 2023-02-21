@@ -8,6 +8,7 @@ import { ISubCategoryPathsParams } from '@/lib/types/pagePathsParams';
 import { IProduct } from '@/lib/types/products';
 import { useRouter } from 'next/router';
 import { GET_SUB_CATEGORIE } from '@/types';
+import Norecords from '@/components/Ui/Norecords';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
 const subCategory: NextPage<{
   products: IProduct[];
@@ -37,13 +38,23 @@ const subCategory: NextPage<{
   }, [query.name, categories.data]);
   React.useEffect(() => {
     if (subCategorie.data) {
-      setProduct(subCategorie.data.product);
+      setProduct(subCategorie.data);
     }
-  }, [subCategorie.data]);
+  }, []);
   return (
-    <div>
-      {subCategorie.data && <ProductList product={subCategorie.data.product} />}
-    </div>
+    <>
+      {subCategorie.data ? (
+        <div>
+          {subCategorie.data.product.length ? (
+            <ProductList product={subCategorie.data.product} />
+          ) : (
+            <Norecords col={5} />
+          )}
+        </div>
+      ) : (
+        <Norecords col={5} />
+      )}
+    </>
   );
 };
 export default subCategory;
