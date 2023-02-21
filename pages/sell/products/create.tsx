@@ -19,13 +19,14 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 const CreateProductPage = () => {
   const { NotifyMessage, notify, setNotify } = Notify();
   const dispatch = useDispatch();
-  const [value, setValue] = useState<any>();
+  const [category, setCategory] = useState<any>();
   const [optionValues, setOptionsValues] = useState([]);
   const [productOption, setProductOption] = useState();
   const [productOptions, setProductOptions] = useState([]);
   const [subCategoryData, setSubCategoryData] = useState([]);
   const [subCategory, setSubCategory] = useState();
   const [image, setImage] = useState<any>([]);
+  const[imageError,setImageError]=useState<string>()
   const [loading, setLoading] = useState(false);
   const categories = useSelector(
     (state: RootStateOrAny) => state.categories.categories
@@ -33,6 +34,8 @@ const CreateProductPage = () => {
   const { name, description, price, subcategory } = useSelector(
     (state: RootStateOrAny) => state.products.inputValues
   );
+  const { nameErr, descriptionErr, priceErr, subcategoryErr, optionsErr } =
+    useSelector((state: RootStateOrAny) => state.products.inputErrors);
   const handlClick = (event: React.FormEvent<HTMLFormElement>) => {
     if (event.slice(-1)[0]) {
       setOptionsValues(event.slice(-1)[0].values);
@@ -61,9 +64,55 @@ const CreateProductPage = () => {
       });
     });
   };
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  let token=localStorage.getItem("token")
+  const validate = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    // Resetting input errors to default
+    dispatch(productAction.setNameErr(''));
+    dispatch(productAction.setPriceErr(''));
+    dispatch(productAction.setDescriptionErr(''));
+    dispatch(productAction.setSubcategoryErr(''));
+    let isValid = true;
+
+    if (name.length < 4) {
+      dispatch(
+        productAction.setNameErr('Product name must be atleast 4 characters!')
+      );
+      isValid = false;
+    }
+    if (description.length < 4) {
+      dispatch(
+        productAction.setDescriptionErr(
+          'description must be longer than 4 characters!'
+        )
+      );
+      isValid = false;
+    }
+    if (!subCategory) {
+      dispatch(productAction.setSubcategoryErr('Select category and subcategory!'));
+      isValid = false;
+    }
+     if (!category) {
+       dispatch(
+         productAction.setSubcategoryErr('Select category and subcategory!')
+       );
+       isValid = false;
+     }
+        if (!price) {
+          dispatch(
+            productAction.setPriceErr('Price Is required!')
+          );
+          isValid = false;
+        }
+       if (!image.length) {
+       setImageError("Pleas Select at leas on image")
+         isValid = false;
+       }
+    if (isValid) {
+      handleSubmit();
+    }
+  };
+  const handleSubmit = async () => {
+    let token = localStorage.getItem('token');
     setLoading(true);
     const productData = {
       name: name,
@@ -77,20 +126,14 @@ const CreateProductPage = () => {
       formData.append('images', item);
     });
     try {
-      const { data } = await axios.post(
-        `${Ur2}api/products/`,
-        productData,{
-          headers: {
-    Authorization: `Bearer ${token}`,
-  },
-}
-      );
+      const { data } = await axios.post(`${Ur2}api/products/`, productData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (data.data) {
         await axios
-          .post(
-            `${Ur2}api/products/uploadImages/${data.data.id}`,
-            formData
-          )
+          .post(`${Ur2}api/products/uploadImages/${data.data.id}`, formData)
           .then((response) => {
             if (response.data) {
               setLoading(false);
@@ -149,11 +192,12 @@ const CreateProductPage = () => {
               <p className="font-roboto-light text-sm ">
                 Browse or drop picture here
               </p>
+              <div className="text-red-600">{imageError}</div>
             </div>
           </div>
           <div className="w-2/3 rounded-sm bg-white px-10 py-8 shadow-sm">
             <form
-              onSubmit={(e) => handleSubmit(e)}
+              onSubmit={(e) => validate(e)}
               onScroll={(e) => e.preventDefault()}
               className="flex flex-col gap-4"
             >
@@ -166,18 +210,20 @@ const CreateProductPage = () => {
                 placeholder="Name"
                 className="w-1/2 rounded-md bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
               />
+              <div className="text-red-600">{nameErr}</div>
               <div className="flex gap-4">
                 <div className="w-1/2">
                   <SelectInput
                     type={'category'}
-                    setValue={setValue}
-                    value={value}
+                    setValue={setCategory}
+                    value={category}
                     setSubCategoryData={setSubCategoryData}
                     options={categories.data}
                     placeholder="Category"
                   />
+                  <div className="text-red-600">{subcategoryErr}</div>
                 </div>
-                {value && (
+                {category && (
                   <div className="w-1/2">
                     <SelectInput
                       setValue={setSubCategory}
@@ -275,15 +321,18 @@ const CreateProductPage = () => {
                 placeholder="Description"
                 className="w-full resize-none rounded-md bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
               ></textarea>
+              <div className="text-red-600">{descriptionErr}</div>
               <input
                 value={price}
                 onChange={(e) => {
                   dispatch(productAction.setPrice(e.target.value));
                 }}
-                type="text"
+                type="number"
+                pattern="[0-9]*"
                 placeholder="Price"
                 className="w-1/2 rounded-md bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
               />
+              <div className="text-red-600">{priceErr}</div>
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
