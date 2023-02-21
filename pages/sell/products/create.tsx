@@ -21,9 +21,9 @@ const CreateProductPage = () => {
   const dispatch = useDispatch();
   const [category, setCategory] = useState<any>();
   const [optionValues, setOptionsValues] = useState([]);
-  const [productOption, setProductOption] = useState();
+  const [productOption, setProductOption] = useState<any>();
   const [productOptions, setProductOptions] = useState([]);
-  const [subCategoryData, setSubCategoryData] = useState([]);
+  const [subCategoryData, setSubCategoryData] = useState<any>([]);
   const [subCategory, setSubCategory] = useState();
   const [image, setImage] = useState<any>([]);
   const[imageError,setImageError]=useState<string>()
@@ -36,7 +36,7 @@ const CreateProductPage = () => {
   );
   const { nameErr, descriptionErr, priceErr, subcategoryErr, optionsErr } =
     useSelector((state: RootStateOrAny) => state.products.inputErrors);
-  const handlClick = (event: React.FormEvent<HTMLFormElement>) => {
+  const handlClick = (event: any) => {
     if (event.slice(-1)[0]) {
       setOptionsValues(event.slice(-1)[0].values);
     }
@@ -48,16 +48,16 @@ const CreateProductPage = () => {
   };
   const handlOptions = (event: React.FormEvent<HTMLFormElement>) => {
     console.log(event);
-    let values = [];
+    let values: any[] = [];
     event.map((item: any) => {
-      productOption.map((data) => {
+      productOption.map((data:any) => {
         if (item.option === data.id) {
           values.push(item._id);
         }
       });
     });
     event.map((item: any) => {
-      productOption.map((data) => {
+      productOption.map((data:any) => {
         if (item.option === data.id) {
           data.values = values;
         }
@@ -118,11 +118,11 @@ const CreateProductPage = () => {
       name: name,
       description: description,
       price: price,
-      subcategory: subCategory.id,
+      subcategory:subCategory.id,
       options: productOption,
     };
     let formData = new FormData();
-    Array.from(image).forEach((item) => {
+    Array.from(image).forEach((item:any) => {
       formData.append('images', item);
     });
     try {
@@ -219,8 +219,7 @@ const CreateProductPage = () => {
                     value={category}
                     setSubCategoryData={setSubCategoryData}
                     options={categories.data}
-                    placeholder="Category"
-                  />
+                    placeholder="Category" setProductOptions={undefined}                  />
                   <div className="text-red-600">{subcategoryErr}</div>
                 </div>
                 {category && (
@@ -231,8 +230,7 @@ const CreateProductPage = () => {
                       options={subCategoryData}
                       placeholder="Sub Category"
                       type="subcategory"
-                      setProductOptions={setProductOptions}
-                    />
+                      setProductOptions={setProductOptions} setSubCategoryData={undefined}                    />
                   </div>
                 )}
               </div>
@@ -247,7 +245,7 @@ const CreateProductPage = () => {
                         handlClick(value);
                       }}
                       disableCloseOnSelect
-                      getOptionLabel={(option) => option.name}
+                      getOptionLabel={(option:any) => option.name}
                       renderOption={(props, option, { selected }) => (
                         <li {...props}>
                           <Checkbox
@@ -280,13 +278,13 @@ const CreateProductPage = () => {
                     multiple
                     id="checkboxes-tags-demo"
                     options={optionValues}
-                    onChange={(event, value) => {
+                    onChange={(event, value:any) => {
                       handlOptions(value);
                     }}
                     style={{ width: '450px' }}
                     disableCloseOnSelect
-                    getOptionLabel={(option) => option.value}
-                    renderOption={(props, option, { selected }) => (
+                    getOptionLabel={(option:any) => option.value}
+                    renderOption={(props, option:any, { selected }) => (
                       <li {...props}>
                         <Checkbox
                           onChange={(e) => {
@@ -300,7 +298,6 @@ const CreateProductPage = () => {
                         {option.value}
                       </li>
                     )}
-                    style={{ width: 500 }}
                     renderInput={(params) => (
                       <TextField
                         {...params}
