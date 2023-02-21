@@ -8,6 +8,8 @@ import Chip from '@mui/material/Chip';
 interface IOption {
   label: string;
   name: string;
+  subcategory: string;
+  found:undefined
 }
 
 interface SelectInputProps {
@@ -18,6 +20,7 @@ interface SelectInputProps {
   type: string;
   setSubCategoryData: any | undefined;
   setProductOptions: any;
+ 
 }
 
 export const SelectInput: React.FC<SelectInputProps> = (props) => {
@@ -30,15 +33,15 @@ export const SelectInput: React.FC<SelectInputProps> = (props) => {
     setProductOptions,
     placeholder = 'Select',
   } = props;
-  const [selected, setSelected] = useState<IOption | null>(null);
-  const handleClick = (option: React.FormEvent<HTMLFormElement>) => {
+  const [selected, setSelected] = useState<IOption | null|undefined>(null);
+  const handleClick = (option:any) => {
     if (type === 'category') {
-      var found = options.find(function (element: any) {
+      var found:any = options.find(function (element: any) {
         return element.name == option.name;
       });
       setSubCategoryData(found.subcategory);
     } else if (type === 'subcategory') {
-      var found = options.find(function (element: any) {
+      var found:any = options.find(function (element: any) {
         return element.name == option.name;
       });
       setProductOptions(found.options);

@@ -10,7 +10,7 @@ import { Register } from './register';
 interface IAuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  setOpen:boolean
+  setOpen: (open: boolean) => void;
 }
 
 export type CurrentTab = 'Login' | 'Register' | 'ForgotPassword';

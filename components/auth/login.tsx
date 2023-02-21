@@ -12,7 +12,7 @@ import Notification from '../../components/Ui/Notification'
 interface ILoginProps {
   onClose: () => void;
   setCurrentTab: (tab: CurrentTab) => void;
-  setOpen:boolean
+  setOpen: (open: boolean) => void;
 }
 export const Login: React.FC<ILoginProps> = ({ onClose,setOpen, setCurrentTab }) => {
     const { NotifyMessage, notify, setNotify } = Notify();
