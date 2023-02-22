@@ -12,6 +12,11 @@ interface IRegisterProps {
   onClose: () => void;
   setCurrentTab: (tab: CurrentTab) => void;
 }
+function validateEmail(email: string) {
+  const email_pattern =
+    /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  return email_pattern.test(email);
+}
 
 export const Register: React.FC<IRegisterProps> = ({
   onClose,
@@ -21,10 +26,79 @@ export const Register: React.FC<IRegisterProps> = ({
   const { NotifyMessage, notify, setNotify } = Notify();
   const { first_name, last_name, email, phone, password1, password2 } =
     useSelector((state: RootStateOrAny) => state.register.inputValues);
+  const {
+    firstNameErr,
+    lastNameErr,
+    emailErr,
+    phoneErr,
+    password1Err,
+    password2Err,
+  } = useSelector((state: RootStateOrAny) => state.register.inputErrors);
   const { error, userInfo, isLoading } = useSelector(
     (state: RootStateOrAny) => state.register
   );
   const [submit, setSubmit] = React.useState(false);
+  const validate = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // Resetting input errors to default
+    dispatch(registerAction.setFirstNameErr(''));
+    dispatch(registerAction.setLastNameErr(''));
+    dispatch(registerAction.setEmailErr(''));
+    dispatch(registerAction.setPassword1Err(''));
+    dispatch(registerAction.setPassword2Err(''));
+    dispatch(registerAction.setPhoneErr(''));
+    let isValid = true;
+
+    if (first_name.length < 4) {
+      dispatch(
+        registerAction.setFirstNameErr(
+          'First name must be atleast 4 characters!'
+        )
+      );
+      isValid = false;
+    }
+    if (last_name.length < 4) {
+      dispatch(
+        registerAction.setLastNameErr('Last name must be atleast 4 characters!')
+      );
+      isValid = false;
+    }
+    if (phone.replaceAll(' ', '').length !== 13) {
+      dispatch(registerAction.setPhoneErr('Invalid phone number'));
+      isValid = false;
+    }
+    if (!validateEmail(email)) {
+      dispatch(registerAction.setEmailErr('Invalid Email'));
+    }
+    if (password1 !== password2) {
+      dispatch(registerAction.setPassword2Err('Passwords must match!'));
+      isValid = false;
+    }
+    if (password1.length < 6) {
+      dispatch(
+        registerAction.setPassword1Err('Password must be atleast 6 characters!')
+      );
+      isValid = false;
+    }
+    if (password2.length < 6) {
+      dispatch(
+        registerAction.setPassword2Err('Password must be atleast 6 characters!')
+      );
+      isValid = false;
+    }
+    if (!password1.match(/\d/) || !password1.match(/[a-zA-Z]/)) {
+      dispatch(
+        registerAction.setPassword1Err(
+          'Password must contain at least one letter and one number'
+        )
+      );
+      isValid = false;
+    }
+
+    if (isValid) {
+      handleSubmit();
+    }
+  };
   React.useEffect(() => {
     if (error && submit) {
       NotifyMessage({
@@ -38,15 +112,14 @@ export const Register: React.FC<IRegisterProps> = ({
       setCurrentTab('Login');
     }
   }, [userInfo]);
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = () => {
     dispatch({
       type: REGISTER,
       data: {
         first_name: first_name,
         last_name: last_name,
         email: email,
-        //  phone:phone,
+        phone: phone,
         password: password1,
       },
     });
@@ -62,7 +135,7 @@ export const Register: React.FC<IRegisterProps> = ({
         </span>
       </div>
       <div>
-        <form className="flex flex-col gap-6" onSubmit={(e) => handleSubmit(e)}>
+        <form className="flex flex-col gap-6" onSubmit={(e) => validate(e)}>
           <div className="flex items-center gap-4 rounded-md px-2 py-3 font-roboto-regular shadow-sm">
             <span className="px-3">
               <FaRegUser />
@@ -77,6 +150,7 @@ export const Register: React.FC<IRegisterProps> = ({
               }}
             />
           </div>
+          {firstNameErr && <div className="text-red-600">{firstNameErr}</div>}
           <div className="flex items-center gap-4 rounded-md px-2 py-3 font-roboto-regular shadow-sm">
             <span className="px-3">
               <FaRegUser />
@@ -91,6 +165,7 @@ export const Register: React.FC<IRegisterProps> = ({
               }}
             />
           </div>
+          {lastNameErr && <div className="text-red-600">{lastNameErr}</div>}
           <div className="flex items-center gap-4 rounded-md px-2 py-3 font-roboto-regular shadow-sm">
             <span className="px-3">
               <FaRegUser />
@@ -105,6 +180,7 @@ export const Register: React.FC<IRegisterProps> = ({
               }}
             />
           </div>
+          {emailErr && <div className="text-red-600">{emailErr}</div>}
           <div className="flex items-center gap-4 rounded-md px-2 py-3 font-roboto-regular shadow-sm">
             <span className="px-3">
               <MdPhone />
@@ -119,6 +195,7 @@ export const Register: React.FC<IRegisterProps> = ({
               }}
             />
           </div>
+          {phoneErr && <div className="text-red-600">{phoneErr}</div>}
           <div className="flex items-center gap-4 rounded-md px-2 py-3 font-roboto-regular shadow-sm">
             <span className="px-3">
               <MdLockOutline />
@@ -133,6 +210,7 @@ export const Register: React.FC<IRegisterProps> = ({
               }}
             />
           </div>
+          {password1Err && <div className="text-red-600">{password1Err}</div>}
           <div className="flex items-center gap-4 rounded-md px-2 py-3 font-roboto-regular shadow-sm">
             <span className="px-3">
               <MdLockOutline />
@@ -147,6 +225,7 @@ export const Register: React.FC<IRegisterProps> = ({
               }}
             />
           </div>
+          {password2Err && <div className="text-red-600">{password2Err}</div>}
           {isLoading ? (
             <button
               disabled
