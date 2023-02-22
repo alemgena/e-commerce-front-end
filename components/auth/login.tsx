@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import { FaFacebookSquare } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
-import { MdLockOutline, MdPhone } from 'react-icons/md';
+import { MdLockOutline } from 'react-icons/md';
+import { FaRegUser } from 'react-icons/fa';
 import { CurrentTab } from './modal';
 import { LOGIN } from '@/types';
 import { loginAction } from '../../store/login';
@@ -18,9 +19,11 @@ export const Login: React.FC<ILoginProps> = ({ onClose,setOpen, setCurrentTab })
     const { NotifyMessage, notify, setNotify } = Notify();
   const dispatch = useDispatch();
   const [submit, setSubmit] = React.useState(false);
-  const { email, password } = useSelector(
+  const { input, password } = useSelector(
     (state: RootStateOrAny) => state.login.inputValues
   );
+  const { inputErr, passwordErr } = useSelector(
+    (state: RootStateOrAny) => state.login.inputErrors);
   const { error, loggedUser, isLoading } = useSelector(
     (state: RootStateOrAny) => state.login
   );
@@ -38,9 +41,36 @@ export const Login: React.FC<ILoginProps> = ({ onClose,setOpen, setCurrentTab })
   setOpen(false)
     }
   }, [loggedUser]);
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const validate = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch({ type: LOGIN, data: { input: email, password: password } });
+    // Resetting input errors to default
+    dispatch(loginAction.setInputErr(''));
+    dispatch(loginAction.setPasswordErr(''));
+    let isValid = true;
+
+    if (input.length < 4) {
+      dispatch(
+        loginAction.setInputErr(
+          'Email or Phone must be atleast 4 characters!'
+        )
+      );
+      isValid = false;
+    }
+     if (password.length < 6) {
+      dispatch(
+        loginAction.setPasswordErr(
+          'Password must be atleast 6 characters!'
+        )
+      );
+      isValid = false;
+    }
+    if(isValid){
+      handleSubmit()
+    }
+  }
+
+  const handleSubmit = () => {
+    dispatch({ type: LOGIN, data: { input: input, password: password } });
     setSubmit(true);
   };
   return (
@@ -53,20 +83,22 @@ export const Login: React.FC<ILoginProps> = ({ onClose,setOpen, setCurrentTab })
         </span>
       </div>
       <div>
-        <form className="flex flex-col gap-8" onSubmit={(e) => handleSubmit(e)}>
+        <form className="flex flex-col gap-8" onSubmit={(e) => validate(e)}>
           <div className="flex items-center gap-4 rounded-md px-2 py-3 font-roboto-regular shadow-sm">
             <span className="px-3">
-              <MdPhone />
+              <FaRegUser />
             </span>
             <input
               type="text"
-              value={email}
+              value={input}
+              placeholder="Enter Email or Phone"
               onChange={(e) => {
-                dispatch(loginAction.setEmail(e.target.value));
+                dispatch(loginAction.setInput(e.target.value));
               }}
               className="flex-grow py-1 focus:outline-none"
             />
           </div>
+          {inputErr && <div className="text-red-600">{inputErr}</div>}
           <div className="flex items-center gap-4 rounded-md px-2 py-3 font-roboto-regular shadow-sm">
             <span className="px-3">
               <MdLockOutline />
@@ -81,19 +113,19 @@ export const Login: React.FC<ILoginProps> = ({ onClose,setOpen, setCurrentTab })
               className="flex-grow py-1 focus:outline-none"
             />
           </div>
-          {isLoading?
-          <button
-          disabled
-            className="rounded-full bg-blue-800 py-2 font-roboto-light text-lg text-white"
-          >
-            LOGGING ....
-          </button>:
-          <button
-            className="rounded-full bg-blue-800 py-2 font-roboto-light text-lg text-white"
-          >
-            LOGIN
-          </button>
-}
+          {passwordErr && <div className="text-red-600">{passwordErr}</div>}
+          {isLoading ? (
+            <button
+              disabled
+              className="rounded-full bg-blue-800 py-2 font-roboto-light text-lg text-white"
+            >
+              LOGGING ....
+            </button>
+          ) : (
+            <button className="rounded-full bg-blue-800 py-2 font-roboto-light text-lg text-white">
+              LOGIN
+            </button>
+          )}
         </form>
         <div className="mt-4 flex flex-col items-center gap-4 font-roboto-regular text-sm">
           <p
