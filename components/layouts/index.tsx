@@ -13,17 +13,14 @@ import store from '@/store/index';
 type Props = { children: React.ReactNode };
 
 export function Layout({ children }: Props) {
-
   return (
     <Provider store={store}>
-      <ThemeProvider enableSystem attribute="class">
-        <NextNProgress height={7} />
-        <FetchData/>
-        <Header />
-        <main>{children}</main>
-        <Footer/>
-        <ToastContainer autoClose={200} hideProgressBar position="top-right" />
-      </ThemeProvider>
+      <NextNProgress height={7} />
+      <FetchData />
+      <Header />
+      <main>{children}</main>
+      <Footer />
+      <ToastContainer autoClose={200} hideProgressBar position="top-right" />
     </Provider>
   );
 }

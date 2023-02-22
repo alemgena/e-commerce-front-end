@@ -12,6 +12,28 @@ module.exports = {
   darkMode: 'class', // or 'media' or 'class'
   theme: {
     extend: {
+      colors: {
+        primary: '#2456B4',
+        secondary: {
+          light: '#F0F1F0',
+          dark: '#E4E5E5',
+        },
+        main: {
+          secondary: '#363736',
+        },
+        success: {
+          main: '#70C274',
+        },
+        warning: {
+          main: '#FFE141',
+        },
+        error: {
+          main: '#FF3434',
+        },
+        info: {
+          main: '#2889CA',
+        },
+      },
       fontFamily: {
         sans: ['Roboto-Regular', ...defaultTheme.fontFamily.sans],
         serif: ['Roboto-Regular', ...defaultTheme.fontFamily.serif],
