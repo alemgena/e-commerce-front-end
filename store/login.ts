@@ -8,11 +8,11 @@ export const loginSlice = createSlice({
   name: 'login',
   initialState: {
     inputValues: {
-      email: '',
+      input: '',
       password: '',
     },
     inputErrors: {
-      emailErr: '',
+      inputErr: '',
       passwordErr: '',
     },
     isLoading: false,
@@ -21,8 +21,8 @@ export const loginSlice = createSlice({
     error: '',
   },
   reducers: {
-    setEmail: (state, action) => {
-      state.inputValues.email = action.payload;
+    setInput: (state, action) => {
+      state.inputValues.input = action.payload;
     },
     setPassword: (state, action) => {
       state.inputValues.password = action.payload;
@@ -36,8 +36,8 @@ export const loginSlice = createSlice({
     setLoggedUser: (state, action) => {
       state.loggedUser = action.payload;
     },
-    setEmailErr: (state, action) => {
-      state.inputErrors.emailErr = action.payload;
+    setInputErr: (state, action) => {
+      state.inputErrors.inputErr = action.payload;
     },
     setPasswordErr: (state, action) => {
       state.inputErrors.passwordErr = action.payload;
