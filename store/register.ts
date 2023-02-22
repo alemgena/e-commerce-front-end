@@ -7,7 +7,7 @@ export const registerSlice = createSlice({
       first_name: '',
       last_name: '',
       email: '',
-      phone: '+251 ',
+      phone: '+251',
       password1: '',
       password2: '',
     },
