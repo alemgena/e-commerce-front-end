@@ -31,6 +31,7 @@ const subCategory: NextPage<{
           found = items.subcategory.find(function (element: any) {
             return element.name == query.name;
           });
+          if(found)
           dispatch({ type: GET_SUB_CATEGORIE, id: found.id });
         }
       });
@@ -41,7 +42,6 @@ const subCategory: NextPage<{
       setProduct(subCategorie.data);
     }
   }, []);
-  console.log(subCategorie.data)
   return (
     <>
       {subCategorie.data ? (
