@@ -8,3 +8,4 @@ export const LOGIN = 'LOGIN';
 export const REGISTER = 'REGISTER';
 export const FORGET_PASSWORD="FORGET_PASSWORD";
 export const GET_SHOPS="GET_SHOPS"
+export const GET_PRODUCT = 'GET_PRODUCT';

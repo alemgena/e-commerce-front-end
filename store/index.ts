@@ -15,6 +15,7 @@ import {rootSaga} from '../redux/sagas'
 import favorite from './favorite'
 import forgetPassword from './forgetPassword'
 import shops from './shops';
+import product from './product';
 let sagaMiddleware = createSagaMiddleware();
 const store = configureStore({
   reducer: {
@@ -29,6 +30,7 @@ const store = configureStore({
     register: register,
     recoverPassword: forgetPassword,
     shops: shops,
+    product:product
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),

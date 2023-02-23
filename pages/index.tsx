@@ -7,12 +7,14 @@ import BannerImage from '../public/images/fashion-banner.webp';
 import PageSpinner from '@/components/Ui/PageSpinner';
 import Norecords from '@/components/Ui/Norecords';
 import { Ur2 } from '@/utils/url';
+import NextLink from 'next/link';
 type AdsProp = {
   name: string;
   url: string;
   price: string;
   qty: string;
-  imagesURL:string[]
+  imagesURL:string[],
+  id:string
 };
 
 const Index = () => {
@@ -77,6 +79,7 @@ const Index = () => {
                   key={idx.toString()}
                   className=" flex max-h-max w-full flex-col justify-between rounded-lg bg-white font-roboto-regular shadow"
                 >
+                    <NextLink href={`/products/${ad.id}`} passHref>
                   <div className="relative">
                     <div className="absolute left-0 bottom-0 flex h-7 w-8 items-center justify-center rounded-tr-lg bg-main-secondary bg-opacity-80">
                       <span className="text-sm text-white">3</span>
@@ -90,6 +93,7 @@ const Index = () => {
                       <AiOutlineHeart size={24} />
                     </div>
                   </div>
+                  </NextLink>
                   <div className="flex flex-col px-4 pt-6 pb-6">
                     <span className="text-lg">{ad.name}</span>
                     <span className="text-base text-primary">
