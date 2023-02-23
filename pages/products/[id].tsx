@@ -258,12 +258,8 @@ function ProductDetailPage() {
                       </button>
 
                       <FacebookShareButton
-                        url={
-                          'http://liyumarket.com/products/63f635498a18255a545b77b8'
-                        }
-                        quote={
-                          ''
-                        }
+                        url={`http://liyumarket.com/products/${id}`}
+                        quote={''}
                         hashtag={productData.data.product.name}
                       >
                         <FacebookIcon size={32} round />
@@ -271,18 +267,14 @@ function ProductDetailPage() {
                       <Notification notify={notify} setNotify={setNotify} />
                       <button className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400">
                         <LinkedinShareButton
-                          url={
-                            'http://liyumarket.com/products/63f635498a18255a545b77b8'
-                          }
+                          url={`http://liyumarket.com/products/${id}`}
                         >
                           <LinkedinIcon size={32} round />
                         </LinkedinShareButton>
                       </button>
                       <button className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400">
                         <TwitterShareButton
-                          url={
-                            'http://liyumarket.com/products/63f635498a18255a545b77b8'
-                          }
+                          url={`http://liyumarket.com/products/${id}`}
                         >
                           <TwitterIcon size={32} round />
                         </TwitterShareButton>
