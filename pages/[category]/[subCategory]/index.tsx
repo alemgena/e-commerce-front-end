@@ -9,6 +9,7 @@ import { IProduct } from '@/lib/types/products';
 import { useRouter } from 'next/router';
 import { GET_SUB_CATEGORIE } from '@/types';
 import Norecords from '@/components/Ui/Norecords';
+import PageSpinner from '@/components/Ui/PageSpinner';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
 const subCategory: NextPage<{
   products: IProduct[];
@@ -22,8 +23,12 @@ const subCategory: NextPage<{
   const subCategorie = useSelector(
     (state: RootStateOrAny) => state.subCategories.subCategories
   );
+
   const [product, setProduct] = useState<any>([]);
   let found: any;
+   const {isLoading} = useSelector(
+     (state: RootStateOrAny) => state.subCategories
+   );
   React.useEffect(() => {
     if (categories.data) {
       categories.data.map((items: any) => {
@@ -43,6 +48,9 @@ const subCategory: NextPage<{
   }, [subCategorie.data]);
   return (
     <>
+    {isLoading?
+    <PageSpinner/>:
+    <>
       {subCategorie.data ? (
         <div>
           {subCategorie.data.product.length ? (
@@ -54,6 +62,8 @@ const subCategory: NextPage<{
       ) : (
         <Norecords col={5} />
       )}
+    </>
+    }
     </>
   );
 };
