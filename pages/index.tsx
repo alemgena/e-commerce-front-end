@@ -1,92 +1,33 @@
-import React from 'react';
+import React, { useEffect ,useState} from 'react';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { BsFillPlusCircleFill } from 'react-icons/bs';
+import { RootStateOrAny, useSelector } from 'react-redux';
 import MegaMenu from '../components/menu/MegaMenu';
 import BannerImage from '../public/images/fashion-banner.webp';
-
+import PageSpinner from '@/components/Ui/PageSpinner';
+import Norecords from '@/components/Ui/Norecords';
+import { Ur2 } from '@/utils/url';
 type AdsProp = {
   name: string;
   url: string;
   price: string;
   qty: string;
+  imagesURL:string[]
 };
 
 const Index = () => {
-  const ads = [
-    {
-      name: 'Samsung Galaxy S10E',
-      url: 'https://pictures-ethiopia.jijistatic.com/1572054_OTYwLTEyODAtZTIyZWE3MTM5Yw.webp',
-      price: '14,500',
-      qty: '3',
-    },
-    {
-      name: 'New Infinix Hot 12 128GB',
-      url: 'https://pictures-ethiopia.jijistatic.com/1429852_NzIwLTEwNjAtNzczMzc5YWI4Yg.webp',
-      price: '15,999',
-      qty: '2',
-    },
-    {
-      name: 'Samsung Galaxy J4 Plus',
-      url: 'https://pictures-ethiopia.jijistatic.com/1438352_MTEyNS0xNTAwLWYwZjRiNTljZTE.webp',
-      price: '6,000',
-      qty: '2',
-    },
-    {
-      name: 'Samsung Galaxy A30',
-      url: 'https://pictures-ethiopia.jijistatic.com/1486219_NzIwLTk1Ni00YTIyNDNkNTBh.webp',
-      price: '16,499',
-      qty: '2',
-    },
-    {
-      name: 'Samsung Galaxy S10E',
-      url: 'https://pictures-ethiopia.jijistatic.com/1572054_OTYwLTEyODAtZTIyZWE3MTM5Yw.webp',
-      price: '14,500',
-      qty: '3',
-    },
-    {
-      name: 'New Infinix Hot 12 128GB',
-      url: 'https://pictures-ethiopia.jijistatic.com/1429852_NzIwLTEwNjAtNzczMzc5YWI4Yg.webp',
-      price: '15,999',
-      qty: '2',
-    },
-    {
-      name: 'Samsung Galaxy J4 Plus',
-      url: 'https://pictures-ethiopia.jijistatic.com/1438352_MTEyNS0xNTAwLWYwZjRiNTljZTE.webp',
-      price: '6,000',
-      qty: '2',
-    },
-    {
-      name: 'Samsung Galaxy A30',
-      url: 'https://pictures-ethiopia.jijistatic.com/1486219_NzIwLTk1Ni00YTIyNDNkNTBh.webp',
-      price: '16,499',
-      qty: '2',
-    },
-    {
-      name: 'Samsung Galaxy S10E',
-      url: 'https://pictures-ethiopia.jijistatic.com/1572054_OTYwLTEyODAtZTIyZWE3MTM5Yw.webp',
-      price: '14,500',
-      qty: '3',
-    },
-    {
-      name: 'New Infinix Hot 12 128GB',
-      url: 'https://pictures-ethiopia.jijistatic.com/1429852_NzIwLTEwNjAtNzczMzc5YWI4Yg.webp',
-      price: '15,999',
-      qty: '2',
-    },
-    {
-      name: 'Samsung Galaxy J4 Plus',
-      url: 'https://pictures-ethiopia.jijistatic.com/1438352_MTEyNS0xNTAwLWYwZjRiNTljZTE.webp',
-      price: '6,000',
-      qty: '2',
-    },
-    {
-      name: 'Samsung Galaxy A30',
-      url: 'https://pictures-ethiopia.jijistatic.com/1486219_NzIwLTk1Ni00YTIyNDNkNTBh.webp',
-      price: '16,499',
-      qty: '2',
-    },
-  ];
-
+    const products = useSelector(
+      (state: RootStateOrAny) => state.featuredProducts.featuredProducts
+    );
+    const { isLoading } = useSelector(
+      (state: RootStateOrAny) => state.featuredProducts
+    );
+ const [hasData, setHasData] = useState(false);
+ useEffect(() => {
+   if (products.data) {
+     if (!products.data.length) setHasData(true);
+   }
+ }, [products.data]);
   return (
     <div className="mt-10 gap-x-4 sm:w-full sm:flex-col md:flex  md:flex-row md:items-start md:justify-between  md:overflow-hidden">
       <div className=" mt-4 mb-10 w-1/3 sm:hidden md:ml-5 md:flex">
@@ -126,32 +67,47 @@ const Index = () => {
               Trending ads
             </span>
           </div>
-          <div className=" mb-20 grid grid-cols-4 gap-4">
-            {ads.map((ad: AdsProp, idx: number) => (
-              <div
-                key={idx.toString()}
-                className=" flex max-h-max w-full flex-col justify-between rounded-lg bg-white font-roboto-regular shadow"
-              >
-                <div className="relative">
-                  <div className="absolute left-0 bottom-0 flex h-7 w-8 items-center justify-center rounded-tr-lg bg-main-secondary bg-opacity-80">
-                    <span className="text-sm text-white">{ad.qty}</span>
+          {isLoading?
+          <PageSpinner/>:
+          <span>
+          {products.data && (
+            <div className=" mb-20 grid grid-cols-4 gap-4">
+              {products.data.map((ad: AdsProp, idx: number) => (
+                <div
+                  key={idx.toString()}
+                  className=" flex max-h-max w-full flex-col justify-between rounded-lg bg-white font-roboto-regular shadow"
+                >
+                  <div className="relative">
+                    <div className="absolute left-0 bottom-0 flex h-7 w-8 items-center justify-center rounded-tr-lg bg-main-secondary bg-opacity-80">
+                      <span className="text-sm text-white">3</span>
+                    </div>
+                    <img
+                      src={`${Ur2}/${ad.imagesURL[0]}`}
+                      className="h-48 w-full rounded-t-lg object-cover object-center"
+                      alt="phone"
+                    />
+                    <div className="absolute right-0 -bottom-6 mr-3 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow">
+                      <AiOutlineHeart size={24} />
+                    </div>
                   </div>
-                  <img
-                    src={ad.url}
-                    className="h-48 w-full rounded-t-lg object-cover object-center"
-                    alt="phone"
-                  />
-                  <div className="absolute right-0 -bottom-6 mr-3 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow">
-                    <AiOutlineHeart size={24} />
+                  <div className="flex flex-col px-4 pt-6 pb-6">
+                    <span className="text-lg">{ad.name}</span>
+                    <span className="text-base text-primary">
+                      ETB {ad.price}
+                    </span>
                   </div>
                 </div>
-                <div className="flex flex-col px-4 pt-6 pb-6">
-                  <span className="text-lg">{ad.name}</span>
-                  <span className="text-base text-primary">ETB {ad.price}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            <span>
+              {hasData&&
+              <Norecords col={5}/>
+              }
+            </span>
+
+            </div>
+          )}
+          </span>
+}
         </div>
       </div>
     </div>

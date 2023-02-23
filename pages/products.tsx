@@ -41,6 +41,7 @@ const subCategory: NextPage<{
       setProduct(subCategorie.data);
     }
   }, []);
+  console.log(subCategorie.data)
   return (
     <>
       {subCategorie.data ? (
