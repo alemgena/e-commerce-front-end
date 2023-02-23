@@ -67,14 +67,10 @@ function ProductDetailPage() {
     (state: RootStateOrAny) => state.products.products
   );
   //favorite
-  const favorite = useSelector(
-    (state: RootStateOrAny) => state.favorite
-  );
-    const { isLoading } = useSelector(
-      (state: RootStateOrAny) => state.product
-    );
+  const favorite = useSelector((state: RootStateOrAny) => state.favorite);
+  const { isLoading } = useSelector((state: RootStateOrAny) => state.product);
   useEffect(() => {
-    dispatch({type:GET_PRODUCT,id:id})
+    dispatch({ type: GET_PRODUCT, id: id });
     if (products.data) {
       let found = products.data.find(function (element: any) {
         return element.id == id;
@@ -92,48 +88,52 @@ function ProductDetailPage() {
         setActiveImage(found.imagesURL);
       }
     }
-    if(productData.data){
-      console.log(productData.data)
+    if (productData.data) {
+      console.log(productData.data);
     }
   }, [id]);
-      useEffect(() => {
-         if (productData.data) {
-           setProductImage(productData.data.product.imagesURL[0]);
-           setActiveImage(productData.data.product.imagesURL)
-         }
-        }, [id]);
+  useEffect(() => {
+    if (productData.data) {
+      setProductImage(productData.data.product.imagesURL[0]);
+      setActiveImage(productData.data.product.imagesURL);
+    }
+  }, [id]);
   const addFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
     const favorite = {
       product: product.id,
     };
     dispatch({ type: ADD_PRODUCT_FAVORITE, data: favorite });
-    setSubmit(true)
+    setSubmit(true);
   };
-    const [submit, setSubmit] = useState(false);
-    const { NotifyMessage, notify, setNotify } = Notify();
-    useEffect(() => {
-      if (favorite.error && submit) {
-        NotifyMessage({
-          message:favorite. error.message,
-          type: 'error',
-        });
-      }
-    }, [favorite.error]);
-    useEffect(() => {
-      if (favorite.favorite && submit) {
-        NotifyMessage({
-          message: 'product is add to favourite list',
-          type: 'success',
-        });
-      }
-    }, [favorite.favorite]);
-    
+  const [submit, setSubmit] = useState(false);
+  const { NotifyMessage, notify, setNotify } = Notify();
+  useEffect(() => {
+    if (favorite.error && submit) {
+      NotifyMessage({
+        message: favorite.error.message,
+        type: 'error',
+      });
+    }
+  }, [favorite.error]);
+  useEffect(() => {
+    if (favorite.favorite && submit) {
+      NotifyMessage({
+        message: 'product is add to favourite list',
+        type: 'success',
+      });
+    }
+  }, [favorite.favorite]);
 
+  
   return (
     <>
       <Head>
         <title>Product Detail</title>
         <link rel="icon" href="/favicon.ico" />
+        <meta
+          property="og:image"
+          content="http://165.232.42.207:3000/images/subcategories/cars.png"
+        ></meta>
       </Head>
       {isLoading ? (
         <PageSpinner />
