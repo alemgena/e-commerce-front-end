@@ -131,10 +131,12 @@ function ProductDetailPage() {
       <Head>
         <title>Product Detail</title>
         <link rel="icon" href="/favicon.ico" />
+        {productData.data &&
         <meta
           property="og:image"
           content={`${Ur2}/${productData.data.product.imagesURL[0]}`}
         ></meta>
+}
       </Head>
       {isLoading ? (
         <PageSpinner />
