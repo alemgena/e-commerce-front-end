@@ -1,69 +1,38 @@
 import Head from 'next/head';
 import { FiArrowLeft } from 'react-icons/fi';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { AiOutlinePicture } from 'react-icons/ai';
 import { SelectInput } from '@/components/select-input';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
-import { Autocomplete, Chip, TextField } from '@mui/material';
-import Checkbox from '@mui/material/Checkbox';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import { Autocomplete,TextField } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import { productAction } from '@/store/products-slice';
 import Button from '@mui/material/Button';
 import Notify from '@/components/Ui/Notify';
 import Notification from '@/components/Ui/Notification';
 import axios from 'axios';
 import { Ur2 } from '@/utils/url';
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-const checkedIcon = <CheckBoxIcon fontSize="small" />;
 const CreateProductPage = () => {
   const { NotifyMessage, notify, setNotify } = Notify();
   const dispatch = useDispatch();
   const [category, setCategory] = useState<any>();
-  const [optionValues, setOptionsValues] = useState([]);
-  const [productOption, setProductOption] = useState<any>();
+  const [optionValues, setOptionsValues] = useState();
+  const [valuesData, setValuesData] = useState<any>([]);
+  const [productOption, setProductOption] = useState<any>([]);
   const [productOptions, setProductOptions] = useState([]);
   const [subCategoryData, setSubCategoryData] = useState<any>([]);
   const [subCategory, setSubCategory] = useState();
   const [image, setImage] = useState<any>([]);
-  const[imageError,setImageError]=useState<string>()
+  const [imageError, setImageError] = useState<string>();
   const [loading, setLoading] = useState(false);
   const categories = useSelector(
     (state: RootStateOrAny) => state.categories.categories
   );
-  const { name, description, price, subcategory } = useSelector(
+  const { name, description, price } = useSelector(
     (state: RootStateOrAny) => state.products.inputValues
   );
   const { nameErr, descriptionErr, priceErr, subcategoryErr, optionsErr } =
     useSelector((state: RootStateOrAny) => state.products.inputErrors);
-  const handlClick = (event: any) => {
-    if (event.slice(-1)[0]) {
-      setOptionsValues(event.slice(-1)[0].values);
-    }
-    let data: { [s: string]: any } = [];
-    event.map((item: any) => {
-      data.push({ ['id']: item.id });
-    });
-    setProductOption(Object.values(data));
-  };
-  const handlOptions = (event: React.FormEvent<HTMLFormElement>) => {
-    console.log(event);
-    let values: any[] = [];
-    event.map((item: any) => {
-      productOption.map((data:any) => {
-        if (item.option === data.id) {
-          values.push(item._id);
-        }
-      });
-    });
-    event.map((item: any) => {
-      productOption.map((data:any) => {
-        if (item.option === data.id) {
-          data.values = values;
-        }
-      });
-    });
-  };
   const validate = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Resetting input errors to default
@@ -71,6 +40,7 @@ const CreateProductPage = () => {
     dispatch(productAction.setPriceErr(''));
     dispatch(productAction.setDescriptionErr(''));
     dispatch(productAction.setSubcategoryErr(''));
+    dispatch(productAction.setOptionErr(''));
     let isValid = true;
 
     if (name.length < 4) {
@@ -88,41 +58,61 @@ const CreateProductPage = () => {
       isValid = false;
     }
     if (!subCategory) {
-      dispatch(productAction.setSubcategoryErr('Select category and subcategory!'));
+      dispatch(
+        productAction.setSubcategoryErr('Select category and subcategory!')
+      );
       isValid = false;
     }
-     if (!category) {
-       dispatch(
-         productAction.setSubcategoryErr('Select category and subcategory!')
-       );
-       isValid = false;
-     }
-        if (!price) {
-          dispatch(
-            productAction.setPriceErr('Price Is required!')
-          );
-          isValid = false;
-        }
-       if (!image.length) {
-       setImageError("Pleas Select at leas on image")
-         isValid = false;
-       }
+    if (!category) {
+      dispatch(
+        productAction.setSubcategoryErr('Select category and subcategory!')
+      );
+      isValid = false;
+    }
+    if (!price) {
+      dispatch(productAction.setPriceErr('Price Is required!'));
+      isValid = false;
+    }
+    if (!image.length) {
+      setImageError('Pleas Select at leas on image');
+      isValid = false;
+    }
+    if (!productOption.length || !valuesData) {
+      dispatch(
+        productAction.setOptionErr('Pleas Select at one option and values')
+      );
+      isValid = false;
+    }
     if (isValid) {
       handleSubmit();
     }
   };
   const handleSubmit = async () => {
+    const uniqueOptionData = productOption.filter(
+      (value: { id: any }, index: any, self: any[]) =>
+        index === self.findIndex((t) => t.id === value.id)
+    );
+    let uniqueOption = uniqueOptionData.map((item: any) => item);
+    uniqueOption.forEach((e: any) => {
+      let values: any[] = [];
+      valuesData.forEach((f: any) => {
+        if (f.option == e.id) {
+          values.push(f._id);
+        }
+      });
+      e.values = values;
+    });
     let token = localStorage.getItem('token');
     setLoading(true);
     const productData = {
       name: name,
       description: description,
       price: price,
-      subcategory:subCategory.id,
-      options: productOption,
+      subcategory: subCategory.id,
+      options: uniqueOption,
     };
     let formData = new FormData();
-    Array.from(image).forEach((item:any) => {
+    Array.from(image).forEach((item: any) => {
       formData.append('images', item);
     });
     try {
@@ -152,7 +142,20 @@ const CreateProductPage = () => {
       setLoading(false);
     }
   };
+  const handlClick = (event: any) => {
+    if (event) {
+      setOptionsValues(event.value);
+  
+      setProductOption([...productOption, { id: event.option }]);
+      setValuesData((values: any) => [...values, event]);
+    
+    }
+  };
 
+    const optionAscending = [...productOptions].sort((a: any, b: any) =>
+      a.name < b.name ? -1 : 1
+    );
+    console.log(image)
   return (
     <>
       <Head>
@@ -196,11 +199,7 @@ const CreateProductPage = () => {
             </div>
           </div>
           <div className="w-2/3 rounded-sm bg-white px-10 py-8 shadow-sm">
-            <form
-              onSubmit={(e) => validate(e)}
-              onScroll={(e) => e.preventDefault()}
-              className="flex flex-col gap-4"
-            >
+            <form onSubmit={(e) => validate(e)} className="flex flex-col gap-4">
               <input
                 type="text"
                 value={name}
@@ -219,7 +218,9 @@ const CreateProductPage = () => {
                     value={category}
                     setSubCategoryData={setSubCategoryData}
                     options={categories.data}
-                    placeholder="Category" setProductOptions={undefined}                  />
+                    placeholder="Category"
+                    setProductOptions={undefined}
+                  />
                   <div className="text-red-600">{subcategoryErr}</div>
                 </div>
                 {category && (
@@ -230,85 +231,38 @@ const CreateProductPage = () => {
                       options={subCategoryData}
                       placeholder="Sub Category"
                       type="subcategory"
-                      setProductOptions={setProductOptions} setSubCategoryData={undefined}                    />
+                      setProductOptions={setProductOptions}
+                      setSubCategoryData={undefined}
+                    />
                   </div>
                 )}
               </div>
-              <div className="flex gap-4">
-                <div className="w-1/2">
-                  {productOptions.length ? (
-                    <Autocomplete
-                      multiple
-                      id="checkboxes-tags-demo"
-                      options={productOptions}
-                      onChange={(event, value) => {
-                        handlClick(value);
-                      }}
-                      disableCloseOnSelect
-                      getOptionLabel={(option:any) => option.name}
-                      renderOption={(props, option, { selected }) => (
-                        <li {...props}>
-                          <Checkbox
-                            onChange={(e) => {
-                              handlClick(option);
-                            }}
-                            icon={icon}
-                            checkedIcon={checkedIcon}
-                            style={{ marginRight: 8 }}
-                            checked={selected}
-                          />
-                          {option.name}
-                        </li>
-                      )}
-                      style={{ width: 500 }}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label="Product Options"
-                          placeholder="Options"
-                        />
-                      )}
-                    />
-                  ) : null}
-                </div>
-              </div>
-              <div className="w-1/2">
-                {optionValues.length ? (
-                  <Autocomplete
-                    multiple
-                    id="checkboxes-tags-demo"
-                    options={optionValues}
-                    onChange={(event, value:any) => {
-                      handlOptions(value);
-                    }}
-                    style={{ width: '450px' }}
-                    disableCloseOnSelect
-                    getOptionLabel={(option:any) => option.value}
-                    renderOption={(props, option:any, { selected }) => (
-                      <li {...props}>
-                        <Checkbox
-                          onChange={(e) => {
-                            handlClick(option);
-                          }}
-                          icon={icon}
-                          checkedIcon={checkedIcon}
-                          style={{ marginRight: 8 }}
-                          checked={selected}
-                        />
-                        {option.value}
-                      </li>
-                    )}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Option Values"
-                        placeholder="Option Values"
-                      />
-                    )}
-                  />
-                ) : null}
-              </div>
 
+              {productOptions.length ? (
+                <>
+                  <Grid container spacing={2} columns={16}>
+                    {optionAscending.map((item: any) => (
+                      <Grid item xs={8}>
+                        <Autocomplete
+                          disablePortal
+                          value={optionValues}
+                          id="combo-box-demo"
+                          options={item.values}
+                          onChange={(event, newValue: any) => {
+                            handlClick(newValue);
+                          }}
+                          getOptionLabel={(option) => option.value}
+                          renderInput={(params) => (
+                            <TextField {...params} label={item.name} />
+                          )}
+                        />
+                      </Grid>
+                    ))}
+                  </Grid>
+                </>
+              ) : null}
+
+              {optionsErr && <div className="text-red-600">{optionsErr}</div>}
               <textarea
                 value={description}
                 onChange={(e) => {

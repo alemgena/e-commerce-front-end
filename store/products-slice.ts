@@ -53,6 +53,9 @@ import { createSlice } from "@reduxjs/toolkit";
      setPriceErr: (state, action) => {
        state.inputErrors.priceErr = action.payload;
      },
+     setOptionErr: (state, action) => {
+       state.inputErrors.optionsErr = action.payload;
+     },
      setSubcategoryErr: (state, action) => {
        state.inputErrors.subcategoryErr = action.payload;
      },

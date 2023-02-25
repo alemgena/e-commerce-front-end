@@ -1,13 +1,14 @@
 import React, { useEffect ,useState} from 'react';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { BsFillPlusCircleFill } from 'react-icons/bs';
-import { RootStateOrAny, useSelector } from 'react-redux';
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import MegaMenu from '../components/menu/MegaMenu';
 import BannerImage from '../public/images/fashion-banner.webp';
 import PageSpinner from '@/components/Ui/PageSpinner';
 import Norecords from '@/components/Ui/Norecords';
 import { Ur2 } from '@/utils/url';
 import NextLink from 'next/link';
+import { GET_PRODUCTS_BY_FEATURED } from '@/types';
 type AdsProp = {
   name: string;
   url: string;
@@ -18,18 +19,23 @@ type AdsProp = {
 };
 
 const Index = () => {
-    const products = useSelector(
-      (state: RootStateOrAny) => state.featuredProducts.featuredProducts
-    );
-    const { isLoading } = useSelector(
-      (state: RootStateOrAny) => state.featuredProducts
-    );
- const [hasData, setHasData] = useState(false);
- useEffect(() => {
-   if (products.data) {
-     if (!products.data.length) setHasData(true);
-   }
- }, [products.data]);
+  const dispatch=useDispatch()
+  const products = useSelector(
+    (state: RootStateOrAny) => state.featuredProducts.featuredProducts
+  );
+  const { isLoading } = useSelector(
+    (state: RootStateOrAny) => state.featuredProducts
+  );
+  const [hasData, setHasData] = useState(false);
+    useEffect(() => {
+    dispatch({ type: GET_PRODUCTS_BY_FEATURED, featured: true });
+    }, []);
+  useEffect(() => {
+    if (products.data) {
+      if (!products.data.length) setHasData(true);
+    }
+  }, [products.data]);
+  //   
   return (
     <div className="mt-10 gap-x-4 sm:w-full sm:flex-col md:flex  md:flex-row md:items-start md:justify-between  md:overflow-hidden">
       <div className=" mt-4 mb-10 w-1/3 sm:hidden md:ml-5 md:flex">
@@ -69,49 +75,45 @@ const Index = () => {
               Trending ads
             </span>
           </div>
-          {isLoading?
-          <PageSpinner/>:
-          <span>
-          {products.data && (
-            <div className=" mb-20 grid grid-cols-4 gap-4">
-              {products.data.map((ad: AdsProp, idx: number) => (
-                <div
-                  key={idx.toString()}
-                  className=" flex max-h-max w-full flex-col justify-between rounded-lg bg-white font-roboto-regular shadow"
-                >
-                    <NextLink href={`/products/${ad.id}`} passHref>
-                  <div className="relative">
-                    <div className="absolute left-0 bottom-0 flex h-7 w-8 items-center justify-center rounded-tr-lg bg-main-secondary bg-opacity-80">
-                      <span className="text-sm text-white">3</span>
-                    </div>
-                    <img
-                      src={`${Ur2}/${ad.imagesURL[0]}`}
-                      className="h-48 w-full rounded-t-lg object-cover object-center"
-                      alt="phone"
-                    />
-                    <div className="absolute right-0 -bottom-6 mr-3 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow">
-                      <AiOutlineHeart size={24} />
-                    </div>
-                  </div>
-                  </NextLink>
-                  <div className="flex flex-col px-4 pt-6 pb-6">
-                    <span className="text-lg">{ad.name}</span>
-                    <span className="text-base text-primary">
-                      ETB {ad.price}
-                    </span>
-                  </div>
-                </div>
-              ))}
+          {isLoading ? (
+            <PageSpinner />
+          ) : (
             <span>
-              {hasData&&
-              <Norecords col={5}/>
-              }
+              {products.data && (
+                <div className=" mb-20 grid grid-cols-4 gap-4">
+                  {products.data.map((ad: AdsProp, idx: number) => (
+                    <div
+                      key={idx.toString()}
+                      className=" flex max-h-max w-full flex-col justify-between rounded-lg bg-white font-roboto-regular shadow"
+                    >
+                      <NextLink href={`/products/${ad.id}`} passHref>
+                        <div className="relative">
+                          <div className="absolute left-0 bottom-0 flex h-7 w-8 items-center justify-center rounded-tr-lg bg-main-secondary bg-opacity-80">
+                            <span className="text-sm text-white">3</span>
+                          </div>
+                          <img
+                            src={`${Ur2}/${ad.imagesURL[0]}`}
+                            className="h-48 w-full rounded-t-lg object-cover object-center"
+                            alt="phone"
+                          />
+                          <div className="absolute right-0 -bottom-6 mr-3 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow">
+                            <AiOutlineHeart size={24} />
+                          </div>
+                        </div>
+                      </NextLink>
+                      <div className="flex flex-col px-4 pt-6 pb-6">
+                        <span className="text-lg">{ad.name}</span>
+                        <span className="text-base text-primary">
+                          ETB {ad.price}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                  <span>{hasData && <Norecords col={5} />}</span>
+                </div>
+              )}
             </span>
-
-            </div>
           )}
-          </span>
-}
         </div>
       </div>
     </div>
