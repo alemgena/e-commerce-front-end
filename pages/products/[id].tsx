@@ -99,8 +99,9 @@ function ProductDetailPage() {
     }
   }, [id]);
   const addFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
     const favorite = {
-      product: product.id,
+      product:id
     };
     dispatch({ type: ADD_PRODUCT_FAVORITE, data: favorite });
     setSubmit(true);
@@ -130,10 +131,12 @@ function ProductDetailPage() {
       <Head>
         <title>Product Detail</title>
         <link rel="icon" href="/favicon.ico" />
+        {productData.data &&
         <meta
           property="og:image"
-          content="http://165.232.42.207:3000/images/subcategories/cars.png"
+          content={`${Ur2}/${productData.data.product.imagesURL[0]}`}
         ></meta>
+}
       </Head>
       {isLoading ? (
         <PageSpinner />
