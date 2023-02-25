@@ -74,7 +74,7 @@ const CreateProductPage = () => {
       isValid = false;
     }
     if (!image.length) {
-      setImageError('Pleas Select at leas on image');
+      setImageError('Pleas Select at leas one image');
       isValid = false;
     }
     if (!productOption.length || !valuesData) {
