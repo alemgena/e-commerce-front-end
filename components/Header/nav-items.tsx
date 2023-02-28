@@ -41,7 +41,6 @@ export function NavItems() {
             <p>1</p>
           </div>
         </button>
-
         <BiHeart
           onClick={() => router.push('/favorite')}
           size={30}
@@ -73,6 +72,16 @@ export function NavItems() {
           Login
         </button>
       )}
+      <>
+        {isLogin || isUserLogged ? (
+          <button
+            onClick={() => router.push('/auth/profile')}
+            className="rounded-md border-2 border-blue-800 px-8 py-1 text-blue-800 hover:bg-blue-800 hover:text-white"
+          >
+            Profile
+          </button>
+        ) : null}
+      </>
       <AuthModal
         setOpen={setIsOpen}
         isOpen={isOpen}
