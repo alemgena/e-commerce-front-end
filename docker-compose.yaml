@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  ecommerce-web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: ecommerce-web
+    ports:
+      - '50050:50050'
+    command: ['yarn', 'run', 'dev']
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
