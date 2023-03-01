@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { AiOutlinePicture } from 'react-icons/ai';
 import { SelectInput } from '@/components/select-input';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
-import { Autocomplete,TextField } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { productAction } from '@/store/products-slice';
 import Button from '@mui/material/Button';
@@ -12,6 +12,22 @@ import Notify from '@/components/Ui/Notify';
 import Notification from '@/components/Ui/Notification';
 import axios from 'axios';
 import { Ur2 } from '@/utils/url';
+const regions = [
+  'Addis Ababa',
+  'Afar',
+  'Amhara',
+  'Benishangul-Gumuz',
+  'Dire Dawa',
+  'Gambela',
+  '	Harari',
+  'Harari',
+  '	Somali',
+  'Oromia',
+  'Tigray',
+  'SNNPR',
+  'Sidama',
+  'SWEPR',
+];
 const CreateProductPage = () => {
   const { NotifyMessage, notify, setNotify } = Notify();
   const dispatch = useDispatch();
@@ -28,11 +44,19 @@ const CreateProductPage = () => {
   const categories = useSelector(
     (state: RootStateOrAny) => state.categories.categories
   );
-  const { name, description, price } = useSelector(
+  const { name, description, price, region, latitude, longitude } = useSelector(
     (state: RootStateOrAny) => state.products.inputValues
   );
-  const { nameErr, descriptionErr, priceErr, subcategoryErr, optionsErr } =
-    useSelector((state: RootStateOrAny) => state.products.inputErrors);
+  const {
+    nameErr,
+    descriptionErr,
+    priceErr,
+    latitudeErr,
+    longitudeErr,
+    subcategoryErr,
+    regionErr,
+    optionsErr,
+  } = useSelector((state: RootStateOrAny) => state.products.inputErrors);
   const validate = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Resetting input errors to default
@@ -41,6 +65,9 @@ const CreateProductPage = () => {
     dispatch(productAction.setDescriptionErr(''));
     dispatch(productAction.setSubcategoryErr(''));
     dispatch(productAction.setOptionErr(''));
+    dispatch(productAction.setRegionErr(''));
+    dispatch(productAction.setLatitudeErr(''));
+    dispatch(productAction.setLongitudeErr(''));
     let isValid = true;
 
     if (name.length < 4) {
@@ -71,6 +98,18 @@ const CreateProductPage = () => {
     }
     if (!price) {
       dispatch(productAction.setPriceErr('Price Is required!'));
+      isValid = false;
+    }
+    if (!longitude) {
+      dispatch(productAction.setLongitudeErr('Logitude Is required!'));
+      isValid = false;
+    }
+    if (!latitude) {
+      dispatch(productAction.setLatitudeErr('Latitude Is required!'));
+      isValid = false;
+    }
+    if (!region) {
+      dispatch(productAction.setRegionErr('Region Is required!'));
       isValid = false;
     }
     if (!image.length) {
@@ -110,6 +149,9 @@ const CreateProductPage = () => {
       price: price,
       subcategory: subCategory.id,
       options: uniqueOption,
+      region: region,
+      latitude: latitude,
+      longitude: longitude,
     };
     let formData = new FormData();
     Array.from(image).forEach((item: any) => {
@@ -145,17 +187,18 @@ const CreateProductPage = () => {
   const handlClick = (event: any) => {
     if (event) {
       setOptionsValues(event.value);
-  
+
       setProductOption([...productOption, { id: event.option }]);
       setValuesData((values: any) => [...values, event]);
-    
     }
   };
+  const handlRegion = (event: any) => {
+    dispatch(productAction.setRegion(event));
+  };
 
-    const optionAscending = [...productOptions].sort((a: any, b: any) =>
-      a.name < b.name ? -1 : 1
-    );
-    console.log(image)
+  const optionAscending = [...productOptions].sort((a: any, b: any) =>
+    a.name < b.name ? -1 : 1
+  );
   return (
     <>
       <Head>
@@ -273,17 +316,69 @@ const CreateProductPage = () => {
                 className="w-full resize-none rounded-md bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
               ></textarea>
               <div className="text-red-600">{descriptionErr}</div>
-              <input
-                value={price}
-                onChange={(e) => {
-                  dispatch(productAction.setPrice(e.target.value));
-                }}
-                type="number"
-                pattern="[0-9]*"
-                placeholder="Price"
-                className="w-1/2 rounded-md bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
-              />
-              <div className="text-red-600">{priceErr}</div>
+              <div className="flex gap-4">
+                <div className="w-1/2 rounded-md bg-gray-100 p-3">
+                  <input
+                    value={price}
+                    onChange={(e) => {
+                      dispatch(productAction.setPrice(e.target.value));
+                    }}
+                    type="number"
+                    pattern="[0-9]*"
+                    placeholder="Price"
+                    className="w-full bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
+                  />
+                </div>
+                {priceErr && <div className="text-red-600">{priceErr}</div>}
+                <div className="w-1/2">
+                  <Autocomplete
+                    // className="w-1/2 rounded-md bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
+                    disablePortal
+                    value={region}
+                    id="combo-box-demo"
+                    options={regions}
+                    onChange={(event, newValue: any) => {
+                      handlRegion(newValue);
+                    }}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Regions" />
+                    )}
+                  />
+                  {regionErr && <div className="text-red-600">{regionErr}</div>}
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-1/2 rounded-md bg-gray-100 p-3">
+                  <input
+                    value={longitude}
+                    onChange={(e) => {
+                      dispatch(productAction.setLongitude(e.target.value));
+                    }}
+                    type="number"
+                    pattern="[0-9]*"
+                    placeholder="Longitude"
+                    className="w-full bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
+                  />
+                </div>
+                {longitudeErr && (
+                  <div className="text-red-600">{longitudeErr}</div>
+                )}
+                <div className="w-1/2 rounded-md bg-gray-100 p-3">
+                  <input
+                    value={latitude}
+                    onChange={(e) => {
+                      dispatch(productAction.setLatitude(e.target.value));
+                    }}
+                    type="number"
+                    pattern="[0-9]*"
+                    placeholder="Latitude"
+                    className="w-full bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
+                  />
+                </div>
+                {latitudeErr && (
+                  <div className="text-red-600">{latitudeErr}</div>
+                )}
+              </div>
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
