@@ -16,6 +16,8 @@ import favorite from './favorite'
 import forgetPassword from './forgetPassword'
 import shops from './shops';
 import product from './product';
+import profile from './profile'
+import user from './user'
 let sagaMiddleware = createSagaMiddleware();
 const store = configureStore({
   reducer: {
@@ -30,7 +32,9 @@ const store = configureStore({
     register: register,
     recoverPassword: forgetPassword,
     shops: shops,
-    product:product
+    profile:profile,
+    product:product,
+    user:user
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),

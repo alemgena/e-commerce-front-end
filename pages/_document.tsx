@@ -7,7 +7,7 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <title>Next.JS + ESLint + Prettier</title>
+          <title>Liyu market</title>
           <meta charSet="utf-8" />
           <meta
             name="description"

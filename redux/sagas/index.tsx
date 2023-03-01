@@ -7,6 +7,8 @@ import { watchLoginAsync } from './login';
 import {watchRegisterAsync} from './register'
 import {watchForgetPasswwordAsync} from './forgetPassword'
 import{watchShopsAsync} from './shops'
+import {watchUsersAsync} from './user'
+
 export function* rootSaga() {
   yield all([
     watchProductsAsync(),
@@ -16,6 +18,7 @@ export function* rootSaga() {
     watchLoginAsync(),
     watchForgetPasswwordAsync(),
     watchRegisterAsync(),
-    watchShopsAsync()
+    watchShopsAsync(),
+    watchUsersAsync(),
   ]);
 }

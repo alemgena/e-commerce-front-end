@@ -8,7 +8,6 @@ import { ImMobile } from 'react-icons/im';
 import { IoShirtOutline, IoShirtSharp } from 'react-icons/io5';
 import { MdOutlineToys } from 'react-icons/md';
 import { RiFireLine, RiHeartPulseLine } from 'react-icons/ri';
-
 const menuItems = [
   {
     category: 'clothing',
