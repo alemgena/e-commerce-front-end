@@ -7,6 +7,9 @@ import { createSlice } from "@reduxjs/toolkit";
        description: '',
        price: '',
        subcategory: '',
+       region: '',
+       latitude: '',
+       longitude: '',
        options: [],
      },
      inputErrors: {
@@ -14,6 +17,9 @@ import { createSlice } from "@reduxjs/toolkit";
        descriptionErr: '',
        priceErr: '',
        subcategoryErr: '',
+       regionErr: '',
+       latitudeErr: '',
+       longitudeErr: '',
        optionsErr: '',
      },
      productAdded: false,
@@ -26,11 +32,29 @@ import { createSlice } from "@reduxjs/toolkit";
      setProductAdded: (state, action) => {
        state.productAdded = action.payload;
      },
+     setRegion: (state, action) => {
+       state.inputValues.region = action.payload;
+     },
+     setLatitude: (state, action) => {
+       state.inputValues.latitude = action.payload;
+     },
+     setLongitude: (state, action) => {
+       state.inputValues.longitude = action.payload;
+     },
      setProductAddError: (state, action) => {
        state.productAddError = action.payload;
      },
      setName: (state, action) => {
        state.inputValues.name = action.payload;
+     },
+     setRegionErr: (state, action) => {
+       state.inputErrors.regionErr = action.payload;
+     },
+     setLatitudeErr: (state, action) => {
+       state.inputErrors.latitudeErr = action.payload;
+     },
+     setLongitudeErr: (state, action) => {
+       state.inputErrors.longitudeErr = action.payload;
      },
      setDescription: (state, action) => {
        state.inputValues.description = action.payload;
