@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import React,{useEffect} from 'react'
+import React,{useEffect,useState} from 'react'
 import { FiArrowLeft, FiMail } from 'react-icons/fi';
 import { RiPencilFill } from 'react-icons/ri';
 import { RxAvatar } from 'react-icons/rx';
@@ -10,6 +10,7 @@ import { GET_USER } from '@/types';
 import {useDispatch,useSelector,RootStateOrAny} from 'react-redux'
 import PageSpinner from '@/components/Ui/PageSpinner';
 import { Ur2 } from '@/utils/url';
+import { AuthModal } from '@/components/auth';
 const ProfilePage = () => {
   const dispatch=useDispatch()
     const currentUser = useSelector(
@@ -18,9 +19,15 @@ const ProfilePage = () => {
      const User = useSelector(
        (state: RootStateOrAny) => state.user.user
      );
-      const { isLoading } = useSelector(
+       const [isOpen, setIsOpen] = useState(false);
+      const { isLoading,error } = useSelector(
         (state: RootStateOrAny) => state.user
       );
+          useEffect(() => {
+      if(error.message){
+     setIsOpen(true)
+      }
+    }, [error.message]);
     useEffect(() => {
       if(currentUser.user){
       dispatch({type:GET_USER,id:currentUser.user._id})
@@ -37,6 +44,11 @@ const ProfilePage = () => {
         <PageSpinner />
       ) : (
         <div className=" bg-gray-50 px-12 pb-32">
+          <AuthModal
+            setOpen={setIsOpen}
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+          />
           {User.data && (
             <>
               <div className="flex items-center justify-between py-4  text-xl">

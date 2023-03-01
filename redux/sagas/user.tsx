@@ -29,6 +29,7 @@ export function* getUser(actions: any): any {
   
     yield put(userActions.setUser(response.data));
     yield put(userActions.setIsLoading(false));
+    yield put(userActions.setError(''));
   } catch (error: any) {
     yield put(userActions.setError(error.response.data.error));
     yield put(userActions.setIsLoading(false));
