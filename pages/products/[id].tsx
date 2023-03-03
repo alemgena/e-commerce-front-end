@@ -23,7 +23,6 @@ import {
   LinkedinIcon,
   TwitterShareButton,
   TwitterIcon,
-  
 } from 'next-share';
 import { GET_PRODUCT } from '@/types';
 import PageSpinner from '@/components/Ui/PageSpinner';
@@ -99,9 +98,9 @@ function ProductDetailPage() {
     }
   }, [id]);
   const addFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
+    event.preventDefault();
     const favorite = {
-      product:id
+      product: id,
     };
     dispatch({ type: ADD_PRODUCT_FAVORITE, data: favorite });
     setSubmit(true);
@@ -124,19 +123,22 @@ function ProductDetailPage() {
       });
     }
   }, [favorite.favorite]);
-
-  
+  const[relatedClick,setRelatedClick]=useState(false)
+  const handleRelated = (event: React.MouseEvent<HTMLButtonElement>) => {
+    console.log("Rrrr")
+setRelatedClick(true)
+  };
   return (
     <>
       <Head>
         <title>Product Detail</title>
         <link rel="icon" href="/favicon.ico" />
-        {productData.data &&
-        <meta
-          property="og:image"
-          content={`${Ur2}/${productData.data.product.imagesURL[0]}`}
-        ></meta>
-}
+        {productData.data && (
+          <meta
+            property="og:image"
+            content={`${Ur2}/${productData.data.product.imagesURL[0]}`}
+          ></meta>
+        )}
       </Head>
       {isLoading ? (
         <PageSpinner />
@@ -150,7 +152,7 @@ function ProductDetailPage() {
             <>
               <div className="grid grid-cols-2 gap-12 pb-20">
                 <div>
-                  {productImage ? (
+                  {productImage && !relatedClick ? (
                     <img
                       src={`${Ur2}/${productImage}`}
                       width="960px"
@@ -166,7 +168,7 @@ function ProductDetailPage() {
                     />
                   )}
                   <div className="mt-6  grid grid-cols-4 gap-6">
-                    {activeImage.length ? (
+                    {activeImage.length && !relatedClick ? (
                       <>
                         {activeImage.map((image: any) => (
                           <img
@@ -359,33 +361,47 @@ function ProductDetailPage() {
                 <h2 className="font-roboto-bold text-xl">RELATED PRODUCTS</h2>
                 <div className="flex w-full gap-4 overflow-x-auto scrollbar-hide">
                   {productData.data.relatedProducts.map((data: any) => (
-                    <div key={data.toString()} className="w-52 flex-shrink-0">
-                      <img
-                        src={`${Ur2}/${data.imagesURL[0]}`}
-                        className="h-52 w-full object-cover"
-                      />
-                      <div className="bg-white">
-                        <div className="flex flex-col gap-3 p-2">
-                          <h6 className="text-sm text-gray-500">{data.name}</h6>
-                          <div className="flex items-center justify-between">
-                            <h6 className="font-roboto-bold ">{data.price}</h6>
-                            <h6 className="rounded-full bg-gray-100 px-3 py-1">
-                              Used
-                            </h6>
-                          </div>
-                        </div>
-                        <div className="h-0.5 w-full bg-gray-200" />
-                        <div className="flex  gap-6  rounded-md p-2 font-roboto-light">
-                          <button className=" rounded-full bg-blue-800 px-3 py-2 text-sm text-white">
-                            Make Offer
-                          </button>
+                    <>
+                      {data.id !== id && (
+                        <NextLink href={`/products/${data.id}`} passHref>
+                          <div
+                            key={data.toString()}
+                            onClick={(e) => handleRelated(e)}
+                            className="w-52 flex-shrink-0"
+                          >
+                            <img
+                              src={`${Ur2}/${data.imagesURL[0]}`}
+                              className="h-52 w-full object-cover"
+                            />
+                            <div className="bg-white">
+                              <div className="flex flex-col gap-3 p-2">
+                                <h6 className="text-sm text-gray-500">
+                                  {data.name}
+                                </h6>
+                                <div className="flex items-center justify-between">
+                                  <h6 className="font-roboto-bold ">
+                                    {data.price}
+                                  </h6>
+                                  <h6 className="rounded-full bg-gray-100 px-3 py-1">
+                                    Used
+                                  </h6>
+                                </div>
+                              </div>
+                              <div className="h-0.5 w-full bg-gray-200" />
+                              <div className="flex  gap-6  rounded-md p-2 font-roboto-light">
+                                <button className=" rounded-full bg-blue-800 px-3 py-2 text-sm text-white">
+                                  Make Offer
+                                </button>
 
-                          <button className="flex flex-grow items-center justify-center  font-roboto-light text-xl text-gray-400">
-                            <BsHeart />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
+                                <button className="flex flex-grow items-center justify-center  font-roboto-light text-xl text-gray-400">
+                                  <BsHeart />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </NextLink>
+                      )}
+                    </>
                   ))}
                 </div>
               </div>
