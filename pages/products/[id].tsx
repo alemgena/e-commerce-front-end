@@ -69,27 +69,7 @@ function ProductDetailPage() {
   const favorite = useSelector((state: RootStateOrAny) => state.favorite);
   const { isLoading } = useSelector((state: RootStateOrAny) => state.product);
   useEffect(() => {
-    dispatch({ type: GET_PRODUCT, id: id });
-    if (products.data) {
-      let found = products.data.find(function (element: any) {
-        return element.id == id;
-      });
-      if (found) {
-        setRelatedProducts(
-          products.data.filter(
-            (product: any) =>
-              product.subCategory === found.subCategory &&
-              product.id != found.id
-          )
-        );
-        setProduct(found);
-        setProductImage(found.imagesURL[0]);
-        setActiveImage(found.imagesURL);
-      }
-    }
-    if (productData.data) {
-      console.log(productData.data);
-    }
+    dispatch({ type: GET_PRODUCT, id: id });  
   }, [id]);
   useEffect(() => {
     if (productData.data) {
@@ -136,7 +116,7 @@ setRelatedClick(true)
         {productData.data && (
           <meta
             property="og:image"
-            content={`${Ur2}/${productData.data.product.imagesURL[0]}`}
+            content="http://165.232.42.207:3000/images/images-1677299251760.jpg"
           ></meta>
         )}
       </Head>
