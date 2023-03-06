@@ -17,7 +17,6 @@ type AdsProp = {
   imagesURL:string[],
   id:string
 };
-
 const Index = () => {
   const dispatch=useDispatch()
   const products = useSelector(

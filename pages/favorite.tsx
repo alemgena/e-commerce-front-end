@@ -17,7 +17,13 @@ function FavoritePage() {
    const favorite = useSelector((state: RootStateOrAny) => state.favorite);
       const dispatch = useDispatch();
         useEffect(() => {
-dispatch({type:GET_FAVOURITE})
+              let token = localStorage.getItem('token');
+              let config = {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              };
+dispatch({type:GET_FAVOURITE,config:config})
         },[])
       
                useEffect(() => {

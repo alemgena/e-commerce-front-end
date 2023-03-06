@@ -25,7 +25,7 @@ export function* updateProfile(actions:any): any {
 export function* getUser(actions: any): any {
   try {
     yield put(userActions.setIsLoading(true));
-    const response = yield getUserAPI(actions.id);
+    const response = yield getUserAPI(actions.id, actions.config);
   
     yield put(userActions.setUser(response.data));
     yield put(userActions.setIsLoading(false));

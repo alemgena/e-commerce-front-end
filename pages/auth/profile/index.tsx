@@ -30,7 +30,12 @@ const ProfilePage = () => {
     }, [error.message]);
     useEffect(() => {
       if(currentUser.user){
-      dispatch({type:GET_USER,id:currentUser.user._id})
+           let token=localStorage.getItem("token")
+        let config={ headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+      dispatch({type:GET_USER,id:currentUser.user._id,config:config})
       }
     }, []);
   const router = useRouter();
@@ -44,11 +49,7 @@ const ProfilePage = () => {
         <PageSpinner />
       ) : (
         <div className=" bg-gray-50 px-12 pb-32">
-          <AuthModal
-            setOpen={setIsOpen}
-            isOpen={isOpen}
-            onClose={() => setIsOpen(false)}
-          />
+          
           {User.data && (
             <>
               <div className="flex items-center justify-between py-4  text-xl">

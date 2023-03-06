@@ -29,6 +29,9 @@ import PageSpinner from '@/components/Ui/PageSpinner';
 const Map = dynamic(() => import('@/components/map').then((mod) => mod.Map), {
   ssr: false,
 });
+// const DynamicHeader = dynamic(() => import('@/components/map'), {
+//   ssr: false,
+// });
 const options = [
   {
     id: 'o-1',
@@ -51,8 +54,7 @@ const options = [
 const colors = ['#ffffff', '#F62424', '#043CBE', '#5E5E5E', '#000000'];
 
 function ProductDetailPage() {
-  const dispatch = useDispatch();
-  const [product, setProduct] = useState<any>();
+  const dispatch = useDispatch()
   const router = useRouter();
   const { id } = router.query;
   const [activeImage, setActiveImage] = useState<any>([]);
@@ -71,18 +73,29 @@ function ProductDetailPage() {
   useEffect(() => {
     dispatch({ type: GET_PRODUCT, id: id });  
   }, [id]);
+     navigator.geolocation.getCurrentPosition(function (position) {
+        console.log('Latitude is :', position.coords.latitude);
+        console.log('Longitude is :', position.coords.longitude);
+      });
+    
   useEffect(() => {
-    if (productData.data) {
+    if (productData.data.imagesURL) {
       setProductImage(productData.data.product.imagesURL[0]);
       setActiveImage(productData.data.product.imagesURL);
     }
-  }, [id]);
+    
+  }, []);
   const addFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+       let token=localStorage.getItem("token")
+        let config={ headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     const favorite = {
       product: id,
     };
-    dispatch({ type: ADD_PRODUCT_FAVORITE, data: favorite });
+    dispatch({ type: ADD_PRODUCT_FAVORITE, data: favorite,config:config });
     setSubmit(true);
   };
   const [submit, setSubmit] = useState(false);
@@ -108,17 +121,22 @@ function ProductDetailPage() {
     console.log("Rrrr")
 setRelatedClick(true)
   };
+  console.log(productImage)
   return (
     <>
       <Head>
         <title>Product Detail</title>
         <link rel="icon" href="/favicon.ico" />
-        {productData.data && (
-          <meta
-            property="og:image"
-            content="http://165.232.42.207:3000/images/images-1677299251760.jpg"
-          ></meta>
-        )}
+        <meta property="og:image:width" content="640" />
+        <meta property="og:image:height" content="442" />
+        <meta
+          property="og:description"
+          content=" This is description of post"
+        />
+        <meta
+          property="og:image"
+          content="http://165.232.42.207:3000/images/images-1677299251760.jpg"
+        ></meta>
       </Head>
       {isLoading ? (
         <PageSpinner />
@@ -132,11 +150,12 @@ setRelatedClick(true)
             <>
               <div className="grid grid-cols-2 gap-12 pb-20">
                 <div>
-                  {productImage && !relatedClick ? (
+                  {productImage && relatedClick ? (
                     <img
                       src={`${Ur2}/${productImage}`}
                       width="960px"
                       height="600px"
+                      alt='oo'
                       className="overflow-hidden rounded-sm object-cover"
                     />
                   ) : (
@@ -290,7 +309,7 @@ setRelatedClick(true)
                       Description
                     </h2>
                     <p className="text-sm text-gray-600">
-                      {product?.description}
+                      {productData.data.product.description}
                     </p>
                   </div>
                   <div className="  rounded-md bg-white p-4 font-roboto-light shadow-sm">
