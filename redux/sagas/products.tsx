@@ -1,17 +1,19 @@
 import { productAction } from '../../store/products-slice';
 import { productActions } from '../../store/product';
 import { featuredProductsAction } from '../../store/featured-products-slice';
+
 import {
   GET_PRODUCTS,
   GET_PRODUCTS_BY_FEATURED,
   GET_PRODUCT,
+  FILTER_PRODUCT_BY_REGION
 } from '../../types';
 import {
   getProductsAPI,
   getProductsByFeaturedAPI,
   getProductAPI,
 } from '../../apis/product';
-import { put, takeEvery } from 'redux-saga/effects';
+import { put, takeEvery} from 'redux-saga/effects';
 export function* getProducts(): any {
   try {
     yield put(productAction.setIsLoading(true));

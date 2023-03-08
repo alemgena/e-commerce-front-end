@@ -49,7 +49,7 @@ dispatch({type:GET_FAVOURITE,config:config})
             {favorite.products.data.length?(
               <>
                 {favorite.products.data.map((data:any) => (
-                  <Link href={`/products/${data.id}`}>
+                  <Link href={`/products/${data.product.id}`}>
                     <div
                       key={data.toString()}
                       className="mr-9 w-72 flex-shrink-0"

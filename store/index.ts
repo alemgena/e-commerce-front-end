@@ -32,9 +32,10 @@ const store = configureStore({
     register: register,
     recoverPassword: forgetPassword,
     shops: shops,
-    profile:profile,
-    product:product,
-    user:user
+    profile: profile,
+    product: product,
+    user: user,
+  
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),

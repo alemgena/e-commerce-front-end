@@ -73,13 +73,8 @@ function ProductDetailPage() {
   useEffect(() => {
     dispatch({ type: GET_PRODUCT, id: id });  
   }, [id]);
-     navigator.geolocation.getCurrentPosition(function (position) {
-        console.log('Latitude is :', position.coords.latitude);
-        console.log('Longitude is :', position.coords.longitude);
-      });
-    
   useEffect(() => {
-    if (productData.data.imagesURL) {
+    if (productData.data?.imagesURL) {
       setProductImage(productData.data.product.imagesURL[0]);
       setActiveImage(productData.data.product.imagesURL);
     }
@@ -155,7 +150,7 @@ setRelatedClick(true)
                       src={`${Ur2}/${productImage}`}
                       width="960px"
                       height="600px"
-                      alt='oo'
+                      alt="oo"
                       className="overflow-hidden rounded-sm object-cover"
                     />
                   ) : (
@@ -215,28 +210,6 @@ setRelatedClick(true)
                       {productData.data.product.price}
                     </h2>
                   </div>
-                  {showContact ? (
-                    <div className="flex items-center justify-between  rounded-md bg-white p-4 font-roboto-light shadow-sm">
-                      <div className="flex items-center gap-6">
-                        <img
-                          src="/images/product/product.png"
-                          className="h-12 w-12 rounded-full object-cover"
-                        />
-                        <div>
-                          <h2 className="font-roboto-medium text-sm">
-                            {productData.data.product.seller.first_name}
-                          </h2>
-                          <p className="font-roboto-medium   text-blue-800">
-                            {productData.data.product.seller.phone}
-                          </p>
-                        </div>
-                      </div>
-                      <IoIosCloseCircle
-                        className="cursor-pointer text-2xl text-gray-400"
-                        onClick={() => setShowContact(false)}
-                      />
-                    </div>
-                  ) : (
                     <div className="flex gap-6 rounded-md bg-white p-4 font-roboto-light shadow-sm">
                       <Link href="/chat">
                         <button className="flex-grow rounded-full bg-blue-800 py-2 text-white">
@@ -248,9 +221,14 @@ setRelatedClick(true)
                         className="flex items-center gap-2 rounded-full bg-white py-2 px-4 font-roboto-medium text-blue-800 ring-2 ring-blue-800"
                       >
                         <IoIosCall />
-                        <p>Call</p>
+                        <p>{showContact?  <p className="font-roboto-medium   text-blue-800">
+                            {productData.data.product.seller.phone}
+                          </p>:<p>Show Contact</p>}</p>
                       </button>
-                      <button className="flex items-center gap-2 rounded-full bg-white py-2 px-4 font-roboto-medium text-blue-800 ring-2 ring-blue-800">
+                      <button
+                        onClick={() => router.push('/chat')}
+                        className="flex items-center gap-2 rounded-full bg-white py-2 px-4 font-roboto-medium text-blue-800 ring-2 ring-blue-800"
+                      >
                         <BsFillChatLeftTextFill />
                         <p>Chat</p>
                       </button>
@@ -284,8 +262,7 @@ setRelatedClick(true)
                         </TwitterShareButton>
                       </button>
                     </div>
-                  )}
-
+                  
                   <div className="flex justify-between gap-6 rounded-md bg-white p-4 font-roboto-light shadow-sm">
                     <div className="flex items-center gap-14">
                       <h6 className="font-roboto-medium">Color</h6>
