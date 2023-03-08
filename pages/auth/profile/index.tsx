@@ -25,6 +25,7 @@ const ProfilePage = () => {
       );
           useEffect(() => {
       if(error.message){
+        router.push('/')
      setIsOpen(true)
       }
     }, [error.message]);
@@ -49,7 +50,12 @@ const ProfilePage = () => {
         <PageSpinner />
       ) : (
         <div className=" bg-gray-50 px-12 pb-32">
-          
+          <AuthModal
+            setOpen={setIsOpen}
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+          />
+
           {User.data && (
             <>
               <div className="flex items-center justify-between py-4  text-xl">

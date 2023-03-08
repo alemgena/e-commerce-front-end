@@ -11,3 +11,4 @@ export const GET_SHOPS="GET_SHOPS"
 export const GET_PRODUCT = 'GET_PRODUCT';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const GET_USER = 'GET_USER';
+export const FILTER_PRODUCT_BY_REGION = 'FILTER_PRODUCT_BY_REGION';

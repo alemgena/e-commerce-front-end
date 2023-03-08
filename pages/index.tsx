@@ -7,6 +7,7 @@ import BannerImage from '../public/images/fashion-banner.webp';
 import PageSpinner from '@/components/Ui/PageSpinner';
 import Norecords from '@/components/Ui/Norecords';
 import { Ur2 } from '@/utils/url';
+import {useRouter} from 'next/router'
 import NextLink from 'next/link';
 import { GET_PRODUCTS_BY_FEATURED } from '@/types';
 type AdsProp = {
@@ -18,6 +19,7 @@ type AdsProp = {
   id:string
 };
 const Index = () => {
+  const router=useRouter()
   const dispatch=useDispatch()
   const products = useSelector(
     (state: RootStateOrAny) => state.featuredProducts.featuredProducts
@@ -58,7 +60,10 @@ const Index = () => {
           <div className=" h-60 w-1/4 rounded-md bg-orange-500 shadow">
             <div className="flex flex-col items-center justify-center p-6 text-center font-roboto-medium text-white">
               <span className="text-xl">Got something to sell?</span>
-              <span className="py-4">
+              <span
+                className="py-4"
+                onClick={() => router.push('/sell/products/create')}
+              >
                 <BsFillPlusCircleFill size={60} />
               </span>
               <span className="text-center text-lg">

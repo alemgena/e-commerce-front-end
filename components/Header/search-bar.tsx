@@ -4,18 +4,32 @@ import { Fragment, useState } from 'react';
 import { AiOutlineCheck } from 'react-icons/ai';
 import { MdOutlineArrowDropDown } from 'react-icons/md';
 import { Listbox, Transition } from '@headlessui/react';
-
+import { useRouter } from 'next/router';
+import NextLink from 'next/link';
 const cities = [
-  { name: 'All Ethiopia' },
-  { name: 'Addis Ababa' },
-  { name: 'Hawaasa' },
-  { name: 'Bahir Dar' },
-  { name: 'Naziret' },
-  { name: 'Arba Minch' },
+ {name:'Addis Ababa'},
+  {name:'Afar'},
+  {name:'Amhara'},
+  {name:'Benishangul-Gumuz'},
+  {name:'Dire Dawa'},
+  {name:'Gambela'},
+  {name:'	Harari'},
+  {name:'Harari'},
+  {name:'Somali'},
+  {name:'Oromia'},
+  {name:'Tigray'},
+  {name:'SNNPR'},
+  {name:'Sidama'},
+  {name:'SWEPR'},
 ];
 
 export function SearchBar() {
+  const router = useRouter();
   const [selected, setSelected] = useState(cities[0]);
+  const handleLogout = (event: any) => {
+router.push(`/product/${event}`);
+  
+};
 
   return (
     <div className="z-[100] flex font-roboto-regular">
@@ -33,6 +47,7 @@ export function SearchBar() {
           >
             <Listbox.Options className="absolute mt-1  w-full  rounded-md bg-white py-1  text-sm shadow-lg">
               {cities.map((city, cityIdx) => (
+            
                 <Listbox.Option
                   key={cityIdx}
                   className={({ active }) =>
@@ -48,10 +63,14 @@ export function SearchBar() {
                         className={`block truncate  ${
                           selected
                             ? 'font-roboto-medium text-blue-800'
-                            : 'font-roboto-regular'
+                            : ''
                         }`}
+                        onClick={() => handleLogout(city.name)}
                       >
-                        {city.name}
+                        
+                      
+                          {city.name}
+                        
                       </span>
                       {selected ? (
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-blue-800">
@@ -61,6 +80,7 @@ export function SearchBar() {
                     </>
                   )}
                 </Listbox.Option>
+
               ))}
             </Listbox.Options>
           </Transition>
