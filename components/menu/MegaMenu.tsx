@@ -103,34 +103,39 @@ function MegaMenu() {
                 <div className="pb-2" />
 
                 {categoriesData.data.map((category: CategoryProps) => (
-                  <div
-                    id={category.id.toString()}
-                    key={category.id}
-                    onMouseEnter={(e) => {
-                      e.stopPropagation();
-                      setHoveredCategoryId(category.id);
-                    }}
-                    className="mb-2 flex items-center justify-between pl-2 pr-4"
-                  >
-                    <div className="flex items-center gap-x-4">
+                  <>
+                    {category.subcategory.length?
+                    <div
+                      id={category.id.toString()}
+                      key={category.id}
+                      onMouseEnter={(e) => {
+                        e.stopPropagation();
+                        setHoveredCategoryId(category.id);
+                      }}
+                      className="mb-2 flex items-center justify-between pl-2 pr-4"
+                    >
+                      <div className="flex items-center gap-x-4">
+                        <div>
+                          <img
+                            src={`${Ur2}/${category.imageURL}`}
+                            alt={category.name}
+                            className="h-10 w-10"
+                          />
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="text-lg text-main-secondary">
+                            {category.name}
+                          </span>
+                          <span className="text-main-secondary">2,697 ads</span>
+                        </div>
+                      </div>
                       <div>
-                        <img
-                          src={`${Ur2}/${category.imageURL}`}
-                          alt={category.name}
-                          className="h-10 w-10"
-                        />
+                        <AiOutlineRight size={14} />
                       </div>
-                      <div className="flex flex-col">
-                        <span className="text-lg text-main-secondary">
-                          {category.name}
-                        </span>
-                        <span className="text-main-secondary">2,697 ads</span>
-                      </div>
-                    </div>
-                    <div>
-                      <AiOutlineRight size={14} />
-                    </div>
-                  </div>
+                    </div>:null
+}
+                  </>
+                    
                 ))}
                 <span>{hasData && <Norecords col={5} />}</span>
                 <div

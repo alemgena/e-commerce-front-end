@@ -103,7 +103,7 @@ const Index = ({user}) => {
                 <FaCartPlus size={60} />
               </span>
               <span className="text-center text-lg">
-                Post an advert for <br /> free!
+                 Post a product to sell For <br /> free!
               </span>
             </div>
           </div>
@@ -112,7 +112,7 @@ const Index = ({user}) => {
         <div className="mt-10 flex flex-col">
           <div className="mb-5">
             <span className="font-roboto-bold text-2xl text-main-secondary">
-              Trending ads
+              Trending products
             </span>
           </div>
           {isLoading ? (
