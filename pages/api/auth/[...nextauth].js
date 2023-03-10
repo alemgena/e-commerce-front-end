@@ -4,12 +4,10 @@ import Providers from 'next-auth/providers';
 export default NextAuth({
   providers: [
     Providers.Google({
-      clientId:
-        '566882002764-cf590gpslmng2ek8uuptsibof2q12qja.apps.googleusercontent.com',
-      clientSecret: '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',
-      callbackURL: 'http://localhost:3000/auth/google/callback',
-      scope:
-        'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
+      clientId: process.env.clientId,
+      clientSecret: process.env.clientSecret,
+      callbackURL:'https://liyumarket.com/auth/google/callback',
+      scope:'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
     }),
   ],
   callbacks: {

@@ -1,6 +1,6 @@
 import React, { useEffect ,useState} from 'react';
 import { AiOutlineHeart } from 'react-icons/ai';
-import { BsFillPlusCircleFill } from 'react-icons/bs';
+import { FaCartPlus } from 'react-icons/fa';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import MegaMenu from '../components/menu/MegaMenu';
 import BannerImage from '../public/images/fashion-banner.webp';
@@ -30,7 +30,7 @@ const Index = ({user}) => {
       async function fetchData() {
         try {
           const { data } = await axios.get(
-            `${Url}api/socials/google?access_token=${user.accessToken}`
+            `${Ur2}api/socials/google?access_token=${user.accessToken}`
           );
           if (data) {
             console.log(data)
@@ -46,11 +46,6 @@ const Index = ({user}) => {
                 );
           }
         } catch (error: any) {
-          // setLoading(false);
-          // NotifyMessage({
-          //   message: error.message,
-          //   type: 'error',
-          // });
         }
       }
 
@@ -105,7 +100,7 @@ const Index = ({user}) => {
                 className="py-4"
                 onClick={() => router.push('/sell/products/create')}
               >
-                <BsFillPlusCircleFill size={60} />
+                <FaCartPlus size={60} />
               </span>
               <span className="text-center text-lg">
                 Post an advert for <br /> free!
