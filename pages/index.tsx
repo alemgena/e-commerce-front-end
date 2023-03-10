@@ -1,6 +1,6 @@
 import React, { useEffect ,useState} from 'react';
 import { AiOutlineHeart } from 'react-icons/ai';
-import { BsFillPlusCircleFill } from 'react-icons/bs';
+import { FaCartPlus } from 'react-icons/fa';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import MegaMenu from '../components/menu/MegaMenu';
 import BannerImage from '../public/images/fashion-banner.webp';
@@ -8,7 +8,12 @@ import PageSpinner from '@/components/Ui/PageSpinner';
 import Norecords from '@/components/Ui/Norecords';
 import { Ur2 } from '@/utils/url';
 import {useRouter} from 'next/router'
+import { loginAction } from '@/store/login';
+import {getSession, useSession } from 'next-auth/client';
+//import { signIn, signOut, useSession } from 'next-auth/client';
 import NextLink from 'next/link';
+import axios from 'axios';
+import { Url } from '@/utils/url';
 import { GET_PRODUCTS_BY_FEATURED } from '@/types';
 type AdsProp = {
   name: string;
@@ -18,7 +23,38 @@ type AdsProp = {
   imagesURL:string[],
   id:string
 };
-const Index = () => {
+const Index = ({user}) => {
+    console.log('aaa', user?.accessToken);
+  useEffect(() => {
+   if(user){
+      async function fetchData() {
+        try {
+          const { data } = await axios.get(
+            `${Ur2}api/socials/google?access_token=${user.accessToken}`
+          );
+          if (data) {
+            console.log(data)
+            loginAction.setLoggedUser(data);
+          loginAction.setIsUserLogged(true)
+              localStorage.setItem(
+                'token',
+                data.data.tokens.access.token
+              );
+                localStorage.setItem(
+                  'userInfo',
+                  JSON.stringify(data.data)
+                );
+          }
+        } catch (error: any) {
+        }
+      }
+
+      fetchData();
+
+   }
+  }, [user]);
+
+    //
   const router=useRouter()
   const dispatch=useDispatch()
   const products = useSelector(
@@ -64,7 +100,7 @@ const Index = () => {
                 className="py-4"
                 onClick={() => router.push('/sell/products/create')}
               >
-                <BsFillPlusCircleFill size={60} />
+                <FaCartPlus size={60} />
               </span>
               <span className="text-center text-lg">
                 Post an advert for <br /> free!
@@ -124,3 +160,7 @@ const Index = () => {
   );
 };
 export default Index;
+Index.getInitialProps = async (context: any) => {
+  const session:any = await getSession(context);
+  return { user: session };
+};

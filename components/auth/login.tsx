@@ -9,39 +9,48 @@ import { CurrentTab } from './modal';
 import { LOGIN } from '@/types';
 import { loginAction } from '../../store/login';
 import Notify from '../../components/Ui/Notify'
+import { signIn, signOut, getSession, useSession } from 'next-auth/client';
 import Notification from '../../components/Ui/Notification'
 interface ILoginProps {
   onClose: () => void;
   setCurrentTab: (tab: CurrentTab) => void;
   setOpen: (open: boolean) => void;
+  stars:any
 }
-export const Login: React.FC<ILoginProps> = ({ onClose,setOpen, setCurrentTab }) => {
-    const { NotifyMessage, notify, setNotify } = Notify();
+export const Login: React.FC<ILoginProps> = ({
+  onClose,
+  setOpen,
+  setCurrentTab,
+}) => {
+  const { NotifyMessage, notify, setNotify } = Notify();
   const dispatch = useDispatch();
   const [submit, setSubmit] = React.useState(false);
   const { input, password } = useSelector(
     (state: RootStateOrAny) => state.login.inputValues
   );
   const { inputErr, passwordErr } = useSelector(
-    (state: RootStateOrAny) => state.login.inputErrors);
+    (state: RootStateOrAny) => state.login.inputErrors
+  );
   const { error, loggedUser, isLoading } = useSelector(
     (state: RootStateOrAny) => state.login
   );
+  const handleLogin = () => {
+    signIn('google');
+  };
   useEffect(() => {
-     if (error && submit) {
-       NotifyMessage({
-         message: error.message,
-         type: 'error',
-       });
-     }
-  
+    if (error && submit) {
+      NotifyMessage({
+        message: error.message,
+        type: 'error',
+      });
+    }
   }, [error]);
   useEffect(() => {
     if (loggedUser && submit) {
-  setOpen(false)
+      setOpen(false);
     }
   }, [loggedUser]);
-    const validate = (event: React.FormEvent<HTMLFormElement>) => {
+  const validate = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Resetting input errors to default
     dispatch(loginAction.setInputErr(''));
@@ -50,24 +59,20 @@ export const Login: React.FC<ILoginProps> = ({ onClose,setOpen, setCurrentTab })
 
     if (input.length < 4) {
       dispatch(
-        loginAction.setInputErr(
-          'Email or Phone must be atleast 4 characters!'
-        )
+        loginAction.setInputErr('Email or Phone must be atleast 4 characters!')
       );
       isValid = false;
     }
-     if (password.length < 6) {
+    if (password.length < 6) {
       dispatch(
-        loginAction.setPasswordErr(
-          'Password must be atleast 6 characters!'
-        )
+        loginAction.setPasswordErr('Password must be atleast 6 characters!')
       );
       isValid = false;
     }
-    if(isValid){
-      handleSubmit()
+    if (isValid) {
+      handleSubmit();
     }
-  }
+  };
 
   const handleSubmit = () => {
     dispatch({ type: LOGIN, data: { input: input, password: password } });
@@ -151,7 +156,10 @@ export const Login: React.FC<ILoginProps> = ({ onClose,setOpen, setCurrentTab })
           <div className="h-0.5 flex-grow rounded-full bg-gray-100" />
         </div>
         <div className="flex gap-4">
-          <button className="flex items-center gap-2 rounded-md bg-gray-100 px-3 py-2 font-roboto-regular text-sm">
+          <button
+            onClick={() => handleLogin()}
+            className="flex items-center gap-2 rounded-md bg-gray-100 px-3 py-2 font-roboto-regular text-sm"
+          >
             <FcGoogle size={25} /> <p>Continute with Google</p>
           </button>
           <button className="flex items-center gap-2 rounded-md bg-gray-100 px-3 py-2 font-roboto-regular text-sm">
