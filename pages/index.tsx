@@ -57,7 +57,7 @@ const Index = () => {
               Click here
             </span>
           </div>
-          <div className=" h-60 w-1/4 rounded-md bg-orange-500 shadow">
+          <div className=" h-60 w-1/4 rounded-md  bg-blue-800  shadow">
             <div className="flex flex-col items-center justify-center p-6 text-center font-roboto-medium text-white">
               <span className="text-xl">Got something to sell?</span>
               <span
