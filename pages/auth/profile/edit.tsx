@@ -13,7 +13,7 @@ import { UPDATE_PROFILE } from '@/types';
 import { PhotoCamera } from '@mui/icons-material';
 import Notify from '@/components/Ui/Notify';
 import Notification from '@/components/Ui/Notification';
-import { Ur2 } from '@/utils/url';
+import { baseURL } from '@/config';
 function EditProfilePage() {
   const dispatch = useDispatch();
   const currentUser = useSelector(
@@ -106,7 +106,7 @@ function EditProfilePage() {
                   <>
                     {User.data.imageURL ? (
                       <img
-                        src={`${Ur2}/${User.data.imageURL}`}
+                        src={`${baseURL}/${User.data.imageURL}`}
                         width="100px"
                         height="100px"
                         alt=""

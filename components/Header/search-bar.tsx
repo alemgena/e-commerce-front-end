@@ -7,29 +7,33 @@ import { Listbox, Transition } from '@headlessui/react';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 const cities = [
- {name:'Addis Ababa'},
-  {name:'Afar'},
-  {name:'Amhara'},
-  {name:'Benishangul-Gumuz'},
-  {name:'Dire Dawa'},
-  {name:'Gambela'},
-  {name:'	Harari'},
-  {name:'Harari'},
-  {name:'Somali'},
-  {name:'Oromia'},
-  {name:'Tigray'},
-  {name:'SNNPR'},
-  {name:'Sidama'},
-  {name:'SWEPR'},
+  { name: 'Addis Ababa' },
+  { name: 'Afar' },
+  { name: 'Amhara' },
+  { name: 'Benishangul-Gumuz' },
+  { name: 'Dire Dawa' },
+  { name: 'Gambela' },
+  { name: '	Harari' },
+  { name: 'Harari' },
+  { name: 'Somali' },
+  { name: 'Oromia' },
+  { name: 'Tigray' },
+  { name: 'SNNPR' },
+  { name: 'Sidama' },
+  { name: 'SWEPR' },
 ];
 
 export function SearchBar() {
   const router = useRouter();
+  const [q, setQ] = useState('');
   const [selected, setSelected] = useState(cities[0]);
   const handleLogout = (event: any) => {
-router.push(`/product/${event}`);
-  
-};
+    router.push(`/product/${event}`);
+  };
+  const handleLSearch = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (q) router.push(`/search/${q}`);
+  };
 
   return (
     <div className="z-[100] flex font-roboto-regular">
@@ -47,7 +51,6 @@ router.push(`/product/${event}`);
           >
             <Listbox.Options className="absolute mt-1  w-full  rounded-md bg-white py-1  text-sm shadow-lg">
               {cities.map((city, cityIdx) => (
-            
                 <Listbox.Option
                   key={cityIdx}
                   className={({ active }) =>
@@ -61,16 +64,11 @@ router.push(`/product/${event}`);
                     <>
                       <span
                         className={`block truncate  ${
-                          selected
-                            ? 'font-roboto-medium text-blue-800'
-                            : ''
+                          selected ? 'font-roboto-medium text-blue-800' : ''
                         }`}
                         onClick={() => handleLogout(city.name)}
                       >
-                        
-                      
-                          {city.name}
-                        
+                        {city.name}
                       </span>
                       {selected ? (
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-blue-800">
@@ -80,17 +78,22 @@ router.push(`/product/${event}`);
                     </>
                   )}
                 </Listbox.Option>
-
               ))}
             </Listbox.Options>
           </Transition>
         </div>
       </Listbox>
-      <input
-        type="text"
-        placeholder="Search items"
-        className="w-80 rounded-r-lg bg-gray-300 px-3 py-2 text-sm placeholder-gray-700 focus:outline-none"
-      />
+      <form onSubmit={(e) => handleLSearch(e)}>
+        <input
+          value={q}
+          onChange={(e) => {
+            setQ(e.target.value);
+          }}
+          type="text"
+          placeholder="Search items"
+          className="w-80 rounded-r-lg bg-gray-300 px-3 py-2 text-sm placeholder-gray-700 focus:outline-none"
+        />
+      </form>
     </div>
   );
 }

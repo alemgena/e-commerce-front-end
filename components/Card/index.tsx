@@ -6,7 +6,7 @@ import { BsHeart } from 'react-icons/bs';
 // import StarRatingComponent from 'react-star-rating-component';
 // import Image from 'next/image';
 import Link from 'next/link';
-import { Ur2} from '@/utils/url';
+import { baseURL } from '@/config';
 import NextLink from 'next/link';
 // import ProductPrice from '../ProductPrice';
 import CardActions from './CardActions';
@@ -34,7 +34,7 @@ const Card = ({product}) => {
         <NextLink href={`/products/${product.id}`} passHref>
           <div className="w-full flex-shrink-0">
             <img
-              src={`${Ur2}/${product.imagesURL[0]}`}
+              src={`${baseURL}/${product.imagesURL[0]}`}
               className="h-52 w-full object-cover"
             />
             <div className="bg-white">

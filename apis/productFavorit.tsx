@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Ur2 } from '@/utils/url';
+import { baseURL } from '@/config';
 export const addFavoriteApi = async (data: string,config:any) =>
-  axios.post(`${Ur2}api/favorites`, data, config);
-export const getFavouriteAPI = async (config:any) => axios.get(`${Ur2}api/favorites`, config);
+  axios.post(`${baseURL}api/favorites`, data, config);
+export const getFavouriteAPI = async (config:any) => axios.get(`${baseURL}api/favorites`, config);

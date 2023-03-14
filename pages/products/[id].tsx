@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import { ADD_PRODUCT_FAVORITE } from '@/types';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
-import { Ur2, Url } from '@/utils/url';
+import { baseURL } from '@/config';
 import { RootStateOrAny, useSelector } from 'react-redux';
 import Notify from '@/components/Ui/Notify';
 import Notification from '@/components/Ui/Notification';
@@ -138,7 +138,7 @@ setRelatedClick(true)
       ) : (
         <div className=" bg-gray-50 px-12 pb-32">
           <div className="flex items-center gap-2 py-4  text-xl">
-            <FiArrowLeft />
+            <FiArrowLeft onClick={() => router.push('/')} />
             <h2>Product Detail</h2>
           </div>
           {productData.data && (
@@ -147,7 +147,7 @@ setRelatedClick(true)
                 <div>
                   {productImage && relatedClick ? (
                     <img
-                      src={`${Ur2}/${productImage}`}
+                      src={`${baseURL}/${productImage}`}
                       width="960px"
                       height="600px"
                       alt="oo"
@@ -155,7 +155,7 @@ setRelatedClick(true)
                     />
                   ) : (
                     <img
-                      src={`${Ur2}/${productData.data.product.imagesURL[0]}`}
+                      src={`${baseURL}/${productData.data.product.imagesURL[0]}`}
                       width="960px"
                       height="600px"
                       className="overflow-hidden rounded-sm object-cover"
@@ -166,7 +166,7 @@ setRelatedClick(true)
                       <>
                         {activeImage.map((image: any) => (
                           <img
-                            src={`${Ur2}/${image}`}
+                            src={`${baseURL}/${image}`}
                             width="full"
                             height="130px"
                             className={`cursor-pointer overflow-hidden rounded-sm object-cover ${
@@ -182,7 +182,7 @@ setRelatedClick(true)
                         {productData.data.product.imagesURL.map(
                           (image: any) => (
                             <img
-                              src={`${Ur2}/${image}`}
+                              src={`${baseURL}/${image}`}
                               width="full"
                               height="130px"
                               className={`cursor-pointer overflow-hidden rounded-sm object-cover ${
@@ -210,59 +210,65 @@ setRelatedClick(true)
                       {productData.data.product.price}
                     </h2>
                   </div>
-                    <div className="flex gap-6 rounded-md bg-white p-4 font-roboto-light shadow-sm">
-                      <Link href="/chat">
-                        <button className="flex-grow rounded-full bg-blue-800 py-2 text-white">
-                          Make an Offer
-                        </button>
-                      </Link>
-                      <button
-                        onClick={() => setShowContact(true)}
-                        className="flex items-center gap-2 rounded-full bg-white py-2 px-4 font-roboto-medium text-blue-800 ring-2 ring-blue-800"
-                      >
-                        <IoIosCall />
-                        <p>{showContact?  <p className="font-roboto-medium   text-blue-800">
+                  <div className="flex gap-6 rounded-md bg-white p-4 font-roboto-light shadow-sm">
+                    <Link href="/chat">
+                      <button className="flex-grow rounded-full bg-blue-800 py-2 text-white">
+                        Make an Offer
+                      </button>
+                    </Link>
+                    <button
+                      onClick={() => setShowContact(true)}
+                      className="flex items-center gap-2 rounded-full bg-white py-2 px-4 font-roboto-medium text-blue-800 ring-2 ring-blue-800"
+                    >
+                      <IoIosCall />
+                      <p>
+                        {showContact ? (
+                          <p className="font-roboto-medium   text-blue-800">
                             {productData.data.product.seller.phone}
-                          </p>:<p>Show Contact</p>}</p>
-                      </button>
-                      <button
-                        onClick={() => router.push('/chat')}
-                        className="flex items-center gap-2 rounded-full bg-white py-2 px-4 font-roboto-medium text-blue-800 ring-2 ring-blue-800"
-                      >
-                        <BsFillChatLeftTextFill />
-                        <p>Chat</p>
-                      </button>
-                      <button
-                        onClick={(e) => addFavorite(e)}
-                        className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400"
-                      >
-                        <BsHeart />
-                      </button>
+                          </p>
+                        ) : (
+                          <p>Show Contact</p>
+                        )}
+                      </p>
+                    </button>
+                    <button
+                      onClick={() => router.push('/chat')}
+                      className="flex items-center gap-2 rounded-full bg-white py-2 px-4 font-roboto-medium text-blue-800 ring-2 ring-blue-800"
+                    >
+                      <BsFillChatLeftTextFill />
+                      <p>Chat</p>
+                    </button>
+                    <button
+                      onClick={(e) => addFavorite(e)}
+                      className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400"
+                    >
+                      <BsHeart />
+                    </button>
 
-                      <FacebookShareButton
+                    <FacebookShareButton
+                      url={`http://liyumarket.com/products/${id}`}
+                      quote={''}
+                      hashtag={productData.data.product.name}
+                    >
+                      <FacebookIcon size={32} round />
+                    </FacebookShareButton>
+                    <Notification notify={notify} setNotify={setNotify} />
+                    <button className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400">
+                      <LinkedinShareButton
                         url={`http://liyumarket.com/products/${id}`}
-                        quote={''}
-                        hashtag={productData.data.product.name}
                       >
-                        <FacebookIcon size={32} round />
-                      </FacebookShareButton>
-                      <Notification notify={notify} setNotify={setNotify} />
-                      <button className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400">
-                        <LinkedinShareButton
-                          url={`http://liyumarket.com/products/${id}`}
-                        >
-                          <LinkedinIcon size={32} round />
-                        </LinkedinShareButton>
-                      </button>
-                      <button className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400">
-                        <TwitterShareButton
-                          url={`http://liyumarket.com/products/${id}`}
-                        >
-                          <TwitterIcon size={32} round />
-                        </TwitterShareButton>
-                      </button>
-                    </div>
-                  
+                        <LinkedinIcon size={32} round />
+                      </LinkedinShareButton>
+                    </button>
+                    <button className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400">
+                      <TwitterShareButton
+                        url={`http://liyumarket.com/products/${id}`}
+                      >
+                        <TwitterIcon size={32} round />
+                      </TwitterShareButton>
+                    </button>
+                  </div>
+
                   <div className="flex justify-between gap-6 rounded-md bg-white p-4 font-roboto-light shadow-sm">
                     <div className="flex items-center gap-14">
                       <h6 className="font-roboto-medium">Color</h6>
@@ -295,7 +301,7 @@ setRelatedClick(true)
                     </h2>
                     <div className="flex items-center gap-6">
                       <img
-                        src={`${Ur2}/${productData.data.product.imagesURL[0]}`}
+                        src={`${baseURL}/${productData.data.product.imagesURL[0]}`}
                         className="h-16 w-16 rounded-full object-cover"
                       />
                       <div>
@@ -346,7 +352,7 @@ setRelatedClick(true)
                             className="w-52 flex-shrink-0"
                           >
                             <img
-                              src={`${Ur2}/${data.imagesURL[0]}`}
+                              src={`${baseURL}/${data.imagesURL[0]}`}
                               className="h-52 w-full object-cover"
                             />
                             <div className="bg-white">

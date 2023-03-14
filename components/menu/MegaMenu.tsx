@@ -7,7 +7,7 @@ import { AiOutlineRight } from 'react-icons/ai';
 import { RxCaretDown, RxCaretUp } from 'react-icons/rx';
 import { RootStateOrAny, useSelector } from 'react-redux';
 import CategoryData from '../../lib/data/categories.json';
-import { Ur2 } from '@/utils/url';
+import { baseURL } from '@/config';
 import Link from 'next/link';
 import PageSpinner from '../Ui/PageSpinner';
 import Norecords from '../Ui/Norecords';
@@ -117,7 +117,7 @@ function MegaMenu() {
                       <div className="flex items-center gap-x-4">
                         <div>
                           <img
-                            src={`${Ur2}/${category.imageURL}`}
+                            src={`${baseURL}/${category.imageURL}`}
                             alt={category.name}
                             className="h-10 w-10"
                           />
@@ -211,7 +211,7 @@ function MegaMenu() {
                         <div>
                           {category.imageURL.length ? (
                             <img
-                              src={`${Ur2}/${category.imageURL[0]}`}
+                              src={`${baseURL}/${category.imageURL[0]}`}
                               alt={category.name}
                               className="h-10 w-10"
                             />

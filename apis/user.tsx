@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { Ur2 } from '@/utils/url';
+import { baseURL } from '@/config';
+
 import { config } from '@/utils/heder';
 export const updateProfileApi = async (data: string) =>
-  axios.patch(`${Ur2}api/users`, data, config);
-export const getUserAPI = async (id: string, config:any) =>
-  axios.get(`${Ur2}api/users/${id}`, config);
+  axios.patch(`${baseURL}api/users`, data, config);
+export const getUserAPI = async (id: string, config: any) =>
+  axios.get(`${baseURL}api/users/${id}`, config);

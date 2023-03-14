@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useRouter } from "next/router";
 import Breadcrumb from '@/components/BreadCrumb';
 import {RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import { Ur2, Url } from '@/utils/url';
+import { baseURL } from '@/config';
 export interface IProduct {
   image: any;
   name: string;
@@ -46,7 +46,7 @@ const categoryPage: NextPage<{
             <div className="h-30 relative block w-40 rounded-full bg-gray-50">
               <img
                 alt="name"
-                src={`${Ur2}/${data.imageURL[0]}`}
+                src={`${baseURL}/${data.imageURL[0]}`}
                 className="h-36 w-36 rounded-full object-none object-[59%_-4px] py-5"
               />
             </div>

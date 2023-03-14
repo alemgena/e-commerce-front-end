@@ -11,7 +11,8 @@ import Button from '@mui/material/Button';
 import Notify from '@/components/Ui/Notify';
 import Notification from '@/components/Ui/Notification';
 import axios from 'axios';
-import { Ur2 } from '@/utils/url';
+import { baseURL } from '@/config';
+import { useRouter } from 'next/router';
 const regions = [
   'Addis Ababa',
   'Afar',
@@ -29,6 +30,7 @@ const regions = [
   'SWEPR',
 ];
 const CreateProductPage = () => {
+  const router=useRouter();
   const { NotifyMessage, notify, setNotify } = Notify();
   const dispatch = useDispatch();
   const [category, setCategory] = useState<any>();
@@ -158,14 +160,14 @@ const CreateProductPage = () => {
       formData.append('images', item);
     });
     try {
-      const { data } = await axios.post(`${Ur2}api/products/`, productData, {
+      const { data } = await axios.post(`${baseURL}api/products/`, productData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       if (data.data) {
         await axios
-          .post(`${Ur2}api/products/uploadImages/${data.data.id}`, formData)
+          .post(`${baseURL}api/products/uploadImages/${data.data.id}`, formData)
           .then((response) => {
             if (response.data) {
               setLoading(false);
@@ -207,7 +209,7 @@ const CreateProductPage = () => {
       </Head>
       <div className=" bg-gray-50 px-12 pb-32">
         <div className="flex items-center gap-2 py-4  text-xl">
-          <FiArrowLeft />
+          <FiArrowLeft onClick={() => router.push('/')} />
           <h2>Sell Product</h2>
         </div>
         <Notification notify={notify} setNotify={setNotify} />

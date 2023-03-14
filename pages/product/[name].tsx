@@ -4,10 +4,11 @@ import { BsHeart } from 'react-icons/bs';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import PageSpinner from '@/components/Ui/PageSpinner';
-import { Ur2 } from '@/utils/url';
+import { baseURL } from '@/config';
 import Norecords from '@/components/Ui/Norecords';
 import Notification from '@/components/Ui/Notification';
 import Notify from '@/components/Ui/Notify';
+import NextLink from 'next/link';
 const ProdcutPage = () => {
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
@@ -18,7 +19,7 @@ const ProdcutPage = () => {
     async function fetchData() {
       try {
         const { data } = await axios.get(
-          `${Ur2}api/products?filters=[{"region":${JSON.stringify(name)}}]`
+          `${baseURL}api/products?filters=[{"region":${JSON.stringify(name)}}]`
         );
         if (data) {
           setLoading(false);
@@ -59,9 +60,10 @@ const ProdcutPage = () => {
                 {productData.length ? (
                   <>
                     {productData?.map((data: any) => (
+                           <NextLink href={`/products/${data.id}`} passHref>
                       <div key={data.toString()} className="w-full">
                         <img
-                          src={`${Ur2}/${data.imagesURL[0]}`}
+                          src={`${baseURL}/${data.imagesURL[0]}`}
                           className="h-52 w-full object-cover"
                         />
                         <div className="bg-white">
@@ -90,6 +92,7 @@ const ProdcutPage = () => {
                           </div>
                         </div>
                       </div>
+                      </NextLink>
                     ))}
                   </>
                 ) : (

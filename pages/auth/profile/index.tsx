@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import { GET_USER } from '@/types';
 import {useDispatch,useSelector,RootStateOrAny} from 'react-redux'
 import PageSpinner from '@/components/Ui/PageSpinner';
-import { Ur2 } from '@/utils/url';
+import { baseURL } from '@/config';
 import { AuthModal } from '@/components/auth';
 const ProfilePage = () => {
   const dispatch=useDispatch()
@@ -76,7 +76,7 @@ const ProfilePage = () => {
                   <div>
                     {User.data.imageURL ? (
                       <img
-                        src={`${Ur2}/${User.data.imageURL}`}
+                        src={`${baseURL}/${User.data.imageURL}`}
                         width="100px"
                         height="100px"
                         alt=""

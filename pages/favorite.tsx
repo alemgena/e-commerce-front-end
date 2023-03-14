@@ -8,7 +8,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { GET_FAVOURITE } from '@/types';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
-import { Ur2 } from '@/utils/url';
+import { baseURL } from '@/config';
 import { useRouter } from 'next/router';
 import { favoriteAction } from '@/store/favorite';
 import Norecords from '@/components/Ui/Norecords';
@@ -56,7 +56,7 @@ dispatch({type:GET_FAVOURITE,config:config})
                     >
                       <div className="flex flex-row">
                         <img
-                          src={`${Ur2}/${data.product.imagesURL[0]}`}
+                          src={`${baseURL}/${data.product.imagesURL[0]}`}
                           className="h-52 w-full object-cover"
                         />
                         <div className="-ml-10 mt-4 h-7 w-8 rounded-full bg-white ">

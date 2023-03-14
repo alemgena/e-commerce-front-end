@@ -1,4 +1,5 @@
 import axios from 'axios';
-import { Ur2 } from '@/utils/url';
+
+import { baseURL } from '@/config';
 export const forgetPasswordApi = async (email: string) =>
-  axios.patch(`${Ur2}api/auth/forgetPassword`, email);
+  axios.patch(`${baseURL}api/auth/forgetPassword`, email);
