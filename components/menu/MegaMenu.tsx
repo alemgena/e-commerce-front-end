@@ -126,7 +126,7 @@ function MegaMenu() {
                           <span className="text-lg text-main-secondary">
                             {category.name}
                           </span>
-                          <span className="text-main-secondary">2,697 ads</span>
+                          <span className="text-main-secondary">2,697 products</span>
                         </div>
                       </div>
                       <div>
@@ -218,10 +218,10 @@ function MegaMenu() {
                           ) : null}
                         </div>
                         <div className="flex flex-col">
-                          <span className="text-base text-main-secondary">
+                          <span className="cursor-pointer text-base text-main-secondary">
                             {category.name}
                           </span>
-                          <span className="text-sm">2,697 ads</span>
+                          <span className="text-sm">2,697 products</span>
                         </div>
                       </div>
                     </Link>

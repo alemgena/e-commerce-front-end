@@ -86,7 +86,7 @@ const Index = ({ user }) => {
           <>
             {adds && (
               <div className="ml-6 mr-6  grid  h-60 grid-cols-3 bg-gradient-to-r from-blue-800 via-blue-600 to-blue-500 ">
-                {adds.length && (
+                {adds.length ? (
                   <>
                     <div className="col-span-1 mt-4 ml-3 mb-2">
                       <img
@@ -112,7 +112,7 @@ const Index = ({ user }) => {
                       />{' '}
                     </div>
                   </>
-                )}
+                ) : null}
               </div>
             )}
           </>
@@ -126,7 +126,7 @@ const Index = ({ user }) => {
             <>
               {adds && (
                 <>
-                  {adds.length && (
+                  {adds.length ? (
                     <a href={adds[0].link} target="_blank">
                       <img
                         src={`${baseURL}/${adds[0].photo}`}
@@ -134,7 +134,7 @@ const Index = ({ user }) => {
                         alt="phone"
                       />
                     </a>
-                  )}
+                  ) : null}
                 </>
               )}
             </>
@@ -222,15 +222,17 @@ const Index = ({ user }) => {
           </div>
         </div>
         <div className="col-span-3 mr-6 w-1/4 bg-gray-400">
-          {adds.length && (
+          {adds && (
             <>
-              <a href={adds[1].link} target="_blank">
-                <img
-                  src={`${baseURL}/${adds[1].photo}`}
-                  className="h-80 w-full rounded-t-lg object-cover object-center"
-                  alt="phone"
-                />
-              </a>
+              {adds.length ? (
+                <a href={adds[1].link} target="_blank">
+                  <img
+                    src={`${baseURL}/${adds[1].photo}`}
+                    className="h-80 w-full rounded-t-lg object-cover object-center"
+                    alt="phone"
+                  />
+                </a>
+              ) : null}
             </>
           )}
         </div>
