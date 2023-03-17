@@ -1,4 +1,4 @@
 import axios from 'axios';
-import { Ur2 } from '@/utils/url';
+import { baseURL } from '@/config';
 export const loginApi = async (data: string) =>
-  axios.post(`${Ur2}api/auth/login`, data);
+  axios.post(`${baseURL}api/auth/login`, data);

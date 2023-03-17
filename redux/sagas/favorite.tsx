@@ -5,7 +5,7 @@ import { put, takeEvery } from 'redux-saga/effects';
 export function* addFavorite(actions:any): any {
   try {
     yield put(favoriteAction.setIsLoading(true));
-    const response = yield addFavoriteApi(actions.data);
+    const response = yield addFavoriteApi(actions.data,actions.config);
     yield put(favoriteAction.setFavorite(response.data));
     yield put(favoriteAction.setIsLoading(false));
   } catch (error: any) {
@@ -13,14 +13,14 @@ export function* addFavorite(actions:any): any {
     yield put(favoriteAction.setIsLoading(false));
   }
 }
-export function* getFavourite(): any {
+export function* getFavourite(actions: any): any {
   try {
     yield put(favoriteAction.setIsLoading(true));
-    const response = yield getFavouriteAPI();
+    const response = yield getFavouriteAPI(actions.config);
     yield put(favoriteAction.setProducts(response.data));
     yield put(favoriteAction.setIsLoading(false));
   } catch (error: any) {
-    console.log(error)
+    console.log(error);
     yield put(favoriteAction.setFavouriteError(error.response.data.error));
     yield put(favoriteAction.setIsLoading(false));
   }

@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import { ADD_PRODUCT_FAVORITE } from '@/types';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
-import { Ur2, Url } from '@/utils/url';
+import { baseURL } from '@/config';
 import { RootStateOrAny, useSelector } from 'react-redux';
 import Notify from '@/components/Ui/Notify';
 import Notification from '@/components/Ui/Notification';
@@ -23,13 +23,15 @@ import {
   LinkedinIcon,
   TwitterShareButton,
   TwitterIcon,
-  
 } from 'next-share';
 import { GET_PRODUCT } from '@/types';
 import PageSpinner from '@/components/Ui/PageSpinner';
 const Map = dynamic(() => import('@/components/map').then((mod) => mod.Map), {
   ssr: false,
 });
+// const DynamicHeader = dynamic(() => import('@/components/map'), {
+//   ssr: false,
+// });
 const options = [
   {
     id: 'o-1',
@@ -52,8 +54,7 @@ const options = [
 const colors = ['#ffffff', '#F62424', '#043CBE', '#5E5E5E', '#000000'];
 
 function ProductDetailPage() {
-  const dispatch = useDispatch();
-  const [product, setProduct] = useState<any>();
+  const dispatch = useDispatch()
   const router = useRouter();
   const { id } = router.query;
   const [activeImage, setActiveImage] = useState<any>([]);
@@ -70,40 +71,26 @@ function ProductDetailPage() {
   const favorite = useSelector((state: RootStateOrAny) => state.favorite);
   const { isLoading } = useSelector((state: RootStateOrAny) => state.product);
   useEffect(() => {
-    dispatch({ type: GET_PRODUCT, id: id });
-    if (products.data) {
-      let found = products.data.find(function (element: any) {
-        return element.id == id;
-      });
-      if (found) {
-        setRelatedProducts(
-          products.data.filter(
-            (product: any) =>
-              product.subCategory === found.subCategory &&
-              product.id != found.id
-          )
-        );
-        setProduct(found);
-        setProductImage(found.imagesURL[0]);
-        setActiveImage(found.imagesURL);
-      }
-    }
-    if (productData.data) {
-      console.log(productData.data);
-    }
+    dispatch({ type: GET_PRODUCT, id: id });  
   }, [id]);
   useEffect(() => {
-    if (productData.data) {
+    if (productData.data?.imagesURL) {
       setProductImage(productData.data.product.imagesURL[0]);
       setActiveImage(productData.data.product.imagesURL);
     }
-  }, [id]);
+    
+  }, []);
   const addFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
+    event.preventDefault();
+       let token=localStorage.getItem("token")
+        let config={ headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     const favorite = {
-      product:id
+      product: id,
     };
-    dispatch({ type: ADD_PRODUCT_FAVORITE, data: favorite });
+    dispatch({ type: ADD_PRODUCT_FAVORITE, data: favorite,config:config });
     setSubmit(true);
   };
   const [submit, setSubmit] = useState(false);
@@ -124,53 +111,62 @@ function ProductDetailPage() {
       });
     }
   }, [favorite.favorite]);
-
-  
+  const[relatedClick,setRelatedClick]=useState(false)
+  const handleRelated = (event: React.MouseEvent<HTMLButtonElement>) => {
+    console.log("Rrrr")
+setRelatedClick(true)
+  };
+  console.log(productImage)
   return (
     <>
       <Head>
         <title>Product Detail</title>
         <link rel="icon" href="/favicon.ico" />
-        {productData.data &&
+        <meta property="og:image:width" content="640" />
+        <meta property="og:image:height" content="442" />
+        <meta
+          property="og:description"
+          content=" This is description of post"
+        />
         <meta
           property="og:image"
-          content={`${Ur2}/${productData.data.product.imagesURL[0]}`}
+          content="http://165.232.42.207:3000/images/images-1677299251760.jpg"
         ></meta>
-}
       </Head>
       {isLoading ? (
         <PageSpinner />
       ) : (
         <div className=" bg-gray-50 px-12 pb-32">
           <div className="flex items-center gap-2 py-4  text-xl">
-            <FiArrowLeft />
+            <FiArrowLeft onClick={() => router.push('/')} />
             <h2>Product Detail</h2>
           </div>
           {productData.data && (
             <>
               <div className="grid grid-cols-2 gap-12 pb-20">
                 <div>
-                  {productImage ? (
+                  {productImage && relatedClick ? (
                     <img
-                      src={`${Ur2}/${productImage}`}
+                      src={`${baseURL}/${productImage}`}
                       width="960px"
                       height="600px"
+                      alt="oo"
                       className="overflow-hidden rounded-sm object-cover"
                     />
                   ) : (
                     <img
-                      src={`${Ur2}/${productData.data.product.imagesURL[0]}`}
+                      src={`${baseURL}/${productData.data.product.imagesURL[0]}`}
                       width="960px"
                       height="600px"
                       className="overflow-hidden rounded-sm object-cover"
                     />
                   )}
                   <div className="mt-6  grid grid-cols-4 gap-6">
-                    {activeImage.length ? (
+                    {activeImage.length && !relatedClick ? (
                       <>
                         {activeImage.map((image: any) => (
                           <img
-                            src={`${Ur2}/${image}`}
+                            src={`${baseURL}/${image}`}
                             width="full"
                             height="130px"
                             className={`cursor-pointer overflow-hidden rounded-sm object-cover ${
@@ -186,7 +182,7 @@ function ProductDetailPage() {
                         {productData.data.product.imagesURL.map(
                           (image: any) => (
                             <img
-                              src={`${Ur2}/${image}`}
+                              src={`${baseURL}/${image}`}
                               width="full"
                               height="130px"
                               className={`cursor-pointer overflow-hidden rounded-sm object-cover ${
@@ -214,76 +210,64 @@ function ProductDetailPage() {
                       {productData.data.product.price}
                     </h2>
                   </div>
-                  {showContact ? (
-                    <div className="flex items-center justify-between  rounded-md bg-white p-4 font-roboto-light shadow-sm">
-                      <div className="flex items-center gap-6">
-                        <img
-                          src="/images/product/product.png"
-                          className="h-12 w-12 rounded-full object-cover"
-                        />
-                        <div>
-                          <h2 className="font-roboto-medium text-sm">
-                            {productData.data.product.seller.first_name}
-                          </h2>
+                  <div className="flex gap-6 rounded-md bg-white p-4 font-roboto-light shadow-sm">
+                    <Link href="/chat">
+                      <button className="flex-grow rounded-full bg-blue-800 py-2 text-white">
+                        Make an Offer
+                      </button>
+                    </Link>
+                    <button
+                      onClick={() => setShowContact(true)}
+                      className="flex items-center gap-2 rounded-full bg-white py-2 px-4 font-roboto-medium text-blue-800 ring-2 ring-blue-800"
+                    >
+                      <IoIosCall />
+                      <p>
+                        {showContact ? (
                           <p className="font-roboto-medium   text-blue-800">
                             {productData.data.product.seller.phone}
                           </p>
-                        </div>
-                      </div>
-                      <IoIosCloseCircle
-                        className="cursor-pointer text-2xl text-gray-400"
-                        onClick={() => setShowContact(false)}
-                      />
-                    </div>
-                  ) : (
-                    <div className="flex gap-6 rounded-md bg-white p-4 font-roboto-light shadow-sm">
-                      <Link href="/chat">
-                        <button className="flex-grow rounded-full bg-blue-800 py-2 text-white">
-                          Make an Offer
-                        </button>
-                      </Link>
-                      <button
-                        onClick={() => setShowContact(true)}
-                        className="flex items-center gap-2 rounded-full bg-white py-2 px-4 font-roboto-medium text-blue-800 ring-2 ring-blue-800"
-                      >
-                        <IoIosCall />
-                        <p>Call</p>
-                      </button>
-                      <button className="flex items-center gap-2 rounded-full bg-white py-2 px-4 font-roboto-medium text-blue-800 ring-2 ring-blue-800">
-                        <BsFillChatLeftTextFill />
-                        <p>Chat</p>
-                      </button>
-                      <button
-                        onClick={(e) => addFavorite(e)}
-                        className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400"
-                      >
-                        <BsHeart />
-                      </button>
+                        ) : (
+                          <p>Show Contact</p>
+                        )}
+                      </p>
+                    </button>
+                    <button
+                      onClick={() => router.push('/chat')}
+                      className="flex items-center gap-2 rounded-full bg-white py-2 px-4 font-roboto-medium text-blue-800 ring-2 ring-blue-800"
+                    >
+                      <BsFillChatLeftTextFill />
+                      <p>Chat</p>
+                    </button>
+                    <button
+                      onClick={(e) => addFavorite(e)}
+                      className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400"
+                    >
+                      <BsHeart />
+                    </button>
 
-                      <FacebookShareButton
+                    <FacebookShareButton
+                      url={`http://liyumarket.com/products/${id}`}
+                      quote={''}
+                      hashtag={productData.data.product.name}
+                    >
+                      <FacebookIcon size={32} round />
+                    </FacebookShareButton>
+                    <Notification notify={notify} setNotify={setNotify} />
+                    <button className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400">
+                      <LinkedinShareButton
                         url={`http://liyumarket.com/products/${id}`}
-                        quote={''}
-                        hashtag={productData.data.product.name}
                       >
-                        <FacebookIcon size={32} round />
-                      </FacebookShareButton>
-                      <Notification notify={notify} setNotify={setNotify} />
-                      <button className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400">
-                        <LinkedinShareButton
-                          url={`http://liyumarket.com/products/${id}`}
-                        >
-                          <LinkedinIcon size={32} round />
-                        </LinkedinShareButton>
-                      </button>
-                      <button className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400">
-                        <TwitterShareButton
-                          url={`http://liyumarket.com/products/${id}`}
-                        >
-                          <TwitterIcon size={32} round />
-                        </TwitterShareButton>
-                      </button>
-                    </div>
-                  )}
+                        <LinkedinIcon size={32} round />
+                      </LinkedinShareButton>
+                    </button>
+                    <button className="flex items-center gap-2 py-2  font-roboto-light text-3xl text-gray-400">
+                      <TwitterShareButton
+                        url={`http://liyumarket.com/products/${id}`}
+                      >
+                        <TwitterIcon size={32} round />
+                      </TwitterShareButton>
+                    </button>
+                  </div>
 
                   <div className="flex justify-between gap-6 rounded-md bg-white p-4 font-roboto-light shadow-sm">
                     <div className="flex items-center gap-14">
@@ -308,7 +292,7 @@ function ProductDetailPage() {
                       Description
                     </h2>
                     <p className="text-sm text-gray-600">
-                      {product?.description}
+                      {productData.data.product.description}
                     </p>
                   </div>
                   <div className="  rounded-md bg-white p-4 font-roboto-light shadow-sm">
@@ -317,7 +301,7 @@ function ProductDetailPage() {
                     </h2>
                     <div className="flex items-center gap-6">
                       <img
-                        src={`${Ur2}/${productData.data.product.imagesURL[0]}`}
+                        src={`${baseURL}/${productData.data.product.imagesURL[0]}`}
                         className="h-16 w-16 rounded-full object-cover"
                       />
                       <div>
@@ -359,33 +343,47 @@ function ProductDetailPage() {
                 <h2 className="font-roboto-bold text-xl">RELATED PRODUCTS</h2>
                 <div className="flex w-full gap-4 overflow-x-auto scrollbar-hide">
                   {productData.data.relatedProducts.map((data: any) => (
-                    <div key={data.toString()} className="w-52 flex-shrink-0">
-                      <img
-                        src={`${Ur2}/${data.imagesURL[0]}`}
-                        className="h-52 w-full object-cover"
-                      />
-                      <div className="bg-white">
-                        <div className="flex flex-col gap-3 p-2">
-                          <h6 className="text-sm text-gray-500">{data.name}</h6>
-                          <div className="flex items-center justify-between">
-                            <h6 className="font-roboto-bold ">{data.price}</h6>
-                            <h6 className="rounded-full bg-gray-100 px-3 py-1">
-                              Used
-                            </h6>
-                          </div>
-                        </div>
-                        <div className="h-0.5 w-full bg-gray-200" />
-                        <div className="flex  gap-6  rounded-md p-2 font-roboto-light">
-                          <button className=" rounded-full bg-blue-800 px-3 py-2 text-sm text-white">
-                            Make Offer
-                          </button>
+                    <>
+                      {data.id !== id && (
+                        <NextLink href={`/products/${data.id}`} passHref>
+                          <div
+                            key={data.toString()}
+                            onClick={(e) => handleRelated(e)}
+                            className="w-52 flex-shrink-0"
+                          >
+                            <img
+                              src={`${baseURL}/${data.imagesURL[0]}`}
+                              className="h-52 w-full object-cover"
+                            />
+                            <div className="bg-white">
+                              <div className="flex flex-col gap-3 p-2">
+                                <h6 className="text-sm text-gray-500">
+                                  {data.name}
+                                </h6>
+                                <div className="flex items-center justify-between">
+                                  <h6 className="font-roboto-bold ">
+                                    {data.price}
+                                  </h6>
+                                  <h6 className="rounded-full bg-gray-100 px-3 py-1">
+                                    Used
+                                  </h6>
+                                </div>
+                              </div>
+                              <div className="h-0.5 w-full bg-gray-200" />
+                              <div className="flex  gap-6  rounded-md p-2 font-roboto-light">
+                                <button className=" rounded-full bg-blue-800 px-3 py-2 text-sm text-white">
+                                  Make Offer
+                                </button>
 
-                          <button className="flex flex-grow items-center justify-center  font-roboto-light text-xl text-gray-400">
-                            <BsHeart />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
+                                <button className="flex flex-grow items-center justify-center  font-roboto-light text-xl text-gray-400">
+                                  <BsHeart />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </NextLink>
+                      )}
+                    </>
                   ))}
                 </div>
               </div>

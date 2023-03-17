@@ -7,7 +7,7 @@ import { AiOutlineRight } from 'react-icons/ai';
 import { RxCaretDown, RxCaretUp } from 'react-icons/rx';
 import { RootStateOrAny, useSelector } from 'react-redux';
 import CategoryData from '../../lib/data/categories.json';
-import { Ur2 } from '@/utils/url';
+import { baseURL } from '@/config';
 import Link from 'next/link';
 import PageSpinner from '../Ui/PageSpinner';
 import Norecords from '../Ui/Norecords';
@@ -103,34 +103,39 @@ function MegaMenu() {
                 <div className="pb-2" />
 
                 {categoriesData.data.map((category: CategoryProps) => (
-                  <div
-                    id={category.id.toString()}
-                    key={category.id}
-                    onMouseEnter={(e) => {
-                      e.stopPropagation();
-                      setHoveredCategoryId(category.id);
-                    }}
-                    className="mb-2 flex items-center justify-between pl-2 pr-4"
-                  >
-                    <div className="flex items-center gap-x-4">
+                  <>
+                    {category.subcategory.length?
+                    <div
+                      id={category.id.toString()}
+                      key={category.id}
+                      onMouseEnter={(e) => {
+                        e.stopPropagation();
+                        setHoveredCategoryId(category.id);
+                      }}
+                      className="mb-2 flex items-center justify-between pl-2 pr-4"
+                    >
+                      <div className="flex items-center gap-x-4">
+                        <div>
+                          <img
+                            src={`${baseURL}/${category.imageURL}`}
+                            alt={category.name}
+                            className="h-10 w-10"
+                          />
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="text-lg text-main-secondary">
+                            {category.name}
+                          </span>
+                          <span className="text-main-secondary">2,697 products</span>
+                        </div>
+                      </div>
                       <div>
-                        <img
-                          src={`${Ur2}/${category.imageURL}`}
-                          alt={category.name}
-                          className="h-10 w-10"
-                        />
+                        <AiOutlineRight size={14} />
                       </div>
-                      <div className="flex flex-col">
-                        <span className="text-lg text-main-secondary">
-                          {category.name}
-                        </span>
-                        <span className="text-main-secondary">2,697 ads</span>
-                      </div>
-                    </div>
-                    <div>
-                      <AiOutlineRight size={14} />
-                    </div>
-                  </div>
+                    </div>:null
+}
+                  </>
+                    
                 ))}
                 <span>{hasData && <Norecords col={5} />}</span>
                 <div
@@ -206,17 +211,17 @@ function MegaMenu() {
                         <div>
                           {category.imageURL.length ? (
                             <img
-                              src={`${Ur2}/${category.imageURL[0]}`}
+                              src={`${baseURL}/${category.imageURL[0]}`}
                               alt={category.name}
                               className="h-10 w-10"
                             />
                           ) : null}
                         </div>
                         <div className="flex flex-col">
-                          <span className="text-base text-main-secondary">
+                          <span className="cursor-pointer text-base text-main-secondary">
                             {category.name}
                           </span>
-                          <span className="text-sm">2,697 ads</span>
+                          <span className="text-sm">2,697 products</span>
                         </div>
                       </div>
                     </Link>

@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { IActiveMenuItemRootState } from '@/lib/types/activeMenuItem';
 import { IDropDown } from '@/lib/types/dropDown';
 import { megaMenuActions } from '@/store/megaMenu-slice';
-import { Ur2 } from '@/utils/url';
+import { baseURL } from '@/config';
 interface Props {
   subMenuItems: IDropDown[] | undefined;
   mainTitle: string;
@@ -40,7 +40,7 @@ const SubMenu: React.FC<Props> = ({ subMenuItems, mainTitle }) => {
                 key={`${menuTitle}-${index}`}
               >
                 <img
-                  src={`${Ur2}/${menuTitle.imageURL[0]}`}
+                  src={`${baseURL}/${menuTitle.imageURL[0]}`}
                   className="mr-5  h-10 rounded-full object-cover"
                 />
                 <Link

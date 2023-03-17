@@ -4,7 +4,7 @@
 import React,{useEffect,useState} from 'react';
 import { useSelector,useDispatch, RootStateOrAny } from 'react-redux';
 import { GET_SHOPS } from '@/types';
-import { Ur2, Url } from '@/utils/url';
+import { baseURL } from '@/config';
 const featuredShop = () => {
   const dispatch=useDispatch()
   const[shops,setShops]=useState<any>([])
@@ -29,7 +29,7 @@ const featuredShop = () => {
         {shops.map((data:any) => (
           <div key={data.toString()} className="w-52 flex-shrink-0">
             <img
-              src={`${Ur2}/${data.logo}`}
+              src={`${baseURL}/${data.logo}`}
               className="h-52 w-full rounded-full object-cover"
             />
             <div className="bg-white">

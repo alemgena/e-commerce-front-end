@@ -18,10 +18,9 @@ import { IDropDown } from '@/lib/types/dropDown';
 import menuItems from '@/mock/menuItems';
 import { megaMenuActions } from '@/store/megaMenu-slice';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { Ur2 } from '@/utils/url';
+import { baseURL } from '@/config';
 import NoRecord from '../Ui/Norecords';
 import PageSpiner from '../Ui/PageSpinner';
-import { Category } from '@mui/icons-material';
 interface Props {
   onClick?: (
     submenu: IDropDown[] | undefined,
@@ -136,7 +135,7 @@ const MenuItems: React.FC<Props> = (props) => {
                           >
                             {/* <item.icon className="h-6 w-6 " /> */}
                             <img
-                              src={`${Ur2}/${item.imageURL}`}
+                              src={`${baseURL}/${item.imageURL}`}
                               className="h-10  rounded-full object-cover"
                             />
                             <div

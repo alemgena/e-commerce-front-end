@@ -1,8 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React,{useEffect,useState} from 'react';
 import Link from 'next/link';
-
-import { Ur2} from '../../utils/url';
+import { baseURL } from '@/config';
 import { RootStateOrAny, useSelector } from "react-redux";
 import Router, { useRouter } from 'next/router'
 import NextLink from 'next/link';
@@ -24,7 +23,7 @@ const index = () => {
                 <div className="h-30 relative block w-40 rounded-full bg-gray-50">
                   <img
                     alt="name"
-                    src={`${Ur2}/${data.imageURL}`}
+                    src={`${baseURL}/${data.imageURL}`}
                     className="h-36 w-36 rounded-full object-none object-[59%_-4px] py-5"
                   />
                 </div>

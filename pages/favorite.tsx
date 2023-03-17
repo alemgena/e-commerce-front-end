@@ -8,7 +8,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { GET_FAVOURITE } from '@/types';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
-import { Ur2 } from '@/utils/url';
+import { baseURL } from '@/config';
 import { useRouter } from 'next/router';
 import { favoriteAction } from '@/store/favorite';
 import Norecords from '@/components/Ui/Norecords';
@@ -17,7 +17,13 @@ function FavoritePage() {
    const favorite = useSelector((state: RootStateOrAny) => state.favorite);
       const dispatch = useDispatch();
         useEffect(() => {
-dispatch({type:GET_FAVOURITE})
+              let token = localStorage.getItem('token');
+              let config = {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              };
+dispatch({type:GET_FAVOURITE,config:config})
         },[])
       
                useEffect(() => {
@@ -43,14 +49,14 @@ dispatch({type:GET_FAVOURITE})
             {favorite.products.data.length?(
               <>
                 {favorite.products.data.map((data:any) => (
-                  <Link href={`/products/${data.id}`}>
+                  <Link href={`/products/${data.product.id}`}>
                     <div
                       key={data.toString()}
                       className="mr-9 w-72 flex-shrink-0"
                     >
                       <div className="flex flex-row">
                         <img
-                          src={`${Ur2}/${data.product.imagesURL[0]}`}
+                          src={`${baseURL}/${data.product.imagesURL[0]}`}
                           className="h-52 w-full object-cover"
                         />
                         <div className="-ml-10 mt-4 h-7 w-8 rounded-full bg-white ">

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { RxAvatar } from 'react-icons/rx';
 import Head from 'next/head';
 import axios from 'axios';
-import { Ur2 } from '@/utils/url';
+import { baseURL } from '@/config';
 import Notify from '@/components/Ui/Notify';
 import Notification from '@/components/Ui/Notification';
 type changePassword = {
@@ -51,7 +51,7 @@ function ChangePasswordPage() {
     setLoading(true);
     try {
       const { data } = await axios.patch<changePassword>(
-        `${Ur2}api/users/changePassword`,
+        `${baseURL}api/users/changePassword`,
         {
           newPassword: password2,
           oldPassword: password1,

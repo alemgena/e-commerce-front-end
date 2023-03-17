@@ -5,11 +5,14 @@ import { RxCaretRight } from 'react-icons/rx';
 import { TbArrowsSort } from 'react-icons/tb';
 import { TfiLayoutGrid3Alt } from 'react-icons/tfi';
 import type { NextPage } from 'next';
-
 import Breadcrumb from '@/components/BreadCrumb';
-
 export interface AdsProp {
   price: string;
+}
+import {RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import { baseURL } from '@/config';
+export interface IProduct {
+  image: any;
   name: string;
   url: string;
   description: string;
