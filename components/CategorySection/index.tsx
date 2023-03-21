@@ -11,7 +11,7 @@ const index = () => {
   return (
     <>
       {md ? (
-        <div className="mt-20 grid w-full grid-flow-row grid-cols-2 gap-1 pl-10">
+        <div className="mt-20 ml-10 grid w-full grid-flow-row grid-cols-3 gap-1 pl-10">
           {categories.data && (
             <>
               {categories.data.map((data: any) => (
