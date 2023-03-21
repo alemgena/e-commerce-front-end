@@ -9,6 +9,7 @@ body {
   font-family: var(--font-family);
   background-color: rgb(var(--color-bg));
   color: rgb(var(--color-text-base));
+  width: fit-content;
 }
 
 a {
