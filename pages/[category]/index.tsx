@@ -7,6 +7,10 @@ import { TfiLayoutGrid3Alt } from 'react-icons/tfi';
 import type { NextPage } from 'next';
 import Breadcrumb from '@/components/BreadCrumb';
 export interface AdsProp {
+  location: ReactNode;
+  description: ReactNode;
+  url: string | undefined;
+  name: ReactNode;
   price: string;
 }
 import {RootStateOrAny, useDispatch, useSelector } from "react-redux";

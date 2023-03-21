@@ -2,8 +2,9 @@
 import React from 'react';
 import { BiSend } from 'react-icons/bi';
 import { FiArrowLeft } from 'react-icons/fi';
-
+import ProtectedRoute from '@/components/ProtectedRoute';
 const chat = () => (
+  <ProtectedRoute>
   <div className=" mx-11 mb-32 bg-white">
     <div className="my-4 flex items-center gap-2 bg-gray-50 py-4 text-xl">
       <FiArrowLeft />
@@ -188,6 +189,7 @@ const chat = () => (
       </div>
     </div>
   </div>
+  </ProtectedRoute>
 );
 
 export default chat;

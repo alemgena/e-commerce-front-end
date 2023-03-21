@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import Notify from '@/components/Ui/Notify';
 import axios from 'axios';
 import { Url } from '@/utils/url';
+import { baseURL } from '@/config';
 import NextLink from 'next/link';
 const SearchPage = () => {
      const [isLoading, setLoading] = useState(false);
@@ -18,7 +19,7 @@ const SearchPage = () => {
        async function fetchData() {
          try {
             
-           const { data } = await axios.get(`${Url}api/subcategories/byName/${name}`);
+           const { data } = await axios.get(`${baseURL}api/subcategories/byName/${name}`);
            console.log(data)
            if (data) {
              setLoading(false);
@@ -45,7 +46,7 @@ const SearchPage = () => {
      const handleProductSearch=async()=>{
             try {
               const { data } = await axios.get(
-                `${Url}api/products?filters=[{"name":${JSON.stringify(name)}}]`
+                `${baseURL}api/products?filters=[{"name":${JSON.stringify(name)}}]`
               );
               if (data) {
                 setLoading(false);
@@ -83,7 +84,7 @@ const SearchPage = () => {
                      <NextLink href={`/products/${data.id}`} passHref>
                   <div key={data.toString()} className="w-full">
                     <img
-                      src={`${Url}/${data.imagesURL[0]}`}
+                      src={`${baseURL}/${data.imagesURL[0]}`}
                       className="h-52 w-full object-cover"
                     />
                     <div className="bg-white">
@@ -119,7 +120,7 @@ const SearchPage = () => {
                          <NextLink href={`/products/${data.id}`} passHref>
                     <div key={data.toString()} className="w-full">
                       <img
-                        src={`${Url}/${data.imagesURL[0]}`}
+                        src={`${baseURL}/${data.imagesURL[0]}`}
                         className="h-52 w-full object-cover"
                       />
                       <div className="bg-white">

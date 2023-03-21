@@ -12,6 +12,8 @@ import Notify from '@/components/Ui/Notify';
 import Notification from '@/components/Ui/Notification';
 import axios from 'axios';
 import { baseURL } from '@/config';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import ProtectedRoute from '@/components/ProtectedRoute';
 import { useRouter } from 'next/router';
 const regions = [
   'Addis Ababa',
@@ -201,8 +203,13 @@ const CreateProductPage = () => {
   const optionAscending = [...productOptions].sort((a: any, b: any) =>
     a.name < b.name ? -1 : 1
   );
+    const [position, setPosition] = useState(null);
+
+    function handleClick(event:any) {
+      setPosition(event.latlng);
+    }
   return (
-    <>
+    <ProtectedRoute>
       <Head>
         <title>Sell Product</title>
         <link rel="icon" href="/favicon.ico" />
@@ -413,7 +420,20 @@ const CreateProductPage = () => {
           </div>
         </div>
       </div>
-    </>
+       <MapContainer center={[51.505, -0.09]} zoom={13} onClick={handleClick}>
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution="&copy; OpenStreetMap contributors"
+      />
+      {position && (
+        <Marker position={position}>
+          <Popup>
+            You clicked here! <button>Save</button>
+          </Popup>
+        </Marker>
+      )}
+    </MapContainer>
+    </ProtectedRoute>
   );
 };
 

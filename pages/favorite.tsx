@@ -10,6 +10,7 @@ import { GET_FAVOURITE } from '@/types';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { baseURL } from '@/config';
 import { useRouter } from 'next/router';
+import ProtectedRoute from '@/components/ProtectedRoute';
 import { favoriteAction } from '@/store/favorite';
 import Norecords from '@/components/Ui/Norecords';
 function FavoritePage() {
@@ -33,7 +34,7 @@ dispatch({type:GET_FAVOURITE,config:config})
                  }
                }, [favorite.viewFavouritError]);
   return (
-    <>
+    <ProtectedRoute>
       <Head>
         <title>Favorites</title>
         <link rel="icon" href="/favicon.ico" />
@@ -96,7 +97,7 @@ dispatch({type:GET_FAVOURITE,config:config})
         <Norecords col={5}/>
       )}
       </div>
-    </>
+    </ProtectedRoute>
   );
 }
 

@@ -29,7 +29,7 @@ export const AuthModal: React.FC<IAuthModalProps> = (props) => {
       }}
       showCloseIcon={false}
     >
-      <div className="flex w-full ">
+      <div className="flex w-full z-90">
         <div className="flex h-full w-1/2 flex-col items-center justify-center bg-gray-100 ">
           <img src="/images/logo.svg" className="h-56  w-52" />
           <div className="mt-4 text-center font-roboto-bold text-4xl text-blue-800">
@@ -42,8 +42,7 @@ export const AuthModal: React.FC<IAuthModalProps> = (props) => {
             <Login
               setOpen={setOpen}
               onClose={onClose}
-              setCurrentTab={(tab: CurrentTab) => setCurrentTab(tab)}
-            />
+              setCurrentTab={(tab: CurrentTab) => setCurrentTab(tab)} stars={undefined}            />
           ) : currentTab === 'Register' ? (
             <Register
               onClose={onClose}

@@ -54,7 +54,7 @@ const options = [
 const colors = ['#ffffff', '#F62424', '#043CBE', '#5E5E5E', '#000000'];
 
 function ProductDetailPage() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
   const [activeImage, setActiveImage] = useState<any>([]);
@@ -71,26 +71,26 @@ function ProductDetailPage() {
   const favorite = useSelector((state: RootStateOrAny) => state.favorite);
   const { isLoading } = useSelector((state: RootStateOrAny) => state.product);
   useEffect(() => {
-    dispatch({ type: GET_PRODUCT, id: id });  
+    dispatch({ type: GET_PRODUCT, id: id });
   }, [id]);
   useEffect(() => {
     if (productData.data?.imagesURL) {
       setProductImage(productData.data.product.imagesURL[0]);
       setActiveImage(productData.data.product.imagesURL);
     }
-    
   }, []);
   const addFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-       let token=localStorage.getItem("token")
-        let config={ headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+    let token = localStorage.getItem('token');
+    let config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
     const favorite = {
       product: id,
     };
-    dispatch({ type: ADD_PRODUCT_FAVORITE, data: favorite,config:config });
+    dispatch({ type: ADD_PRODUCT_FAVORITE, data: favorite, config: config });
     setSubmit(true);
   };
   const [submit, setSubmit] = useState(false);
@@ -111,12 +111,12 @@ function ProductDetailPage() {
       });
     }
   }, [favorite.favorite]);
-  const[relatedClick,setRelatedClick]=useState(false)
+  const [relatedClick, setRelatedClick] = useState(false);
   const handleRelated = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log("Rrrr")
-setRelatedClick(true)
+    console.log('Rrrr');
+    setRelatedClick(true);
   };
-  console.log(productImage)
+  console.log(productImage);
   return (
     <>
       <Head>

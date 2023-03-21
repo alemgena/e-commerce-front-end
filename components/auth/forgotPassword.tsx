@@ -52,7 +52,14 @@ export const ForgotPassword: React.FC<IRegisterProps> = ({
       <div className="mb-12 flex items-center justify-between">
         <h5 className="font-roboto-medium text-lg">Reset Password</h5>
         <Notification notify={notify} setNotify={setNotify} />
-        <span className=" cursor-pointer" onClick={onClose}>
+        <span
+          className=" cursor-pointer"
+          onClick={() => {
+            onClose();
+            setCurrentTab('Login');
+          }}
+       
+        >
           <AiOutlineClose />
         </span>
       </div>
@@ -78,14 +85,15 @@ export const ForgotPassword: React.FC<IRegisterProps> = ({
               onChange={onChange}
             />
           </div>
-          {isLoading?
-          <button className="rounded-full bg-blue-800 py-2  font-roboto-light text-lg text-white">
-            Reseting ....
-          </button>:
-          <button className="rounded-full bg-blue-800 py-2  font-roboto-light text-lg text-white">
-            Reset
-          </button>
-}
+          {isLoading ? (
+            <button className="rounded-full bg-blue-800 py-2  font-roboto-light text-lg text-white">
+              Reseting ....
+            </button>
+          ) : (
+            <button className="rounded-full bg-blue-800 py-2  font-roboto-light text-lg text-white">
+              Reset
+            </button>
+          )}
         </form>
       </div>
     </div>

@@ -36,7 +36,7 @@ export function SearchBar() {
   };
 
   return (
-    <div className="z-[100] flex font-roboto-regular">
+    <div className=" flex font-roboto-regular">
       <Listbox value={selected} onChange={setSelected}>
         <div className="relative">
           <Listbox.Button className="flex w-40  justify-between gap-2 rounded-l-lg bg-blue-800 py-3 px-3 font-roboto-light text-sm text-white  ">
@@ -91,7 +91,7 @@ export function SearchBar() {
           }}
           type="text"
           placeholder="Search items"
-          className="w-80 rounded-r-lg bg-gray-300 px-3 py-2 text-sm placeholder-gray-700 focus:outline-none"
+          className="w-80 h-11 rounded-r-lg bg-gray-300 px-3 py-2 text-sm placeholder-gray-700 focus:outline-none"
         />
       </form>
     </div>

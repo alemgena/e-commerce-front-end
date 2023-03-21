@@ -29,33 +29,42 @@ export function NavItems() {
     }, []);
   return (
     <div className="flex items-center gap-8">
+        {isLogin || isUserLogged &&(
       <button
         onClick={() => router.push('/sell/products/create')}
         className="flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-800 via-blue-600 to-blue-500 px-4 py-2 text-white"
       >
         <AiOutlinePlusCircle size={20} /> <p>Sell</p>
       </button>
+)}
+
       <div className="flex gap-4">
-        <button className="relative">
-          <BiMessage size={30} className=" text-gray-900" />
-          <div className="absolute -top-2 -right-1 rounded-full bg-gradient-to-b from-blue-800 via-blue-600 to-blue-500 px-2 py-1 text-xs text-white">
-            <p>1</p>
-          </div>
-        </button>
-        <BiHeart
-          onClick={() => router.push('/favorite')}
-          size={30}
-          className="cursor-pointer text-gray-900"
-        />
-        <button
-          className="relative"
-          onClick={() => router.push('/notification')}
-        >
-          <IoIosNotificationsOutline size={30} className=" text-gray-900" />
-          <div className="absolute -top-2 -right-1 rounded-full bg-gradient-to-b from-blue-800 via-blue-600 to-blue-500 px-2 py-1 text-xs text-white">
-            <p>2</p>
-          </div>
-        </button>
+        {isLogin ||isUserLogged ? (
+            <button className="relative">
+              <BiMessage size={30} className=" text-gray-900" />
+              <div className="absolute -top-2 -right-1 rounded-full bg-gradient-to-b from-blue-800 via-blue-600 to-blue-500 px-2 py-1 text-xs text-white">
+                <p>1</p>
+              </div>
+            </button>):null}
+        {isLogin ||isUserLogged ? (
+            <BiHeart
+              onClick={() => router.push('/favorite')}
+              size={30}
+              className="cursor-pointer text-gray-900"
+            />):null
+          }
+          
+        {isLogin ||isUserLogged? (
+            <button
+              className="relative"
+              onClick={() => router.push('/notification')}
+            >
+              <IoIosNotificationsOutline size={30} className=" text-gray-900" />
+              <div className="absolute -top-2 -right-1 rounded-full bg-gradient-to-b from-blue-800 via-blue-600 to-blue-500 px-2 py-1 text-xs text-white">
+                <p>2</p>
+              </div>
+            </button>):null
+          }
       </div>
 
       {isLogin || isUserLogged ? (

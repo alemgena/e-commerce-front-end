@@ -11,7 +11,7 @@ class MyDocument extends Document {
           <meta charSet="utf-8" />
           <meta
             name="description"
-            content="A Next.JS Project using ESLint and Prettier to format code like Airbnb's style guidelines."
+            content="Liyu Market"
           />
         </Head>
         <body>

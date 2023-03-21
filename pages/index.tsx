@@ -8,12 +8,14 @@ import PageSpinner from '@/components/Ui/PageSpinner';
 import Norecords from '@/components/Ui/Norecords';
 import { baseURL } from '@/config';
 import { useRouter } from 'next/router';
+import { useMediaQuery } from 'react-responsive';
 import { loginAction } from '@/store/login';
 import { getSession, useSession } from 'next-auth/client';
 //import { signIn, signOut, useSession } from 'next-auth/client';
 import NextLink from 'next/link';
 import axios from 'axios';
 import { Ur2 } from '@/utils/url';
+import Category from '../components/CategorySection';
 import { GET_PRODUCTS_BY_FEATURED } from '@/types';
 type AdsProp = {
   name: string;
@@ -45,12 +47,14 @@ const Index = ({ user }) => {
       fetchData();
     }
   }, [user]);
+  const md = useMediaQuery({ query: '(max-width: 992px)' });
+  const sm = useMediaQuery({ query: '(max-width: 576px)' });
   useEffect(() => {
     setLoading(true);
     async function fetchAdds() {
       try {
         const { data } = await axios.get(`${baseURL}api/advertisement`);
-        if (data) setAdds(data.data);
+        setAdds(data.data);
         setLoading(false);
       } catch (error: any) {
         setLoading(false);
@@ -78,75 +82,17 @@ const Index = ({ user }) => {
   }, [products.data]);
   //
   return (
-    <div>
-      <>
-        {loading ? (
-          <PageSpinner />
-        ) : (
-          <>
-            {adds && (
-              <div className="ml-6 mr-6  grid  h-60 grid-cols-3 bg-gradient-to-r from-blue-800 via-blue-600 to-blue-500 ">
-                {adds.length ? (
-                  <>
-                    <div className="col-span-1 mt-4 ml-3 mb-2">
-                      <img
-                        src={`${baseURL}/${adds[2].photo}`}
-                        className="h-52 w-full rounded-t-lg object-cover object-center"
-                        alt="phone"
-                      />
-                    </div>
-                    <div className="col-span-1 mt-4 ml-3 mb-2">
-                      {' '}
-                      <img
-                        src={`${baseURL}/${adds[3].photo}`}
-                        className="h-52 w-full  rounded-t-lg object-cover object-center"
-                        alt="phone"
-                      />{' '}
-                    </div>
-                    <div className="col-span-1 mt-2 ml-3 mb-2 mr-2">
-                      {' '}
-                      <img
-                        src={`${baseURL}/${adds[4].photo}`}
-                        className="h-60 w-full rounded-t-lg object-cover object-center"
-                        alt="phone"
-                      />{' '}
-                    </div>
-                  </>
-                ) : null}
-              </div>
-            )}
-          </>
+      <div className="mt-10 gap-x-4 sm:w-full sm:flex-col md:flex  md:flex-row md:items-start md:justify-between  md:overflow-hidden">
+        {!md && (
+          <div className=" mt-4 mb-10 w-1/3 sm:hidden md:ml-5 md:flex">
+            <MegaMenu />
+          </div>
         )}
-      </>
-      <div className="mt-10 grid grid-cols-4 gap-4 gap-x-4 sm:w-full sm:flex-col md:flex  md:flex-row md:items-start md:justify-between  md:overflow-hidden">
-        <div className="col-span-1 ml-6 w-1/4 bg-gray-400">
-          {isLoading ? (
-            <PageSpinner />
-          ) : (
-            <>
-              {adds && (
-                <>
-                  {adds.length ? (
-                    <a href={adds[0].link} target="_blank">
-                      <img
-                        src={`${baseURL}/${adds[0].photo}`}
-                        className="h-80 w-full rounded-t-lg object-cover object-center"
-                        alt="phone"
-                      />
-                    </a>
-                  ) : null}
-                </>
-              )}
-            </>
-          )}
-        </div>
-        <div className="col-span-1 mt-4 mb-10 w-1/3 bg-gray-200 sm:hidden md:ml-5 md:flex">
-          <MegaMenu />
-        </div>
-        <div className="col-span-3 mr-6 flex w-11/12 flex-col bg-gray-200">
+
+        <div className="mr-6 flex w-11/12 flex-col">
           <div className="top-0 z-0 mt-4 flex justify-between gap-x-6">
             <div
-              className="flex h-52 w-3/4 flex-col  rounded-md bg-cover bg-center p-10 shadow"
+              className="flex h-60 w-3/4 flex-col  rounded-md bg-cover bg-center p-10 shadow"
               style={{
                 backgroundImage: 'url("/images/fashion-banner.webp")',
               }}
@@ -159,7 +105,7 @@ const Index = ({ user }) => {
               </span>
             </div>
             <div className=" h-60 w-1/4 rounded-md  bg-blue-800  shadow">
-              <div className="mb-4 flex flex-col items-center justify-center p-6 text-center font-roboto-medium text-white">
+              <div className=" flex flex-col items-center justify-center p-6 text-center font-roboto-medium text-white">
                 <span className="text-xl">Got something to sell?</span>
                 <span
                   className="py-4"
@@ -173,8 +119,12 @@ const Index = ({ user }) => {
               </div>
             </div>
           </div>
-
-          <div className="mt-2 flex flex-col">
+          
+          {md && 
+          <div>
+          <Category />
+          </div>}
+          <div className="mt-2 ml-10 flex flex-col">
             <div className="mb-5">
               <span className="font-roboto-bold text-2xl text-main-secondary">
                 Trending products
@@ -221,23 +171,10 @@ const Index = ({ user }) => {
             )}
           </div>
         </div>
-        <div className="col-span-3 mr-6 w-1/4 bg-gray-400">
-          {adds && (
-            <>
-              {adds.length ? (
-                <a href={adds[1].link} target="_blank">
-                  <img
-                    src={`${baseURL}/${adds[1].photo}`}
-                    className="h-80 w-full rounded-t-lg object-cover object-center"
-                    alt="phone"
-                  />
-                </a>
-              ) : null}
-            </>
-          )}
-        </div>
+
+
+
       </div>
-    </div>
   );
 };
 export default Index;
