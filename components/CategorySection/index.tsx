@@ -16,12 +16,7 @@ const index = () => {
             <>
               {categories.data.map((data: any) => (
                 <div className="w-36">
-                  <Link
-                    href={{
-                      pathname: 'subcategory',
-                      query: { name: data.name },
-                    }}
-                  >
+
                     <div className="h-30 relative block w-36 rounded-full bg-gray-50">
                       <img
                         alt="name"
@@ -29,7 +24,7 @@ const index = () => {
                         className="h-36 w-36 rounded-full object-none object-[59%_-4px] py-5"
                       />
                     </div>
-                  </Link>
+                
                   <h1 className="py-4 px-9 font-bold">{data.name}</h1>
                 </div>
               ))}

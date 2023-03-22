@@ -10,17 +10,25 @@ import Footer from '../Footer/footer';
 import { Header } from '../Header';
 import FetchData from '../fetchData';
 import store from '@/store/index';
+  import { useMediaQuery } from 'react-responsive';
+  import BottomNavbar from '../BottomNave';
 type Props = { children: React.ReactNode };
 
 export function Layout({ children }: Props) {
+      const md = useMediaQuery({ query: '(max-width: 576px)' });
   return (
     <Provider store={store}>
       <NextNProgress height={7} />
       <FetchData />
       <Header />
       <main>{children}</main>
+      {!md&&
       <Footer />
+}
       <ToastContainer autoClose={200} hideProgressBar position="top-right" />
+      {md&&
+      <BottomNavbar/>
+}
     </Provider>
   );
 }
