@@ -13,8 +13,9 @@ import Notification from '@/components/Ui/Notification';
 import axios from 'axios';
 import { baseURL } from '@/config';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
-import ProtectedRoute from '@/components/ProtectedRoute';
 import { useRouter } from 'next/router';
+import Protected from '@/components/protected/protected';
+import { useAppDispatch } from '@/store';
 const regions = [
   'Addis Ababa',
   'Afar',
@@ -32,9 +33,9 @@ const regions = [
   'SWEPR',
 ];
 const CreateProductPage = () => {
-  const router=useRouter();
+  const router = useRouter();
   const { NotifyMessage, notify, setNotify } = Notify();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [category, setCategory] = useState<any>();
   const [optionValues, setOptionsValues] = useState();
   const [valuesData, setValuesData] = useState<any>([]);
@@ -162,11 +163,15 @@ const CreateProductPage = () => {
       formData.append('images', item);
     });
     try {
-      const { data } = await axios.post(`${baseURL}api/products/`, productData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const { data } = await axios.post(
+        `${baseURL}api/products/`,
+        productData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (data.data) {
         await axios
           .post(`${baseURL}api/products/uploadImages/${data.data.id}`, formData)
@@ -203,67 +208,76 @@ const CreateProductPage = () => {
   const optionAscending = [...productOptions].sort((a: any, b: any) =>
     a.name < b.name ? -1 : 1
   );
-    const [position, setPosition] = useState(null);
+  const [position, setPosition] = useState(null);
 
-    function handleClick(event:any) {
-      setPosition(event.latlng);
-    }
+  function handleClick(event: any) {
+    setPosition(event.latlng);
+  }
   return (
-    <ProtectedRoute>
+    <Protected>
       <Head>
         <title>Sell Product</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className=" bg-gray-50 px-12 pb-32">
-        <div className="flex items-center gap-2 py-4  text-xl">
+      <div className="m-auto max-w-5xl px-6 md:px-8">
+        <div className="flex cursor-pointer items-center  gap-2  py-4 text-xl">
           <FiArrowLeft onClick={() => router.push('/')} />
           <h2>Sell Product</h2>
         </div>
         <Notification notify={notify} setNotify={setNotify} />
-        <div className="mt-4 flex">
-          <div className="w-1/3 px-16">
-            <div className="flex flex-col items-center justify-center gap-4 rounded-sm bg-white py-28 shadow-sm">
-              <div className="flex items-center justify-center rounded-full  p-6">
-                <Button
-                  style={{ marginLeft: '15px' }}
-                  variant="contained"
-                  component="label"
-                  startIcon={
-                    <AiOutlinePicture className="text-white" size={30} />
-                  }
-                >
-                  <input
-                    type="file"
-                    hidden
-                    accept="image/*"
-                    name="images"
-                    onChange={(e) => {
-                      setImage(e.target.files);
-                    }}
-                    multiple
-                  />
-                </Button>
-              </div>
-              <p className="font-roboto-light text-sm ">
-                Browse or drop picture here
-              </p>
-              <div className="text-red-600">{imageError}</div>
-            </div>
-          </div>
-          <div className="w-2/3 rounded-sm bg-white px-10 py-8 shadow-sm">
-            <form onSubmit={(e) => validate(e)} className="flex flex-col gap-4">
+        <div className="mt-4 grid grid-flow-row-dense gap-2 md:grid-cols-3">
+         <div>
+            <label className="text-blue border-blue hover:bg-blue-800 flex w-64 cursor-pointer flex-col items-center rounded-lg border bg-white px-4 py-6 uppercase tracking-wide shadow-lg hover:text-white">
+              <svg
+                className="h-8 w-8"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+              </svg>
+              <span className="mt-2 text-base leading-normal">
+                Select a file
+              </span>
               <input
-                type="text"
-                value={name}
+                type="file"
+                className="hidden"
+                accept="image/*"
+                name="images"
                 onChange={(e) => {
-                  dispatch(productAction.setName(e.target.value));
+                  setImage(e.target.files);
                 }}
-                placeholder="Name"
-                className="w-1/2 rounded-md bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
+                multiple
               />
-              <div className="text-red-600">{nameErr}</div>
-              <div className="flex gap-4">
-                <div className="w-1/2">
+            </label>
+            <div className="text-red-600">{imageError}</div>
+          </div>
+          <div className="col-span-3 rounded-sm bg-white shadow-sm md:col-span-2">
+            <form
+              onSubmit={(e) => validate(e)}
+              className="grid gap-2 px-2 py-4 md:grid-cols-2 md:gap-4 md:px-4"
+            >
+              <div>
+                <label
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="name"
+                >
+                  Name
+                </label>
+                <input
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  "
+                  type="text"
+                  value={name}
+                  id="name"
+                  placeholder="Enter product name"
+                  onChange={(e) => {
+                    dispatch(productAction.setName(e.target.value));
+                  }}
+                />
+                <p className="text-xs italic text-red-500">{nameErr}</p>
+              </div>
+              <div className="col-span-2 grid gap-4  md:grid-cols-2">
+                <div>
                   <SelectInput
                     type={'category'}
                     setValue={setCategory}
@@ -276,7 +290,7 @@ const CreateProductPage = () => {
                   <div className="text-red-600">{subcategoryErr}</div>
                 </div>
                 {category && (
-                  <div className="w-1/2">
+                  <div>
                     <SelectInput
                       setValue={setSubCategory}
                       value={subCategory}
@@ -291,7 +305,7 @@ const CreateProductPage = () => {
               </div>
 
               {productOptions.length ? (
-                <>
+                <div className="col-span-2">
                   <Grid container spacing={2} columns={16}>
                     {optionAscending.map((item: any) => (
                       <Grid item xs={8}>
@@ -311,83 +325,112 @@ const CreateProductPage = () => {
                       </Grid>
                     ))}
                   </Grid>
-                </>
+                </div>
               ) : null}
 
               {optionsErr && <div className="text-red-600">{optionsErr}</div>}
-              <textarea
-                value={description}
-                onChange={(e) => {
-                  dispatch(productAction.setDescription(e.target.value));
-                }}
-                rows={4}
-                placeholder="Description"
-                className="w-full resize-none rounded-md bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
-              ></textarea>
-              <div className="text-red-600">{descriptionErr}</div>
-              <div className="flex gap-4">
-                <div className="w-1/2 rounded-md bg-gray-100 p-3">
-                  <input
-                    value={price}
-                    onChange={(e) => {
-                      dispatch(productAction.setPrice(e.target.value));
-                    }}
-                    type="number"
-                    pattern="[0-9]*"
-                    placeholder="Price"
-                    className="w-full bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
-                  />
-                </div>
-                {priceErr && <div className="text-red-600">{priceErr}</div>}
-                <div className="w-1/2">
-                  <Autocomplete
-                    // className="w-1/2 rounded-md bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
-                    disablePortal
-                    value={region}
-                    id="combo-box-demo"
-                    options={regions}
-                    onChange={(event, newValue: any) => {
-                      handlRegion(newValue);
-                    }}
-                    renderInput={(params) => (
-                      <TextField {...params} label="Regions" />
-                    )}
-                  />
-                  {regionErr && <div className="text-red-600">{regionErr}</div>}
-                </div>
+
+              <div className="col-span-2">
+                <label
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="description"
+                >
+                  Description
+                </label>
+                <textarea
+                  className=" w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  "
+                  value={description}
+                  onChange={(e) => {
+                    dispatch(productAction.setDescription(e.target.value));
+                  }}
+                  id="description"
+                  rows={4}
+                  placeholder="Description"
+                ></textarea>
+                <p className="text-xs italic text-red-500">{descriptionErr}</p>
               </div>
-              <div className="flex gap-4">
-                <div className="w-1/2 rounded-md bg-gray-100 p-3">
-                  <input
-                    value={longitude}
-                    onChange={(e) => {
-                      dispatch(productAction.setLongitude(e.target.value));
-                    }}
-                    type="number"
-                    pattern="[0-9]*"
-                    placeholder="Longitude"
-                    className="w-full bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
-                  />
-                </div>
-                {longitudeErr && (
-                  <div className="text-red-600">{longitudeErr}</div>
-                )}
-                <div className="w-1/2 rounded-md bg-gray-100 p-3">
-                  <input
-                    value={latitude}
-                    onChange={(e) => {
-                      dispatch(productAction.setLatitude(e.target.value));
-                    }}
-                    type="number"
-                    pattern="[0-9]*"
-                    placeholder="Latitude"
-                    className="w-full bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
-                  />
-                </div>
-                {latitudeErr && (
-                  <div className="text-red-600">{latitudeErr}</div>
-                )}
+              <div>
+                <label
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="price"
+                >
+                  Price
+                </label>
+                <input
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  "
+                  type="number"
+                  id="price"
+                  pattern="[0-9]*"
+                  placeholder="Price"
+                  value={price}
+                  onChange={(e) => {
+                    dispatch(productAction.setPrice(e.target.value));
+                  }}
+                />
+                <p className="text-xs italic text-red-500">{priceErr}</p>
               </div>
+
+              <div>
+                <label
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="name"
+                >
+                  Name
+                </label>
+                <Autocomplete
+                  // className="w-1/2 rounded-md bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
+                  disablePortal
+                  value={region}
+                  id="combo-box-demo"
+                  options={regions}
+                  onChange={(event, newValue: any) => {
+                    handlRegion(newValue);
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Regions" />
+                  )}
+                />
+                <p className="text-xs italic text-red-500">{regionErr}</p>
+              </div>
+              <div>
+                <label
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="longitude"
+                >
+                  Longitude
+                </label>
+                <input
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  "
+                  type="number"
+                  id="longitude"
+                  value={longitude}
+                  onChange={(e) => {
+                    dispatch(productAction.setLongitude(e.target.value));
+                  }}
+                  pattern="[0-9]*"
+                />
+                <p className="text-xs italic text-red-500">{longitudeErr}</p>
+              </div>
+              <div>
+                <label
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="Latitude"
+                >
+                  Latitude
+                </label>
+                <input
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  "
+                  type="number"
+                  id="Latitude"
+                  value={latitude}
+                  onChange={(e) => {
+                    dispatch(productAction.setLatitude(e.target.value));
+                  }}
+                  pattern="[0-9]*"
+                />
+                <p className="text-xs italic text-red-500">{latitudeErr}</p>
+              </div>
+
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
@@ -406,12 +449,12 @@ const CreateProductPage = () => {
                 {loading ? (
                   <button
                     disabled
-                    className="w-full rounded-md bg-blue-800 py-3 font-roboto-regular text-sm text-white"
+                    className="font-roboto-regular w-full rounded-md bg-blue-800 py-3 text-sm text-white"
                   >
                     Adding...
                   </button>
                 ) : (
-                  <button className="w-full rounded-md bg-blue-800 py-3 font-roboto-regular text-sm text-white">
+                  <button className="font-roboto-regular w-full rounded-md bg-blue-800 py-3 text-sm text-white">
                     Add
                   </button>
                 )}
@@ -420,20 +463,20 @@ const CreateProductPage = () => {
           </div>
         </div>
       </div>
-       <MapContainer center={[51.505, -0.09]} zoom={13} onClick={handleClick}>
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution="&copy; OpenStreetMap contributors"
-      />
-      {position && (
-        <Marker position={position}>
-          <Popup>
-            You clicked here! <button>Save</button>
-          </Popup>
-        </Marker>
-      )}
-    </MapContainer>
-    </ProtectedRoute>
+      {/* <MapContainer center={[51.505, -0.09]} zoom={13} onClick={handleClick}>
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution="&copy; OpenStreetMap contributors"
+        />
+        {position && (
+          <Marker position={position}>
+            <Popup>
+              You clicked here! <button>Save</button>
+            </Popup>
+          </Marker>
+        )}
+      </MapContainer> */}
+    </Protected>
   );
 };
 

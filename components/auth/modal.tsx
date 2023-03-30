@@ -1,61 +1,36 @@
 /* eslint-disable react/function-component-definition */
-import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/store';
+import { closeModal, selectModal } from '@/store/modal';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 import { CustomModal } from '../modal';
 
-import { ForgotPassword } from './forgotPassword';
-import { Login } from './login';
-import { Register } from './register';
-
-interface IAuthModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  setOpen: (open: boolean) => void;
-}
-
 export type CurrentTab = 'Login' | 'Register' | 'ForgotPassword';
 
-export const AuthModal: React.FC<IAuthModalProps> = (props) => {
-  const { isOpen, onClose, setOpen } = props;
-  const [currentTab, setCurrentTab] = useState<CurrentTab>('Login');
+export const AuthModal: React.FC = () => {
+  const { isOpen, Component, closeable } = useAppSelector(selectModal);
+  const dispatch = useAppDispatch();
+  const handleClose = () => {
+    dispatch(closeModal());
+  };
+   const router = useRouter();
+
+   useEffect(() => {
+     dispatch(closeModal());
+   }, [router.pathname]);
   return (
     <CustomModal
       isOpen={isOpen}
-      onCancel={onClose}
-      width={1050}
+      onCancel={handleClose}
+      // width={1050}
       contentStyle={{
         display: 'flex',
         padding: 0,
       }}
-      showCloseIcon={false}
+      closeable={closeable}
     >
-      <div className="flex w-full z-90">
-        <div className="flex h-full w-1/2 flex-col items-center justify-center bg-gray-100 ">
-          <img src="/images/logo.svg" className="h-56  w-52" />
-          <div className="mt-4 text-center font-roboto-bold text-4xl text-blue-800">
-            <h1>LIYU DIGITAL </h1>
-            <h1>TECHNOLOGY</h1>
-          </div>
-        </div>
-        <div className="w-1/2 py-6 px-12">
-          {currentTab === 'Login' ? (
-            <Login
-              setOpen={setOpen}
-              onClose={onClose}
-              setCurrentTab={(tab: CurrentTab) => setCurrentTab(tab)} stars={undefined}            />
-          ) : currentTab === 'Register' ? (
-            <Register
-              onClose={onClose}
-              setCurrentTab={(tab: CurrentTab) => setCurrentTab(tab)}
-            />
-          ) : (
-            <ForgotPassword
-              onClose={onClose}
-              setCurrentTab={(tab: CurrentTab) => setCurrentTab(tab)}
-            />
-          )}
-        </div>
-      </div>
+      {Component && <Component />}
     </CustomModal>
   );
 };

@@ -1,19 +1,17 @@
-import { TableCell, TableRow, Typography } from "@mui/material";
-import React from "react"; 
+import { TableCell, TableRow, Typography } from '@mui/material';
+import React from 'react';
 import {
   HourglassEmptyRounded,
   HourglassEmptyOutlined,
-} from "@mui/icons-material";
+} from '@mui/icons-material';
 const Norecords = ({ col }) => {
   return (
-    <TableRow>
-      <TableCell colSpan={col} className="table-sm" align="center">
-        <Typography variant="h3">
-          No records.
-          <HourglassEmptyRounded color="primary" fontSize="inherit" />
-        </Typography>
-      </TableCell>
-    </TableRow>
+    <div className="flex w-full items-center justify-center py-8 px-2 md:p-16">
+      <Typography variant="h3">
+        No records.
+        <HourglassEmptyRounded color="primary" fontSize="inherit" />
+      </Typography>
+    </div>
   );
 };
 

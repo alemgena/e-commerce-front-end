@@ -71,9 +71,9 @@ export const registerSlice = createSlice({
     setRegistrationSuccessful: (state, action) => {
       state.registrationSuccessful = action.payload;
     },
-    setUserInfo: (state, action) => {
-      state.userInfo = action.payload;
-    },
+    // setUserInfo: (state, action) => {
+    //   state.userInfo = action.payload;
+    // },
   },
 });
 export const registerAction=registerSlice.actions

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { FaCartPlus } from 'react-icons/fa';
-import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
+import { RootStateOrAny, useSelector } from 'react-redux';
 import MegaMenu from '../components/menu/MegaMenu';
 import BannerImage from '../public/images/fashion-banner.webp';
 import PageSpinner from '@/components/Ui/PageSpinner';
@@ -17,6 +17,8 @@ import axios from 'axios';
 import { Ur2 } from '@/utils/url';
 import Category from '../components/CategorySection';
 import { GET_PRODUCTS_BY_FEATURED } from '@/types';
+import { setCredentials } from '@/store/auth';
+import { useAppDispatch } from '@/store';
 type AdsProp = {
   name: string;
   url: string;
@@ -26,6 +28,7 @@ type AdsProp = {
   id: string;
 };
 const Index = ({ user }) => {
+    const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
   const [adds, setAdds] = useState<any>([]);
   useEffect(() => {
@@ -36,8 +39,13 @@ const Index = ({ user }) => {
             `${baseURL}api/socials/google?access_token=${user.accessToken}`
           );
           if (data) {
-            loginAction.setLoggedUser(data);
-            loginAction.setIsUserLogged(true);
+            dispatch(
+              setCredentials({
+                user: data.data.user,
+                token: data.data.tokens.access.token,
+              })
+            );
+            // loginAction.setIsUserLogged(true);
             localStorage.setItem('token', data.data.tokens.access.token);
             localStorage.setItem('userInfo', JSON.stringify(data.data));
           }
@@ -64,7 +72,6 @@ const Index = ({ user }) => {
   }, []);
   //
   const router = useRouter();
-  const dispatch = useDispatch();
   const products = useSelector(
     (state: RootStateOrAny) => state.featuredProducts.featuredProducts
   );
@@ -82,99 +89,611 @@ const Index = ({ user }) => {
   }, [products.data]);
   //
   return (
-      <div className="mt-10 gap-x-4 sm:w-full sm:flex-col md:flex  md:flex-row md:items-start md:justify-between  md:overflow-hidden">
-        {!md && (
-          <div className=" mt-4 mb-10 w-1/3 sm:hidden md:ml-5 md:flex">
-            <MegaMenu />
-          </div>
-        )}
+    <div className="flex justify-between gap-x-4 px-2 md:px-6">
+      <div className=" hidden w-1/4 lg:block">
+        <MegaMenu />
+      </div>
 
-        <div className="mr-6 flex w-11/12 flex-col">
-          <div className="top-0 z-0 mt-4 flex justify-between gap-x-6">
-            <div
-              className="flex h-60 w-3/4 flex-col  rounded-md bg-cover bg-center p-10 shadow"
-              style={{
-                backgroundImage: 'url("/images/fashion-banner.webp")',
-              }}
-            >
-              <span className="mt-8 mr-2 font-roboto-bold text-5xl text-primary">
-                How to buy <br /> on Liyu?
-              </span>
-              <span className="mt-4 font-roboto-medium underline">
-                Click here
-              </span>
-            </div>
-            <div className=" h-60 w-1/4 rounded-md  bg-blue-800  shadow">
-              <div className=" flex flex-col items-center justify-center p-6 text-center font-roboto-medium text-white">
-                <span className="text-xl">Got something to sell?</span>
-                <span
-                  className="py-4"
-                  onClick={() => router.push('/sell/products/create')}
-                >
-                  <FaCartPlus size={48} />
-                </span>
-                <span className="mb:8 text-center text-lg">
-                  Post a product to sell For free!
-                </span>
-              </div>
-            </div>
+      <div className="flex w-full flex-col lg:w-3/4">
+        <div className="flex w-full justify-between gap-x-4">
+          <div
+            className="flex grow flex-col  rounded-md bg-cover bg-center p-10 shadow"
+            style={{
+              backgroundImage: 'url("/images/fashion-banner.webp")',
+              backgroundPosition: 'center center',
+            }}
+          >
+            <span className="font-sans-bold text-primary mt-8  text-4xl md:text-5xl">
+              How to buy <br /> on Liyu?
+            </span>
+            <span className="mt-4 font-sans underline">Click here</span>
           </div>
-          
-          {md && 
-          <div>
-          <Category />
-          </div>}
-          <div className="mt-2 ml-10 flex flex-col">
-            <div className="mb-5">
-              <span className="font-roboto-bold text-2xl text-main-secondary">
-                Trending products
+          <div
+            className=" hidden h-full w-1/4 cursor-pointer  rounded-md  bg-blue-800 shadow lg:block"
+            onClick={() => router.push('/sell/products/create')}
+          >
+            <div className="flex h-full flex-col items-center justify-center border border p-4 font-sans text-white">
+              <span className="text-center  text-xl">
+                Got something to sell?
+              </span>
+              <span className="py-4">
+                <FaCartPlus size={48} />
+              </span>
+              <span className="text-center text-lg">
+                Post a product to sell For free!
               </span>
             </div>
-            {isLoading ? (
-              <PageSpinner />
-            ) : (
-              <span>
-                {products.data && (
-                  <div className=" mb-20 grid grid-cols-4 gap-4">
-                    {products.data.map((ad: AdsProp, idx: number) => (
-                      <div
-                        key={idx.toString()}
-                        className=" flex max-h-max w-full flex-col justify-between rounded-lg bg-white font-roboto-regular shadow"
-                      >
-                        <NextLink href={`/products/${ad.id}`} passHref>
-                          <div className="relative">
-                            <div className="absolute left-0 bottom-0 flex h-7 w-8 items-center justify-center rounded-tr-lg bg-main-secondary bg-opacity-80">
-                              <span className="text-sm text-white">3</span>
-                            </div>
-                            <img
-                              src={`${baseURL}/${ad.imagesURL[0]}`}
-                              className="h-48 w-full rounded-t-lg object-cover object-center"
-                              alt="phone"
-                            />
-                            <div className="absolute right-0 -bottom-6 mr-3 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow">
-                              <AiOutlineHeart size={24} />
-                            </div>
-                          </div>
-                        </NextLink>
-                        <div className="flex flex-col px-4 pt-6 pb-6">
-                          <span className="text-lg">{ad.name}</span>
-                          <span className="text-base text-primary">
-                            ETB {ad.price}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                    <span>{hasData && <Norecords col={5} />}</span>
-                  </div>
-                )}
-              </span>
-            )}
           </div>
         </div>
 
+        <Category />
 
+        {isLoading ? (
+          <PageSpinner />
+        ) : (
+          <div className="mt-2 flex flex-col">
+            <div className="my-3">
+              <span className="font-roboto-bold text-main-secondary text-2xl">
+                Trending products
+              </span>
+            </div>
 
+            <span>
+              {products.data && (
+                <div className=" grid grid-cols-2 items-center justify-center gap-4 pb-8 sm:grid-cols-3 md:grid-cols-4">
+                  {products.data.map((ad: AdsProp, idx: number) => (
+                    <NextLink
+                      key={idx.toString()}
+                      href={`/products/${ad.id}`}
+                      passHref
+                    >
+                      <div className="w-full rounded-lg bg-white font-sans shadow-md">
+                        <a href="#">
+                          <img
+                            className="h-60 rounded-t-lg object-cover"
+                            src="https://www.monitor.co.ug/resource/image/1887520/landscape_ratio3x2/1620/1080/76560d3144b7acb949096672f5beab86/mm/car2-pic.jpg" // src={`${baseURL}/${ad.imagesURL[0]}`}
+                            alt="product image"
+                          />
+                        </a>
+                        {/* <span class="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white">
+                          Sale
+                        </span> */}
+                        <div className="mt-4 px-5 pb-5">
+                          <a href="#">
+                            <h5 className="text-lg tracking-tight text-slate-900">
+                              {ad.name}
+                            </h5>
+                          </a>
+
+                          <div className="flex items-center justify-between">
+                            <p>
+                              <span className=" text-lg font-bold text-primary-900 lg:text-2xl">
+                                ETB {ad.price}{' '}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </NextLink>
+                  ))}
+
+                  {products.data.map((ad: AdsProp, idx: number) => (
+                    <NextLink
+                      key={idx.toString()}
+                      href={`/products/${ad.id}`}
+                      passHref
+                    >
+                      <div className="w-full rounded-lg bg-white font-sans shadow-md">
+                        <a href="#">
+                          <img
+                            className="h-60 rounded-t-lg object-cover"
+                            src="https://www.monitor.co.ug/resource/image/1887520/landscape_ratio3x2/1620/1080/76560d3144b7acb949096672f5beab86/mm/car2-pic.jpg" // src={`${baseURL}/${ad.imagesURL[0]}`}
+                            alt="product image"
+                          />
+                        </a>
+                        {/* <span class="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white">
+                          Sale
+                        </span> */}
+                        <div className="mt-4 px-5 pb-5">
+                          <a href="#">
+                            <h5 className="text-lg tracking-tight text-slate-900">
+                              {ad.name}
+                            </h5>
+                          </a>
+
+                          <div className="flex items-center justify-between">
+                            <p>
+                              <span className=" text-lg font-bold text-primary-900 lg:text-2xl">
+                                ETB {ad.price}{' '}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </NextLink>
+                  ))}
+
+                  {products.data.map((ad: AdsProp, idx: number) => (
+                    <NextLink
+                      key={idx.toString()}
+                      href={`/products/${ad.id}`}
+                      passHref
+                    >
+                      <div className="w-full rounded-lg bg-white font-sans shadow-md">
+                        <a href="#">
+                          <img
+                            className="h-60 rounded-t-lg object-cover"
+                            src="https://www.monitor.co.ug/resource/image/1887520/landscape_ratio3x2/1620/1080/76560d3144b7acb949096672f5beab86/mm/car2-pic.jpg" // src={`${baseURL}/${ad.imagesURL[0]}`}
+                            alt="product image"
+                          />
+                        </a>
+                        {/* <span class="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white">
+                          Sale
+                        </span> */}
+                        <div className="mt-4 px-5 pb-5">
+                          <a href="#">
+                            <h5 className="text-lg tracking-tight text-slate-900">
+                              {ad.name}
+                            </h5>
+                          </a>
+
+                          <div className="flex items-center justify-between">
+                            <p>
+                              <span className=" text-lg font-bold text-primary-900 lg:text-2xl">
+                                ETB {ad.price}{' '}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </NextLink>
+                  ))}
+
+                  {products.data.map((ad: AdsProp, idx: number) => (
+                    <NextLink
+                      key={idx.toString()}
+                      href={`/products/${ad.id}`}
+                      passHref
+                    >
+                      <div className="w-full rounded-lg bg-white font-sans shadow-md">
+                        <a href="#">
+                          <img
+                            className="h-60 rounded-t-lg object-cover"
+                            src="https://www.monitor.co.ug/resource/image/1887520/landscape_ratio3x2/1620/1080/76560d3144b7acb949096672f5beab86/mm/car2-pic.jpg" // src={`${baseURL}/${ad.imagesURL[0]}`}
+                            alt="product image"
+                          />
+                        </a>
+                        {/* <span class="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white">
+                          Sale
+                        </span> */}
+                        <div className="mt-4 px-5 pb-5">
+                          <a href="#">
+                            <h5 className="text-lg tracking-tight text-slate-900">
+                              {ad.name}
+                            </h5>
+                          </a>
+
+                          <div className="flex items-center justify-between">
+                            <p>
+                              <span className=" text-lg font-bold text-primary-900 lg:text-2xl">
+                                ETB {ad.price}{' '}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </NextLink>
+                  ))}
+
+                  {products.data.map((ad: AdsProp, idx: number) => (
+                    <NextLink
+                      key={idx.toString()}
+                      href={`/products/${ad.id}`}
+                      passHref
+                    >
+                      <div className="w-full rounded-lg bg-white font-sans shadow-md">
+                        <a href="#">
+                          <img
+                            className="h-60 rounded-t-lg object-cover"
+                            src="https://www.monitor.co.ug/resource/image/1887520/landscape_ratio3x2/1620/1080/76560d3144b7acb949096672f5beab86/mm/car2-pic.jpg" // src={`${baseURL}/${ad.imagesURL[0]}`}
+                            alt="product image"
+                          />
+                        </a>
+                        {/* <span class="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white">
+                          Sale
+                        </span> */}
+                        <div className="mt-4 px-5 pb-5">
+                          <a href="#">
+                            <h5 className="text-lg tracking-tight text-slate-900">
+                              {ad.name}
+                            </h5>
+                          </a>
+
+                          <div className="flex items-center justify-between">
+                            <p>
+                              <span className=" text-lg font-bold text-primary-900 lg:text-2xl">
+                                ETB {ad.price}{' '}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </NextLink>
+                  ))}
+
+                  {products.data.map((ad: AdsProp, idx: number) => (
+                    <NextLink
+                      key={idx.toString()}
+                      href={`/products/${ad.id}`}
+                      passHref
+                    >
+                      <div className="w-full rounded-lg bg-white font-sans shadow-md">
+                        <a href="#">
+                          <img
+                            className="h-60 rounded-t-lg object-cover"
+                            src="https://www.monitor.co.ug/resource/image/1887520/landscape_ratio3x2/1620/1080/76560d3144b7acb949096672f5beab86/mm/car2-pic.jpg" // src={`${baseURL}/${ad.imagesURL[0]}`}
+                            alt="product image"
+                          />
+                        </a>
+                        {/* <span class="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white">
+                          Sale
+                        </span> */}
+                        <div className="mt-4 px-5 pb-5">
+                          <a href="#">
+                            <h5 className="text-lg tracking-tight text-slate-900">
+                              {ad.name}
+                            </h5>
+                          </a>
+
+                          <div className="flex items-center justify-between">
+                            <p>
+                              <span className=" text-lg font-bold text-primary-900 lg:text-2xl">
+                                ETB {ad.price}{' '}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </NextLink>
+                  ))}
+
+                  {products.data.map((ad: AdsProp, idx: number) => (
+                    <NextLink
+                      key={idx.toString()}
+                      href={`/products/${ad.id}`}
+                      passHref
+                    >
+                      <div className="w-full rounded-lg bg-white font-sans shadow-md">
+                        <a href="#">
+                          <img
+                            className="h-60 rounded-t-lg object-cover"
+                            src="https://www.monitor.co.ug/resource/image/1887520/landscape_ratio3x2/1620/1080/76560d3144b7acb949096672f5beab86/mm/car2-pic.jpg" // src={`${baseURL}/${ad.imagesURL[0]}`}
+                            alt="product image"
+                          />
+                        </a>
+                        {/* <span class="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white">
+                          Sale
+                        </span> */}
+                        <div className="mt-4 px-5 pb-5">
+                          <a href="#">
+                            <h5 className="text-lg tracking-tight text-slate-900">
+                              {ad.name}
+                            </h5>
+                          </a>
+
+                          <div className="flex items-center justify-between">
+                            <p>
+                              <span className=" text-lg font-bold text-primary-900 lg:text-2xl">
+                                ETB {ad.price}{' '}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </NextLink>
+                  ))}
+
+                  {products.data.map((ad: AdsProp, idx: number) => (
+                    <NextLink
+                      key={idx.toString()}
+                      href={`/products/${ad.id}`}
+                      passHref
+                    >
+                      <div className="w-full rounded-lg bg-white font-sans shadow-md">
+                        <a href="#">
+                          <img
+                            className="h-60 rounded-t-lg object-cover"
+                            src="https://www.monitor.co.ug/resource/image/1887520/landscape_ratio3x2/1620/1080/76560d3144b7acb949096672f5beab86/mm/car2-pic.jpg" // src={`${baseURL}/${ad.imagesURL[0]}`}
+                            alt="product image"
+                          />
+                        </a>
+                        {/* <span class="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white">
+                          Sale
+                        </span> */}
+                        <div className="mt-4 px-5 pb-5">
+                          <a href="#">
+                            <h5 className="text-lg tracking-tight text-slate-900">
+                              {ad.name}
+                            </h5>
+                          </a>
+
+                          <div className="flex items-center justify-between">
+                            <p>
+                              <span className=" text-lg font-bold text-primary-900 lg:text-2xl">
+                                ETB {ad.price}{' '}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </NextLink>
+                  ))}
+
+                  {products.data.map((ad: AdsProp, idx: number) => (
+                    <NextLink
+                      key={idx.toString()}
+                      href={`/products/${ad.id}`}
+                      passHref
+                    >
+                      <div className="w-full rounded-lg bg-white font-sans shadow-md">
+                        <a href="#">
+                          <img
+                            className="h-60 rounded-t-lg object-cover"
+                            src="https://www.monitor.co.ug/resource/image/1887520/landscape_ratio3x2/1620/1080/76560d3144b7acb949096672f5beab86/mm/car2-pic.jpg" // src={`${baseURL}/${ad.imagesURL[0]}`}
+                            alt="product image"
+                          />
+                        </a>
+                        {/* <span class="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white">
+                          Sale
+                        </span> */}
+                        <div className="mt-4 px-5 pb-5">
+                          <a href="#">
+                            <h5 className="text-lg tracking-tight text-slate-900">
+                              {ad.name}
+                            </h5>
+                          </a>
+
+                          <div className="flex items-center justify-between">
+                            <p>
+                              <span className=" text-lg font-bold text-primary-900 lg:text-2xl">
+                                ETB {ad.price}{' '}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </NextLink>
+                  ))}
+
+                  {products.data.map((ad: AdsProp, idx: number) => (
+                    <NextLink
+                      key={idx.toString()}
+                      href={`/products/${ad.id}`}
+                      passHref
+                    >
+                      <div className="w-full rounded-lg bg-white font-sans shadow-md">
+                        <a href="#">
+                          <img
+                            className="h-60 rounded-t-lg object-cover"
+                            src="https://www.monitor.co.ug/resource/image/1887520/landscape_ratio3x2/1620/1080/76560d3144b7acb949096672f5beab86/mm/car2-pic.jpg" // src={`${baseURL}/${ad.imagesURL[0]}`}
+                            alt="product image"
+                          />
+                        </a>
+                        {/* <span class="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white">
+                          Sale
+                        </span> */}
+                        <div className="mt-4 px-5 pb-5">
+                          <a href="#">
+                            <h5 className="text-lg tracking-tight text-slate-900">
+                              {ad.name}
+                            </h5>
+                          </a>
+
+                          <div className="flex items-center justify-between">
+                            <p>
+                              <span className=" text-lg font-bold text-primary-900 lg:text-2xl">
+                                ETB {ad.price}{' '}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </NextLink>
+                  ))}
+
+                  {products.data.map((ad: AdsProp, idx: number) => (
+                    <NextLink
+                      key={idx.toString()}
+                      href={`/products/${ad.id}`}
+                      passHref
+                    >
+                      <div className="w-full rounded-lg bg-white font-sans shadow-md">
+                        <a href="#">
+                          <img
+                            className="h-60 rounded-t-lg object-cover"
+                            src="https://www.monitor.co.ug/resource/image/1887520/landscape_ratio3x2/1620/1080/76560d3144b7acb949096672f5beab86/mm/car2-pic.jpg" // src={`${baseURL}/${ad.imagesURL[0]}`}
+                            alt="product image"
+                          />
+                        </a>
+                        {/* <span class="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white">
+                          Sale
+                        </span> */}
+                        <div className="mt-4 px-5 pb-5">
+                          <a href="#">
+                            <h5 className="text-lg tracking-tight text-slate-900">
+                              {ad.name}
+                            </h5>
+                          </a>
+
+                          <div className="flex items-center justify-between">
+                            <p>
+                              <span className=" text-lg font-bold text-primary-900 lg:text-2xl">
+                                ETB {ad.price}{' '}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </NextLink>
+                  ))}
+
+                  {products.data.map((ad: AdsProp, idx: number) => (
+                    <NextLink
+                      key={idx.toString()}
+                      href={`/products/${ad.id}`}
+                      passHref
+                    >
+                      <div className="w-full rounded-lg bg-white font-sans shadow-md">
+                        <a href="#">
+                          <img
+                            className="h-60 rounded-t-lg object-cover"
+                            src="https://www.monitor.co.ug/resource/image/1887520/landscape_ratio3x2/1620/1080/76560d3144b7acb949096672f5beab86/mm/car2-pic.jpg" // src={`${baseURL}/${ad.imagesURL[0]}`}
+                            alt="product image"
+                          />
+                        </a>
+                        {/* <span class="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white">
+                          Sale
+                        </span> */}
+                        <div className="mt-4 px-5 pb-5">
+                          <a href="#">
+                            <h5 className="text-lg tracking-tight text-slate-900">
+                              {ad.name}
+                            </h5>
+                          </a>
+
+                          <div className="flex items-center justify-between">
+                            <p>
+                              <span className=" text-lg font-bold text-primary-900 lg:text-2xl">
+                                ETB {ad.price}{' '}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </NextLink>
+                  ))}
+
+                  {products.data.map((ad: AdsProp, idx: number) => (
+                    <NextLink
+                      key={idx.toString()}
+                      href={`/products/${ad.id}`}
+                      passHref
+                    >
+                      <div className="w-full rounded-lg bg-white font-sans shadow-md">
+                        <a href="#">
+                          <img
+                            className="h-60 rounded-t-lg object-cover"
+                            src="https://www.monitor.co.ug/resource/image/1887520/landscape_ratio3x2/1620/1080/76560d3144b7acb949096672f5beab86/mm/car2-pic.jpg" // src={`${baseURL}/${ad.imagesURL[0]}`}
+                            alt="product image"
+                          />
+                        </a>
+                        {/* <span class="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white">
+                          Sale
+                        </span> */}
+                        <div className="mt-4 px-5 pb-5">
+                          <a href="#">
+                            <h5 className="text-lg tracking-tight text-slate-900">
+                              {ad.name}
+                            </h5>
+                          </a>
+
+                          <div className="flex items-center justify-between">
+                            <p>
+                              <span className=" text-lg font-bold text-primary-900 lg:text-2xl">
+                                ETB {ad.price}{' '}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </NextLink>
+                  ))}
+
+                  {products.data.map((ad: AdsProp, idx: number) => (
+                    <NextLink
+                      key={idx.toString()}
+                      href={`/products/${ad.id}`}
+                      passHref
+                    >
+                      <div className="w-full rounded-lg bg-white font-sans shadow-md">
+                        <a href="#">
+                          <img
+                            className="h-60 rounded-t-lg object-cover"
+                            src="https://www.monitor.co.ug/resource/image/1887520/landscape_ratio3x2/1620/1080/76560d3144b7acb949096672f5beab86/mm/car2-pic.jpg" // src={`${baseURL}/${ad.imagesURL[0]}`}
+                            alt="product image"
+                          />
+                        </a>
+                        {/* <span class="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white">
+                          Sale
+                        </span> */}
+                        <div className="mt-4 px-5 pb-5">
+                          <a href="#">
+                            <h5 className="text-lg tracking-tight text-slate-900">
+                              {ad.name}
+                            </h5>
+                          </a>
+
+                          <div className="flex items-center justify-between">
+                            <p>
+                              <span className=" text-lg font-bold text-primary-900 lg:text-2xl">
+                                ETB {ad.price}{' '}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </NextLink>
+                  ))}
+
+                  {products.data.map((ad: AdsProp, idx: number) => (
+                    <NextLink
+                      key={idx.toString()}
+                      href={`/products/${ad.id}`}
+                      passHref
+                    >
+                      <div className="w-full rounded-lg bg-white font-sans shadow-md">
+                        <a href="#">
+                          <img
+                            className="h-60 rounded-t-lg object-cover"
+                            src="https://www.monitor.co.ug/resource/image/1887520/landscape_ratio3x2/1620/1080/76560d3144b7acb949096672f5beab86/mm/car2-pic.jpg" // src={`${baseURL}/${ad.imagesURL[0]}`}
+                            alt="product image"
+                          />
+                        </a>
+                        {/* <span class="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white">
+                          Sale
+                        </span> */}
+                        <div className="mt-4 px-5 pb-5">
+                          <a href="#">
+                            <h5 className="text-lg tracking-tight text-slate-900">
+                              {ad.name}
+                            </h5>
+                          </a>
+
+                          <div className="flex items-center justify-between">
+                            <p>
+                              <span className=" text-lg font-bold text-primary-900 lg:text-2xl">
+                                ETB {ad.price}{' '}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </NextLink>
+                  ))}
+
+                  {hasData && (
+                    <span>
+                      {' '}
+                      <Norecords col={5} />
+                    </span>
+                  )}
+                </div>
+              )}
+            </span>
+          </div>
+        )}
       </div>
+    </div>
   );
 };
 export default Index;

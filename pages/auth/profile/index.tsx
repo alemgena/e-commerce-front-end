@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import React,{useEffect,useState} from 'react'
+import React, { useEffect, useState } from 'react';
 import { FiArrowLeft, FiMail } from 'react-icons/fi';
 import { RiPencilFill } from 'react-icons/ri';
 import { RxAvatar } from 'react-icons/rx';
@@ -7,41 +7,41 @@ import { MdPhone, MdLockOutline } from 'react-icons/md';
 import { FaRegUser } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import { GET_USER } from '@/types';
-import {useDispatch,useSelector,RootStateOrAny} from 'react-redux'
+import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import PageSpinner from '@/components/Ui/PageSpinner';
 import { baseURL } from '@/config';
 import { AuthModal } from '@/components/auth';
+import Protected from '@/components/protected/protected';
 const ProfilePage = () => {
-  const dispatch=useDispatch()
-    const currentUser = useSelector(
-      (state: RootStateOrAny) => state.login.loggedUser
-    );
-     const User = useSelector(
-       (state: RootStateOrAny) => state.user.user
-     );
-       const [isOpen, setIsOpen] = useState(false);
-      const { isLoading,error } = useSelector(
-        (state: RootStateOrAny) => state.user
-      );
-          useEffect(() => {
-      if(error.message){
-        router.push('/')
-     setIsOpen(true)
-      }
-    }, [error.message]);
-    useEffect(() => {
-      if(currentUser.user){
-           let token=localStorage.getItem("token")
-        let config={ headers: {
+  const dispatch = useDispatch();
+  const currentUser = useSelector(
+    (state: RootStateOrAny) => state.login.loggedUser
+  );
+  const User = useSelector((state: RootStateOrAny) => state.user.user);
+  const [isOpen, setIsOpen] = useState(false);
+  const { isLoading, error } = useSelector(
+    (state: RootStateOrAny) => state.user
+  );
+  useEffect(() => {
+    if (error.message) {
+      router.push('/');
+      setIsOpen(true);
+    }
+  }, [error.message]);
+  useEffect(() => {
+    if (currentUser.user) {
+      let token = localStorage.getItem('token');
+      let config = {
+        headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
-      dispatch({type:GET_USER,id:currentUser.user._id,config:config})
-      }
-    }, []);
+      };
+      dispatch({ type: GET_USER, id: currentUser.user._id, config: config });
+    }
+  }, []);
   const router = useRouter();
   return (
-    <>
+    <Protected>
       <Head>
         <title>Profile</title>
         <link rel="icon" href="/favicon.ico" />
@@ -65,7 +65,7 @@ const ProfilePage = () => {
                 </div>
                 <button
                   onClick={() => router.push('/auth/profile/edit')}
-                  className="flex items-center gap-2 rounded-full bg-blue-800 px-4 py-2 font-roboto-regular text-sm text-white"
+                  className="font-roboto-regular flex items-center gap-2 rounded-full bg-blue-800 px-4 py-2 text-sm text-white"
                 >
                   <RiPencilFill />
                   <p>Edit</p>
@@ -86,21 +86,21 @@ const ProfilePage = () => {
                     )}
                   </div>
                   <div className="flex w-full gap-16">
-                    <div className="flex w-1/2 items-center gap-4  border-b  py-1 font-roboto-regular">
+                    <div className="font-roboto-regular flex w-1/2 items-center  gap-4  border-b py-1">
                       <FaRegUser />
                       <p>{User.data.first_name}</p>
                     </div>
-                    <div className="flex w-1/2 items-center gap-4  border-b  py-1 font-roboto-regular">
+                    <div className="font-roboto-regular flex w-1/2 items-center  gap-4  border-b py-1">
                       <FaRegUser />
                       <p>{User.data.last_name}</p>
                     </div>
                   </div>
                   <div className="flex w-full gap-16">
-                    <div className="flex w-1/2 items-center gap-4  border-b  py-1 font-roboto-regular">
+                    <div className="font-roboto-regular flex w-1/2 items-center  gap-4  border-b py-1">
                       <MdPhone />
                       <p>{User.data.phone}</p>
                     </div>
-                    <div className="flex w-1/2 items-center gap-4  border-b  py-1 font-roboto-regular">
+                    <div className="font-roboto-regular flex w-1/2 items-center  gap-4  border-b py-1">
                       <FiMail />
                       <p>{User.data.email}</p>
                     </div>
@@ -111,7 +111,7 @@ const ProfilePage = () => {
           )}
         </div>
       )}
-    </>
+    </Protected>
   );
 };
 

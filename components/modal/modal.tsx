@@ -7,10 +7,10 @@ Modal.setAppElement('#react-modals');
 interface ModalType {
   children: ReactNode;
   isOpen: boolean;
-  closable?: boolean;
+  closeable?: boolean;
   onCancel: () => void;
   width?: number;
-  minHeight?: number;
+  height?: number;
   contentStyle?: React.CSSProperties;
   showCloseIcon?: boolean;
 }
@@ -18,32 +18,25 @@ interface ModalType {
 export const CustomModal = ({
   children,
   isOpen,
-  closable,
+  closeable,
   onCancel,
   width,
-  minHeight,
+  height,
   contentStyle = {},
-  showCloseIcon = true,
+  showCloseIcon = false,
 }: ModalType) => {
   return (
     <div className="relative">
       <Modal
         style={{
           content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            border: '0px',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)',
-            width: width || 700,
+            margin: 'auto',
             borderRadius: 15,
-            minHeight: minHeight || 400,
-            padding: '30px 40px',
-            maxWidth: 'calc(100vw - 2rem)',
+            padding: '0 10px',
+            width: width || 'fit-content',
+            height: height || 'fit-content',
             overflowY: 'auto',
-            zIndex: 2,
+            zIndex: 999,
             ...contentStyle,
           },
           overlay: {
@@ -53,8 +46,10 @@ export const CustomModal = ({
         closeTimeoutMS={500}
         isOpen={isOpen}
         onRequestClose={onCancel}
-        shouldCloseOnEsc={closable}
-        shouldCloseOnOverlayClick={closable}
+        shouldCloseOnEsc={closeable}
+        shouldFocusAfterRender={true}
+        ariaHideApp={false}
+        shouldCloseOnOverlayClick={closeable}
         contentLabel={'Modal'}
         testId={'modal'}
       >
