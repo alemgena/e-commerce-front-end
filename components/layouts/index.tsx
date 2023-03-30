@@ -14,9 +14,12 @@ import store, { useAppDispatch } from '@/store/index';
 import { AuthModal } from '../auth';
 import { useRouter } from 'next/router';
 import { closeModal } from '@/store/modal';
+  import { useMediaQuery } from 'react-responsive';
+  import BottomNavbar from '../BottomNave';
 type Props = { children: React.ReactNode };
 
 export function Layout({ children }: Props) {
+      const md = useMediaQuery({ query: '(max-width: 576px)' });
   return (
     <Provider store={store}>
       <NextNProgress height={7} />
@@ -27,6 +30,9 @@ export function Layout({ children }: Props) {
       <BottomNavigation />
       <AuthModal />
       <ToastContainer autoClose={200} hideProgressBar position="top-right" />
+      {md&&
+      <BottomNavbar/>
+}
     </Provider>
   );
 }

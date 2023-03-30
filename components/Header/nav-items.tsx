@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
-import { AiOutlinePlusCircle } from 'react-icons/ai';
+import { useState, useEffect, useRef } from 'react';
+import { AiOutlinePlusCircle, AiFillHome } from 'react-icons/ai';
 import { BiHeart, BiMessage } from 'react-icons/bi';
+
 import { IoIosNotificationsOutline } from 'react-icons/io';
 import { useRouter } from 'next/router';
 import { AuthModal } from '../auth';
@@ -10,10 +11,9 @@ import { openModal } from '@/store/modal';
 import { Login } from '../auth/login';
 import { removedCredentials, selectCurrentUser } from '@/store/auth';
 import { Register } from '../auth/register';
+import { useMediaQuery } from 'react-responsive';
 export function NavItems() {
-  const { loggedUser, isUserLogged } = useAppSelector(
-    (state: RootState) => state.login
-  );
+  
   const user = useAppSelector(selectCurrentUser);
 
   const router = useRouter();
@@ -72,7 +72,7 @@ export function NavItems() {
       {!!user.token ? (
         <button
           onClick={() => handleLogout()}
-          className="rounded-md border-2 border-blue-800 px-8 py-1 text-blue-800 hover:bg-blue-800 hover:text-white"
+          className="rounded-md border-2 border-blue-800 px-8 py-1 text-blue-800 hover:bg-blue-800 hover:text-white md:ml-20"
         >
           Logout
         </button>
