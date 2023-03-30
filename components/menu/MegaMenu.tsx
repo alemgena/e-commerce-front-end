@@ -2,7 +2,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable import/order */
 /* eslint-disable jsx-a11y/mouse-events-have-key-events */
-import React, { useMemo, useEffect,useState } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { AiOutlineRight } from 'react-icons/ai';
 import { RxCaretDown, RxCaretUp } from 'react-icons/rx';
 import { RootStateOrAny, useSelector } from 'react-redux';
@@ -48,15 +48,14 @@ function MegaMenu() {
   const { isLoading } = useSelector(
     (state: RootStateOrAny) => state.categories
   );
-  const[hasData,setHasData]=useState(false)
-   useEffect(() => {
-     if (categoriesData.data) {
-      if(!categoriesData.data.length)
-       setHasData(true);
-     }
-   }, [categoriesData]);
+  const [hasData, setHasData] = useState(false);
+  useEffect(() => {
+    if (categoriesData.data) {
+      if (!categoriesData.data.length) setHasData(true);
+    }
+  }, [categoriesData]);
   return (
-    <>
+    <div>
       {isLoading ? (
         <PageSpinner />
       ) : (
@@ -67,7 +66,7 @@ function MegaMenu() {
                 e.stopPropagation();
                 setHoveredCategoryId(0);
               }}
-              className="relative w-full font-roboto-regular "
+              className="relative w-full font-sans"
             >
               <div
                 onScroll={(e) => {
@@ -79,8 +78,8 @@ function MegaMenu() {
                 <div
                   className={`${
                     scrollTopValue > 0
-                      ? 'visible sticky top-0 z-50 transition-all'
-                      : 'hidden animate-fadeExit'
+                      ? 'visible sticky top-0  transition-all'
+                      : 'animate-fadeExit hidden'
                   } w-full bg-white opacity-90`}
                 >
                   <div
@@ -95,7 +94,7 @@ function MegaMenu() {
                   >
                     <RxCaretUp
                       size={30}
-                      className="font-light text-main-secondary"
+                      className="text-main-secondary font-light"
                     />
                   </div>
                 </div>
@@ -104,45 +103,46 @@ function MegaMenu() {
 
                 {categoriesData.data.map((category: CategoryProps) => (
                   <>
-                    {category.subcategory.length?
-                    <div
-                      id={category.id.toString()}
-                      key={category.id}
-                      onMouseEnter={(e) => {
-                        e.stopPropagation();
-                        setHoveredCategoryId(category.id);
-                      }}
-                      className="mb-2 flex items-center justify-between pl-2 pr-4"
-                    >
-                      <div className="flex items-center gap-x-4">
+                    {category.subcategory.length ? (
+                      <div
+                        id={category.id.toString()}
+                        key={category.id}
+                        onMouseEnter={(e) => {
+                          e.stopPropagation();
+                          setHoveredCategoryId(category.id);
+                        }}
+                        className="mb-2 flex items-center justify-between pl-2 pr-4"
+                      >
+                        <div className="flex items-center gap-x-4">
+                          <div>
+                            <img
+                              src={`${baseURL}/${category.imageURL}`}
+                              alt={category.name}
+                              className="h-10 w-10"
+                            />
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-main-secondary text-lg">
+                              {category.name}
+                            </span>
+                            <span className="text-main-secondary text-xs">
+                              2,697 products
+                            </span>
+                          </div>
+                        </div>
                         <div>
-                          <img
-                            src={`${baseURL}/${category.imageURL}`}
-                            alt={category.name}
-                            className="h-10 w-10"
-                          />
-                        </div>
-                        <div className="flex flex-col">
-                          <span className="text-lg text-main-secondary">
-                            {category.name}
-                          </span>
-                          <span className="text-main-secondary">2,697 products</span>
+                          <AiOutlineRight size={14} />
                         </div>
                       </div>
-                      <div>
-                        <AiOutlineRight size={14} />
-                      </div>
-                    </div>:null
-}
+                    ) : null}
                   </>
-                    
                 ))}
                 <span>{hasData && <Norecords col={5} />}</span>
                 <div
                   className={`${
                     scrollTopValue < 382.5 && scrollTopValue >= 0
-                      ? 'visible sticky bottom-0 z-50 transition-all'
-                      : 'hidden animate-fadeExit'
+                      ? 'visible sticky bottom-0 transition-all'
+                      : 'animate-fadeExit hidden'
                   } sticky bottom-0 w-full bg-white opacity-90`}
                 >
                   <div
@@ -167,13 +167,13 @@ function MegaMenu() {
                 }}
                 className={`${
                   hoveredCategory.length === 0 ? 'hidden' : 'visible'
-                } absolute top-0 -right-[400px] z-50 h-[36vw] w-[400px] flex-col overflow-y-scroll bg-white shadow scrollbar-hide`}
+                } absolute top-0 -right-[400px]  h-[36vw] w-[400px] flex-col overflow-y-scroll bg-white shadow scrollbar-hide`}
               >
                 <div
                   className={`${
                     scrollTopValueForSubMenu > 0
-                      ? 'visible sticky top-0 z-50 transition-all'
-                      : 'hidden animate-fadeExit'
+                      ? 'visible sticky top-0  transition-all'
+                      : 'animate-fadeExit hidden'
                   } w-full bg-white opacity-90`}
                 >
                   <div
@@ -188,7 +188,7 @@ function MegaMenu() {
                   >
                     <RxCaretUp
                       size={30}
-                      className="font-light text-main-secondary"
+                      className="text-main-secondary font-light"
                     />
                   </div>
                 </div>
@@ -218,7 +218,7 @@ function MegaMenu() {
                           ) : null}
                         </div>
                         <div className="flex flex-col">
-                          <span className="cursor-pointer text-base text-main-secondary">
+                          <span className="text-main-secondary cursor-pointer text-base">
                             {category.name}
                           </span>
                           <span className="text-sm">2,697 products</span>
@@ -233,8 +233,8 @@ function MegaMenu() {
                     scrollTopValueForSubMenu < 382.5 &&
                     scrollTopValueForSubMenu >= 0 &&
                     hoveredCategory.length > 10
-                      ? 'visible sticky bottom-0 z-50 transition-all'
-                      : 'hidden animate-fadeExit'
+                      ? 'visible sticky bottom-0  transition-all'
+                      : 'animate-fadeExit hidden'
                   } sticky bottom-0 w-full bg-white opacity-90`}
                 >
                   <div
@@ -256,7 +256,7 @@ function MegaMenu() {
           )}
         </>
       )}
-    </>
+    </div>
   );
 }
 

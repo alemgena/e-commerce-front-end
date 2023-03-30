@@ -57,7 +57,7 @@ export const SelectInput: React.FC<SelectInputProps> = (props) => {
           className="relative w-full"
         >
           <Listbox.Button className="flex w-full items-center justify-between rounded-md bg-gray-100 p-3 py-4">
-            <p className="font-roboto-regular text-sm text-gray-700">
+            <p className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
               {value ? value.name : placeholder}
             </p>
             <HiChevronDown size={20} />
@@ -68,7 +68,7 @@ export const SelectInput: React.FC<SelectInputProps> = (props) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+            <Listbox.Options className="max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
               {options.map((option) => (
                 <Listbox.Option
                   key={option.name}

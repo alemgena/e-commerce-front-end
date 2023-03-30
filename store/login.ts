@@ -30,12 +30,12 @@ export const loginSlice = createSlice({
     setError: (state, action) => {
       state.error = action.payload;
     },
-    setIsUserLogged: (state, action) => {
-      state.isUserLogged = action.payload;
-    },
-    setLoggedUser: (state, action) => {
-      state.loggedUser = action.payload;
-    },
+    // setIsUserLogged: (state, action) => {
+    //   state.isUserLogged = action.payload;
+    // },
+    // setLoggedUser: (state, action) => {
+    //   state.loggedUser = action.payload;
+    // },
     setInputErr: (state, action) => {
       state.inputErrors.inputErr = action.payload;
     },

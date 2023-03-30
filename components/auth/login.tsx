@@ -2,37 +2,30 @@ import React, { useEffect } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import { FaFacebookSquare } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
-import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
 import { MdLockOutline } from 'react-icons/md';
 import { FaRegUser } from 'react-icons/fa';
 import { CurrentTab } from './modal';
 import { LOGIN } from '@/types';
 import { loginAction } from '../../store/login';
-import Notify from '../../components/Ui/Notify'
+import Notify from '../../components/Ui/Notify';
 import { signIn, signOut, getSession, useSession } from 'next-auth/client';
-import Notification from '../../components/Ui/Notification'
-interface ILoginProps {
-  onClose: () => void;
-  setCurrentTab: (tab: CurrentTab) => void;
-  setOpen: (open: boolean) => void;
-  stars:any
-}
-export const Login: React.FC<ILoginProps> = ({
-  onClose,
-  setOpen,
-  setCurrentTab,
-}) => {
+import Notification from '../../components/Ui/Notification';
+import { RootState, useAppDispatch, useAppSelector } from '@/store';
+import { Register } from './register';
+import { ForgotPassword } from './forgotPassword';
+import { openModal } from '@/store/modal';
+export const Login: React.FC = () => {
   const { NotifyMessage, notify, setNotify } = Notify();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [submit, setSubmit] = React.useState(false);
-  const { input, password } = useSelector(
-    (state: RootStateOrAny) => state.login.inputValues
+  const { input, password } = useAppSelector(
+    (state: RootState) => state.login.inputValues
   );
-  const { inputErr, passwordErr } = useSelector(
-    (state: RootStateOrAny) => state.login.inputErrors
+  const { inputErr, passwordErr } = useAppSelector(
+    (state: RootState) => state.login.inputErrors
   );
-  const { error, loggedUser, isLoading } = useSelector(
-    (state: RootStateOrAny) => state.login
+  const { error, loggedUser, isLoading } = useAppSelector(
+    (state: RootState) => state.login
   );
   const handleLogin = () => {
     signIn('google');
@@ -47,7 +40,7 @@ export const Login: React.FC<ILoginProps> = ({
   }, [error]);
   useEffect(() => {
     if (loggedUser && submit) {
-      setOpen(false);
+      // setOpen(false);
     }
   }, [loggedUser]);
   const validate = (event: React.FormEvent<HTMLFormElement>) => {
@@ -79,95 +72,124 @@ export const Login: React.FC<ILoginProps> = ({
     setSubmit(true);
   };
   return (
-    <div className="flex flex-col gap-14">
-      <div className="flex items-center justify-between">
-        <h5 className="font-roboto-medium text-lg">Login</h5>
+    <div className=" grid px-6 py-8 md:grid-cols-2">
+      <div className="hidden flex-col items-center justify-center md:flex ">
+        <img src="/images/logo.svg" />
+        <div className="font-roboto-bold mt-4 text-center text-4xl text-blue-800">
+          <h1>LIYU DIGITAL </h1>
+          <h1>TECHNOLOGY</h1>
+        </div>
+      </div>
+      <section>
         <Notification notify={notify} setNotify={setNotify} />
-        <span className=" cursor-pointer" onClick={onClose}>
-          <AiOutlineClose />
-        </span>
-      </div>
-      <div>
-        <form className="flex flex-col gap-8" onSubmit={(e) => validate(e)}>
-          <div className="flex items-center gap-4 rounded-md px-2 py-3 font-roboto-regular shadow-sm">
-            <span className="px-3">
-              <FaRegUser />
-            </span>
-            <input
-              type="text"
-              value={input}
-              placeholder="Enter Email or Phone"
-              onChange={(e) => {
-                dispatch(loginAction.setInput(e.target.value));
-              }}
-              className="flex-grow py-1 focus:outline-none"
-            />
-          </div>
-          {inputErr && <div className="text-red-600">{inputErr}</div>}
-          <div className="flex items-center gap-4 rounded-md px-2 py-3 font-roboto-regular shadow-sm">
-            <span className="px-3">
-              <MdLockOutline />
-            </span>
-            <input
-              value={password}
-              onChange={(e) => {
-                dispatch(loginAction.setPassword(e.target.value));
-              }}
-              type="password"
-              placeholder="Enter password"
-              className="flex-grow py-1 focus:outline-none"
-            />
-          </div>
-          {passwordErr && <div className="text-red-600">{passwordErr}</div>}
-          {isLoading ? (
-            <button
-              disabled
-              className="rounded-full bg-blue-800 py-2 font-roboto-light text-lg text-white"
+        <div>
+          <div className="space-y-4">
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+              Sign in to your account
+            </h1>
+            <form
+              className="space-y-4 md:space-y-6"
+              onSubmit={(e) => validate(e)}
             >
-              LOGGING ....
-            </button>
-          ) : (
-            <button className="rounded-full bg-blue-800 py-2 font-roboto-light text-lg text-white">
-              LOGIN
-            </button>
-          )}
-        </form>
-        <div className="mt-4 flex flex-col items-center gap-4 font-roboto-regular text-sm">
-          <p
-            className="cursor-pointer text-blue-800"
-            onClick={() => setCurrentTab('ForgotPassword')}
-          >
-            Forgot password?
-          </p>
-          <p>
-            if you don't have an account{' '}
-            <span
-              className="cursor-pointer text-blue-800"
-              onClick={() => setCurrentTab('Register')}
-            >
-              Register
-            </span>
-          </p>
-        </div>
+              <div>
+                <label
+                  htmlFor="emailOrPhone"
+                  className="mb-2 block text-sm font-medium text-gray-900"
+                >
+                  Email or Phone
+                </label>
+                <input
+                  name="emailOrPhone"
+                  id="emailOrPhone"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+                  value={input}
+                  placeholder="Enter Email or Phone"
+                  onChange={(e) => {
+                    dispatch(loginAction.setInput(e.target.value));
+                  }}
+                />{' '}
+                {inputErr && <div className="text-red-600">{inputErr}</div>}
+              </div>
+              <div>
+                <label
+                  htmlFor="password"
+                  className="mb-2 block text-sm font-medium text-gray-900"
+                >
+                  Password
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => {
+                    dispatch(loginAction.setPassword(e.target.value));
+                  }}
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+                />
+                {passwordErr && (
+                  <div className="text-red-600">{passwordErr}</div>
+                )}
+              </div>
+              <div className="flex items-center justify-between">
+                <a
+                  href="#"
+                  className="cursor-pointer text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
+                  onClick={() =>
+                    dispatch(openModal({ Component: ForgotPassword }))
+                  }
+                >
+                  Forgot password?
+                </a>
+              </div>
+              <button
+                disabled={isLoading}
+                type="submit"
+                className="w-full rounded-lg bg-primary-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-700"
+              >
+                Sign in
+              </button>
+              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                Don’t have an account yet?{' '}
+                <a
+                  href="#"
+                  onClick={() => dispatch(openModal({ Component:Register}))}
+                  className="cursor-pointer font-medium text-primary-600 hover:underline dark:text-primary-500"
+                >
+                  Sign up
+                </a>
+              </p>
+              <div className="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">
+                <p className="mx-4 mb-0 text-center font-semibold dark:text-neutral-200">
+                  OR
+                </p>
+              </div>
+              <div className="grid grid-cols-1 items-center gap-3 md:grid-cols-2">
+                <a
+                  className="font-small flex w-full items-center space-x-1 whitespace-nowrap rounded-lg border bg-white  px-5 py-2.5 text-sm text-[#111827]  shadow-sm "
+                  role="button"
+                  data-te-ripple-init
+                  onClick={() => handleLogin()}
+                  data-te-ripple-color="light"
+                >
+                  <FcGoogle size={20} /> <p>Continue with Google</p>
+                </a>
 
-        <div className="my-6 flex items-center gap-3 font-roboto-medium">
-          <div className="h-0.5 flex-grow rounded-full bg-gray-100" />
-          <h6>OR</h6>
-          <div className="h-0.5 flex-grow rounded-full bg-gray-100" />
+                <a
+                  className="font-small flex w-full items-center space-x-1 whitespace-nowrap rounded-lg border  bg-white px-5 py-2.5 text-sm text-[#111827] shadow-sm "
+                  role="button"
+                  data-te-ripple-init
+                  data-te-ripple-color="light"
+                >
+                  <FaFacebookSquare size={20} className="text-blue-600" />{' '}
+                  <p>Continue with Facebook</p>
+                </a>
+              </div>
+            </form>
+          </div>
         </div>
-        <div className="flex gap-4">
-          <button
-            onClick={() => handleLogin()}
-            className="flex items-center gap-2 rounded-md bg-gray-100 px-3 py-2 font-roboto-regular text-sm"
-          >
-            <FcGoogle size={25} /> <p>Continute with Google</p>
-          </button>
-          <button className="flex items-center gap-2 rounded-md bg-gray-100 px-3 py-2 font-roboto-regular text-sm">
-            <FaFacebookSquare size={25} className="text-blue-600" />
-            <p>Continute with Facebook</p>
-          </button>
-        </div>
-      </div>
+      </section>
     </div>
   );
 };

@@ -13,69 +13,57 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#2456B4',
-        secondary: {
-          light: '#F0F1F0',
-          dark: '#E4E5E5',
+        primary: {
+          50: '#eff6ff',
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          300: '#93c5fd',
+          400: '#60a5fa',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',
         },
-        main: {
-          secondary: '#363736',
-        },
-        success: {
-          main: '#70C274',
-        },
-        warning: {
-          main: '#FFE141',
-        },
-        error: {
-          main: '#FF3434',
-        },
-        info: {
-          main: '#2889CA',
-        },
-      },
-      fontFamily: {
-        sans: ['Roboto-Regular', ...defaultTheme.fontFamily.sans],
-        serif: ['Roboto-Regular', ...defaultTheme.fontFamily.serif],
-        mono: ['Roboto-Regular', ...defaultTheme.fontFamily.mono],
-        'roboto-bold': ['Roboto-Bold', ...defaultTheme.fontFamily.sans],
-        'roboto-medium': ['Roboto-Medium', ...defaultTheme.fontFamily.sans],
-        'roboto-regular': ['Roboto-Regular', ...defaultTheme.fontFamily.sans],
-        'roboto-light': ['Roboto-Light', ...defaultTheme.fontFamily.sans],
       },
     },
-    keyframes: {
-      sidenavLTR: {
-        '0%': { transform: 'translateX(-100%)' },
-        '100%': { transform: 'translateX(0px)' },
-      },
-      sidenavRTL: {
-        '0%': { transform: 'translateX(100%)' },
-        '100%': { transform: 'translateX(0px)' },
-      },
-      fade: {
-        '0%': { opacity: 0 },
-        '100%': { opacity: 1 },
-      },
-      dropDown: {
-        '0%': { opacity: 0, transform: 'scaleY(0)' },
-        '100%': { opacity: 1, transform: 'scaleY(1)' },
-      },
-    },
-    animation: {
-      sidenavLTREntering: 'sidenavLTR 0.3s ease-in-out forwards',
-      sidenavRTLEntering: 'sidenavRTL 0.3s ease-in-out forwards',
-      sidenavLTRExit: 'sidenavLTR 0.3s ease-in-out reverse forwards',
-      sidenavRTLExit: 'sidenavRTL 0.3s ease-in-out reverse forwards',
-      fadeEntering: 'fade 0.3s forwards',
-      fadeExit: 'fade 0.3s reverse forwards',
-      dropDown: 'dropDown 0.3s forwards',
-      dropDownExit: 'dropDown 0.3s reverse forwards',
+    fontFamily: {
+      body: [
+        'Inter',
+        'ui-sans-serif',
+        'system-ui',
+        '-apple-system',
+        'system-ui',
+        'Segoe UI',
+        'Roboto',
+        'Helvetica Neue',
+        'Arial',
+        'Noto Sans',
+        'sans-serif',
+        'Apple Color Emoji',
+        'Segoe UI Emoji',
+        'Segoe UI Symbol',
+        'Noto Color Emoji',
+      ],
+      sans: [
+        'Inter',
+        'ui-sans-serif',
+        'system-ui',
+        '-apple-system',
+        'system-ui',
+        'Segoe UI',
+        'Roboto',
+        'Helvetica Neue',
+        'Arial',
+        'Noto Sans',
+        'sans-serif',
+        'Apple Color Emoji',
+        'Segoe UI Emoji',
+        'Segoe UI Symbol',
+        'Noto Color Emoji',
+      ],
     },
   },
 
-  variants: {
-    extend: {},
-  },
   plugins: [require('tailwind-scrollbar-hide')],
 };
