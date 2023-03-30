@@ -203,7 +203,7 @@ function MegaMenu() {
                   >
                     <Link
                       href={{
-                        pathname: '/products',
+                        pathname: '/category',
                         query: { name: category.name },
                       }}
                     >

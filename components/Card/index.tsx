@@ -27,6 +27,7 @@ export interface IProduct {
   starRating: number;
 }
 
+
 const Card = ({product}) => {
   return (
     <div className="bg-palette-card relative col-span-6 my-1 flex rounded-xl shadow-xl ltr:mr-2 rtl:ml-1 sm:col-span-3 md:col-span-4  md:my-4 md:mx-6 lg:col-span-3 2xl:col-span-2">
