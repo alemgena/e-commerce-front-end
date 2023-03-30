@@ -138,7 +138,7 @@ function ProductDetailPage() {
       ) : (
         <div className=" bg-gray-50 px-12 pb-32">
           <div className="flex items-center gap-2 py-4  text-xl">
-            <FiArrowLeft onClick={() => router.push('/')} />
+            <FiArrowLeft className='cursor-pointer' onClick={() => router.push('/')} />
             <h2>Product Detail</h2>
           </div>
           {productData.data && (
@@ -349,7 +349,7 @@ function ProductDetailPage() {
                           <div
                             key={data.toString()}
                             onClick={(e) => handleRelated(e)}
-                            className="w-52 flex-shrink-0"
+                            className="w-52 flex-shrink-0 cursor-pointer"
                           >
                             <img
                               src={`${baseURL}/${data.imagesURL[0]}`}

@@ -14,7 +14,6 @@ const Protected: React.FC<Props> = ({ children }) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   useEffect(() => {
-    console.log(router.pathname, 'route');
     if (!user.token) {
       dispatch(openModal({ Component: Login, closeable: !!user.token }));
     }

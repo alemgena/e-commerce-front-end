@@ -221,7 +221,7 @@ const CreateProductPage = () => {
       </Head>
       <div className="m-auto max-w-5xl px-6 md:px-8">
         <div className="flex cursor-pointer items-center  gap-2  py-4 text-xl">
-          <FiArrowLeft onClick={() => router.push('/')} />
+          <FiArrowLeft className='cursor-pointer' onClick={() => router.push('/')} />
           <h2>Sell Product</h2>
         </div>
         <Notification notify={notify} setNotify={setNotify} />
