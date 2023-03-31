@@ -7,8 +7,12 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          <title>Liyu market</title>
           <meta charSet="utf-8" />
-          <meta name="description" content="Liyu Market" />
+          <meta
+            name="description"
+            content="Liyu Market"
+          />
         </Head>
         <body>
           <Main />
