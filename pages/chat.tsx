@@ -6,7 +6,7 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 const chat = () => (
   <ProtectedRoute>
   <div className=" mx-11 mb-32 bg-white">
-    <div className="my-4 flex items-center gap-2 bg-gray-50 py-4 text-xl">
+    <div className="my-4 hover:cursor-pointer flex items-center gap-2 bg-gray-50 py-4 text-xl">
       <FiArrowLeft />
       <h2>Chat</h2>
     </div>

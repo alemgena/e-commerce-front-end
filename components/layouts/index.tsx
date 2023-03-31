@@ -23,7 +23,7 @@ export function Layout({ children }: Props) {
       <NextNProgress height={7} />
       <Header />
       <FetchData />
-      <main className="-z-10 pt-2">{children}</main>
+      <main className="z-50 pt-2">{children}</main>
       <Footer />
       <BottomNavigation />
       <AuthModal />
