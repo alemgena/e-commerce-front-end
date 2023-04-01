@@ -138,7 +138,7 @@ const index = () => {
               ></path>
             </svg>
             <span className="text-sm   group-hover:text-primary-900">
-              Login
+              Profile
             </span>
           </div>
         </button>

@@ -59,17 +59,21 @@ const index = () => {
         {categories.data && (
           <>
             {categories.data.map((data: any) => (
-              <div
-                onClick={() => toggleModal(data.name)}
-                className="flex w-full cursor-pointer flex-col items-center  justify-center gap-4 rounded bg-white text-gray-700"
-              >
-                <img
-                  alt="name"
-                  src={`${baseURL}/${data.imageURL}`}
-                  // className="rounded-full object-none object-[59%_-4px] py-5"
-                />
-                <h1 className="font-bold">{data.name}</h1>
-              </div>
+              <>
+               { data.subcategory.length?
+                <div
+                  onClick={() => toggleModal(data.name)}
+                  className="flex w-full cursor-pointer flex-col items-center  justify-center gap-4 rounded bg-white text-gray-700"
+                >
+                  <img
+                    alt="name"
+                    src={`${baseURL}/${data.imageURL}`}
+                    // className="rounded-full object-none object-[59%_-4px] py-5"
+                  />
+                  <h1 className="font-bold">{data.name}</h1>
+                </div>:null
+}
+              </>
             ))}
           </>
         )}
