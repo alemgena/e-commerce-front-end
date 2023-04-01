@@ -9,9 +9,18 @@ class MyDocument extends Document {
         <Head>
           <meta charSet="utf-8" />
           <meta name="description" content="Liyu Market" />
+          <style jsx global>{`
+            body {
+              margin: 0;
+              padding: 0;
+              width: 100%;
+            }
+          `}</style>
         </Head>
-        <body>
-          <Main />
+        <body className="w-full">
+          <div className="w-full overflow-x-hidden">
+            <Main />
+          </div>
           <NextScript />
           {/* // for add Portal */}
           <div id="backdrop--root" />
