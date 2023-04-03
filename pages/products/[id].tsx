@@ -141,8 +141,8 @@ function ProductDetailPage() {
             onClick={() => router.push('/')}
             className="flex flex items-center gap-2 py-4 text-xl  hover:cursor-pointer"
           >
-            <h1 className="flex">
-              <FiArrowLeft className="ml-3 " />
+            <h1 className="flex text-center">
+              <FiArrowLeft className="ml-3" />
               Product List
             </h1>
           </div>

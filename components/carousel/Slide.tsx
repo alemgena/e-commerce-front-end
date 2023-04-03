@@ -31,9 +31,9 @@ const CarouselBoxCard: any = (product: any) => {
                 </div>
               </div>
               <div className="h-0.5 w-full bg-gray-200" />
-              <div className="font-roboto-light  flex  gap-6 rounded-md p-2">
+              <div className="font-roboto-light mb-2  flex  gap-6 rounded-md p-2">
                 <Link href="/chat">
-                  <button className="mt-3 flex-grow rounded-full bg-blue-800 py-2 text-white md:mt-0">
+                  <button className=" flex-grow rounded-full bg-blue-800 py-2 text-white md:mt-0">
                     Offer
                   </button>
                 </Link>

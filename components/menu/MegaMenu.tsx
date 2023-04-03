@@ -27,6 +27,7 @@ function MegaMenu() {
   const categoriesData = useSelector(
     (state: RootStateOrAny) => state.categories.categories
   );
+  console.log('categories data', categoriesData);
   const [categories] = useState(CategoryData.categories);
   const [hoveredCategoryId, setHoveredCategoryId] = useState(0);
   const [hoveredCategory, setHoveredCategory] = useState([] as CategoryProps[]);
@@ -66,7 +67,7 @@ function MegaMenu() {
                 e.stopPropagation();
                 setHoveredCategoryId(0);
               }}
-              className="relative w-full font-sans"
+              className="relative w-full font-sans hover:cursor-pointer"
             >
               <div
                 onScroll={(e) => {
@@ -103,6 +104,7 @@ function MegaMenu() {
 
                 {categoriesData.data.map((category: CategoryProps) => (
                   <>
+                    {console.log('category', category)}
                     {category.subcategory.length ? (
                       <div
                         id={category.id.toString()}
@@ -167,7 +169,7 @@ function MegaMenu() {
                 }}
                 className={`${
                   hoveredCategory.length === 0 ? 'hidden' : 'visible'
-                } absolute top-0 -right-[400px]  h-[36vw] w-[400px] flex-col overflow-y-scroll bg-white shadow scrollbar-hide`}
+                } absolute -right-[400px] top-0  h-[36vw] w-[400px] flex-col overflow-y-scroll bg-white shadow scrollbar-hide`}
               >
                 <div
                   className={`${

@@ -14,7 +14,7 @@ const index = () => (
       <MegaMenu />
     </div>
     <div className="top-0  flex-grow sm:w-full md:hidden lg:hidden">
-      <Carousel />
+      <Carousel title={'Trending Products'} />
       <CategroySection />
     </div>
 
