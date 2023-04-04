@@ -32,6 +32,7 @@ import { GET_PRODUCT } from '@/types';
 import PageSpinner from '@/components/Ui/PageSpinner';
 import CarouselBox from '@/components/carousel';
 import CarouselBoxCard from '@/components/carousel/Slide';
+import Banner from '@/components/carousel/advertise-banner';
 const Map = dynamic(() => import('@/components/map').then((mod) => mod.Map), {
   ssr: false,
 });
@@ -373,6 +374,7 @@ function ProductDetailPage() {
                     </CarouselBox>{' '}
                   </div>
                 </div>
+                <Banner/>
               </div>{' '}
             </>
           )}
