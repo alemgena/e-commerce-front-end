@@ -33,50 +33,46 @@ function Footer() {
             </ul>
           </div>
           <div>
-            <h2 className="mb-6 text-xs font-semibold uppercase text-primary-900 sm:text-sm">
+            <h2 className="mb-6 text-sm font-semibold uppercase text-primary-900">
               Contact us
             </h2>
             <ul className="text-primary-600">
-              <li className="mb-2 sm:mb-4">
+              <li className="mb-4">
                 <a
                   href="#"
-                  className="flex items-center justify-start gap-x-2 hover:underline sm:gap-x-4"
+                  className="flex items-center justify-start gap-x-4 hover:underline"
                 >
                   <span>
-                    <IoMdCall size={16} className="sm:text-xl" />
+                    <IoMdCall size={20} />
                   </span>
-                  <span className="text-xs sm:text-base">251946841922</span>{' '}
+                  <span>251946841922</span>{' '}
                 </a>
               </li>
-              <li className="mb-2 sm:mb-4">
+              <li className="mb-4">
                 <a
                   href="#"
-                  className="flex items-center justify-start gap-x-2 hover:underline sm:gap-x-4"
+                  className="flex items-center justify-start gap-x-4 hover:underline"
                 >
                   <span>
-                    <IoIosMail size={16} className="sm:text-xl" />
+                    <IoIosMail size={20} />
                   </span>
-                  <span className="text-xs sm:text-base">
-                    support@liyumarket.com
-                  </span>
+                  <span>support@liyumarket.com</span>
                 </a>
               </li>
-              <li className="mb-2 sm:mb-4">
+              <li className="mb-4">
                 <a
                   href="#"
-                  className="flex items-center justify-start gap-x-2 hover:underline sm:gap-x-4"
+                  className="flex items-center justify-start gap-x-4 hover:underline"
                 >
                   <span>
-                    <IoLocationSharp size={16} className="sm:text-xl" />
+                    <IoLocationSharp size={20} />
                   </span>
-                  <span className="text-xs sm:text-base">
-                    Country Tower 3rd Floor Piyassa
-                  </span>
+                  <span>Country Tower 3rd Floor Piyassa</span>
                 </a>
               </li>
             </ul>
           </div>
-          <div className="col-span-2 w-11/12 ">
+          <div className="col-span-2">
             <h2 className="mb-6 text-sm font-semibold uppercase text-primary-900">
               Download on{' '}
             </h2>

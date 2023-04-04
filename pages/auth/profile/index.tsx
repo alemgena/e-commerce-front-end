@@ -23,13 +23,7 @@ const ProfilePage = () => {
     (state: RootStateOrAny) => state.user
   );
   useEffect(() => {
-    if (error.message) {
-      router.push('/');
-      setIsOpen(true);
-    }
-  }, [error.message]);
-  useEffect(() => {
-    if (currentUser.user) {
+    if (currentUser) {
       let token = localStorage.getItem('token');
       let config = {
         headers: {
@@ -50,11 +44,6 @@ const ProfilePage = () => {
         <PageSpinner />
       ) : (
         <div className=" bg-gray-50 px-12 pb-32">
-          <AuthModal
-            setOpen={setIsOpen}
-            isOpen={isOpen}
-            onClose={() => setIsOpen(false)}
-          />
 
           {User.data && (
             <>
