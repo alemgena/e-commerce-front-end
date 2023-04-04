@@ -1,4 +1,3 @@
-/* eslint-disable react/function-component-definition */
 import React from 'react';
 import Link from 'next/link';
 import { BsHeart } from 'react-icons/bs';
@@ -38,12 +37,17 @@ const CarouselBoxCard: any = (product: any) => {
                     Offer
                   </button>
                 </Link>
-</div>
-</div>
-</div>
-</Link>
-</>
-</div>
-);
+
+                <button className="font-roboto-light flex flex-grow items-center  justify-center text-xl text-gray-400">
+                  <BsHeart className="text-gray-400" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </Link>
+      </>
+    </div>
+  );
+};
 
 export default CarouselBoxCard;
