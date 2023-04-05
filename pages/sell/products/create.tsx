@@ -208,11 +208,6 @@ const CreateProductPage = () => {
   const optionAscending = [...productOptions].sort((a: any, b: any) =>
     a.name < b.name ? -1 : 1
   );
-  const [position, setPosition] = useState(null);
-
-  function handleClick(event: any) {
-    setPosition(event.latlng);
-  }
   return (
     <Protected>
       <Head>
@@ -459,6 +454,7 @@ const CreateProductPage = () => {
                   </button>
                 )}
               </div>
+
             </form>
           </div>
         </div>

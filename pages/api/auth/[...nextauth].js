@@ -1,13 +1,12 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
-//566882002764-cf590gpslmng2ek8uuptsibof2q12qja.apps.googleusercontent.com
 export default NextAuth({
   providers: [
     Providers.Google({
       clientId:
-        '102271526435-c4eiv23m7ph99fj6audirufk8lh8gefl.apps.googleusercontent.com',
-      clientSecret: 'GOCSPX - a73PAmLqV3MyuXrwjykLJwUECsmX',
-      callbackURL: 'https://liyumarket.com/auth/google/callback',
+        '189759313604-enps8a5dfm56iouuf7g5rknclbl2h4si.apps.googleusercontent.com',
+      clientSecret: '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',
+      //callbackURL: 'https://liyumarket.com/auth/google/callback',
       scope:
         'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
     }),
