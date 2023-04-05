@@ -191,13 +191,12 @@ function ProductDetailPage() {
                       </>
                     )}
                   </div>
-                  <div className="aspect-w-16 aspect-h-9 relative z-0 mt-10 w-full overflow-hidden rounded-sm md:mt-6 md:w-1/2">
+                  <div className="aspect-w-16 aspect-h-9 relative z-0 mt-10 w-full overflow-hidden rounded-sm md:mt-6 md:w-full">
                     <Suspense fallback={<div>Loading...</div>}>
                       <Map center={[9.005401, 38.763611]} />
                     </Suspense>
                   </div>
                 </div>
-
                 {/* div two */}
 
                 {/* div2 */}
@@ -214,8 +213,9 @@ function ProductDetailPage() {
                         {productData.data.product.price}
                       </h2>
                     </div>
-                    <div className="font-roboto-light flex flex-col gap-2 rounded-md bg-white p-4 shadow-sm md:flex-row md:gap-6">
-                      <div className="flex flex-grow  flex-col sm:flex-col md:flex-row md:gap-6">
+                    <div className="font-roboto-light flex flex-col gap-2 rounded-md bg-white p-4 shadow-sm md:flex-col md:gap-6 lg:flex-row">
+                      {/*  */}
+                      <div className="flex flex-grow  flex-col sm:flex-row sm:flex-col md:flex-row md:gap-6">
                         <Link href="/chat">
                           <button className="mt-3 flex-grow rounded-full bg-blue-800 py-2 text-white md:mt-0">
                             Make an Offer
@@ -245,7 +245,7 @@ function ProductDetailPage() {
                         </button>
                       </div>
 
-                      <div className="flex items-center gap-6">
+                      <div className="mt-3 flex items-center gap-6 sm:mt-0">
                         <button
                           onClick={(e) => addFavorite(e)}
                           className="font-roboto-light flex items-center gap-2 py-2 text-3xl"
@@ -275,16 +275,20 @@ function ProductDetailPage() {
                           </TwitterShareButton>
                         </button>
                       </div>
+                      {/*  */}
                     </div>
 
-                    <div className="font-roboto-light flex flex-col justify-between gap-2 rounded-md bg-white p-4 shadow-sm md:flex-row md:gap-6">
+                    <div
+                      className="font-roboto-light flex flex-col justify-between gap-2 rounded-md bg-white p-4 shadow-sm
+                     md:flex-col md:flex-col md:gap-6 lg:flex-row"
+                    >
                       <div className="flex items-center gap-2 md:gap-14">
                         <h6 className="font-roboto-medium">Color</h6>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-2 sm:flex-row">
                           {colors.map((color, index) => (
                             <div
                               key={index.toString()}
-                              className="h-8 w-8 rounded-sm ring-1 ring-gray-100"
+                              className="h-8 w-8 rounded-sm ring-1 ring-gray-100 sm:flex-row"
                               style={{ backgroundColor: color }}
                             />
                           ))}
@@ -301,11 +305,15 @@ function ProductDetailPage() {
                         <span className="p-2">ETB </span>
                         <p>{productData.data.product.price}</p>
                       </div>
-
-                      <button className="font-roboto-medium mt-2 flex items-center gap-1 rounded-full px-6 py-1 text-sm text-white ring-1 ring-blue-700 md:mt-0">
-                        <p className="text-gray-500">In Stock</p>
-                        <p className="text-blue-800">60 Piece</p>
-                      </button>
+                      <div className="mt-2 flex items-center font-bold md:mt-0">
+                        <button
+                          className="font-roboto-medium mt-2 flex items-center gap-1
+                       rounded-full px-6 py-1 text-sm text-white ring-1 ring-blue-700 md:mt-0"
+                        >
+                          <p className="text-gray-500">In Stock</p>
+                          <p className="text-blue-800">60 Piece</p>
+                        </button>
+                      </div>
                     </div>
 
                     <div className="rounded-md bg-white px-4 py-6 shadow-sm">

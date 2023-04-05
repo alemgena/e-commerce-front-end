@@ -11,7 +11,7 @@ function Footer() {
   return (
     <div className="m-2 rounded-lg  bg-white font-sans shadow md:m-4">
       <div className=" container mx-auto ml-2 flex w-full justify-center p-4 sm:block sm:p-6">
-        <div className="grid grid-cols-1 gap-4 sm:gap-6  md:grid-cols-3  lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:gap-4  md:grid-cols-3  lg:grid-cols-4">
           <div>
             <h2 className="mb-6 text-sm font-semibold uppercase text-primary-900">
               Company
