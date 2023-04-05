@@ -10,8 +10,8 @@ import { baseURL } from '@/config';
 import { useRouter } from 'next/router';
 import { useMediaQuery } from 'react-responsive';
 import { loginAction } from '@/store/login';
-import { getSession, useSession } from 'next-auth/client';
-//import { signIn, signOut, useSession } from 'next-auth/client';
+import { getSession, } from 'next-auth/client';
+import { signIn, signOut, useSession } from 'next-auth/client';
 import NextLink from 'next/link';
 import axios from 'axios';
 import Category from '../components/CategorySection';
@@ -27,7 +27,9 @@ type AdsProp = {
   id: string;
 };
 const Index = ({ user }) => {
-  const dispatch = useAppDispatch();
+  const [session] = useSession();
+    const dispatch = useAppDispatch();
+
   const [loading, setLoading] = useState(false);
   const [adds, setAdds] = useState<any>([]);
   useEffect(() => {
