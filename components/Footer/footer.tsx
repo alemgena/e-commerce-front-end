@@ -3,8 +3,8 @@ import { IoIosMail, IoMdCall } from 'react-icons/io';
 import { IoLocationSharp } from 'react-icons/io5';
 
 function Footer() {
-  var currentTime = new Date();
-  var year = currentTime.getFullYear();
+  let currentTime = new Date();
+  const year = currentTime.getFullYear();
 
   return (
     <div className="m-2 rounded-lg bg-white font-sans shadow md:m-4">
