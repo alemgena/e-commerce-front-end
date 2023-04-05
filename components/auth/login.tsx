@@ -72,14 +72,7 @@ export const Login: React.FC = () => {
     setSubmit(true);
   };
   return (
-    <div className=" grid px-6 py-8 md:grid-cols-2">
-      <div className="hidden flex-col items-center justify-center md:flex ">
-        <img src="/images/logo.svg" />
-        <div className="font-roboto-bold mt-4 text-center text-4xl text-blue-800">
-          <h1>LIYU DIGITAL </h1>
-          <h1>TECHNOLOGY</h1>
-        </div>
-      </div>
+    <div className=" relative z-10 grid w-full px-6 py-8">
       <section>
         <Notification notify={notify} setNotify={setNotify} />
         <div>
@@ -154,7 +147,7 @@ export const Login: React.FC = () => {
                 Don’t have an account yet?{' '}
                 <a
                   href="#"
-                  onClick={() => dispatch(openModal({ Component:Register}))}
+                  onClick={() => dispatch(openModal({ Component: Register }))}
                   className="cursor-pointer font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Sign up

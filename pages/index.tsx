@@ -29,6 +29,7 @@ type AdsProp = {
 const Index = ({ user }) => {
   const [session] = useSession();
     const dispatch = useAppDispatch();
+
   const [loading, setLoading] = useState(false);
   const [adds, setAdds] = useState<any>([]);
   useEffect(() => {
@@ -103,10 +104,15 @@ const Index = ({ user }) => {
               backgroundPosition: 'center center',
             }}
           >
-            <span className="font-sans-bold text-primary mt-8  text-4xl md:text-5xl">
+            <span className="font-sans-bold mt-8 text-4xl text-blue-900  md:text-5xl">
               How to buy <br /> on Liyu?
             </span>
-            <span className="mt-4 font-sans underline">Click here</span>
+            <span
+              onClick={() => router.push('/products')}
+              className="font-sans-bold mt-4 text-blue-900 underline hover:cursor-pointer"
+            >
+              Click here
+            </span>
           </div>
           <div
             className=" hidden h-full w-1/4 cursor-pointer  rounded-md  bg-blue-800 shadow lg:block"
@@ -176,7 +182,6 @@ const Index = ({ user }) => {
                       </div>
                     </NextLink>
                   ))}
-
 
                   {hasData && (
                     <span>
