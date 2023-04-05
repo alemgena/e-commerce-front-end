@@ -1,6 +1,6 @@
 import React, { useEffect, ChangeEvent, useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
-import { FaRegUser } from 'react-icons/fa';
+import { FaRegUser, FaTimes } from 'react-icons/fa';
 import { MdCall, MdLockOutline, MdPhone } from 'react-icons/md';
 import { FORGET_PASSWORD } from '@/types';
 import Notify from '../../components/Ui/Notify';
@@ -8,7 +8,7 @@ import Notification from '../../components/Ui/Notification';
 import { RootState, useAppDispatch, useAppSelector } from '@/store';
 import { Login } from './login';
 import { Register } from './register';
-import { openModal } from '@/store/modal';
+import { closeModal, openModal } from '@/store/modal';
 
 export const ForgotPassword: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -43,20 +43,21 @@ export const ForgotPassword: React.FC = () => {
     setEmail(event.currentTarget.value);
   };
   return (
-    <div className="relative flex flex-1 flex-col items-center justify-center px-6 pt-12 pb-16 font-sans">
+    <div className="relative flex flex-1 flex-col items-center justify-center px-6 pb-16 pt-12 font-sans">
       <Notification notify={notify} setNotify={setNotify} />
-      <a
-        href="/"
-        className="mb-16 flex cursor-pointer items-center text-2xl font-semibold text-slate-900"
-      >
-        <img className="mr-2 h-8 w-8" src="/images/logo.svg" alt="logo" />
-        Liyu
-      </a>
       <div className="max-w-sm">
-        <h1 className="mb-2 text-center text-sm font-semibold text-gray-900">
-          Reset your password
+        <h1 className="flex items-center justify-between text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+          <span className="flex-grow">Reset Your Password</span>
+          <span className="ml-4 flex-shrink-0">
+            <button>
+              <FaTimes
+                onClick={() => dispatch(closeModal())}
+                className="text-red-400"
+              />
+            </button>
+          </span>
         </h1>
-        <p className="mb-10 text-center text-sm">
+        <p className="mb-4 mt-4 text-center text-sm">
           Enter your email and we'll send you a link to reset your password.
         </p>
         <form onSubmit={(e) => handleSubmit(e)} className="w-full">
@@ -72,12 +73,13 @@ export const ForgotPassword: React.FC = () => {
               className="mt-2 block h-10 w-full appearance-none rounded-md bg-white px-3 text-slate-900 shadow-sm ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 sm:text-sm"
               value={email}
               placeholder="Email"
+              required
               onChange={onChange}
             />
           </div>
           <button
             type="submit"
-            className="mt-6 inline-flex w-full justify-center rounded-lg bg-primary-900 py-2.5 px-4 text-sm font-semibold text-white hover:bg-primary-700"
+            className="mt-6 inline-flex w-full justify-center rounded-lg bg-primary-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-700"
           >
             <span>
               {!isLoading ? 'Reset your password' : 'Resetting your password'}

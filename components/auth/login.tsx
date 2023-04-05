@@ -1,19 +1,17 @@
 import React, { useEffect } from 'react';
-import { AiOutlineClose } from 'react-icons/ai';
-import { FaFacebookSquare } from 'react-icons/fa';
+import { FaFacebookSquare, FaTimes } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
-import { MdLockOutline } from 'react-icons/md';
-import { FaRegUser } from 'react-icons/fa';
-import { CurrentTab } from './modal';
 import { LOGIN } from '@/types';
 import { loginAction } from '../../store/login';
 import Notify from '../../components/Ui/Notify';
-import { signIn, signOut, getSession, useSession } from 'next-auth/client';
+import { signIn } from 'next-auth/client';
 import Notification from '../../components/Ui/Notification';
 import { RootState, useAppDispatch, useAppSelector } from '@/store';
 import { Register } from './register';
 import { ForgotPassword } from './forgotPassword';
 import { openModal } from '@/store/modal';
+import { IoContract, IoContrastSharp } from 'react-icons/io5';
+import { closeModal } from '@/store/modal';
 export const Login: React.FC = () => {
   const { NotifyMessage, notify, setNotify } = Notify();
   const dispatch = useAppDispatch();
@@ -52,13 +50,13 @@ export const Login: React.FC = () => {
 
     if (input.length < 4) {
       dispatch(
-        loginAction.setInputErr('Email or Phone must be atleast 4 characters!')
+        loginAction.setInputErr('Email or Phone must be at least 4 characters!')
       );
       isValid = false;
     }
     if (password.length < 6) {
       dispatch(
-        loginAction.setPasswordErr('Password must be atleast 6 characters!')
+        loginAction.setPasswordErr('Password must be at least 6 characters!')
       );
       isValid = false;
     }
@@ -77,9 +75,18 @@ export const Login: React.FC = () => {
         <Notification notify={notify} setNotify={setNotify} />
         <div>
           <div className="space-y-4">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-              Sign in to your account
+            <h1 className="flex items-center justify-between text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+              <span className="flex-grow">Sign in to your account</span>
+              <span className="ml-4 flex-shrink-0">
+                <button>
+                  <FaTimes
+                    onClick={() => dispatch(closeModal())}
+                    className="text-red-400"
+                  />
+                </button>
+              </span>
             </h1>
+
             <form
               className="space-y-4 md:space-y-6"
               onSubmit={(e) => validate(e)}
