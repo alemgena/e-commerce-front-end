@@ -16,7 +16,9 @@ import Link from 'next/link';
 import { useDispatch } from 'react-redux';
 import { ADD_PRODUCT_FAVORITE } from '@/types';
 import { useRouter } from 'next/router';
-import { Url } from '@/utils/url';
+/* import { Url } from '@/utils/url';
+ */ import { baseURL } from '@/config';
+
 import { RootStateOrAny, useSelector } from 'react-redux';
 import Notify from '@/components/Ui/Notify';
 import Notification from '@/components/Ui/Notification';
@@ -33,7 +35,6 @@ import { GET_PRODUCT } from '@/types';
 import PageSpinner from '@/components/Ui/PageSpinner';
 import CarouselBox from '@/components/carousel';
 import CarouselBoxCard from '@/components/carousel/Slide';
-import Banner from '@/components/carousel/advertise-banner';
 const Map = dynamic(() => import('@/components/map').then((mod) => mod.Map), {
   ssr: false,
 });
@@ -153,7 +154,7 @@ function ProductDetailPage() {
               <div className="flex flex-col md:flex-row">
                 <div className="w-full md:w-3/4">
                   <img
-                    src={`${Url}${productData?.data?.product?.imagesURL[0]}`}
+                    src={`${baseURL}${productData?.data?.product?.imagesURL[0]}`}
                     className="w-full overflow-hidden rounded-sm object-cover"
                   />
 
@@ -163,7 +164,7 @@ function ProductDetailPage() {
                         {activeImage.map((image: any, index: number) => (
                           <img
                             key={index}
-                            src={`${Url}${image}`}
+                            src={`${baseURL}${image}`}
                             className={`h-24 w-full cursor-pointer overflow-hidden rounded-sm object-cover sm:h-32 ${
                               activeImage.id === image.id &&
                               'ring-2 ring-blue-800'
@@ -178,7 +179,7 @@ function ProductDetailPage() {
                           (image: any, index: number) => (
                             <img
                               key={index}
-                              src={`${Url}${image}`}
+                              src={`${baseURL}${image}`}
                               className={`h-24 w-full cursor-pointer overflow-hidden rounded-sm object-cover sm:h-32 ${
                                 activeImage.id === image.id &&
                                 'ring-2 ring-blue-800'
@@ -247,7 +248,7 @@ function ProductDetailPage() {
                       <div className="flex items-center gap-6">
                         <button
                           onClick={(e) => addFavorite(e)}
-                          className="font-roboto-light flex items-center gap-2 py-2 text-3xl text-red-400"
+                          className="font-roboto-light flex items-center gap-2 py-2 text-3xl"
                         >
                           <BsHeart />
                         </button>
@@ -321,7 +322,7 @@ function ProductDetailPage() {
                       </h2>
                       <div className="flex items-center gap-6">
                         <img
-                          src={`${Url}/${productData.data.product.imagesURL[0]}`}
+                          src={`${baseURL}/${productData.data.product.imagesURL[0]}`}
                           className="h-16 w-16 rounded-full object-cover"
                         />
                         <div>
