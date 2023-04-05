@@ -1,37 +1,35 @@
 import React, { useEffect } from 'react';
-import { AiOutlineClose } from 'react-icons/ai';
 import { FaFacebookSquare } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
-import { MdLockOutline } from 'react-icons/md';
-import { FaRegUser } from 'react-icons/fa';
-import { CurrentTab } from './modal';
+
 import { LOGIN } from '@/types';
 import { loginAction } from '../../store/login';
 import Notify from '../../components/Ui/Notify';
-import { signIn, signOut, getSession, useSession } from 'next-auth/client';
+import { signIn } from 'next-auth/client';
 import Notification from '../../components/Ui/Notification';
 import { RootState, useAppDispatch, useAppSelector } from '@/store';
 import { Register } from './register';
 import { ForgotPassword } from './forgotPassword';
-import { openModal } from '@/store/modal';
+import { closeModal, openModal } from '@/store/modal';
+import { selectCurrentUser } from '@/store/auth';
 export const Login: React.FC = () => {
   const { NotifyMessage, notify, setNotify } = Notify();
   const dispatch = useAppDispatch();
-  const [submit, setSubmit] = React.useState(false);
   const { input, password } = useAppSelector(
     (state: RootState) => state.login.inputValues
   );
   const { inputErr, passwordErr } = useAppSelector(
     (state: RootState) => state.login.inputErrors
   );
-  const { error, loggedUser, isLoading } = useAppSelector(
+  const { user, token } = useAppSelector(selectCurrentUser);
+  const { error, isLoading } = useAppSelector(
     (state: RootState) => state.login
   );
   const handleLogin = () => {
     signIn('google');
   };
   useEffect(() => {
-    if (error && submit) {
+    if (error) {
       NotifyMessage({
         message: error.message,
         type: 'error',
@@ -39,10 +37,12 @@ export const Login: React.FC = () => {
     }
   }, [error]);
   useEffect(() => {
-    if (loggedUser && submit) {
-      // setOpen(false);
+    if (token && user) {
+      dispatch(loginAction.setInputErr(''));
+      dispatch(loginAction.setPasswordErr(''));
+      dispatch(closeModal());
     }
-  }, [loggedUser]);
+  }, [token, user]);
   const validate = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Resetting input errors to default
@@ -69,7 +69,6 @@ export const Login: React.FC = () => {
 
   const handleSubmit = () => {
     dispatch({ type: LOGIN, data: { input: input, password: password } });
-    setSubmit(true);
   };
   return (
     <div className=" grid px-6 py-8 md:grid-cols-2">
@@ -154,7 +153,7 @@ export const Login: React.FC = () => {
                 Don’t have an account yet?{' '}
                 <a
                   href="#"
-                  onClick={() => dispatch(openModal({ Component:Register}))}
+                  onClick={() => dispatch(openModal({ Component: Register }))}
                   className="cursor-pointer font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Sign up

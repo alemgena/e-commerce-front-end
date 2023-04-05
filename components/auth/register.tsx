@@ -123,11 +123,11 @@ export const Register: React.FC = () => {
   useAppSelector((state: RootState) => state.register.inputValues);
   return (
     // <section className="w-full">
-    <section className="mx-auto flex flex-col items-center justify-center px-6 py-8">
+    <section className="mx-auto flex flex-col items-center justify-center px-2 py-8 md:px-6">
       <Notification notify={notify} setNotify={setNotify} />
       <a
         href="/"
-        className="mb-6 flex cursor-pointer items-center text-2xl font-semibold text-gray-900 dark:text-white"
+        className="mb-2 flex cursor-pointer items-center text-2xl font-semibold text-gray-900 dark:text-white md:mb-6"
       >
         <img className="mr-2 h-8 w-8" src="/images/logo.svg" alt="logo" />
         Liyu
@@ -144,14 +144,14 @@ export const Register: React.FC = () => {
             <div>
               <label
                 htmlFor="First Name"
-                className="mb-2 text-sm font-medium text-gray-900"
+                className="mb-2 block text-sm font-medium text-gray-900"
               >
                 First Name
               </label>
               <input
                 name="First Name"
                 id="first_name"
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-1 text-gray-900 focus:border-primary-600 focus:ring-primary-600 sm:p-2.5 sm:text-sm"
                 value={first_name}
                 placeholder="First Name is Required"
                 onChange={(e) => {
@@ -172,7 +172,7 @@ export const Register: React.FC = () => {
               <input
                 name="Last Name"
                 id="last_name"
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-1 text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:p-2.5 sm:text-sm"
                 value={last_name}
                 placeholder="Last Name is Required"
                 onChange={(e) => {
@@ -192,7 +192,7 @@ export const Register: React.FC = () => {
                 name="Email"
                 id="email"
                 type="email"
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50  p-1 text-gray-900  focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:p-2.5 sm:text-sm"
                 value={email}
                 placeholder="Email is Required"
                 onChange={(e) => {
@@ -211,7 +211,7 @@ export const Register: React.FC = () => {
               <input
                 name="Phone Number"
                 id="phone_number"
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-1 text-gray-900  focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:p-2.5 sm:text-sm"
                 placeholder="+251911223344"
                 value={phone}
                 onChange={(e) => {
@@ -230,7 +230,7 @@ export const Register: React.FC = () => {
               <input
                 name="password"
                 id="password"
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-1 text-gray-900  focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:p-2.5 sm:text-sm"
                 placeholder="Enter password"
                 value={password1}
                 onChange={(e) => {
@@ -252,7 +252,7 @@ export const Register: React.FC = () => {
               <input
                 name="confirm"
                 id="confirm_password"
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-1 text-gray-900  focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:p-2.5 sm:text-sm"
                 placeholder="Confirm password"
                 value={password2}
                 onChange={(e) => {

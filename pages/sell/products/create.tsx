@@ -221,13 +221,16 @@ const CreateProductPage = () => {
       </Head>
       <div className="m-auto max-w-5xl px-6 md:px-8">
         <div className="flex cursor-pointer items-center  gap-2  py-4 text-xl">
-          <FiArrowLeft className='cursor-pointer' onClick={() => router.push('/')} />
+          <FiArrowLeft
+            className="cursor-pointer"
+            onClick={() => router.push('/')}
+          />
           <h2>Sell Product</h2>
         </div>
         <Notification notify={notify} setNotify={setNotify} />
         <div className="mt-4 grid grid-flow-row-dense gap-2 md:grid-cols-3">
-         <div>
-            <label className="text-blue border-blue hover:bg-blue-800 flex w-64 cursor-pointer flex-col items-center rounded-lg border bg-white px-4 py-6 uppercase tracking-wide shadow-lg hover:text-white">
+          <div>
+            <label className="text-blue border-blue flex w-64 cursor-pointer flex-col items-center rounded-lg border bg-white px-4 py-6 uppercase tracking-wide shadow-lg hover:bg-blue-800 hover:text-white">
               <svg
                 className="h-8 w-8"
                 fill="currentColor"
@@ -375,7 +378,7 @@ const CreateProductPage = () => {
                   className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   htmlFor="name"
                 >
-                  Name
+                  Regions
                 </label>
                 <Autocomplete
                   // className="w-1/2 rounded-md bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
@@ -386,6 +389,7 @@ const CreateProductPage = () => {
                   onChange={(event, newValue: any) => {
                     handlRegion(newValue);
                   }}
+                  
                   renderInput={(params) => (
                     <TextField {...params} label="Regions" />
                   )}
