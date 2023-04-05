@@ -214,7 +214,7 @@ function ProductDetailPage() {
                       </h2>
                     </div>
                     <div className="font-roboto-light flex flex-col gap-2 rounded-md bg-white p-4 shadow-sm md:flex-row md:gap-6">
-                      <div className="flex flex-grow flex-col md:flex-row md:gap-6">
+                      <div className="flex flex-grow  flex-col sm:flex-col md:flex-row md:gap-6">
                         <Link href="/chat">
                           <button className="mt-3 flex-grow rounded-full bg-blue-800 py-2 text-white md:mt-0">
                             Make an Offer
@@ -247,7 +247,7 @@ function ProductDetailPage() {
                       <div className="flex items-center gap-6">
                         <button
                           onClick={(e) => addFavorite(e)}
-                          className="font-roboto-light flex items-center gap-2 py-2 text-3xl"
+                          className="font-roboto-light flex items-center gap-2 py-2 text-3xl text-red-400"
                         >
                           <BsHeart />
                         </button>
