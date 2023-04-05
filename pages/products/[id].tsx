@@ -380,7 +380,6 @@ function ProductDetailPage() {
                     </CarouselBox>{' '}
                   </div>
                 </div>
-                <Banner />
               </div>{' '}
             </>
           )}
