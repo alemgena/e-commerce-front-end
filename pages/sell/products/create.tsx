@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import React from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
 import { useState } from 'react';
 import { AiOutlinePicture } from 'react-icons/ai';
@@ -16,23 +17,23 @@ import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import { useRouter } from 'next/router';
 import Protected from '@/components/protected/protected';
 import { useAppDispatch } from '@/store';
-const regions = [
-  'Addis Ababa',
-  'Afar',
-  'Amhara',
-  'Benishangul-Gumuz',
-  'Dire Dawa',
-  'Gambela',
-  '	Harari',
-  'Harari',
-  '	Somali',
-  'Oromia',
-  'Tigray',
-  'SNNPR',
-  'Sidama',
-  'SWEPR',
-];
 const CreateProductPage = () => {
+  const[regions,setRegions]=useState<any>([])
+  React.useEffect(() => {
+    async function fetcRegions() {
+      try {
+        const { data } = await axios.get('https://backend-staging.liyumarket.com/api/regions/');
+        if (data) {
+        setRegions(data.data);
+        
+        }
+      } catch (error: any) {
+   
+      }
+    }
+    fetcRegions()
+  
+  }, []);
   const router = useRouter();
   const { NotifyMessage, notify, setNotify } = Notify();
   const dispatch = useAppDispatch();
@@ -49,15 +50,14 @@ const CreateProductPage = () => {
   const categories = useSelector(
     (state: RootStateOrAny) => state.categories.categories
   );
-  const { name, description, price, region, latitude, longitude } = useSelector(
+  const { name, description, price, city,region } = useSelector(
     (state: RootStateOrAny) => state.products.inputValues
   );
   const {
     nameErr,
     descriptionErr,
     priceErr,
-    latitudeErr,
-    longitudeErr,
+    cityErr,
     subcategoryErr,
     regionErr,
     optionsErr,
@@ -71,8 +71,7 @@ const CreateProductPage = () => {
     dispatch(productAction.setSubcategoryErr(''));
     dispatch(productAction.setOptionErr(''));
     dispatch(productAction.setRegionErr(''));
-    dispatch(productAction.setLatitudeErr(''));
-    dispatch(productAction.setLongitudeErr(''));
+    dispatch(productAction.setCityErr(''));
     let isValid = true;
 
     if (name.length < 4) {
@@ -105,12 +104,8 @@ const CreateProductPage = () => {
       dispatch(productAction.setPriceErr('Price Is required!'));
       isValid = false;
     }
-    if (!longitude) {
-      dispatch(productAction.setLongitudeErr('Logitude Is required!'));
-      isValid = false;
-    }
-    if (!latitude) {
-      dispatch(productAction.setLatitudeErr('Latitude Is required!'));
+    if (!city) {
+      dispatch(productAction.setCityErr('Subcity Is required!'));
       isValid = false;
     }
     if (!region) {
@@ -155,8 +150,7 @@ const CreateProductPage = () => {
       subcategory: subCategory.id,
       options: uniqueOption,
       region: region,
-      latitude: latitude,
-      longitude: longitude,
+      location:city,
     };
     let formData = new FormData();
     Array.from(image).forEach((item: any) => {
@@ -201,13 +195,21 @@ const CreateProductPage = () => {
       setValuesData((values: any) => [...values, event]);
     }
   };
+  const [regionValue, setRegionValue] =useState<any>(null);
+  const[subCity,setSubCity]=useState<any>(null)
   const handlRegion = (event: any) => {
-    dispatch(productAction.setRegion(event));
+    console.log(event)
+    dispatch(productAction.setRegion(event.name));
+    setRegionValue(event)
+  setSubCity(regions.find(
+      (region: any) => region.name === event.name));
   };
-
   const optionAscending = [...productOptions].sort((a: any, b: any) =>
     a.name < b.name ? -1 : 1
   );
+  const handlCity = (event: any) => {
+    dispatch(productAction.setCity(event));
+  };
   return (
     <Protected>
       <Head>
@@ -348,6 +350,42 @@ const CreateProductPage = () => {
                 <p className="text-xs italic text-red-500">{descriptionErr}</p>
               </div>
               <div>
+                <Autocomplete
+                  className="relative z-0"
+                  value={regionValue}
+                  id="combo-box-demo"
+                  options={regions}
+                  getOptionLabel={(option) => option.name}
+                  renderInput={(params) => (
+                    <TextField {...params} label='Regions' />
+                  )}
+                  onChange={(event, newValue: any) => {
+                    handlRegion(newValue);
+                  }}
+                />
+                <p className="text-xs italic text-red-500">{regionErr}</p>
+              </div>
+
+              <div>
+              {subCity&&
+                <>
+                <Autocomplete
+                  className="relative z-0"
+                  value={city}
+                  id="combo-box-demo"
+                  options={subCity.subCitys}
+                  renderInput={(params) => (
+                    <TextField {...params} label='Subcity' />
+                  )}
+                  onChange={(event, newValue: any) => {
+                    handlCity(newValue);
+                  }}
+                />
+                </>
+}
+                <p className="text-xs italic text-red-500">{cityErr}</p>
+              </div>
+              <div>
                 <label
                   className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   htmlFor="price"
@@ -367,70 +405,7 @@ const CreateProductPage = () => {
                 />
                 <p className="text-xs italic text-red-500">{priceErr}</p>
               </div>
-
-              <div>
-                <label
-                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                  htmlFor="name"
-                >
-                  Regions
-                </label>
-                <Autocomplete
-                  // className="w-1/2 rounded-md bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
-                  disablePortal
-                  className="relative z-0"
-                  value={region}
-                  id="combo-box-demo"
-                  options={regions}
-                  onChange={(event, newValue: any) => {
-                    handlRegion(newValue);
-                  }}
-                  
-                  renderInput={(params) => (
-                    <TextField {...params} label="Regions" />
-                  )}
-                />
-                <p className="text-xs italic text-red-500">{regionErr}</p>
-              </div>
-              <div>
-                <label
-                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                  htmlFor="longitude"
-                >
-                  Longitude
-                </label>
-                <input
-                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  "
-                  type="number"
-                  id="longitude"
-                  value={longitude}
-                  onChange={(e) => {
-                    dispatch(productAction.setLongitude(e.target.value));
-                  }}
-                  pattern="[0-9]*"
-                />
-                <p className="text-xs italic text-red-500">{longitudeErr}</p>
-              </div>
-              <div>
-                <label
-                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                  htmlFor="Latitude"
-                >
-                  Latitude
-                </label>
-                <input
-                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  "
-                  type="number"
-                  id="Latitude"
-                  value={latitude}
-                  onChange={(e) => {
-                    dispatch(productAction.setLatitude(e.target.value));
-                  }}
-                  pattern="[0-9]*"
-                />
-                <p className="text-xs italic text-red-500">{latitudeErr}</p>
-              </div>
-
+             
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
