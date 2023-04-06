@@ -153,28 +153,30 @@ const Index = ({ user }) => {
                       href={`/products/${ad.id}`}
                       passHref
                     >
-                      <div className="w-full rounded-lg bg-white font-sans shadow-md">
-                        <a href="#">
+                      <div className="flex w-full flex-col rounded-lg border border-gray-100 bg-white shadow-md">
+                        <a
+                          className=" mx-1 mt-1 flex h-60 overflow-hidden rounded-xl"
+                          href="#"
+                        >
                           <img
-                            className="h-60 rounded-t-lg object-cover"
+                            className="object-cover"
                             src={`${baseURL}/${ad.imagesURL[0]}`}
                             alt="product image"
                           />
                         </a>
-                        {/* <span class="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white">
-                          Sale
-                        </span> */}
-                        <div className="mt-4 px-5 pb-5">
+                        <div className="mt-4 px-2 pb-2">
                           <a href="#">
-                            <h5 className="text-lg tracking-tight text-slate-900">
+                            <h5 className="text-xl font-bold tracking-tight text-slate-900">
                               {ad.name}
                             </h5>
                           </a>
-
-                          <div className="flex items-center justify-between">
+                          <div className="mt-2 mb-2 flex items-center justify-between">
                             <p>
-                              <span className=" text-lg font-bold text-primary-900 lg:text-2xl">
-                                ETB {ad.price}{' '}
+                              <span className="text-sm text-slate-900">
+                                ETB
+                              </span>
+                              <span className="text-xl  font-bold text-slate-900">
+                                {ad.price}{' '}
                               </span>
                             </p>
                           </div>

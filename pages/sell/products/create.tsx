@@ -373,7 +373,7 @@ const CreateProductPage = () => {
                   className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   htmlFor="name"
                 >
-                  Name
+                  Regions
                 </label>
                 <Autocomplete
                   // className="w-1/2 rounded-md bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
@@ -385,6 +385,7 @@ const CreateProductPage = () => {
                   onChange={(event, newValue: any) => {
                     handlRegion(newValue);
                   }}
+                  
                   renderInput={(params) => (
                     <TextField {...params} label="Regions" />
                   )}
@@ -463,19 +464,6 @@ const CreateProductPage = () => {
           </div>
         </div>
       </div>
-      {/* <MapContainer center={[51.505, -0.09]} zoom={13} onClick={handleClick}>
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution="&copy; OpenStreetMap contributors"
-        />
-        {position && (
-          <Marker position={position}>
-            <Popup>
-              You clicked here! <button>Save</button>
-            </Popup>
-          </Marker>
-        )}
-      </MapContainer> */}
     </Protected>
   );
 };

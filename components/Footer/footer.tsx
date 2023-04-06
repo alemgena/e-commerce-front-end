@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { IoIosMail, IoMdCall } from 'react-icons/io';
 import { IoLocationSharp } from 'react-icons/io5';
@@ -90,8 +91,7 @@ function Footer() {
                   </div>
                 </div>
               </div>
-
-              <div className="flex cursor-pointer items-center justify-center gap-2 rounded-md bg-black p-2 text-white sm:mr-4">
+<div className="flex cursor-pointer items-center justify-center gap-2 rounded-md bg-black p-2 text-white sm:mr-4">
                 <AppStoreSVG />
                 <div className="flex h-full flex-col justify-between">
                   <div className="text-xs">Download our App On</div>

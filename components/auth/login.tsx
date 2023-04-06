@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { FaFacebookSquare, FaTimes } from 'react-icons/fa';
+import { FaFacebookSquare } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { LOGIN } from '@/types';
 import { loginAction } from '../../store/login';
@@ -9,27 +9,29 @@ import Notification from '../../components/Ui/Notification';
 import { RootState, useAppDispatch, useAppSelector } from '@/store';
 import { Register } from './register';
 import { ForgotPassword } from './forgotPassword';
-import { openModal } from '@/store/modal';
+import { closeModal, openModal } from '@/store/modal';
+import { selectCurrentUser } from '@/store/auth';
+import { FaRegUser, FaTimes } from 'react-icons/fa';
 import { IoContract, IoContrastSharp } from 'react-icons/io5';
-import { closeModal } from '@/store/modal';
+
 export const Login: React.FC = () => {
   const { NotifyMessage, notify, setNotify } = Notify();
   const dispatch = useAppDispatch();
-  const [submit, setSubmit] = React.useState(false);
   const { input, password } = useAppSelector(
     (state: RootState) => state.login.inputValues
   );
   const { inputErr, passwordErr } = useAppSelector(
     (state: RootState) => state.login.inputErrors
   );
-  const { error, loggedUser, isLoading } = useAppSelector(
+  const { user, token } = useAppSelector(selectCurrentUser);
+  const { error, isLoading } = useAppSelector(
     (state: RootState) => state.login
   );
   const handleLogin = () => {
     signIn('google');
   };
   useEffect(() => {
-    if (error && submit) {
+    if (error) {
       NotifyMessage({
         message: error.message,
         type: 'error',
@@ -37,10 +39,12 @@ export const Login: React.FC = () => {
     }
   }, [error]);
   useEffect(() => {
-    if (loggedUser && submit) {
-      // setOpen(false);
+    if (token && user) {
+      dispatch(loginAction.setInputErr(''));
+      dispatch(loginAction.setPasswordErr(''));
+      dispatch(closeModal());
     }
-  }, [loggedUser]);
+  }, [token, user]);
   const validate = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Resetting input errors to default
@@ -67,7 +71,6 @@ export const Login: React.FC = () => {
 
   const handleSubmit = () => {
     dispatch({ type: LOGIN, data: { input: input, password: password } });
-    setSubmit(true);
   };
   return (
     <div className=" relative z-10 grid w-full px-6 py-8">

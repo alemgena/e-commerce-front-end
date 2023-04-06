@@ -8,12 +8,12 @@ export function* login(actions: any): any {
     yield put(loginAction.setIsLoading(true));
     const response = yield loginApi(actions.data);
     console.log('login', response.data.data);
-    // dispatch(
-    //   setCredentials({
-    //     user: response.data.data.user,
-    //     token: response.data.data.tokens.access.token,
-    //   })
-    // );
+    yield put(
+      setCredentials({
+        user: response.data.data.user,
+        token: response.data.data.tokens.access.token,
+      })
+    );
     // yield put(loginAction.setLoggedUser(response.data.data));
     yield put(loginAction.setIsLoading(false));
     // yield put(loginAction.setIsUserLogged(true))
@@ -23,7 +23,6 @@ export function* login(actions: any): any {
     console.log(error);
     yield put(loginAction.setError(error.response.data.error));
     yield put(loginAction.setIsLoading(false));
-    // yield put(loginAction.setIsUserLogged(false));
   }
 }
 export function* watchLoginAsync() {
