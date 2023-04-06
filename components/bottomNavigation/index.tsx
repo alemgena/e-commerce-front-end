@@ -31,7 +31,7 @@ const index = () => {
 
   return (
     <div
-      className={`sticky bottom-0 left-0 z-50 block ${
+      className={`sticky bottom-0 left-0 z-50  block ${
         !isVisible ? 'translate-y-full' : 'translate-y-0'
       } w-full bg-white shadow-2xl transition duration-150 ease-in-out lg:hidden`}
     >

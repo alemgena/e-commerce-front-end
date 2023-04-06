@@ -208,11 +208,6 @@ const CreateProductPage = () => {
   const optionAscending = [...productOptions].sort((a: any, b: any) =>
     a.name < b.name ? -1 : 1
   );
-  const [position, setPosition] = useState(null);
-
-  function handleClick(event: any) {
-    setPosition(event.latlng);
-  }
   return (
     <Protected>
       <Head>
@@ -383,6 +378,7 @@ const CreateProductPage = () => {
                 <Autocomplete
                   // className="w-1/2 rounded-md bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
                   disablePortal
+                  className="relative z-0"
                   value={region}
                   id="combo-box-demo"
                   options={regions}
@@ -463,23 +459,11 @@ const CreateProductPage = () => {
                   </button>
                 )}
               </div>
+
             </form>
           </div>
         </div>
       </div>
-      {/* <MapContainer center={[51.505, -0.09]} zoom={13} onClick={handleClick}>
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution="&copy; OpenStreetMap contributors"
-        />
-        {position && (
-          <Marker position={position}>
-            <Popup>
-              You clicked here! <button>Save</button>
-            </Popup>
-          </Marker>
-        )}
-      </MapContainer> */}
     </Protected>
   );
 };

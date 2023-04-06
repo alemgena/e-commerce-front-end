@@ -1,12 +1,12 @@
 import React from 'react';
 import { MdPhone, MdLockOutline } from 'react-icons/md';
-import { FaRegUser } from 'react-icons/fa';
+import { FaRegUser, FaTimes } from 'react-icons/fa';
 import { registerAction } from '../../store/register';
 import { REGISTER } from '@/types';
 import Notify from '../../components/Ui/Notify';
 import Notification from '../../components/Ui/Notification';
 import { RootState, useAppDispatch, useAppSelector } from '@/store';
-import { openModal } from '@/store/modal';
+import { closeModal, openModal } from '@/store/modal';
 import { Login } from './login';
 
 function validateEmail(email: string) {
@@ -125,17 +125,18 @@ export const Register: React.FC = () => {
     // <section className="w-full">
     <section className="mx-auto flex flex-col items-center justify-center px-2 py-8 md:px-6">
       <Notification notify={notify} setNotify={setNotify} />
-      <a
-        href="/"
-        className="mb-2 flex cursor-pointer items-center text-2xl font-semibold text-gray-900 dark:text-white md:mb-6"
-      >
-        <img className="mr-2 h-8 w-8" src="/images/logo.svg" alt="logo" />
-        Liyu
-      </a>
       <div className="w-full rounded-lg bg-white  sm:max-w-md md:mt-0 xl:p-0 ">
-        <div className="flex flex-col items-center justify-between space-y-4 space-y-6">
-          <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-            Sign up
+        <div className="flex flex-col items-center justify-start space-y-4 space-y-6">
+          <h1 className="flex items-center justify-between text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+            <span className="flex-grow">Register To Liyu</span>
+            <span className="ml-10 mt-1 flex-shrink-0">
+              <button>
+                <FaTimes
+                  onClick={() => dispatch(closeModal())}
+                  className="text-red-400"
+                />
+              </button>
+            </span>
           </h1>
           <form
             className="grid gap-2 p-2 sm:grid-cols-2"
@@ -264,9 +265,10 @@ export const Register: React.FC = () => {
                 <div className="text-red-600">{password2Err}</div>
               )}
             </div>
+
             <button
               type="submit"
-              className=" inline-flex items-center justify-center rounded bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800"
+              className="mt-4 inline-flex w-full items-center justify-center rounded bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800"
             >
               {isLoading ? 'Signing up' : 'Sign up'}
             </button>

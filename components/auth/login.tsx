@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { FaFacebookSquare } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
-
 import { LOGIN } from '@/types';
 import { loginAction } from '../../store/login';
 import Notify from '../../components/Ui/Notify';
@@ -12,6 +11,9 @@ import { Register } from './register';
 import { ForgotPassword } from './forgotPassword';
 import { closeModal, openModal } from '@/store/modal';
 import { selectCurrentUser } from '@/store/auth';
+import { FaRegUser, FaTimes } from 'react-icons/fa';
+import { IoContract, IoContrastSharp } from 'react-icons/io5';
+
 export const Login: React.FC = () => {
   const { NotifyMessage, notify, setNotify } = Notify();
   const dispatch = useAppDispatch();
@@ -52,13 +54,13 @@ export const Login: React.FC = () => {
 
     if (input.length < 4) {
       dispatch(
-        loginAction.setInputErr('Email or Phone must be atleast 4 characters!')
+        loginAction.setInputErr('Email or Phone must be at least 4 characters!')
       );
       isValid = false;
     }
     if (password.length < 6) {
       dispatch(
-        loginAction.setPasswordErr('Password must be atleast 6 characters!')
+        loginAction.setPasswordErr('Password must be at least 6 characters!')
       );
       isValid = false;
     }
@@ -71,21 +73,23 @@ export const Login: React.FC = () => {
     dispatch({ type: LOGIN, data: { input: input, password: password } });
   };
   return (
-    <div className=" grid px-6 py-8 md:grid-cols-2">
-      <div className="hidden flex-col items-center justify-center md:flex ">
-        <img src="/images/logo.svg" />
-        <div className="font-roboto-bold mt-4 text-center text-4xl text-blue-800">
-          <h1>LIYU DIGITAL </h1>
-          <h1>TECHNOLOGY</h1>
-        </div>
-      </div>
+    <div className=" relative z-10 grid w-full px-6 py-8">
       <section>
         <Notification notify={notify} setNotify={setNotify} />
         <div>
           <div className="space-y-4">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-              Sign in to your account
+            <h1 className="flex items-center justify-between text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+              <span className="flex-grow">Sign in to your account</span>
+              <span className="ml-4 flex-shrink-0">
+                <button>
+                  <FaTimes
+                    onClick={() => dispatch(closeModal())}
+                    className="text-red-400"
+                  />
+                </button>
+              </span>
             </h1>
+
             <form
               className="space-y-4 md:space-y-6"
               onSubmit={(e) => validate(e)}

@@ -10,8 +10,8 @@ import { baseURL } from '@/config';
 import { useRouter } from 'next/router';
 import { useMediaQuery } from 'react-responsive';
 import { loginAction } from '@/store/login';
-import { getSession, useSession } from 'next-auth/client';
-//import { signIn, signOut, useSession } from 'next-auth/client';
+import { getSession, } from 'next-auth/client';
+import { signIn, signOut, useSession } from 'next-auth/client';
 import NextLink from 'next/link';
 import axios from 'axios';
 import Category from '../components/CategorySection';
@@ -27,7 +27,9 @@ type AdsProp = {
   id: string;
 };
 const Index = ({ user }) => {
-  const dispatch = useAppDispatch();
+  const [session] = useSession();
+    const dispatch = useAppDispatch();
+
   const [loading, setLoading] = useState(false);
   const [adds, setAdds] = useState<any>([]);
   useEffect(() => {
@@ -102,10 +104,15 @@ const Index = ({ user }) => {
               backgroundPosition: 'center center',
             }}
           >
-            <span className="font-sans-bold text-primary mt-8  text-4xl md:text-5xl">
+            <span className="font-sans-bold mt-8 text-4xl text-blue-900  md:text-5xl">
               How to buy <br /> on Liyu?
             </span>
-            <span className="mt-4 font-sans underline">Click here</span>
+            <span
+              onClick={() => router.push('/products')}
+              className="font-sans-bold mt-4 text-blue-900 underline hover:cursor-pointer"
+            >
+              Click here
+            </span>
           </div>
           <div
             className=" hidden h-full w-1/4 cursor-pointer  rounded-md  bg-blue-800 shadow lg:block"
@@ -141,39 +148,6 @@ const Index = ({ user }) => {
               {products.data && (
                 <div className=" grid grid-cols-2 items-center justify-center gap-4 pb-8 sm:grid-cols-3 md:grid-cols-4">
                   {products.data.map((ad: AdsProp, idx: number) => (
-                    // <NextLink
-                    //   key={idx.toString()}
-                    //   href={`/products/${ad.id}`}
-                    //   passHref
-                    // >
-                    //   <div className="w-full rounded-lg bg-white font-sans shadow-md">
-                    //     <a href="#">
-                    //       <img
-                    //         className="h-60 rounded-t-lg object-cover"
-                    //         src={`${baseURL}/${ad.imagesURL[0]}`}
-                    //         alt="product image"
-                    //       />
-                    //     </a>
-                    //     {/* <span class="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white">
-                    //       Sale
-                    //     </span> */}
-                    //     <div className="mt-4 px-5 pb-5">
-                    //       <a href="#">
-                    //         <h5 className="text-lg tracking-tight text-slate-900">
-                    //           {ad.name}
-                    //         </h5>
-                    //       </a>
-
-                    //       <div className="flex items-center justify-between">
-                    //         <p>
-                    //           <span className=" text-lg font-bold text-primary-900 lg:text-2xl">
-                    //             ETB {ad.price}{' '}
-                    //           </span>
-                    //         </p>
-                    //       </div>
-                    //     </div>
-                    //   </div>
-                    // </NextLink>
                     <NextLink
                       key={idx.toString()}
                       href={`/products/${ad.id}`}

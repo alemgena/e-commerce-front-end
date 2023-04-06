@@ -1,16 +1,25 @@
 import React from 'react';
 import { IoIosMail, IoMdCall } from 'react-icons/io';
 import { IoLocationSharp } from 'react-icons/io5';
+import PlaystoreSVG from './playstore-svg';
+import AppStoreSVG from './appstore-svg';
 
 function Footer() {
-  var currentTime = new Date();
-  var year = currentTime.getFullYear();
+  let currentTime = new Date();
+  const year = currentTime.getFullYear();
 
   return (
+<<<<<<< HEAD
     <div className="mx-2 rounded-lg bg-white font-sans shadow ">
       <div className="container mx-auto w-full p-4 sm:p-6">
         <div className="md-w-2xl m-auto grid max-w-5xl grid-cols-2 gap-4 sm:gap-6 md:grid-cols-2  lg:grid-cols-4">
           <div className="auto-cols-max">
+=======
+    <div className="m-2 rounded-lg  bg-white font-sans shadow md:m-4">
+      <div className=" container mx-auto ml-2 flex w-full justify-center p-4 sm:block sm:p-6">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6  md:grid-cols-3  lg:grid-cols-4">
+          <div>
+>>>>>>> develop
             <h2 className="mb-6 text-sm font-semibold uppercase text-primary-900">
               Company
             </h2>
@@ -32,6 +41,7 @@ function Footer() {
               </li>
             </ul>
           </div>
+<<<<<<< HEAD
           <div className="grow">
             <h2 className="mb-6 text-sm font-semibold uppercase text-primary-900">
               Contact us
@@ -71,11 +81,55 @@ function Footer() {
                 </a>
               </li>
             </ul>
+=======
+          <div className="sm:mr-4 md:flex md:flex-row md:justify-between ">
+            <div>
+              <h2 className="mb-6 text-sm font-semibold uppercase text-primary-900">
+                Contact us
+              </h2>
+              <ul className="text-primary-600">
+                <li className="mb-4">
+                  <a
+                    href="#"
+                    className="flex items-center justify-start gap-x-4 hover:underline"
+                  >
+                    <span>
+                      <IoMdCall size={20} />
+                    </span>
+                    <span>251946841922</span>{' '}
+                  </a>
+                </li>
+                <li className="mb-4">
+                  <a
+                    href="#"
+                    className="flex items-center justify-start gap-x-4 hover:underline"
+                  >
+                    <span>
+                      <IoIosMail size={20} />
+                    </span>
+                    <span>support@liyumarket.com</span>
+                  </a>
+                </li>
+                <li className="mb-4">
+                  <a
+                    href="#"
+                    className="flex items-center justify-start gap-x-4 hover:underline"
+                  >
+                    <span>
+                      <IoLocationSharp size={20} />
+                    </span>
+                    <span>Country Tower 3rd Floor Piyassa</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+>>>>>>> develop
           </div>
-          <div className="col-span-2">
+          <div className="col-span-1 md:col-span-2">
             <h2 className="mb-6 text-sm font-semibold uppercase text-primary-900">
               Download on{' '}
             </h2>
+<<<<<<< HEAD
             <div className=" grid grid-cols-1  gap-4 md:col-span-full ">
               <div className="flex cursor-pointer items-center justify-center gap-2 rounded-md bg-black p-2 text-white">
                 <svg viewBox="30 336.7 120.9 129.2" width="24">
@@ -96,6 +150,11 @@ function Footer() {
                     d="M99.1,401.1l-64.3-64.3c-2.6,0.6-4.8,2.9-4.8,7.6  c0,7.5,0,107.5,0,113.8c0,4.3,1.7,7.4,4.9,7.7L99.1,401.1z"
                   />
                 </svg>
+=======
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 ">
+              <div className="flex cursor-pointer items-center justify-center gap-2 rounded-md bg-black p-2 text-white sm:mr-4">
+                <PlaystoreSVG />
+>>>>>>> develop
                 <div className="flex h-full flex-col justify-between uppercase">
                   <div className="text-xs">Get it on</div>
                   <div className="font-roboto -mt-1 text-sm font-bold">
@@ -104,16 +163,11 @@ function Footer() {
                 </div>
               </div>
 
-              <div className="flex cursor-pointer items-center justify-center gap-2 rounded-md bg-black  p-2 text-white">
-                <svg viewBox="0 0 384 512" width="24">
-                  <path
-                    fill="currentColor"
-                    d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"
-                  />
-                </svg>
+              <div className="flex cursor-pointer items-center justify-center gap-2 rounded-md bg-black p-2 text-white sm:mr-4">
+                <AppStoreSVG />
                 <div className="flex h-full flex-col justify-between">
                   <div className="text-xs">Download our App On</div>
-                  <div className="-mt-1 font-sans font-bold uppercase">
+                  <div className="mt-1 font-sans font-bold uppercase">
                     App Store
                   </div>
                 </div>

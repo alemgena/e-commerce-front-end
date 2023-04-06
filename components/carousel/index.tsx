@@ -1,77 +1,110 @@
-/* eslint-disable arrow-body-style */
-/* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable react/function-component-definition */
 import React from 'react';
-import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
-import Slider from 'react-slick';
-
-import { sliderContent } from '../../mock/slider';
-
+import Link from 'next/link';
 import { NextArrow, PrevArrow } from './Arrows';
-import Slide from './Slide';
+import Slider from 'react-slick';
+import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 
-const Carousel = () => {
+interface Props {
+  title: string;
+  className?: string;
+  href?: string;
+  children?: React.ReactNode;
+  full?: boolean;
+}
+const CarouselBox: React.FC<Props> = ({ title, className, children, full }) => {
   const settings = {
-    dots: true,
+    className: ` px-4 ${full ? 'bg-palette-fill' : 'bg-[#37bccef9]'}`,
     infinite: true,
-    speed: 500,
-    slidesToShow: 0,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    cssEase: 'linear',
-    // nextArrow: <NextArrow to="next" />,
-    prevArrow: <PrevArrow to="prev" />,
-    appendDots: (dots: string) => (
-      <div className="z-[100] bg-white  !pb-[40px]">
-        <ul> {dots} </ul>
-      </div>
-    ),
+    speed: 600,
+    centerPadding: '60px',
+    slidesToShow: 5,
+    slidesToScroll: 5,
+    // initialSlide: 0,
+    swipeToSlide: true,
+    // rtl: true,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+    responsive: [
+      {
+        breakpoint: 1324,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 4,
+        },
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   return (
-    <div className="relative w-full overflow-hidden">
+    <div
+      className={` w-[85%]bg-blue-100 relative h-[50vh] bg-cover bg-center md:h-[70vh] bg-no-repeat${
+        full ? 'flex-col' : 'bg-[#37bccef9]'
+      }`}
+    >
       <div
-        className="relative   w-full rounded-sm bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/images/Image 29.png')" }}
+        className={`flex flex-grow flex-col items-center justify-around rounded-md bg-cover  bg-center bg-no-repeat text-sm backdrop-blur-md sm:text-base ${className}`}
       >
-        <a
-          className="ml-28 flex  flex-row items-end justify-start  gap-3 pb-20
-        "
+        <h2
+          className={`text-lg  font-bold sm:text-xl ${
+            full
+              ? 'text-palette-base self-start'
+              : 'text-palette-primary text-center'
+          } `}
         >
-          <div className="mb-5">
-            <svg
-              viewBox="0 0 500 500"
-              xmlSpace="preserve"
-              width="100"
-              height="100"
-              xmlns="http://www.w3.org/2000/svg"
-              className="mt-9"
-            >
-              <polygon
-                points="500,250 473.216,279.409 491.536,314.718 458.049,336.172 466.532,375.03 428.619,387.055     426.778,426.778 387.044,428.619 375.02,466.543 336.161,458.049 314.707,491.547 279.409,473.226 250,500 220.581,473.226     185.282,491.547 163.818,458.049 124.959,466.543 112.945,428.619 73.222,426.778 71.371,387.044 33.458,375.021 41.941,336.172     8.453,314.718 26.774,279.409 0,250 26.774,220.591 8.453,185.282 41.941,163.829 33.458,124.97 71.371,112.956 73.222,73.222     112.956,71.381 124.97,33.468 163.829,41.952 185.282,8.463 220.581,26.784 250,0 279.409,26.784 314.718,8.463 336.172,41.962     375.03,33.468 387.044,71.381 426.778,73.232 428.619,112.966 466.532,124.98 458.049,163.839 491.536,185.282 473.216,220.591       "
-                style={{ fill: '#16C710' }}
-              />
-            </svg>
-            <h1 className="-mt-16 ml-7 font-roboto-bold text-2xl text-white">
-              {' '}
-              15 %{' '}
-            </h1>
-          </div>
+          {`${title}`}
+        </h2>
+        {!full ? (
+          <Link href={`/offers`}>
+            <a className="text-palette-primary/80 bg-palette-card/80 -mb-4 block rounded-lg px-6 py-2 text-sm font-bold shadow-lg backdrop-blur-[10px] backdrop-filter dark:text-rose-300">
+              see all
+            </a>
+          </Link>
+        ) : null}
+      </div>
+      <div
+        className={`relative ${
+          full
+            ? 'mt-4 w-full'
+            : 'w-[65%] overflow-x-hidden sm:w-[65%] md:w-[75%]'
+        }`}
+      >
+        <Slider {...settings}>{children}</Slider>
 
-          <div className="flex flex-col">
-            <h3 className="font-roboto-bold text-2xl text-white">
-              Buy with Discount
-            </h3>
-            <p style={{ color: '#16C710' }} className="font-roboto-bold">
-              Jackets,T-shirts,Bags
-            </p>
+        <div>
+          <div
+            className="bg-palette-card absolute right-4 top-[45%] rounded-full bg-gray-100 p-1 
+          text-[0.8rem] shadow-lg drop-shadow-lg md:right-1 md:text-[1.8rem]"
+          >
+            <HiOutlineChevronRight style={{ color: 'gray' }} />
           </div>
-        </a>
+          <div className="bg-palette-card absolute left-4 top-[45%] rounded-full bg-gray-100 p-1 text-[0.8rem] shadow-lg drop-shadow-lg md:-left-1 md:text-[1.8rem]">
+            <HiOutlineChevronLeft style={{ color: 'gray' }} />
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Carousel;
+export default CarouselBox;
