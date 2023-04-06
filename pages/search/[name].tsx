@@ -74,18 +74,19 @@ const SearchPage = () => {
           <h4 className="text-gray-800">Laptop</h4>
         </div>
         <div className="mt-16 flex gap-14">
-          <div className="w-3/4">
+          <div className="w-full">
             <h3 className="border-b font-roboto-medium text-xl leading-10">
               ALL PRODUCTS
             </h3>
             {productData.data && (
-              <div className="mt-8 grid grid-cols-3 gap-8">
+                             <div className=" grid grid-cols-2 items-center justify-center gap-4 pb-8 sm:grid-cols-3 md:grid-cols-4">
                 {productData.data.product?.map((data: any) => (
                      <NextLink href={`/products/${data.id}`} passHref>
-                  <div key={data.toString()} className="w-full">
+                        <div className="flex w-full flex-col rounded-lg border border-gray-100 bg-white shadow-md">
                     <img
                       src={`${baseURL}/${data.imagesURL[0]}`}
-                      className="h-52 w-full object-cover"
+                      className=" h-52 object-cover"
+                      alt={data.name}
                     />
                     <div className="bg-white">
                       <div className="flex flex-col gap-3 p-2">
@@ -115,10 +116,10 @@ const SearchPage = () => {
             )}
             <>
               {searchProductByName && productByName.data && (
-                <div className="mt-8 grid grid-cols-3 gap-8">
+             <div className=" grid grid-cols-2 items-center justify-center gap-4 pb-8 sm:grid-cols-3 md:grid-cols-4">
                   {productByName?.data.map((data: any) => (
                          <NextLink href={`/products/${data.id}`} passHref>
-                    <div key={data.toString()} className="w-full">
+                       <div className="flex w-full flex-col rounded-lg border border-gray-100 bg-white shadow-md">
                       <img
                         src={`${baseURL}/${data.imagesURL[0]}`}
                         className="h-52 w-full object-cover"

@@ -112,7 +112,7 @@ const CategoryPage: NextPage = () => {
           <div className="flex w-1/4 flex-col items-start justify-start" >
             {/* Categories Box */}
             {!sm && (
-              <div className="mb-4 h-44 w-full bg-white">
+              <div className="mb-4  w-full bg-white">
                 <div className="mb-2 flex h-14 items-center justify-start rounded-t-md border-b-2 bg-primary pl-4 text-white">
                   <span className="text-lg font-bold">Categories</span>
                 </div>

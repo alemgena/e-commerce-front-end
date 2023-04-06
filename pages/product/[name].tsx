@@ -56,13 +56,13 @@ const ProdcutPage = () => {
               ALL PRODUCTS
             </h3>
             {productData.length ? (
-              <div className="mt-8 grid grid-cols-3 gap-8">
+                <div className=" grid grid-cols-2 items-center justify-center gap-4 pb-8 sm:grid-cols-3 md:grid-cols-4">
                 {productData?.map((data: any) => (
                   <NextLink href={`/products/${data.id}`} passHref>
-                    <div key={data.toString()} className="w-full">
+               <div className="flex w-full flex-col rounded-lg border border-gray-100 bg-white shadow-md">
                       <img
                         src={`${baseURL}/${data.imagesURL[0]}`}
-                        className="h-52 w-full object-cover"
+                        className="h-52 object-cover"
                       />
                       <div className="bg-white">
                         <div className="flex flex-col gap-3 p-2">
