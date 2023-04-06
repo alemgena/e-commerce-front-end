@@ -6,10 +6,10 @@ import { BsHeart } from 'react-icons/bs';
 // import StarRatingComponent from 'react-star-rating-component';
 // import Image from 'next/image';
 import Link from 'next/link';
-
+import { baseURL } from '@/config';
+import NextLink from 'next/link';
 // import ProductPrice from '../ProductPrice';
 import CardActions from './CardActions';
-
 interface Props {
   product: IProduct;
 }
@@ -19,7 +19,6 @@ export interface IProduct {
 
   price: number;
   discount?: number;
-
   brand: string;
   category: string[];
   isOffer?: boolean;
@@ -28,38 +27,42 @@ export interface IProduct {
   starRating: number;
 }
 
-const Card = () => (
-  <div className="bg-palette-card relative col-span-6 my-1 flex rounded-xl shadow-xl ltr:mr-2 rtl:ml-1 sm:col-span-3 md:col-span-4  md:my-4 md:mx-6 lg:col-span-3 2xl:col-span-2">
-    <Link href="/products/index">
-      <div className="w-full flex-shrink-0">
-        <img
-          src="/images/NoPath - Copy (3).png"
-          className="h-52 w-full object-cover"
-        />
-        <div className="bg-white">
-          <div className="flex flex-col gap-3 p-2">
-            <h6 className="text-sm text-gray-500">Samsung A51</h6>
-            <div className="flex items-center justify-between">
-              <h6 className="font-roboto-bold ">19,450 ETB</h6>
-              <h6 className="rounded-full bg-gray-100 px-3 py-1">Used</h6>
+
+const Card = ({product}) => {
+  return (
+    <div className="bg-palette-card relative col-span-6 my-1 flex rounded-xl shadow-xl ltr:mr-2 rtl:ml-1 sm:col-span-3 md:col-span-4  md:my-4 md:mx-6 lg:col-span-3 2xl:col-span-2">
+      {product && (
+        <NextLink href={`/products/${product.id}`} passHref>
+          <div className="w-full flex-shrink-0">
+            <img
+              src={`${baseURL}/${product.imagesURL[0]}`}
+              className="h-52 w-full object-cover"
+            />
+            <div className="bg-white">
+              <div className="flex flex-col gap-3 p-2">
+                <h6 className="text-sm text-gray-500">{product.name}</h6>
+                <div className="flex items-center justify-between">
+                  <h6 className="font-roboto-bold ">{product.price}</h6>
+                  <h6 className="rounded-full bg-gray-100 px-3 py-1">Used</h6>
+                </div>
+              </div>
+              <div className="h-0.5 w-full bg-gray-200" />
+              <div className="flex  gap-6  rounded-md p-2 font-roboto-light">
+                <button className=" rounded-full bg-blue-800 px-3 py-2 text-sm text-white">
+                  Make Offer
+                </button>
+
+                <button className="flex flex-grow items-center justify-center  font-roboto-light text-xl text-gray-400">
+                  <BsHeart />
+                </button>
+              </div>
             </div>
           </div>
-          <div className="h-0.5 w-full bg-gray-200" />
-          <div className="flex  gap-6  rounded-md p-2 font-roboto-light">
-            <button className=" rounded-full bg-blue-800 px-3 py-2 text-sm text-white">
-              Make Offer
-            </button>
-
-            <button className="flex flex-grow items-center justify-center  font-roboto-light text-xl text-gray-400">
-              <BsHeart />
-            </button>
-          </div>
-        </div>
-      </div>
-    </Link>
-
-    {/* <CardActions product={product} /> */}
-  </div>
-);
+        </NextLink>
+      )}
+      {/* <CardActions product={product} /> */}
+    </div>
+  );
+  }
 
 export default Card;

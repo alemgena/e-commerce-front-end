@@ -8,7 +8,6 @@ import { ImMobile } from 'react-icons/im';
 import { IoShirtOutline, IoShirtSharp } from 'react-icons/io5';
 import { MdOutlineToys } from 'react-icons/md';
 import { RiFireLine, RiHeartPulseLine } from 'react-icons/ri';
-
 const menuItems = [
   {
     category: 'clothing',
@@ -82,7 +81,7 @@ const menuItems = [
   {
     category: 'Electronics',
     icon: BsLaptop,
-    categoryImg: 'laptop-transparent-png-pictures-icons-and-png-40-1.png',
+    categoryImg: 'laptop-transparent-png-pictures-icons-and-png-40.png',
     productsGroup: [
       {
         mainCategory: 'Electronics',

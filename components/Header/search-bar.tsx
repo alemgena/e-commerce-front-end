@@ -4,24 +4,42 @@ import { Fragment, useState } from 'react';
 import { AiOutlineCheck } from 'react-icons/ai';
 import { MdOutlineArrowDropDown } from 'react-icons/md';
 import { Listbox, Transition } from '@headlessui/react';
-
+import { useRouter } from 'next/router';
+import NextLink from 'next/link';
 const cities = [
-  { name: 'All Ethiopia' },
   { name: 'Addis Ababa' },
-  { name: 'Hawaasa' },
-  { name: 'Bahir Dar' },
-  { name: 'Naziret' },
-  { name: 'Arba Minch' },
+  { name: 'Afar' },
+  { name: 'Amhara' },
+  { name: 'Benishangul-Gumuz' },
+  { name: 'Dire Dawa' },
+  { name: 'Gambela' },
+  { name: '	Harari' },
+  { name: 'Harari' },
+  { name: 'Somali' },
+  { name: 'Oromia' },
+  { name: 'Tigray' },
+  { name: 'SNNPR' },
+  { name: 'Sidama' },
+  { name: 'SWEPR' },
 ];
 
 export function SearchBar() {
+  const router = useRouter();
+  const [q, setQ] = useState('');
   const [selected, setSelected] = useState(cities[0]);
+  const handleLogout = (event: any) => {
+    router.push(`/product/${event}`);
+  };
+  const handleLSearch = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (q) router.push(`/search/${q}`);
+  };
 
   return (
-    <div className="z-[100] flex font-roboto-regular">
+    <div className="font-roboto-regular hidden lg:flex">
       <Listbox value={selected} onChange={setSelected}>
         <div className="relative">
-          <Listbox.Button className="flex w-40  justify-between gap-2 rounded-l-lg bg-blue-800 py-3 px-3 font-roboto-light text-sm text-white  ">
+          <Listbox.Button className="font-roboto-light flex  w-40 justify-between gap-2 rounded-l-lg bg-blue-800 py-3 px-3 text-sm text-white  ">
             <span className="">{selected.name}</span>
             <MdOutlineArrowDropDown className="h-5 w-5  text-white" />
           </Listbox.Button>
@@ -46,10 +64,9 @@ export function SearchBar() {
                     <>
                       <span
                         className={`block truncate  ${
-                          selected
-                            ? 'font-roboto-medium text-blue-800'
-                            : 'font-roboto-regular'
+                          selected ? 'font-roboto-medium text-blue-800' : ''
                         }`}
+                        onClick={() => handleLogout(city.name)}
                       >
                         {city.name}
                       </span>
@@ -66,11 +83,17 @@ export function SearchBar() {
           </Transition>
         </div>
       </Listbox>
-      <input
-        type="text"
-        placeholder="Search items"
-        className="w-80 rounded-r-lg bg-gray-300 px-3 py-2 text-sm placeholder-gray-700 focus:outline-none"
-      />
+      <form onSubmit={(e) => handleLSearch(e)}>
+        <input
+          value={q}
+          onChange={(e) => {
+            setQ(e.target.value);
+          }}
+          type="text"
+          placeholder="Search items"
+          className=" h-11 w-80 rounded-r-lg border px-3 py-2 text-sm placeholder-gray-700 focus:outline-none"
+        />
+      </form>
     </div>
   );
 }

@@ -1,9 +1,14 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/alt-text */
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import { BsHeart } from 'react-icons/bs';
 import Link from 'next/link';
-
+import {RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import {GET_PRODUCTS_BY_FEATURED} from '../../types'
+import { baseURL } from '@/config';
+import NextLink from 'next/link';
+import Norecords from '../Ui/Norecords';
+import PageSpinner from '../Ui/PageSpinner';
 export interface IProduct {
   image: any;
   name: string;
@@ -18,28 +23,39 @@ export interface IProduct {
   timeStamp?: number;
   starRating: number;
 }
-
 function Featured() {
-  // const { width } = useWindowDimensions();
-  // const numProductToShow = width >= 1536 ? 12 : 8;
-
+  const[productData,setProductData]=useState<any>([])
+  const dispatch = useDispatch();
+  const products = useSelector((state:RootStateOrAny) => state.featuredProducts.featuredProducts);
+  useEffect(() => {
+  if(products.data){
+setProductData(products.data)
+  }
+  }, [products]);
+  const {isLoading}= useSelector((state:RootStateOrAny) => state.featuredProducts)
   return (
-    <div className=" bg-white px-12 pb-20 pt-10">
+    <>
+    {isLoading?
+    <PageSpinner/>:
+    <div className=" -ml-10  mr-12  bg-white px-12 pb-20 pt-10">
       <h2 className="rounded-md  bg-white py-3 pl-2 font-bold shadow-sm">
         FEATURED PRODUCTS
       </h2>
+      {products.data?
+      <>
+      {products.data.length?
       <div className="flex flex-col gap-8">
-        <div className="flex w-full gap-4 overflow-x-auto scrollbar-hide">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((data, index) => (
-            <Link href={`/products/${index}`}>
-              <div key={data.toString()} className="w-52 flex-shrink-0">
+        <div className="grid gap-y-5 gap-x-10 md:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4 2xl:grid-cols-5 ">
+          {productData.map((data: any) => (
+            <NextLink href={`/products/${data.id}`} passHref>
+              <div key={data.toString()} className="mr-96 w-52 ">
                 <img
-                  src="/images/NoPath - Copy (15)-3.png"
+                  src={`${baseURL}/${data.imagesURL[0]}`}
                   className="h-52 w-full object-cover"
                 />
                 <div className="bg-white">
                   <div className="flex flex-col gap-3 p-2">
-                    <h6 className="text-sm text-gray-500">Samsung A51</h6>
+                    <h6 className="text-sm text-gray-500">{data.name}</h6>
                     <div className="flex items-center justify-between">
                       <h6 className="font-roboto-bold ">19,450 ETB</h6>
                       <h6 className="rounded-full bg-gray-100 px-3 py-1">
@@ -59,11 +75,19 @@ function Featured() {
                   </div>
                 </div>
               </div>
-            </Link>
+            </NextLink>
           ))}
         </div>
       </div>
+:
+<Norecords col={5} />
+      }
+      </>:
+      <Norecords col={5}/>
+    }
     </div>
+}
+    </>
   );
 }
 

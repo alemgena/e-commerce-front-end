@@ -4,11 +4,12 @@
 
 html,
 body {
-  margin: 0;
-  padding: 0;
   font-family: var(--font-family);
-  background-color: rgb(var(--color-bg));
+  background-color: rgba(238, 242, 244, 0.5);
   color: rgb(var(--color-text-base));
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 a {
@@ -44,7 +45,7 @@ a {
   }
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 0.5rem;
   height: 0.5rem;
 }
@@ -56,7 +57,7 @@ a {
 ::-webkit-scrollbar-thumb {
   background-color: #a71b4a;
   border-radius: 100vw;
-}
+} */
 
 /* input */
 

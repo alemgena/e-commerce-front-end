@@ -2,55 +2,262 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable import/order */
 /* eslint-disable jsx-a11y/mouse-events-have-key-events */
-import React, { useRef, useState } from 'react';
-import { GoGrabber } from 'react-icons/go';
-import { useDispatch, useSelector } from 'react-redux';
-import { Transition } from 'react-transition-group';
-
-import MenusContainer from './MenuContainer';
+import React, { useMemo, useEffect, useState } from 'react';
+import { AiOutlineRight } from 'react-icons/ai';
+import { RxCaretDown, RxCaretUp } from 'react-icons/rx';
+import { RootStateOrAny, useSelector } from 'react-redux';
+import CategoryData from '../../lib/data/categories.json';
+import { baseURL } from '@/config';
+import Link from 'next/link';
+import PageSpinner from '../Ui/PageSpinner';
+import Norecords from '../Ui/Norecords';
+type CategoryProps = {
+  id: number;
+  parent_id: number | null;
+  slug: string;
+  name: string;
+  image: string | null;
+  image_v2: string | null;
+  position: number;
+  imageURL: any;
+  subcategory: CategoryProps[] | [];
+};
 
 function MegaMenu() {
-  const nodeRef = useRef<HTMLDivElement>(null);
+  const categoriesData = useSelector(
+    (state: RootStateOrAny) => state.categories.categories
+  );
+  console.log('categories data', categoriesData);
+  const [categories] = useState(CategoryData.categories);
+  const [hoveredCategoryId, setHoveredCategoryId] = useState(0);
+  const [hoveredCategory, setHoveredCategory] = useState([] as CategoryProps[]);
+  const [scrollTopValue, setScrollTopValue] = useState(0);
+  const [scrollTopValueForSubMenu, setScrollTopValueForSubMenu] = useState(0);
 
-  const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
-  function MegaMenuHandler() {
-    setIsMegaMenuOpen(!isMegaMenuOpen);
-  }
-
+  const memoizedHoveredCategory = useMemo(() => {
+    if (categoriesData.data) {
+      const hoveredCategoryIn = categoriesData.data.find(
+        (category: CategoryProps) => category.id === hoveredCategoryId
+      );
+      if (hoveredCategoryIn) {
+        setHoveredCategory(hoveredCategoryIn?.subcategory);
+      } else {
+        setHoveredCategory([]);
+      }
+    }
+  }, [hoveredCategoryId, categoriesData.data]);
+  const { isLoading } = useSelector(
+    (state: RootStateOrAny) => state.categories
+  );
+  const [hasData, setHasData] = useState(false);
+  useEffect(() => {
+    if (categoriesData.data) {
+      if (!categoriesData.data.length) setHasData(true);
+    }
+  }, [categoriesData]);
   return (
-    <div className="flex items-center">
-      <div
-        onClick={MegaMenuHandler}
-        className=" ml-10 flex cursor-pointer items-center font-roboto-bold hover:text-blue-400"
-      >
-        <h3 className="cursor-pointer ltr:ml-1 rtl:mr-1">category goods</h3>
-      </div>
-      <div className="flex cursor-pointer items-center px-3 font-roboto-bold hover:text-blue-400">
-        <h3 className="ltr:ml-1 rtl:mr-1">Featured Products</h3>
-      </div>
-      <div className="flex cursor-pointer  items-center px-3 font-roboto-bold hover:text-blue-400">
-        <h3 className="ltr:ml-1 rtl:mr-1">Discount</h3>
-      </div>
-      <div className="flex cursor-pointer items-center font-roboto-bold hover:text-blue-400">
-        <h3 className="ltr:ml-1 rtl:mr-1">Habesha</h3>
-      </div>
+    <div>
+      {isLoading ? (
+        <PageSpinner />
+      ) : (
+        <>
+          {categoriesData.data && (
+            <div
+              onMouseLeave={(e) => {
+                e.stopPropagation();
+                setHoveredCategoryId(0);
+              }}
+              className="relative w-full font-sans hover:cursor-pointer"
+            >
+              <div
+                onScroll={(e) => {
+                  e.stopPropagation();
+                  setScrollTopValue(e.currentTarget.scrollTop);
+                }}
+                className="relative flex max-h-[36vw] flex-col overflow-y-scroll border bg-white shadow-md scrollbar-hide"
+              >
+                <div
+                  className={`${
+                    scrollTopValue > 0
+                      ? 'visible sticky top-0  transition-all'
+                      : 'animate-fadeExit hidden'
+                  } w-full bg-white opacity-90`}
+                >
+                  <div
+                    className="flex h-16 items-center justify-center"
+                    onClick={(e) => {
+                      setScrollTopValue(0);
+                      e.currentTarget.parentElement?.parentElement?.scrollTo({
+                        top: 0,
+                        behavior: 'smooth',
+                      });
+                    }}
+                  >
+                    <RxCaretUp
+                      size={30}
+                      className="text-main-secondary font-light"
+                    />
+                  </div>
+                </div>
 
-      <Transition
-        nodeRef={nodeRef}
-        in={isMegaMenuOpen}
-        timeout={300}
-        mountOnEnter
-        unmountOnExit
-      >
-        {(state) => (
-          <div ref={nodeRef} className="z-[100]">
-            <div onClick={MegaMenuHandler} />
-            <div className="absolute left-0  right-0 z-[110] mt-10 w-1/4  rounded-br-lg rounded-bl-lg bg-blue-50 shadow-md">
-              <MenusContainer closeMenuMegaHandler={MegaMenuHandler} />
+                <div className="pb-2" />
+
+                {categoriesData.data.map((category: CategoryProps) => (
+                  <>
+                    {console.log('category', category)}
+                    {category.subcategory.length ? (
+                      <div
+                        id={category.id.toString()}
+                        key={category.id}
+                        onMouseEnter={(e) => {
+                          e.stopPropagation();
+                          setHoveredCategoryId(category.id);
+                        }}
+                        className="mb-2 flex items-center justify-between pl-2 pr-4"
+                      >
+                        <div className="flex items-center gap-x-4">
+                          <div>
+                            <img
+                              src={`${baseURL}/${category.imageURL}`}
+                              alt={category.name}
+                              className="h-10 w-10"
+                            />
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-main-secondary text-lg">
+                              {category.name}
+                            </span>
+                            <span className="text-main-secondary text-xs">
+                              2,697 products
+                            </span>
+                          </div>
+                        </div>
+                        <div>
+                          <AiOutlineRight size={14} />
+                        </div>
+                      </div>
+                    ) : null}
+                  </>
+                ))}
+                <span>{hasData && <Norecords col={5} />}</span>
+                <div
+                  className={`${
+                    scrollTopValue < 382.5 && scrollTopValue >= 0
+                      ? 'visible sticky bottom-0 transition-all'
+                      : 'animate-fadeExit hidden'
+                  } sticky bottom-0 w-full bg-white opacity-90`}
+                >
+                  <div
+                    className="flex h-10 items-center justify-center"
+                    onClick={(e) => {
+                      setScrollTopValue(382.5);
+                      e.currentTarget.parentElement?.parentElement?.scrollTo({
+                        top: 382.5,
+                        behavior: 'smooth',
+                      });
+                    }}
+                  >
+                    <RxCaretDown size={24} />
+                  </div>
+                </div>
+              </div>
+
+              <div
+                onScroll={(e) => {
+                  e.stopPropagation();
+                  setScrollTopValueForSubMenu(e.currentTarget.scrollTop);
+                }}
+                className={`${
+                  hoveredCategory.length === 0 ? 'hidden' : 'visible'
+                } absolute -right-[400px] top-0  h-[36vw] w-[400px] flex-col overflow-y-scroll bg-white shadow scrollbar-hide`}
+              >
+                <div
+                  className={`${
+                    scrollTopValueForSubMenu > 0
+                      ? 'visible sticky top-0  transition-all'
+                      : 'animate-fadeExit hidden'
+                  } w-full bg-white opacity-90`}
+                >
+                  <div
+                    className="flex h-16 items-center justify-center"
+                    onClick={(e) => {
+                      setScrollTopValueForSubMenu(0);
+                      e.currentTarget.parentElement?.parentElement?.scrollTo({
+                        top: 0,
+                        behavior: 'smooth',
+                      });
+                    }}
+                  >
+                    <RxCaretUp
+                      size={30}
+                      className="text-main-secondary font-light"
+                    />
+                  </div>
+                </div>
+
+                <div className="pb-2" />
+
+                {hoveredCategory.map((category: CategoryProps) => (
+                  <div
+                    id={category.id.toString()}
+                    key={category.id}
+                    className="mb-2 flex items-center justify-between pl-2 pr-8"
+                  >
+                    <Link
+                      href={{
+                        pathname: '/category',
+                        query: { name: category.name },
+                      }}
+                    >
+                      <div className="flex items-center gap-x-4">
+                        <div>
+                          {category.imageURL.length ? (
+                            <img
+                              src={`${baseURL}/${category.imageURL[0]}`}
+                              alt={category.name}
+                              className="h-10 w-10"
+                            />
+                          ) : null}
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="text-main-secondary cursor-pointer text-base">
+                            {category.name}
+                          </span>
+                          <span className="text-sm">2,697 products</span>
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                ))}
+
+                <div
+                  className={`${
+                    scrollTopValueForSubMenu < 382.5 &&
+                    scrollTopValueForSubMenu >= 0 &&
+                    hoveredCategory.length > 10
+                      ? 'visible sticky bottom-0  transition-all'
+                      : 'animate-fadeExit hidden'
+                  } sticky bottom-0 w-full bg-white opacity-90`}
+                >
+                  <div
+                    className="flex h-10 items-center justify-center"
+                    onClick={(e) => {
+                      console.log(e.currentTarget.scrollTop);
+                      setScrollTopValueForSubMenu(382.5);
+                      e.currentTarget.parentElement?.parentElement?.scrollTo({
+                        top: 382.5,
+                        behavior: 'smooth',
+                      });
+                    }}
+                  >
+                    <RxCaretDown size={24} />
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        )}
-      </Transition>
+          )}
+        </>
+      )}
     </div>
   );
 }

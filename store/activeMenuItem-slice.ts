@@ -4,7 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IActiveMenuItem } from '../lib/types/activeMenuItem';
 
 const initialState: IActiveMenuItem = {
-  activeMenuItemIndex: 0,
+  activeMenuItemIndex: -1,
   activeMenuItemText: '',
 };
 

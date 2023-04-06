@@ -3,7 +3,7 @@
 /* eslint-disable simple-import-sort/imports */
 /* eslint-disable import/extensions */
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 
 import MenuItems from '@/components/menuItems';
 import { IDropDown } from '@/lib/types/dropDown';
@@ -12,40 +12,51 @@ import { activeMenuItemActions } from '@/store/activeMenuItem-slice';
 import { BsXLg } from 'react-icons/bs';
 import SubMenu from './subMenu';
 
-function MenusContainer({ closeMenuMegaHandler }) {
+function MenusContainer({  }) {
   const [subMenuItems, setSubMenuItems] = useState<IDropDown[]>();
+  const[mainTitle,setMainTitle]=useState<string>()
   const dispatch = useDispatch();
+    const activeMenuItemIndex = useSelector(
+      (state: RootStateOrAny) =>
+        state.activeMenuItem.activeMenuItemIndex
+    );
   function activeItem(
     submenuList: IDropDown[] | undefined,
     activeItemIndex: number,
     activeItemName: string
   ) {
+    console.log(subMenuItems)
     setSubMenuItems(submenuList);
+    setMainTitle(activeItemName)
+    console.log(activeItemIndex)
     dispatch(activeMenuItemActions.setActiveMenuItemIndex(activeItemIndex));
     dispatch(activeMenuItemActions.setActiveMenuItemText(activeItemName));
   }
 
   useEffect(() => {
-    setSubMenuItems(menuItems[0].productsGroup);
+   // setSubMenuItems(menuItems[0].productsGroup);
     return () => {
-      dispatch(activeMenuItemActions.setActiveMenuItemIndex(0));
-      dispatch(activeMenuItemActions.setActiveMenuItemText('digital'));
+      dispatch(activeMenuItemActions.setActiveMenuItemIndex(-1));
+      dispatch(activeMenuItemActions.setActiveMenuItemText(''));
     };
   }, []);
-
+  const handleOnMouseLeave = () => {
+    dispatch(activeMenuItemActions.setActiveMenuItemIndex(-1));
+    dispatch(activeMenuItemActions.setActiveMenuItemText(''));
+  };
   return (
-    <div className=" flex  ">
-      <nav className="w-96  border-slate-300 ltr:border-r-2 rtl:border-l-2 md:py-4">
-        <div className="flex flex-row items-center justify-between px-6">
-          <h2 className="font-roboto-bold text-lg">Choose</h2>
-          <BsXLg
-            className="hover:text-gray-400"
-            onClick={closeMenuMegaHandler}
-          />
-        </div>
+    <div className=" flex " onMouseLeave={handleOnMouseLeave}>
+      <nav className=" border-r-1 mr-0  md:py-4">
         <MenuItems onMouseOver={activeItem} />
       </nav>
-      <SubMenu mainTitle={menuItems[0].category} subMenuItems={subMenuItems} />
+      {activeMenuItemIndex == -1 ? (
+        <></>
+      ) : (
+        <SubMenu
+          mainTitle={menuItems[0].category}
+          subMenuItems={subMenuItems}
+        />
+      )}
     </div>
   );
 }

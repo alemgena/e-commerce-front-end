@@ -13,7 +13,7 @@ export const sliderContent = [
     title: 'Modern Home',
     description:
       'enjoy beautiful moments of satisfaction and peace with your loved ones at home with products designed according to the most recent and prominent styles.',
-    bgImg: "url('/images/house-banner.webp')",
+    bgImg: "url('/images/NoPath - Copy (14).png')",
     url: '/',
   },
 
@@ -46,7 +46,7 @@ export const sliderContent = [
     title: 'Variety in choice',
     description:
       'When it comes to Beauty and Efficiency. We specialize in providing stationery and office sets that are beautiful and high quality.',
-    bgImg: "url('/images/stationery-banner.webp')",
+    bgImg: "url('/images/Image 29.png')",
     url: '/',
   },
 ];

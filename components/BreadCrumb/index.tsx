@@ -18,7 +18,7 @@ function Breadcrumb() {
       paths.shift();
 
       const pathsArray = paths.map((path, i) => ({
-        breadcrumb: path,
+        breadcrumb: path.replace('?name=',"/"),
         href: `/${paths.slice(0, i + 1).join('/')}`,
       }));
 
