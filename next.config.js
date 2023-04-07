@@ -1,4 +1,16 @@
 module.exports = () => ({
+  images: {
+    domains: ['api.liyumarket.com/'],
+    
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'api.liyumarket.com',
+        
+
+      },
+    ],
+  },
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if

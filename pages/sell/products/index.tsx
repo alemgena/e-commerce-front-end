@@ -5,6 +5,7 @@ import { AiFillMinusCircle } from 'react-icons/ai';
 import { FaEye, FaShare } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 
+
 const ProductsPage = () => {
   const router = useRouter();
   return (

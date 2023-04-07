@@ -276,7 +276,7 @@ const CreateProductPage = () => {
                 />
                 <p className="text-xs italic text-red-500">{nameErr}</p>
               </div>
-              <div className="col-span-2 grid gap-4  md:grid-cols-2">
+              <div className="col-span-2 block grid gap-4  md:grid-cols-2">
                 <div>
                   <SelectInput
                     type={'category'}
@@ -284,6 +284,7 @@ const CreateProductPage = () => {
                     value={category}
                     setSubCategoryData={setSubCategoryData}
                     options={categories.data}
+                   
                     placeholder="Category"
                     setProductOptions={undefined}
                   />

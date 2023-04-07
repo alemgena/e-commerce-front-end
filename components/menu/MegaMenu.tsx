@@ -27,7 +27,6 @@ function MegaMenu() {
   const categoriesData = useSelector(
     (state: RootStateOrAny) => state.categories.categories
   );
-  console.log('categories data', categoriesData);
   const [categories] = useState(CategoryData.categories);
   const [hoveredCategoryId, setHoveredCategoryId] = useState(0);
   const [hoveredCategory, setHoveredCategory] = useState([] as CategoryProps[]);
@@ -104,7 +103,6 @@ function MegaMenu() {
 
                 {categoriesData.data.map((category: CategoryProps) => (
                   <>
-                    {console.log('category', category)}
                     {category.subcategory.length ? (
                       <div
                         id={category.id.toString()}
@@ -122,6 +120,7 @@ function MegaMenu() {
                               alt={category.name}
                               className="h-10 w-10"
                             />
+                            
                           </div>
                           <div className="flex flex-col">
                             <span className="text-main-secondary text-lg">
