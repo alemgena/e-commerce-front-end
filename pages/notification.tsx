@@ -1,7 +1,9 @@
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { FiArrowLeft } from 'react-icons/fi';
 
 const NotificationsPage = () => {
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -9,7 +11,10 @@ const NotificationsPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className=" bg-gray-50 px-12 pb-32">
-        <div className="mb-4 flex items-center gap-2 py-4  text-xl">
+        <div
+          onClick={() => router.push('/')}
+          className="mb-4 flex items-center gap-2 py-4 text-xl  hover:cursor-pointer"
+        >
           <FiArrowLeft />
           <h2 className="font-roboto-medium ">Notification</h2>
         </div>
@@ -39,13 +44,13 @@ const NotificationsPage = () => {
                   here, content here', making it look like readable English.
                 </h3>
               </div>
-              <div className="self-end whitespace-nowrap font-roboto-regular text-sm text-gray-600">
+              <div className="font-roboto-regular self-end whitespace-nowrap text-sm text-gray-600">
                 <p>5 Min</p>
               </div>
             </div>
           ))}
         </div>
-        <h4 className="mt-8 font-roboto-regular">Yesterday</h4>
+        <h4 className="font-roboto-regular mt-8">Yesterday</h4>
         <div className="mt-4 flex flex-col gap-8">
           {[1, 2, 3, 4].map((_, idx) => (
             <div
@@ -71,7 +76,7 @@ const NotificationsPage = () => {
                   here, content here', making it look like readable English.
                 </h3>
               </div>
-              <div className="self-end whitespace-nowrap font-roboto-regular text-sm text-gray-600">
+              <div className="font-roboto-regular self-end whitespace-nowrap text-sm text-gray-600">
                 <p>5 Min</p>
               </div>
             </div>
