@@ -1,9 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import Link from 'next/link';
-
 import { NavItems } from './nav-items';
 import { SearchBar } from './search-bar';
-
 export function Header() {
   return (
     <div className="sticky top-0 z-0 w-full bg-white shadow-lg">

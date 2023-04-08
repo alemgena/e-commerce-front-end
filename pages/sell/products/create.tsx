@@ -353,14 +353,15 @@ const CreateProductPage = () => {
                 />
                 <p className="text-xs italic text-red-500">{nameErr}</p>
               </div>
-              <div className="relative z-10 col-span-2 grid gap-4  md:grid-cols-2">
-                <div style={{ position: 'relative', zIndex: 10 }}>
+              <div className="col-span-2 block grid gap-4  md:grid-cols-2">
+                <div>
                   <SelectInput
                     type={'category'}
                     setValue={setCategory}
                     value={category}
                     setSubCategoryData={setSubCategoryData}
                     options={categories.data}
+                   
                     placeholder="Category"
                     setProductOptions={undefined}
                   />

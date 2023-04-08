@@ -71,9 +71,9 @@ const SearchPage = () => {
       <div className=" min-h-[86vh] bg-gray-50 py-6  px-12">
         <div className="flex gap-2 rounded-md bg-white px-4 py-5 font-roboto-regular text-xl text-gray-400">
           <h4>Showing Result For</h4>
-          <h4 className="text-gray-800">Laptop</h4>
+          <h4 className="text-gray-800">{name}</h4>
         </div>
-        <div className="mt-16 flex gap-14">
+        <div className="mt-10 flex gap-14">
           <div className="w-full">
             <h3 className="border-b font-roboto-medium text-xl leading-10">
               ALL PRODUCTS
@@ -82,7 +82,7 @@ const SearchPage = () => {
                              <div className=" grid grid-cols-2 items-center justify-center gap-4 pb-8 sm:grid-cols-3 md:grid-cols-4">
                 {productData.data.product?.map((data: any) => (
                      <NextLink href={`/products/${data.id}`} passHref>
-                        <div className="flex w-full flex-col rounded-lg border border-gray-100 bg-white shadow-md">
+                        <div className="flex w-full cursor-pointer flex-col rounded-lg border border-gray-100 bg-white shadow-md">
                     <img
                       src={`${baseURL}/${data.imagesURL[0]}`}
                       className=" h-52 object-cover"

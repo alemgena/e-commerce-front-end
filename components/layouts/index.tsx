@@ -1,17 +1,17 @@
 /* eslint-disable import/no-named-as-default */
 /* eslint-disable import/default */
 /* eslint-disable import/order */
+import dynamic from 'next/dynamic'
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import NextNProgress from 'nextjs-progressbar';
-import Footer from '../Footer/footer';
-import BottomNavigation from '../bottomNavigation';
+const Footer = dynamic(() => import('../Footer/footer'))
 import { Header } from '../Header';
-import FetchData from '../fetchData';
 import store from '@/store/index';
 import { AuthModal } from '../auth';
+const FetchData = dynamic(() => import('../fetchData'))
+const BottomNavigation = dynamic(() => import('../bottomNavigation'))
 type Props = { children: React.ReactNode };
-
 export function Layout({ children }: Props) {
   return (
     <Provider store={store}>

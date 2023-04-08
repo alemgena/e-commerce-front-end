@@ -4,6 +4,11 @@ import { RiPencilFill } from 'react-icons/ri';
 import { AiFillMinusCircle } from 'react-icons/ai';
 import { FaEye, FaShare } from 'react-icons/fa';
 import { useRouter } from 'next/router';
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> develop
 const ProductsPage = () => {
   const router = useRouter();
   return (

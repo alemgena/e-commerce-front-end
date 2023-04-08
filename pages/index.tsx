@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { AiOutlineHeart } from 'react-icons/ai';
 import { FaCartPlus } from 'react-icons/fa';
 import { RootStateOrAny, useSelector } from 'react-redux';
-import MegaMenu from '../components/menu/MegaMenu';
-import BannerImage from '../public/images/fashion-banner.webp';
+//import MegaMenu from '../components/menu/MegaMenu';
 import PageSpinner from '@/components/Ui/PageSpinner';
 import Norecords from '@/components/Ui/Norecords';
 import { baseURL } from '@/config';
@@ -14,10 +12,13 @@ import { getSession } from 'next-auth/client';
 import { signIn, signOut, useSession } from 'next-auth/client';
 import NextLink from 'next/link';
 import axios from 'axios';
-import Category from '../components/CategorySection';
+
 import { GET_PRODUCTS_BY_FEATURED } from '@/types';
 import { setCredentials } from '@/store/auth';
 import { useAppDispatch } from '@/store';
+import dynamic from 'next/dynamic'
+const MegaMenu = dynamic(() => import('../components/menu/MegaMenu'))
+const Category= dynamic(() => import('../components/CategorySection'))
 type AdsProp = {
   name: string;
   url: string;
@@ -50,7 +51,9 @@ const Index = ({ user }) => {
             localStorage.setItem('token', data.data.tokens.access.token);
             localStorage.setItem('userInfo', JSON.stringify(data.data));
           }
-        } catch (error: any) {}
+        } catch (error: any) {
+          console.log(error)
+        }
       }
 
       fetchData();

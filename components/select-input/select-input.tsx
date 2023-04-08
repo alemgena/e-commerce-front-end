@@ -54,7 +54,7 @@ export const SelectInput: React.FC<SelectInputProps> = (props) => {
           value={value ? value : ''}
           onChange={setValue}
           as="div"
-          className="relative w-full"
+          className="relative z-0 block w-full"
         >
           <Listbox.Button className="flex w-full items-center justify-between rounded-md bg-gray-100 p-3 py-4">
             <p className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
