@@ -7,8 +7,9 @@ import Norecords from '@/components/Ui/Norecords';
 import { baseURL } from '@/config';
 import { useRouter } from 'next/router';
 import { useMediaQuery } from 'react-responsive';
-import { getSession, } from 'next-auth/client';
-import { useSession } from 'next-auth/client';
+import { loginAction } from '@/store/login';
+import { getSession } from 'next-auth/client';
+import { signIn, signOut, useSession } from 'next-auth/client';
 import NextLink from 'next/link';
 import axios from 'axios';
 
@@ -28,7 +29,7 @@ type AdsProp = {
 };
 const Index = ({ user }) => {
   const [session] = useSession();
-    const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const [loading, setLoading] = useState(false);
   const [adds, setAdds] = useState<any>([]);
@@ -162,8 +163,9 @@ const Index = ({ user }) => {
                         >
                           <img
                             className="object-cover"
-                            src={`${baseURL}/${ad.imagesURL[0]}`}
+                            src={`${baseURL}${ad.imagesURL[0]}`}
                             alt="product image"
+                            loading="lazy"
                           />
                         </a>
                         <div className="mt-4 px-2 pb-2">
@@ -172,7 +174,7 @@ const Index = ({ user }) => {
                               {ad.name}
                             </h5>
                           </a>
-                          <div className="mt-2 mb-2 flex items-center justify-between">
+                          <div className="mb-2 mt-2 flex items-center justify-between">
                             <p>
                               <span className="text-sm text-slate-900">
                                 ETB

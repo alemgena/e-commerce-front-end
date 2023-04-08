@@ -5,15 +5,27 @@ interface ModalState {
   isOpen: boolean;
   closeable: boolean;
   Component: React.ComponentType<any> | null;
+  authenticated?: boolean; // add new property
+  callback?: () => Promise<boolean>; // add callback property to ModalState
 }
 interface ModalActions {
   closeable?: boolean;
   Component: React.ComponentType<any> | null;
+  authenticated?: boolean; // add new property
+  callback?: () => Promise<boolean>; // add callback property to ModalActions
+  type?: typeof openModal;
+  payload?: {
+    Component?: React.ComponentType<any> | null;
+    authenticated?: boolean; // add new property
+    props?: any;
+    callback?: () => Promise<boolean>; // add callback property to payload
+  };
 }
 
 const initialState: ModalState = {
   isOpen: false,
   closeable: true,
+  authenticated: false,
   Component: null,
 };
 
@@ -24,12 +36,15 @@ export const modalSlice = createSlice({
     openModal: (state, action: PayloadAction<ModalActions>) => {
       state.isOpen = true;
       state.Component = action.payload.Component;
+      state.callback = action.payload.callback;
       state.closeable = action.payload.closeable ?? true;
+      state.authenticated = action.payload?.authenticated ?? false; // set authenticated state
     },
     closeModal: (state) => {
       state.isOpen = false;
       state.closeable = true;
       state.Component = null;
+      state.authenticated = false; // reset authenticated state
     },
   },
 });

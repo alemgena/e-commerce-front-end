@@ -1,9 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 let userInfo;
 if (typeof window !== 'undefined') {
   // Perform localStorage action
   userInfo = JSON.parse(localStorage.getItem('userInfo')!);
 }
+interface LoginState {
+  // other state properties
+  isUserLogged: boolean;
+}
+
+const initialState: LoginState = {
+  // other initial state properties
+  isUserLogged: false,
+};
 export const loginSlice = createSlice({
   name: 'login',
   initialState: {
@@ -24,6 +33,10 @@ export const loginSlice = createSlice({
     setInput: (state, action) => {
       state.inputValues.input = action.payload;
     },
+    setIsUserLogged: (state, action: PayloadAction<boolean>) => {
+      state.isUserLogged = action.payload;
+    },
+    
     setPassword: (state, action) => {
       state.inputValues.password = action.payload;
     },
@@ -43,4 +56,5 @@ export const loginSlice = createSlice({
   },
 });
 export const loginAction = loginSlice.actions;
+export const { setIsUserLogged } = loginSlice.actions;
 export default loginSlice.reducer;

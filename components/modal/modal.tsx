@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import Modal from 'react-modal';
 
-Modal.setAppElement('#react-modals');
+Modal?.setAppElement('#react-modals');
 
 interface ModalType {
   children: ReactNode;
@@ -12,6 +12,8 @@ interface ModalType {
   width?: number;
   height?: number;
   contentStyle?: React.CSSProperties;
+  portalClassName?: string; // add portalClassName property here
+
   showCloseIcon?: boolean;
 }
 
@@ -55,7 +57,7 @@ export const CustomModal = ({
       >
         {showCloseIcon && (
           <span
-            className="text-dark-light absolute top-3 right-4 cursor-pointer"
+            className="text-dark-light absolute right-4 top-3 cursor-pointer"
             onClick={() => {
               onCancel();
             }}

@@ -119,6 +119,7 @@ function MegaMenu() {
                               src={`${baseURL}/${category.imageURL}`}
                               alt={category.name}
                               className="h-10 w-10"
+                              loading="lazy"
                             />
                             
                           </div>
@@ -214,6 +215,7 @@ function MegaMenu() {
                             <img
                               src={`${baseURL}/${category.imageURL[0]}`}
                               alt={category.name}
+                              loading="lazy"
                               className="h-10 w-10"
                             />
                           ) : null}
