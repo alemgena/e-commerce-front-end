@@ -59,7 +59,7 @@ const ProdcutPage = () => {
                 <div className=" grid grid-cols-2 items-center justify-center gap-4 pb-8 sm:grid-cols-3 md:grid-cols-4">
                 {productData?.map((data: any) => (
                   <NextLink href={`/products/${data.id}`} passHref>
-               <div className="flex w-full flex-col rounded-lg border border-gray-100 bg-white shadow-md">
+               <div className="flex cursor-pointer w-full flex-col rounded-lg border border-gray-100 bg-white shadow-md">
                       <img
                         src={`${baseURL}/${data.imagesURL[0]}`}
                         className="h-52 object-cover"

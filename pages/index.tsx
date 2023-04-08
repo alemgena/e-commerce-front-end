@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { AiOutlineHeart } from 'react-icons/ai';
 import { FaCartPlus } from 'react-icons/fa';
 import { RootStateOrAny, useSelector } from 'react-redux';
-import MegaMenu from '../components/menu/MegaMenu';
-import BannerImage from '../public/images/fashion-banner.webp';
+//import MegaMenu from '../components/menu/MegaMenu';
 import PageSpinner from '@/components/Ui/PageSpinner';
 import Norecords from '@/components/Ui/Norecords';
 import { baseURL } from '@/config';
 import { useRouter } from 'next/router';
 import { useMediaQuery } from 'react-responsive';
 import { loginAction } from '@/store/login';
-import { getSession, } from 'next-auth/client';
+import { getSession } from 'next-auth/client';
 import { signIn, signOut, useSession } from 'next-auth/client';
 import NextLink from 'next/link';
 import axios from 'axios';
-import Category from '../components/CategorySection';
+
 import { GET_PRODUCTS_BY_FEATURED } from '@/types';
 import { setCredentials } from '@/store/auth';
 import { useAppDispatch } from '@/store';
+import dynamic from 'next/dynamic'
+const MegaMenu = dynamic(() => import('../components/menu/MegaMenu'))
+const Category= dynamic(() => import('../components/CategorySection'))
 type AdsProp = {
   name: string;
   url: string;
@@ -28,7 +29,7 @@ type AdsProp = {
 };
 const Index = ({ user }) => {
   const [session] = useSession();
-    const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const [loading, setLoading] = useState(false);
   const [adds, setAdds] = useState<any>([]);
@@ -50,7 +51,9 @@ const Index = ({ user }) => {
             localStorage.setItem('token', data.data.tokens.access.token);
             localStorage.setItem('userInfo', JSON.stringify(data.data));
           }
-        } catch (error: any) {}
+        } catch (error: any) {
+          console.log(error)
+        }
       }
 
       fetchData();
@@ -160,8 +163,9 @@ const Index = ({ user }) => {
                         >
                           <img
                             className="object-cover"
-                            src={`${baseURL}/${ad.imagesURL[0]}`}
+                            src={`${baseURL}${ad.imagesURL[0]}`}
                             alt="product image"
+                            loading="lazy"
                           />
                         </a>
                         <div className="mt-4 px-2 pb-2">
@@ -170,7 +174,7 @@ const Index = ({ user }) => {
                               {ad.name}
                             </h5>
                           </a>
-                          <div className="mt-2 mb-2 flex items-center justify-between">
+                          <div className="mb-2 mt-2 flex items-center justify-between">
                             <p>
                               <span className="text-sm text-slate-900">
                                 ETB

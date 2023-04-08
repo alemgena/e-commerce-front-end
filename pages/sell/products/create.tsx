@@ -2,37 +2,32 @@ import Head from 'next/head';
 import React from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
 import { useState } from 'react';
-import { AiOutlinePicture } from 'react-icons/ai';
 import { SelectInput } from '@/components/select-input';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
 import { Autocomplete, TextField } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { productAction } from '@/store/products-slice';
-import Button from '@mui/material/Button';
 import Notify from '@/components/Ui/Notify';
 import Notification from '@/components/Ui/Notification';
 import axios from 'axios';
 import { baseURL } from '@/config';
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import { useRouter } from 'next/router';
 import Protected from '@/components/protected/protected';
 import { useAppDispatch } from '@/store';
 const CreateProductPage = () => {
-  const[regions,setRegions]=useState<any>([])
+  const [regions, setRegions] = useState<any>([]);
   React.useEffect(() => {
     async function fetcRegions() {
       try {
-        const { data } = await axios.get('https://backend-staging.liyumarket.com/api/regions/');
+        const { data } = await axios.get(
+          'https://backend-staging.liyumarket.com/api/regions/'
+        );
         if (data) {
-        setRegions(data.data);
-        
+          setRegions(data.data);
         }
-      } catch (error: any) {
-   
-      }
+      } catch (error: any) {}
     }
-    fetcRegions()
-  
+    fetcRegions();
   }, []);
   const router = useRouter();
   const { NotifyMessage, notify, setNotify } = Notify();
@@ -50,7 +45,7 @@ const CreateProductPage = () => {
   const categories = useSelector(
     (state: RootStateOrAny) => state.categories.categories
   );
-  const { name, description, price, city,region } = useSelector(
+  const { name, description, price, city, region } = useSelector(
     (state: RootStateOrAny) => state.products.inputValues
   );
   const {
@@ -76,7 +71,7 @@ const CreateProductPage = () => {
 
     if (name.length < 4) {
       dispatch(
-        productAction.setNameErr('Product name must be atleast 4 characters!')
+        productAction.setNameErr('Product name must be at least 4 characters!')
       );
       isValid = false;
     }
@@ -150,10 +145,10 @@ const CreateProductPage = () => {
       subcategory: subCategory.id,
       options: uniqueOption,
       region: region,
-      location:city,
+      location: city,
     };
     let formData = new FormData();
-    Array.from(image).forEach((item: any) => {
+    Array.from(selectedFiles).forEach((item: any) => {
       formData.append('images', item);
     });
     try {
@@ -195,21 +190,51 @@ const CreateProductPage = () => {
       setValuesData((values: any) => [...values, event]);
     }
   };
-  const [regionValue, setRegionValue] =useState<any>(null);
-  const[subCity,setSubCity]=useState<any>(null)
+  const [regionValue, setRegionValue] = useState<any>(null);
+  const [subCity, setSubCity] = useState<any>(null);
   const handlRegion = (event: any) => {
-    console.log(event)
-    dispatch(productAction.setRegion(event.name));
-    setRegionValue(event)
-  setSubCity(regions.find(
-      (region: any) => region.name === event.name));
+    console.log(event);
+    dispatch(productAction.setRegion(event?.name));
+    setRegionValue(event);
+    setSubCity(regions.find((region: any) => region.name === event?.name));
   };
   const optionAscending = [...productOptions].sort((a: any, b: any) =>
-    a.name < b.name ? -1 : 1
+    a?.name < b?.name ? -1 : 1
   );
   const handlCity = (event: any) => {
     dispatch(productAction.setCity(event));
   };
+  const [selectedFiles, setSelectedFiles] = useState<any>([]);
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) {
+      return;
+    }
+    const invalidImages: File[] = [];
+    const validImagesFormats: File[] = [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (!file.type.startsWith('image/')) {
+        invalidImages.push(file);
+      } else {
+        validImagesFormats.push(file)
+      }
+    }
+    if (validImagesFormats.length>0) {
+      setSelectedFiles([...selectedFiles, ...validImagesFormats]);
+    }
+    if (invalidImages.length > 0) {
+      setImageError('Only images are allowed');
+    } else {
+      setImageError('');
+    }
+  };
+  const removeImage = (fileIndexToRemove:any) => {
+    const updatedFiles = selectedFiles.filter((file:any, index:any) => index !== fileIndexToRemove);
+    setSelectedFiles(updatedFiles);
+  };
+
+  /*  */
   return (
     <Protected>
       <Head>
@@ -222,12 +247,16 @@ const CreateProductPage = () => {
             className="cursor-pointer"
             onClick={() => router.push('/')}
           />
-          <h2>Sell Product</h2>
+          <h2>Home</h2>
         </div>
         <Notification notify={notify} setNotify={setNotify} />
         <div className="mt-4 grid grid-flow-row-dense gap-2 md:grid-cols-3">
           <div>
-            <label className="text-blue border-blue flex w-64 cursor-pointer flex-col items-center rounded-lg border bg-white px-4 py-6 uppercase tracking-wide shadow-lg hover:bg-blue-800 hover:text-white">
+            <label
+              className="text-blue border-blue flex w-64 cursor-pointer
+             flex-col items-center rounded-lg border bg-white px-4 py-6 
+             uppercase tracking-wide shadow-lg hover:bg-blue-800 hover:text-white"
+            >
               <svg
                 className="h-8 w-8"
                 fill="currentColor"
@@ -243,14 +272,48 @@ const CreateProductPage = () => {
                 type="file"
                 className="hidden"
                 accept="image/*"
+                onChange={handleFileSelect}
                 name="images"
-                onChange={(e) => {
-                  setImage(e.target.files);
-                }}
                 multiple
               />
             </label>
-            <div className="text-red-600">{imageError}</div>
+            {imageError && <div>{imageError}</div>}
+            <div
+              className={`flex ${selectedFiles.length > 1 ? 'flex-col' : 'flex-row'}`}
+            >
+              {selectedFiles.map(
+                (
+                  image: Blob | MediaSource,
+                  index: React.Key | null | undefined
+                ) => (
+                  <div key={index} className="mt-2 w-1/2">
+                    <div className="relative w-64">
+                      <button
+                        className="absolute right-0 top-0 m-1 rounded-full bg-red-500 p-1
+                       transition duration-200 hover:bg-red-300 focus:bg-red-300"
+                        onClick={() => removeImage(index)}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          className="h-4 w-4"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                      <img src={URL.createObjectURL(image)} alt="" />
+                    </div>
+                  </div>
+                )
+              )}
+            </div>
           </div>
           <div className="col-span-3 rounded-sm bg-white shadow-sm md:col-span-2">
             <form
@@ -276,7 +339,7 @@ const CreateProductPage = () => {
                 />
                 <p className="text-xs italic text-red-500">{nameErr}</p>
               </div>
-              <div className="col-span-2 grid gap-4  md:grid-cols-2">
+              <div className="col-span-2 block grid gap-4  md:grid-cols-2">
                 <div>
                   <SelectInput
                     type={'category'}
@@ -284,13 +347,14 @@ const CreateProductPage = () => {
                     value={category}
                     setSubCategoryData={setSubCategoryData}
                     options={categories.data}
+                   
                     placeholder="Category"
                     setProductOptions={undefined}
                   />
                   <div className="text-red-600">{subcategoryErr}</div>
                 </div>
                 {category && (
-                  <div>
+                  <div className="relative z-10">
                     <SelectInput
                       setValue={setSubCategory}
                       value={subCategory}
@@ -305,7 +369,7 @@ const CreateProductPage = () => {
               </div>
 
               {productOptions.length ? (
-                <div className="col-span-2">
+                <div className=" z-10 col-span-2">
                   <Grid container spacing={2} columns={16}>
                     {optionAscending.map((item: any) => (
                       <Grid item xs={8}>
@@ -357,7 +421,7 @@ const CreateProductPage = () => {
                   options={regions}
                   getOptionLabel={(option) => option.name}
                   renderInput={(params) => (
-                    <TextField {...params} label='Regions' />
+                    <TextField {...params} label="Regions" />
                   )}
                   onChange={(event, newValue: any) => {
                     handlRegion(newValue);
@@ -367,22 +431,22 @@ const CreateProductPage = () => {
               </div>
 
               <div>
-              {subCity&&
-                <>
-                <Autocomplete
-                  className="relative z-0"
-                  value={city}
-                  id="combo-box-demo"
-                  options={subCity.subCitys}
-                  renderInput={(params) => (
-                    <TextField {...params} label='Subcity' />
-                  )}
-                  onChange={(event, newValue: any) => {
-                    handlCity(newValue);
-                  }}
-                />
-                </>
-}
+                {subCity && (
+                  <>
+                    <Autocomplete
+                      className="relative z-0"
+                      value={city}
+                      id="combo-box-demo"
+                      options={subCity.subCitys}
+                      renderInput={(params) => (
+                        <TextField {...params} label="Subcity" />
+                      )}
+                      onChange={(event, newValue: any) => {
+                        handlCity(newValue);
+                      }}
+                    />
+                  </>
+                )}
                 <p className="text-xs italic text-red-500">{cityErr}</p>
               </div>
               <div>
@@ -405,7 +469,7 @@ const CreateProductPage = () => {
                 />
                 <p className="text-xs italic text-red-500">{priceErr}</p>
               </div>
-             
+
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
@@ -434,7 +498,6 @@ const CreateProductPage = () => {
                   </button>
                 )}
               </div>
-
             </form>
           </div>
         </div>

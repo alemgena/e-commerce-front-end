@@ -2,7 +2,7 @@
 import { useAppDispatch, useAppSelector } from '@/store';
 import { closeModal, selectModal } from '@/store/modal';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { CustomModal } from '../modal';
 
@@ -14,11 +14,19 @@ export const AuthModal: React.FC = () => {
   const handleClose = () => {
     dispatch(closeModal());
   };
-   const router = useRouter();
+  const router = useRouter();
 
-   useEffect(() => {
-     dispatch(closeModal());
-   }, [router.pathname]);
+  useEffect(() => {
+    dispatch(closeModal());
+  }, [router.pathname]);
+
+  const [isBrowser, setIsBrowser] = useState(false);
+  useEffect(() => setIsBrowser(true), []);
+
+  if (!isBrowser) {
+    return null;
+  }
+
   return (
     <CustomModal
       isOpen={isOpen}
@@ -28,6 +36,7 @@ export const AuthModal: React.FC = () => {
         display: 'flex',
         padding: 0,
       }}
+      portalClassName="react-modals"
       closeable={closeable}
     >
       {Component && <Component />}
