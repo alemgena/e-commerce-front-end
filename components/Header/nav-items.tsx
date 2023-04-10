@@ -24,10 +24,10 @@ export function NavItems() {
   const router = useRouter();
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const user = localStorage.getItem('userInfo');
+    const userInfo = localStorage.getItem('userInfo');
 
-    if (user && token) {
-      const data = JSON.parse(user) as User;
+    if (userInfo && token) {
+      const data = JSON.parse(userInfo) as User;
       dispatch(setCredentials({ user: data, token }));
     }
   }, []);
@@ -100,7 +100,7 @@ export function NavItems() {
             {token ? (
               <div onClick={() => router.push('/auth/profile')}>
                 <Avatar
-                  src={`https://api.liyumarket.com/${user?.user?.imageURL}`}
+                  src={`https://api.liyumarket.com/${user?.imageURL}`}
                   alt="User profile image"
                   onClick={() => router.push('/auth/profile')}
                   className="cursor-pointer"

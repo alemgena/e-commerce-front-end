@@ -88,7 +88,10 @@ const index = () => {
   return (
     <>
       <div className="mt-2 grid grid-cols-3 gap-1 sm:grid-cols-3 md:grid-cols-5 lg:hidden">
-        <div onClick={handleClick} className="ml-6 mt-6 flex h-full flex-col">
+        <div
+          onClick={handleClick}
+          className="ml-6 mt-6 flex h-full flex-col bg-white"
+        >
           <FaCartPlus size={48} />
           <div className=" mt-7 font-bold text-gray-700">Post Product</div>
         </div>
