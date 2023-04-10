@@ -107,7 +107,7 @@ const CreateProductPage = () => {
       dispatch(productAction.setRegionErr('Region Is required!'));
       isValid = false;
     }
-    if (!image.length) {
+    if (!selectedFiles.length) {
       setImageError('Pleas Select at leas one image');
       isValid = false;
     }
@@ -342,6 +342,7 @@ const CreateProductPage = () => {
               <div className="col-span-2 block grid gap-4  md:grid-cols-2">
                 <div>
                   <SelectInput
+                  
                     type={'category'}
                     setValue={setCategory}
                     value={category}

@@ -7,9 +7,8 @@ import Norecords from '@/components/Ui/Norecords';
 import { baseURL } from '@/config';
 import { useRouter } from 'next/router';
 import { useMediaQuery } from 'react-responsive';
-import { loginAction } from '@/store/login';
 import { getSession } from 'next-auth/client';
-import { signIn, signOut, useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/client';
 import NextLink from 'next/link';
 import axios from 'axios';
 
@@ -35,6 +34,7 @@ const Index = ({ user }) => {
   const [adds, setAdds] = useState<any>([]);
   useEffect(() => {
     if (user) {
+      console.log(user.accessToken)
       async function fetchData() {
         try {
           const { data } = await axios.get(
@@ -47,7 +47,6 @@ const Index = ({ user }) => {
                 token: data.data.tokens.access.token,
               })
             );
-            // loginAction.setIsUserLogged(true);
             localStorage.setItem('token', data.data.tokens.access.token);
             localStorage.setItem('userInfo', JSON.stringify(data.data));
           }
