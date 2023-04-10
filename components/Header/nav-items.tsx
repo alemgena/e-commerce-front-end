@@ -100,7 +100,7 @@ export function NavItems() {
             {token ? (
               <div onClick={() => router.push('/auth/profile')}>
                 <Avatar
-                  src={`https://api.liyumarket.com/${user?.user.imageURL}`}
+                  src={`https://api.liyumarket.com/${user?.user?.imageURL}`}
                   alt="User profile image"
                   onClick={() => router.push('/auth/profile')}
                   className="cursor-pointer"
