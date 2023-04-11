@@ -10,29 +10,33 @@ import { GET_USER } from '@/types';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import PageSpinner from '@/components/Ui/PageSpinner';
 import { baseURL } from '@/config';
-import { AuthModal } from '@/components/auth';
+import { useAppSelector } from '@/store';
+import {
+  selectCurrentUser,
+ 
+} from '@/store/auth';
 import Protected from '@/components/protected/protected';
 const ProfilePage = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector(
     (state: RootStateOrAny) => state.login.loggedUser
   );
+  const { user,token} = useAppSelector(selectCurrentUser);
   const User = useSelector((state: RootStateOrAny) => state.user.user);
-  const [isOpen, setIsOpen] = useState(false);
   const { isLoading, error } = useSelector(
     (state: RootStateOrAny) => state.user
   );
   useEffect(() => {
-    if (currentUser) {
+    if (!!user && token) {
       let token = localStorage.getItem('token');
       let config = {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       };
-      dispatch({ type: GET_USER, id: currentUser.user._id, config: config });
+      dispatch({ type: GET_USER, id: user.user._id, config: config });
     }
-  }, []);
+  }, [user]);
   const router = useRouter();
   return (
     <Protected>
@@ -43,11 +47,10 @@ const ProfilePage = () => {
       {isLoading ? (
         <PageSpinner />
       ) : (
-        <div className=" bg-gray-50 px-12 pb-32">
-
+        <div className="bg-gray-50 px-6 pb-32 sm:px-12">
           {User.data && (
             <>
-              <div className="flex items-center justify-between py-4  text-xl">
+              <div className="flex flex-col items-center justify-between py-4 text-xl sm:flex-row">
                 <div className="flex items-center gap-2 text-xl">
                   <FiArrowLeft />
                   <h2>Profile</h2>
@@ -61,7 +64,7 @@ const ProfilePage = () => {
                 </button>
               </div>
               <div className="mt-4">
-                <div className="mx-36 flex flex-col items-center gap-10 bg-white px-36 py-14">
+                <div className="mx-auto flex flex-col items-center gap-10 bg-white px-8 py-14 sm:mx-36 sm:px-36">
                   <div>
                     {User.data.imageURL ? (
                       <img
@@ -74,22 +77,22 @@ const ProfilePage = () => {
                       <RxAvatar size={100} className="text-gray-400" />
                     )}
                   </div>
-                  <div className="flex w-full gap-16">
-                    <div className="font-roboto-regular flex w-1/2 items-center  gap-4  border-b py-1">
+                  <div className="flex w-full flex-col gap-16 sm:flex-row">
+                    <div className="font-roboto-regular flex w-full items-center gap-4 border-b py-1 sm:w-1/2">
                       <FaRegUser />
                       <p>{User.data.first_name}</p>
                     </div>
-                    <div className="font-roboto-regular flex w-1/2 items-center  gap-4  border-b py-1">
+                    <div className="font-roboto-regular flex w-full items-center gap-4 border-b py-1 sm:w-1/2">
                       <FaRegUser />
                       <p>{User.data.last_name}</p>
                     </div>
                   </div>
-                  <div className="flex w-full gap-16">
-                    <div className="font-roboto-regular flex w-1/2 items-center  gap-4  border-b py-1">
+                  <div className="flex w-full flex-col gap-16 sm:flex-row">
+                    <div className="font-roboto-regular flex w-full items-center gap-4 border-b py-1 sm:w-1/2">
                       <MdPhone />
                       <p>{User.data.phone}</p>
                     </div>
-                    <div className="font-roboto-regular flex w-1/2 items-center  gap-4  border-b py-1">
+                    <div className="font-roboto-regular flex w-full items-center gap-4 border-b py-1 sm:w-1/2">
                       <FiMail />
                       <p>{User.data.email}</p>
                     </div>
