@@ -34,6 +34,7 @@ export function NavItems() {
   const handleLogout = () => {
     localStorage.removeItem('userInfo');
     localStorage.removeItem('token');
+   localStorage.removeItem('logout');
     dispatch(removedCredentials());
     router.push('/')
   };
