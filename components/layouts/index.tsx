@@ -18,7 +18,7 @@ export function Layout({ children }: Props) {
       <NextNProgress height={7} />
       <Header />
       <FetchData />
-      <main className=" pt-2">{children}</main>
+      <main>{children}</main>
       <Footer />
       <div className="fixed bottom-0 left-0 w-full">
         <BottomNavigation />

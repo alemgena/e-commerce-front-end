@@ -32,12 +32,7 @@ const Carousel = () => {
         })}
       </Slider>
       <>
-        <div className="bg-palette-card/80 absolute right-4 top-1/2 rounded-full p-1 text-[0.8rem] shadow-lg drop-shadow-lg md:right-3 md:text-[1.8rem] lg:right-8">
-          <HiOutlineChevronRight />
-        </div>
-        <div className="bg-palette-card/80 absolute left-4  top-1/2 rounded-full p-1 text-[0.8rem] shadow-lg drop-shadow-lg md:left-3 md:text-[1.8rem] lg:left-8">
-          <HiOutlineChevronLeft />
-        </div>
+       
       </>
     </div>
   );

@@ -69,7 +69,8 @@ export function NavItems() {
     <div className="relative z-50 flex items-center justify-between gap-2">
       <button
         onClick={handleClick}
-        className="hidden items-center gap-2 rounded-full bg-gradient-to-r from-blue-800 via-blue-600 to-blue-500 px-4 py-2 text-white lg:flex"
+        className="hidden items-center gap-2 rounded-full bg-gradient-to-r from-blue-800 via-blue-600 to-blue-500
+         px-4 py-2 text-white lg:flex"
       >
         <AiOutlinePlusCircle size={20} /> <p>Sell</p>
       </button>

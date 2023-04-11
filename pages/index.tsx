@@ -37,7 +37,7 @@ const Index = ({ user }) => {
   const [adds, setAdds] = useState<any>([]);
   useEffect(() => {
     if (user) {
-      console.log(user.accessToken)
+      console.log(user.accessToken);
       async function fetchData() {
         try {
           const { data } = await axios.get(
@@ -133,7 +133,7 @@ const Index = ({ user }) => {
 
   return (
     <>
-      <div className="w-200 mx-auto mt-2 px-8">
+      <div className=" mx-auto">
         <Carousel />
       </div>
       <></>
