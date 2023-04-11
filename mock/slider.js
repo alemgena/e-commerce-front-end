@@ -1,12 +1,12 @@
 export const sliderContent = [
-  // {
-  //   ID: 1,
-  //   title: 'Have the best Experiences ',
-  //   description:
-  //     'We provide the best Experience with the most popular Brands.  With a warranty of 18 months, you can be confident in your choice',
-  //   bgImg: "url('/images/digital-banner.webp)",
-  //   url: '/',
-  // },
+  {
+    ID: 1,
+    title: 'Have the best Experiences ',
+    description:
+      'We provide the best Experience with the most popular Brands.  With a warranty of 18 months, you can be confident in your choice',
+    bgImg: "url('/images/digital-banner.webp)",
+    url: '/',
+  },
 
   {
     ID: 3,

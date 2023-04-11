@@ -1,16 +1,49 @@
-import { useAppDispatch } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import { openModal } from '@/store/modal';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
 import { Login } from '../auth/login';
-
+import {
+  removedCredentials,
+  selectCurrentUser,
+  setCredentials,
+  User,
+} from '@/store/auth';
+import { loginAction } from '@/store/login';
 const index = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [active, setActive] = useState();
   const y = useRef(0);
   const router = useRouter();
   const dispatch = useAppDispatch();
-
+  const { user, token } = useAppSelector(selectCurrentUser);
+  const [redirectToSell, setRedirectToProfile] = useState(false);
+  const handleRedirect = () => {
+    if (token) {
+      dispatch(loginAction.setIsUserLogged(true));
+      setRedirectToProfile(true);
+    } else {
+      dispatch(
+        openModal({
+          Component: Login,
+          callback: async () => {
+            dispatch(loginAction.setIsUserLogged(true));
+            setRedirectToProfile(true);
+            return true;
+          },
+        })
+      );
+    }
+  };
+  useEffect(() => {
+    if (user && token) {
+      dispatch(loginAction.setIsUserLogged(true));
+      if (redirectToSell) {
+        router.push('/auth/profile');
+        setRedirectToProfile(false);
+      }
+    }
+  }, [user, token, redirectToSell]);
   const toggleVisibility = () => {
     if (window.pageYOffset <= y.current) {
       setIsVisible(true);
@@ -45,7 +78,7 @@ const index = () => {
             router.push('/');
           }}
           className={`group rounded ${active == 'home' && ' text-primary-900'}
-           py-1 px-4`}
+           px-4 py-1`}
         >
           <div className="pointer-events-none inline-flex flex-col items-center justify-center  ">
             <svg
@@ -68,7 +101,7 @@ const index = () => {
             router.push('/sell/products/create');
           }}
           className={`group rounded ${active == 'Sell' && 'text-primary-900'}
-            py-1 px-4`}
+            px-4 py-1`}
         >
           <div className="pointer-events-none inline-flex flex-col items-center justify-center  ">
             <svg
@@ -95,7 +128,7 @@ const index = () => {
           className={`group rounded ${
             active == 'Settings' && 'text-primary-900'
           } 
-         py-1 px-4`}
+         px-4 py-1`}
         >
           <div className="pointer-events-none inline-flex flex-col items-center justify-center  ">
             <svg
@@ -114,14 +147,11 @@ const index = () => {
         </button>
         <button
           id="Profile"
-          onClick={(e) => {
-            handleClick(e);
-            router.push('/auth/profile');
-          }}
+          onClick={handleRedirect}
           type="button"
           className={`group rounded ${
             active == 'Profile' && 'text-primary-900'
-          } py-1 px-4`}
+          } px-4 py-1`}
         >
           <div className="pointer-events-none inline-flex flex-col items-center justify-center  ">
             <svg
