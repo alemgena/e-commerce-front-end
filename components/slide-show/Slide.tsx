@@ -20,9 +20,9 @@ const Slide: React.FC<Props> = ({ title, description, bgImg, url }) => {
         <div className="mx-auto flex h-full w-3/4 flex-col items-center justify-center md:flex-row md:items-center md:justify-center">
           <div className="relative flex w-full max-w-xl items-center bg-white">
             <input
-              className="w-full rounded-none px-6 py-3 text-gray-800 focus:outline-none"
+              className="w-full rounded-none px-6 py-3 text-blue-800 focus:outline-none"
               type="text"
-              placeholder="Search"
+              placeholder="Search ..."
             />
             <button className="ml-2 mr-4 bg-white focus:outline-none ">
               <IoSearchOutline size={20} className="h-5 w-5 text-blue-900" />
