@@ -14,7 +14,7 @@ import axios from 'axios';
 
 import { GET_PRODUCTS_BY_FEATURED } from '@/types';
 import { setCredentials } from '@/store/auth';
-import { useAppDispatch } from '@/store';
+import { RootState, useAppDispatch, useAppSelector } from '@/store';
 import dynamic from 'next/dynamic';
 import CarouselBox from '@/components/carousel';
 import CarouselBoxCard from '@/components/carousel/Slide';
@@ -32,16 +32,21 @@ type AdsProp = {
 const Index = ({ user }) => {
   const [session] = useSession();
   const dispatch = useAppDispatch();
-
   const [loading, setLoading] = useState(false);
   const [adds, setAdds] = useState<any>([]);
+  //  const { logout } = useAppSelector(
+  //    (state: RootState) => state.login
+  //  );
   useEffect(() => {
+    const logout=localStorage.getItem("logout")
+    console.log("logout",logout)
+    if(logout){
     if (user) {
       console.log(user.accessToken);
       async function fetchData() {
         try {
           const { data } = await axios.get(
-            `${baseURL}api/socials/google?access_token=${user.accessToken}`
+            `https://backend-staging.liyumarket.com/api/socials/google?access_token=${user.accessToken}`
           );
           if (data) {
             dispatch(
@@ -60,6 +65,7 @@ const Index = ({ user }) => {
 
       fetchData();
     }
+  }
   }, [user]);
   const md = useMediaQuery({ query: '(max-width: 992px)' });
   const sm = useMediaQuery({ query: '(max-width: 576px)' });

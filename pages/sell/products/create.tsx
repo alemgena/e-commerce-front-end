@@ -19,9 +19,7 @@ const CreateProductPage = () => {
   React.useEffect(() => {
     async function fetcRegions() {
       try {
-        const { data } = await axios.get(
-          'https://backend-staging.liyumarket.com/api/regions/'
-        );
+        const { data } = await axios.get(`${baseURL}api/regions/`);
         if (data) {
           setRegions(data.data);
         }
@@ -111,12 +109,7 @@ const CreateProductPage = () => {
       setImageError('Pleas Select at leas one image');
       isValid = false;
     }
-    if (!productOption.length || !valuesData) {
-      dispatch(
-        productAction.setOptionErr('Pleas Select at one option and values')
-      );
-      isValid = false;
-    }
+
     if (isValid) {
       handleSubmit();
     }
@@ -217,10 +210,10 @@ const CreateProductPage = () => {
       if (!file.type.startsWith('image/')) {
         invalidImages.push(file);
       } else {
-        validImagesFormats.push(file)
+        validImagesFormats.push(file);
       }
     }
-    if (validImagesFormats.length>0) {
+    if (validImagesFormats.length > 0) {
       setSelectedFiles([...selectedFiles, ...validImagesFormats]);
     }
     if (invalidImages.length > 0) {
@@ -229,8 +222,10 @@ const CreateProductPage = () => {
       setImageError('');
     }
   };
-  const removeImage = (fileIndexToRemove:any) => {
-    const updatedFiles = selectedFiles.filter((file:any, index:any) => index !== fileIndexToRemove);
+  const removeImage = (fileIndexToRemove: any) => {
+    const updatedFiles = selectedFiles.filter(
+      (file: any, index: any) => index !== fileIndexToRemove
+    );
     setSelectedFiles(updatedFiles);
   };
 
@@ -279,7 +274,9 @@ const CreateProductPage = () => {
             </label>
             {imageError && <div>{imageError}</div>}
             <div
-              className={`flex ${selectedFiles.length > 1 ? 'flex-col' : 'flex-row'}`}
+              className={`flex ${
+                selectedFiles.length > 1 ? 'flex-col' : 'flex-row'
+              }`}
             >
               {selectedFiles.map(
                 (
@@ -339,10 +336,9 @@ const CreateProductPage = () => {
                 />
                 <p className="text-xs italic text-red-500">{nameErr}</p>
               </div>
-              <div className="z-0 relative col-span-2 block grid gap-4 md:grid-cols-2">
+              <div className="relative z-0 col-span-2 block grid gap-4 md:grid-cols-2">
                 <div>
                   <SelectInput
-                  
                     type={'category'}
                     setValue={setCategory}
                     value={category}
@@ -369,9 +365,9 @@ const CreateProductPage = () => {
               </div>
 
               {productOptions.length ? (
-                <div className=" z-0 relative col-span-2">
+                <div className=" relative z-0 col-span-2">
                   <Grid container spacing={2} columns={16}>
-                    {optionAscending.map((item: any,index) => (
+                    {optionAscending.map((item: any, index) => (
                       <Grid item xs={8} key={index}>
                         <Autocomplete
                           disablePortal

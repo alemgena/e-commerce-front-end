@@ -1,8 +1,10 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 let userInfo;
+let isLogout;
 if (typeof window !== 'undefined') {
   // Perform localStorage action
   userInfo = JSON.parse(localStorage.getItem('userInfo')!);
+  isLogout = localStorage.getItem('logout')!;
 }
 interface LoginState {
   // other state properties
@@ -26,6 +28,7 @@ export const loginSlice = createSlice({
     },
     isLoading: false,
     isUserLogged: false,
+    logout: isLogout,
     loggedUser: userInfo,
     error: '',
   },
@@ -33,10 +36,13 @@ export const loginSlice = createSlice({
     setInput: (state, action) => {
       state.inputValues.input = action.payload;
     },
+    setLogout: (state, action) => {
+      state.logout = action.payload;
+    },
     setIsUserLogged: (state, action: PayloadAction<boolean>) => {
       state.isUserLogged = action.payload;
     },
-    
+
     setPassword: (state, action) => {
       state.inputValues.password = action.payload;
     },

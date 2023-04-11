@@ -30,6 +30,7 @@ export const Login: React.FC = () => {
   console.log('isloading', isLoading);
   const handleLogin = () => {
     signIn('google');
+    localStorage.setItem('logout','false');
   };
   useEffect(() => {
     if (error) {
