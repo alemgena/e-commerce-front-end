@@ -1,17 +1,14 @@
-import { useState, useEffect, useRef, useCallback, Component } from 'react';
-import { AiOutlinePlusCircle, AiFillHome } from 'react-icons/ai';
+import { useState, useEffect } from 'react';
+import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { BiHeart, BiMessage } from 'react-icons/bi';
-import { setIsUserLogged } from '../../store/login';
 import { IoIosNotificationsOutline } from 'react-icons/io';
 import { CgProfile } from 'react-icons/cg';
 import { FiLogOut } from 'react-icons/fi';
 import { useRouter } from 'next/router';
 import { Avatar } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/store';
-import { closeModal, openModal, selectModal } from '@/store/modal';
+import { openModal } from '@/store/modal';
 import { Login } from '../auth/login';
-import { useSession } from 'next-auth/client';
-
 import {
   removedCredentials,
   selectCurrentUser,
@@ -23,18 +20,14 @@ import { loginAction } from '@/store/login';
 export function NavItems() {
   const { user, token } = useAppSelector(selectCurrentUser);
   const [redirectToSell, setRedirectToSell] = useState(false);
-  const [session] = useSession();
-
-  console.log('current user', user);
   const dispatch = useAppDispatch();
-
   const router = useRouter();
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const user = localStorage.getItem('userInfo');
+    const userInfo = localStorage.getItem('userInfo');
 
-    if (user && token) {
-      const data = JSON.parse(user) as User;
+    if (userInfo && token) {
+      const data = JSON.parse(userInfo) as User;
       dispatch(setCredentials({ user: data, token }));
     }
   }, []);
@@ -42,10 +35,9 @@ export function NavItems() {
     localStorage.removeItem('userInfo');
     localStorage.removeItem('token');
     dispatch(removedCredentials());
-    router.push('/');
-
-    // dispatch(loginAction.setIsUserLogged(false));
+    router.push('/')
   };
+  
   const handleClick = () => {
     if (token) {
       dispatch(loginAction.setIsUserLogged(true));
@@ -108,7 +100,7 @@ export function NavItems() {
             {token ? (
               <div onClick={() => router.push('/auth/profile')}>
                 <Avatar
-                  src={`http://api.liyumarket.com/${user?.imageURL}`}
+                  src={`https://api.liyumarket.com/${user?.imageURL}`}
                   alt="User profile image"
                   onClick={() => router.push('/auth/profile')}
                   className="cursor-pointer"

@@ -16,9 +16,6 @@ import Notification from '@/components/Ui/Notification';
 import { baseURL } from '@/config';
 function EditProfilePage() {
   const dispatch = useDispatch();
-  const currentUser = useSelector(
-    (state: RootStateOrAny) => state.login.loggedUser
-  );
    const User = useSelector((state: RootStateOrAny) => state.user.user);
   const { firstName, lastName, phone } = useSelector(
     (state: RootStateOrAny) => state.profile.inputValues

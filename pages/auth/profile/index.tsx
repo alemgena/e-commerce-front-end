@@ -10,29 +10,33 @@ import { GET_USER } from '@/types';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import PageSpinner from '@/components/Ui/PageSpinner';
 import { baseURL } from '@/config';
-import { AuthModal } from '@/components/auth';
+import { useAppSelector } from '@/store';
+import {
+  selectCurrentUser,
+ 
+} from '@/store/auth';
 import Protected from '@/components/protected/protected';
 const ProfilePage = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector(
     (state: RootStateOrAny) => state.login.loggedUser
   );
+  const { user,token} = useAppSelector(selectCurrentUser);
   const User = useSelector((state: RootStateOrAny) => state.user.user);
-  const [isOpen, setIsOpen] = useState(false);
   const { isLoading, error } = useSelector(
     (state: RootStateOrAny) => state.user
   );
   useEffect(() => {
-    if (currentUser) {
+    if (!!user && token) {
       let token = localStorage.getItem('token');
       let config = {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       };
-      dispatch({ type: GET_USER, id: currentUser.user._id, config: config });
+      dispatch({ type: GET_USER, id: user.user._id, config: config });
     }
-  }, []);
+  }, [user]);
   const router = useRouter();
   return (
     <Protected>

@@ -107,7 +107,7 @@ const CreateProductPage = () => {
       dispatch(productAction.setRegionErr('Region Is required!'));
       isValid = false;
     }
-    if (!image.length) {
+    if (!selectedFiles.length) {
       setImageError('Pleas Select at leas one image');
       isValid = false;
     }
@@ -148,7 +148,7 @@ const CreateProductPage = () => {
       location: city,
     };
     let formData = new FormData();
-    Array.from(image).forEach((item: any) => {
+    Array.from(selectedFiles).forEach((item: any) => {
       formData.append('images', item);
     });
     try {
@@ -204,48 +204,34 @@ const CreateProductPage = () => {
   const handlCity = (event: any) => {
     dispatch(productAction.setCity(event));
   };
-
-  /*  */
-
-  /*   const [images, setImages] = useState<Blob[]>([]);
-   */
+  const [selectedFiles, setSelectedFiles] = useState<any>([]);
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) {
       return;
     }
-
-    const validImages: Blob[] = [];
     const invalidImages: File[] = [];
-
+    const validImagesFormats: File[] = [];
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-
       if (!file.type.startsWith('image/')) {
         invalidImages.push(file);
       } else {
-        const reader = new FileReader();
-        reader.readAsArrayBuffer(file);
-        reader.onload = () => {
-          const blob = new Blob([reader.result as ArrayBuffer], {
-            type: file.type,
-          });
-          validImages.push(blob);
-          setImage((prevImages: any) => [...prevImages, blob]);
-        };
+        validImagesFormats.push(file)
       }
     }
-
+    if (validImagesFormats.length>0) {
+      setSelectedFiles([...selectedFiles, ...validImagesFormats]);
+    }
     if (invalidImages.length > 0) {
       setImageError('Only images are allowed');
     } else {
       setImageError('');
     }
   };
-  const removeImage = (index: any) => {
-    const newImages = [...image];
-    newImages.splice(index, 1);
-    setImage(newImages);
+  const removeImage = (fileIndexToRemove:any) => {
+    const updatedFiles = selectedFiles.filter((file:any, index:any) => index !== fileIndexToRemove);
+    setSelectedFiles(updatedFiles);
   };
 
   /*  */
@@ -293,9 +279,9 @@ const CreateProductPage = () => {
             </label>
             {imageError && <div>{imageError}</div>}
             <div
-              className={`flex ${image.length > 1 ? 'flex-col' : 'flex-row'}`}
+              className={`flex ${selectedFiles.length > 1 ? 'flex-col' : 'flex-row'}`}
             >
-              {image.map(
+              {selectedFiles.map(
                 (
                   image: Blob | MediaSource,
                   index: React.Key | null | undefined
@@ -356,6 +342,7 @@ const CreateProductPage = () => {
               <div className="z-0 relative col-span-2 block grid gap-4 md:grid-cols-2">
                 <div>
                   <SelectInput
+                  
                     type={'category'}
                     setValue={setCategory}
                     value={category}
