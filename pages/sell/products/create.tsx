@@ -255,7 +255,7 @@ const CreateProductPage = () => {
         <title>Sell Product</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="m-auto max-w-5xl px-6 md:px-8">
+      <div className=" m-auto max-w-5xl px-6 md:px-8">
         <div className="flex cursor-pointer items-center  gap-2  py-4 text-xl">
           <FiArrowLeft
             className="cursor-pointer"
@@ -353,7 +353,7 @@ const CreateProductPage = () => {
                 />
                 <p className="text-xs italic text-red-500">{nameErr}</p>
               </div>
-              <div className="col-span-2 block grid gap-4  md:grid-cols-2">
+              <div className="z-0 relative col-span-2 block grid gap-4 md:grid-cols-2">
                 <div>
                   <SelectInput
                     type={'category'}
@@ -361,7 +361,6 @@ const CreateProductPage = () => {
                     value={category}
                     setSubCategoryData={setSubCategoryData}
                     options={categories.data}
-                   
                     placeholder="Category"
                     setProductOptions={undefined}
                   />
@@ -383,7 +382,7 @@ const CreateProductPage = () => {
               </div>
 
               {productOptions.length ? (
-                <div className=" z-10 col-span-2">
+                <div className=" z-0 relative col-span-2">
                   <Grid container spacing={2} columns={16}>
                     {optionAscending.map((item: any) => (
                       <Grid item xs={8}>

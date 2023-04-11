@@ -1,12 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 const defaultTheme = require('tailwindcss/defaultTheme');
 
+/* const { createGlobPatternsForDependencies } = require('@nrwl/next/tailwind'); */
+
 module.exports = {
   mode: 'jit',
   content: [
     './pages/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
     './page-components/**/*.{js,ts,jsx,tsx}',
+    /*         ...createGlobPatternsForDependencies(__dirname),
+     */
   ],
   important: true,
   darkMode: 'class', // or 'media' or 'class'
