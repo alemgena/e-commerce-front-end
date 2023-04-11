@@ -371,8 +371,8 @@ const CreateProductPage = () => {
               {productOptions.length ? (
                 <div className=" z-0 relative col-span-2">
                   <Grid container spacing={2} columns={16}>
-                    {optionAscending.map((item: any) => (
-                      <Grid item xs={8}>
+                    {optionAscending.map((item: any,index) => (
+                      <Grid item xs={8} key={index}>
                         <Autocomplete
                           disablePortal
                           value={optionValues}
