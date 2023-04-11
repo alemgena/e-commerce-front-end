@@ -39,13 +39,12 @@ const Index = ({ user }) => {
   //  );
   useEffect(() => {
     const logout=localStorage.getItem("logout")
-    console.log("logout",logout)
     if(logout){
     if (user) {
       async function fetchData() {
         try {
           const { data } = await axios.get(
-            `https://backend-staging.liyumarket.com/api/socials/google?access_token=${user.accessToken}`
+            `${baseURL}api/socials/google?access_token=${user.accessToken}`
           );
           if (data) {
             dispatch(
@@ -138,7 +137,10 @@ const Index = ({ user }) => {
 
   return (
     <>
-      <div className="w-200 mx-auto mt-2 px-8">
+      <div
+        className="mb-6 hidden w-full bg-gradient-to-r from-blue-800 via-blue-600 to-blue-500
+         bg-cover bg-center bg-no-repeat text-white lg:block"
+      >
         <Carousel />
       </div>
       <></>
@@ -150,21 +152,15 @@ const Index = ({ user }) => {
         <div className="flex w-full flex-col lg:w-3/4">
           <div className="flex w-full justify-between gap-x-4">
             <div
-              className="flex grow flex-col  rounded-md bg-cover bg-center p-10 shadow"
-              style={{
-                backgroundImage: 'url("/images/fashion-banner.webp")',
-                backgroundPosition: 'center center',
-              }}
+              onClick={() => router.push('/products')}
+              className="flex cursor-pointer grow flex-col  rounded-md bg-cover bg-center  shadow"
             >
-              <span className="font-sans-bold mt-8 text-4xl text-blue-900  md:text-5xl">
-                How to buy <br /> on Liyu?
-              </span>
-              <span
-                onClick={() => router.push('/products')}
-                className="font-sans-bold mt-4 text-blue-900 underline hover:cursor-pointer"
-              >
-                Click here
-              </span>
+              <img
+                className="h-56 w-full"
+                src="/images/banner.png"
+                alt="product image"
+                loading="lazy"
+              />
             </div>
             <div
               className=" hidden h-full w-1/4 cursor-pointer  rounded-md  bg-blue-800 shadow lg:block"
