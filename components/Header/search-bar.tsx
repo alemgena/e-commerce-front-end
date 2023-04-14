@@ -1,11 +1,14 @@
 /* eslint-disable no-shadow */
 /* eslint-disable react/no-array-index-key */
+import axios from 'axios';
+import React from 'react'
 import { Fragment, useState } from 'react';
 import { AiOutlineCheck } from 'react-icons/ai';
 import { MdOutlineArrowDropDown } from 'react-icons/md';
 import { Listbox, Transition } from '@headlessui/react';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
+import { baseURL } from '@/config';
 const cities = [
   { name: 'Addis Ababa' },
   { name: 'Afar' },
@@ -24,6 +27,18 @@ const cities = [
 ];
 
 export function SearchBar() {
+    const [regions, setRegions] = useState<any>([]);
+    React.useEffect(() => {
+      async function fetcRegions() {
+        try {
+          const { data } = await axios.get(`${baseURL}api/regions/`);
+          if (data) {
+            setRegions(data.data);
+          }
+        } catch (error: any) {}
+      }
+      fetcRegions();
+    }, []);
   const router = useRouter();
   const [q, setQ] = useState('');
   const [selected, setSelected] = useState(cities[0]);
@@ -50,7 +65,7 @@ export function SearchBar() {
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute mt-1  w-full  rounded-md bg-white py-1  text-sm shadow-lg">
-              {cities.map((city, cityIdx) => (
+              {regions.map((city, cityIdx) => (
                 <Listbox.Option
                   key={cityIdx}
                   className={({ active }) =>

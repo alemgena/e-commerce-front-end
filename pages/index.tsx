@@ -30,10 +30,7 @@ type AdsProp = {
   id: string;
 };
 const Index = ({ user }) => {
-  const [session] = useSession();
   const dispatch = useAppDispatch();
-  const [loading, setLoading] = useState(false);
-  const [adds, setAdds] = useState<any>([]);
   //  const { logout } = useAppSelector(
   //    (state: RootState) => state.login
   //  );
@@ -65,22 +62,6 @@ const Index = ({ user }) => {
     }
   }
   }, [user]);
-  const md = useMediaQuery({ query: '(max-width: 992px)' });
-  const sm = useMediaQuery({ query: '(max-width: 576px)' });
-  useEffect(() => {
-    setLoading(true);
-    async function fetchAdds() {
-      try {
-        const { data } = await axios.get(`${baseURL}api/advertisement`);
-        setAdds(data.data);
-        setLoading(false);
-      } catch (error: any) {
-        setLoading(false);
-      }
-    }
-    fetchAdds();
-  }, []);
-  //
   const router = useRouter();
   const products = useSelector(
     (state: RootStateOrAny) => state.featuredProducts.featuredProducts
@@ -97,43 +78,6 @@ const Index = ({ user }) => {
       if (!products.data.length) setHasData(true);
     }
   }, [products.data]);
-  //
-  const data = [
-    {
-      createdAt: '2023-02-22T16:09:50.560Z',
-      description: 'In good position',
-      featured: false,
-      id: '63f63e4e8a18255a545b7a51',
-      imagesURL: [],
-      location: {
-        coordinates: [32.1234, 42.5678],
-        type: 'Point',
-      },
-      name: 'Corolla',
-      options: [],
-      premium: false,
-      price: 2000000,
-      seller: {
-        _id: '63efb08991a2c9ef77db4840',
-        first_name: 'test1',
-        last_name: 'test1',
-        phone: '0905236095',
-        auth_type: 'EMAIL',
-      },
-      state: 'ACTIVE',
-      subcategory: {
-        _id: '63f633428a18255a545b76e0',
-        name: 'Cars',
-        description: 'cars description',
-        deletedAt: null,
-        imageURL: ['https://example.com/cars.jpg'],
-      },
-      updatedAt: '2023-03-31T09:08:47.029Z',
-      viewCount: 31,
-      __v: 1,
-    },
-    // add more objects as needed
-  ];
 
   return (
     <>
