@@ -13,11 +13,11 @@ const Slide: React.FC<Props> = ({ title, description, bgImg, url }) => {
   return (
     <>
       <div
-        className={` h-[30vh] w-[100%] bg-gradient-to-r from-blue-800 via-blue-600 to-blue-500 bg-cover bg-center
+        className={` h-[30vh] w-full bg-gradient-to-r from-blue-800 via-blue-600 to-blue-500 bg-cover bg-center
          bg-no-repeat text-white md:h-[30vh]`}
         style={{ backgroundImage: `${bgImg}` }}
       >
-        <div className="mx-auto flex h-full w-3/4 flex-col items-center justify-center md:flex-row md:items-center md:justify-center">
+        <div className="mx-auto flex h-full w-full flex-col items-center justify-center md:flex-row md:items-center md:justify-center">
           <div className="relative flex w-full max-w-xl items-center bg-white">
             <input
               className="w-full rounded-none px-6 py-3 text-blue-800 focus:outline-none"

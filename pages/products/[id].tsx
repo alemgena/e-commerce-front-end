@@ -36,6 +36,8 @@ import { GET_PRODUCT } from '@/types';
 import PageSpinner from '@/components/Ui/PageSpinner';
 import CarouselBox from '@/components/carousel';
 import CarouselBoxCard from '@/components/carousel/Slide';
+import Image from 'next/image';
+
 const Map = dynamic(() => import('@/components/map').then((mod) => mod.Map), {
   ssr: false,
 });
@@ -154,8 +156,11 @@ function ProductDetailPage() {
             <>
               <div className="flex flex-col md:flex-row">
                 <div className="w-full md:w-3/4">
-                  <img
+                  <Image
                     src={`${baseURL}${productData?.data?.product?.imagesURL[0]}`}
+                    alt="product image"
+                    width="100"
+                    height="100"
                     className="w-full overflow-hidden rounded-sm object-cover"
                   />
 
