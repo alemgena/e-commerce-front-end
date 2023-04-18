@@ -30,58 +30,39 @@ type AdsProp = {
   id: string;
 };
 const Index = ({ user }) => {
-  const [session] = useSession();
   const dispatch = useAppDispatch();
-  const [loading, setLoading] = useState(false);
-  const [adds, setAdds] = useState<any>([]);
   //  const { logout } = useAppSelector(
   //    (state: RootState) => state.login
   //  );
   useEffect(() => {
-    const logout=localStorage.getItem("logout")
-    console.log("logout",logout)
-    if(logout){
-    if (user) {
-      async function fetchData() {
-        try {
-          const { data } = await axios.get(
-            `https://backend-staging.liyumarket.com/api/socials/google?access_token=${user.accessToken}`
-          );
-          if (data) {
-            dispatch(
-              setCredentials({
-                user: data.data.user,
-                token: data.data.tokens.access.token,
-              })
+    const logout = localStorage.getItem('logout');
+    if (logout) {
+      if (user) {
+        console.log(user.accessToken);
+        async function fetchData() {
+          try {
+            const { data } = await axios.get(
+              `${baseURL}api/socials/google?access_token=${user.accessToken}`
             );
-            localStorage.setItem('token', data.data.tokens.access.token);
-            localStorage.setItem('userInfo', JSON.stringify(data.data));
+            if (data) {
+              dispatch(
+                setCredentials({
+                  user: data.data.user,
+                  token: data.data.tokens.access.token,
+                })
+              );
+              localStorage.setItem('token', data.data.tokens.access.token);
+              localStorage.setItem('userInfo', JSON.stringify(data.data));
+            }
+          } catch (error: any) {
+            console.log(error);
           }
-        } catch (error: any) {
-          console.log(error);
         }
-      }
 
-      fetchData();
-    }
-  }
-  }, [user]);
-  const md = useMediaQuery({ query: '(max-width: 992px)' });
-  const sm = useMediaQuery({ query: '(max-width: 576px)' });
-  useEffect(() => {
-    setLoading(true);
-    async function fetchAdds() {
-      try {
-        const { data } = await axios.get(`${baseURL}api/advertisement`);
-        setAdds(data.data);
-        setLoading(false);
-      } catch (error: any) {
-        setLoading(false);
+        fetchData();
       }
     }
-    fetchAdds();
-  }, []);
-  //
+  }, [user]);
   const router = useRouter();
   const products = useSelector(
     (state: RootStateOrAny) => state.featuredProducts.featuredProducts
@@ -98,47 +79,10 @@ const Index = ({ user }) => {
       if (!products.data.length) setHasData(true);
     }
   }, [products.data]);
-  //
-  const data = [
-    {
-      createdAt: '2023-02-22T16:09:50.560Z',
-      description: 'In good position',
-      featured: false,
-      id: '63f63e4e8a18255a545b7a51',
-      imagesURL: [],
-      location: {
-        coordinates: [32.1234, 42.5678],
-        type: 'Point',
-      },
-      name: 'Corolla',
-      options: [],
-      premium: false,
-      price: 2000000,
-      seller: {
-        _id: '63efb08991a2c9ef77db4840',
-        first_name: 'test1',
-        last_name: 'test1',
-        phone: '0905236095',
-        auth_type: 'EMAIL',
-      },
-      state: 'ACTIVE',
-      subcategory: {
-        _id: '63f633428a18255a545b76e0',
-        name: 'Cars',
-        description: 'cars description',
-        deletedAt: null,
-        imageURL: ['https://example.com/cars.jpg'],
-      },
-      updatedAt: '2023-03-31T09:08:47.029Z',
-      viewCount: 31,
-      __v: 1,
-    },
-    // add more objects as needed
-  ];
 
   return (
     <>
-      <div className="w-200 mx-auto mt-2 px-8">
+      <div className=" mx-auto">
         <Carousel />
       </div>
       <></>
@@ -150,21 +94,15 @@ const Index = ({ user }) => {
         <div className="flex w-full flex-col lg:w-3/4">
           <div className="flex w-full justify-between gap-x-4">
             <div
-              className="flex grow flex-col  rounded-md bg-cover bg-center p-10 shadow"
-              style={{
-                backgroundImage: 'url("/images/fashion-banner.webp")',
-                backgroundPosition: 'center center',
-              }}
+              onClick={() => router.push('/products')}
+              className="flex grow cursor-pointer flex-col  rounded-md bg-cover bg-center  shadow"
             >
-              <span className="font-sans-bold mt-8 text-4xl text-blue-900  md:text-5xl">
-                How to buy <br /> on Liyu?
-              </span>
-              <span
-                onClick={() => router.push('/products')}
-                className="font-sans-bold mt-4 text-blue-900 underline hover:cursor-pointer"
-              >
-                Click here
-              </span>
+              <img
+                className="h-56 w-full"
+                src="/images/banner.png"
+                alt="product image"
+                loading="lazy"
+              />
             </div>
             <div
               className=" hidden h-full w-1/4 cursor-pointer  rounded-md  bg-blue-800 shadow lg:block"

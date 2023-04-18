@@ -37,6 +37,10 @@ export const registerSlice = createSlice({
     setEmail: (state, action) => {
       state.inputValues.email = action.payload;
     },
+    
+     setUserInfo: (state, action) => {
+      state.userInfo = action.payload;
+    },
     setPhone: (state, action) => {
       state.inputValues.phone = action.payload;
     },
