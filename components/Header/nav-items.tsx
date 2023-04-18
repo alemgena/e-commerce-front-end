@@ -70,8 +70,7 @@ export function NavItems() {
     <div className="relative z-50 flex items-center justify-between gap-2">
       <button
         onClick={handleClick}
-        className="hidden items-center gap-2 rounded-full bg-gradient-to-r from-blue-800 via-blue-600 to-blue-500
-         px-4 py-2 text-white lg:flex"
+        className="hidden items-center gap-2 rounded-full bg-gradient-to-r from-blue-800 via-blue-600 to-blue-500 px-4 py-2 text-white lg:flex"
       >
         <AiOutlinePlusCircle size={20} /> <p>Sell</p>
       </button>
@@ -102,7 +101,7 @@ export function NavItems() {
             {token ? (
               <div onClick={() => router.push('/auth/profile')}>
                 <Avatar
-                  src={`https://api.liyumarket.com/${user.user?user.user.imageURL:user.imageURL}`}
+                  src={`https://api.liyumarket.com/${user?.imageURL}`}
                   alt="User profile image"
                   onClick={() => router.push('/auth/profile')}
                   className="cursor-pointer"

@@ -104,7 +104,6 @@ export const Register: React.FC = () => {
   React.useEffect(() => {
     if (userInfo && submit) {
       dispatch(openModal({ Component: Login }));
-      setSubmit(false)
     }
   }, [userInfo]);
   console.log(userInfo);

@@ -1,11 +1,13 @@
 module.exports = () => ({
   images: {
-    domains: ['api.liyumarket.com', 'lh3.googleusercontent.com'],
-
+    domains: ['api.liyumarket.com/'],
+    
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'api.liyumarket.com',
+        
+
       },
     ],
   },
@@ -24,7 +26,10 @@ module.exports = () => ({
   },
   publicRuntimeConfig: {
     APP_ID: process.env.APP_ID,
-    BACKEND_ENDPOINT: process.env.API_URL,
+    BACKEND_ENDPOINT:process.env.API_URL,
     CONSOLE_BACKEND_IMG_ENDPOIN: process.env.CONSOLE_BACKEND_IMG_ENDPOIN,
+  },
+  images: {
+    domains: ['lh3.googleusercontent.com'],
   },
 });

@@ -121,13 +121,14 @@ function MegaMenu() {
                               className="h-10 w-10"
                               loading="lazy"
                             />
+                            
                           </div>
                           <div className="flex flex-col">
                             <span className="text-main-secondary text-lg">
                               {category.name}
                             </span>
                             <span className="text-main-secondary text-xs">
-                              {category?.subcategory?.length} products
+                              2,697 products
                             </span>
                           </div>
                         </div>
@@ -210,7 +211,6 @@ function MegaMenu() {
                     >
                       <div className="flex items-center gap-x-4">
                         <div>
-                          {console.log("category",category)}
                           {category.imageURL.length ? (
                             <img
                               src={`${baseURL}/${category.imageURL[0]}`}
@@ -224,7 +224,7 @@ function MegaMenu() {
                           <span className="text-main-secondary cursor-pointer text-base">
                             {category.name}
                           </span>
-                          <span className="text-sm">{category?.subcategory?.length} products</span>
+                          <span className="text-sm">2,697 products</span>
                         </div>
                       </div>
                     </Link>

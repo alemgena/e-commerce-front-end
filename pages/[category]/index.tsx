@@ -160,7 +160,7 @@ const CategoryPage: NextPage = () => {
             <span className="font-roboto-bold text-3xl text-gray-500">
               {query.name} in Ethiopia
             </span>
-            <div className="mt-2 flex h-42 w-full flex-col rounded-md bg-white pt-4" >
+            <div className="mt-2 flex h-52 w-full flex-col rounded-md bg-white pt-4" >
               <div className="flex flex-row justify-around gap-x-4 px-8" >
                 <div className="flex w-full justify-center rounded-xl bg-gray-200 px-14 py-4" >
                   {'< ETB 500K'}
@@ -175,7 +175,14 @@ const CategoryPage: NextPage = () => {
                   {'< ETB 500K'}
                 </div>
               </div>
-           
+              <div className="mt-2 flex flex-row justify-around px-8">
+                {typesOfCar.map((typeOfCar: carProp) => (
+                  <div className="flex w-full flex-col items-center justify-center px-4 py-2 hover:rounded-lg hover:bg-blue-300" >
+                    <img src={typeOfCar.url} alt="" className="h-16 w-16" />
+                    <span>{typeOfCar.name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
             <div className="mt-4 flex w-full items-center justify-between">
               <div className="flex gap-x-3">
