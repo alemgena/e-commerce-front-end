@@ -35,32 +35,33 @@ const Index = ({ user }) => {
   //    (state: RootState) => state.login
   //  );
   useEffect(() => {
-    const logout=localStorage.getItem("logout")
-    if(logout){
-    if (user) {
-      async function fetchData() {
-        try {
-          const { data } = await axios.get(
-            `${baseURL}api/socials/google?access_token=${user.accessToken}`
-          );
-          if (data) {
-            dispatch(
-              setCredentials({
-                user: data.data.user,
-                token: data.data.tokens.access.token,
-              })
+    const logout = localStorage.getItem('logout');
+    if (logout) {
+      if (user) {
+        console.log(user.accessToken);
+        async function fetchData() {
+          try {
+            const { data } = await axios.get(
+              `${baseURL}api/socials/google?access_token=${user.accessToken}`
             );
-            localStorage.setItem('token', data.data.tokens.access.token);
-            localStorage.setItem('userInfo', JSON.stringify(data.data));
+            if (data) {
+              dispatch(
+                setCredentials({
+                  user: data.data.user,
+                  token: data.data.tokens.access.token,
+                })
+              );
+              localStorage.setItem('token', data.data.tokens.access.token);
+              localStorage.setItem('userInfo', JSON.stringify(data.data));
+            }
+          } catch (error: any) {
+            console.log(error);
           }
-        } catch (error: any) {
-          console.log(error);
         }
-      }
 
-      fetchData();
+        fetchData();
+      }
     }
-  }
   }, [user]);
   const router = useRouter();
   const products = useSelector(
@@ -81,10 +82,7 @@ const Index = ({ user }) => {
 
   return (
     <>
-      <div
-        className="mb-6 hidden w-full bg-gradient-to-r from-blue-800 via-blue-600 to-blue-500
-         bg-cover bg-center bg-no-repeat text-white lg:block"
-      >
+      <div className=" mx-auto">
         <Carousel />
       </div>
       <></>
@@ -97,7 +95,7 @@ const Index = ({ user }) => {
           <div className="flex w-full justify-between gap-x-4">
             <div
               onClick={() => router.push('/products')}
-              className="flex cursor-pointer grow flex-col  rounded-md bg-cover bg-center  shadow"
+              className="flex grow cursor-pointer flex-col  rounded-md bg-cover bg-center  shadow"
             >
               <img
                 className="h-56 w-full"
