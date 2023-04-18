@@ -34,7 +34,8 @@ const ProfilePage = () => {
           Authorization: `Bearer ${token}`,
         },
       };
-      dispatch({ type: GET_USER, id: user.user._id, config: config });
+      let id=user.user?user.user._id:user._id;
+      dispatch({ type: GET_USER, id: id, config: config });
     }
   }, [user]);
   const router = useRouter();

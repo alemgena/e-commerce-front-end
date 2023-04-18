@@ -50,14 +50,14 @@ dispatch({type:GET_FAVOURITE,config:config})
             {favorite.products.data.length?(
               <>
                 {favorite.products.data.map((data:any) => (
-                  <Link href={`/products/${data.product.id}`}>
+                  <Link href={`/products/${data.product?.id}`}>
                     <div
                       key={data.toString()}
                       className="mr-9 w-72 flex-shrink-0"
                     >
-                      <div className="flex flex-row">
+                      <div className="cursor-pointer flex flex-row">
                         <img
-                          src={`${baseURL}/${data.product.imagesURL[0]}`}
+                          src={`${baseURL}/${data.product?.imagesURL[0]}`}
                           className="h-52 w-full object-cover"
                         />
                         <div className="-ml-10 mt-4 h-7 w-8 rounded-full bg-white ">
@@ -67,9 +67,9 @@ dispatch({type:GET_FAVOURITE,config:config})
 
                       <div className="bg-white">
                         <div className="flex flex-col gap-3 p-2">
-                          <h6 className="text-sm text-gray-500">{data.product.name}</h6>
+                          <h6 className="text-sm text-gray-500">{data.product?.name}</h6>
                           <div className="flex items-center justify-between">
-                            <h6 className="font-roboto-bold ">{data.product.price}</h6>
+                            <h6 className="font-roboto-bold ">{data.product?.price}</h6>
                             <h6 className="rounded-full bg-gray-100 px-3 py-1">
                               Used
                             </h6>
