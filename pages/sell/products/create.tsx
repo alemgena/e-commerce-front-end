@@ -37,7 +37,6 @@ const CreateProductPage = () => {
   const [productOptions, setProductOptions] = useState([]);
   const [subCategoryData, setSubCategoryData] = useState<any>([]);
   const [subCategory, setSubCategory] = useState();
-  const [image, setImage] = useState<any>([]);
   const [imageError, setImageError] = useState<string>();
   const [loading, setLoading] = useState(false);
   const categories = useSelector(
