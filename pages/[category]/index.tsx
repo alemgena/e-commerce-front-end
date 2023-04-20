@@ -18,6 +18,7 @@ import axios from 'axios';
 import PageSpinner from '@/components/Ui/PageSpinner';
 import Notification from '@/components/Ui/Notification';
 import Notify from '@/components/Ui/Notify';
+import NumberWithCommas from '@/lib/types/number-commas';
 export interface IProduct {
   image: any;
   name: string;
@@ -27,7 +28,7 @@ export interface IProduct {
   location: string;
   tags: string[];
   imagesURL: string[];
-  price: string;
+  price: any;
 }
 
 type carProp = {
@@ -266,7 +267,7 @@ const CategoryPage: NextPage = () => {
                               </div>
                               <div className="flex flex-col px-4 pt-2 pb-6">
                                 <span className="font-roboto-bold text-primary text-xl">
-                                  ETB {ad.price}
+                                  ETB {NumberWithCommas(ad.price)}
                                 </span>
                                 <span className="text-ellipsis text-lg">
                                   {ad.name}
@@ -298,7 +299,7 @@ const CategoryPage: NextPage = () => {
                                 </div>
                                 <div className="flex flex-col px-4 pt-2 pb-6">
                                   <span className="font-roboto-bold text-primary text-xl">
-                                    ETB {ad.price}
+                                    ETB {NumberWithCommas(ad.price)}
                                   </span>
                                   <span className="text-ellipsis text-lg">
                                     {ad.name}
