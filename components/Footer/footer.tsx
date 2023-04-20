@@ -27,7 +27,10 @@ function Footer() {
                 </a>
               </li>
               <li className="mb-4 hover:cursor-pointer">
-                <a onClick={()=>router.push("/terms-of-use")} className="hover:underline">
+                <a
+                  onClick={() => router.push('/terms-of-use')}
+                  className="hover:underline"
+                >
                   Terms & Conditions
                 </a>
               </li>
