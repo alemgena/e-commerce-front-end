@@ -14,6 +14,7 @@ import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { baseURL } from '@/config';
 import { useMediaQuery } from 'react-responsive';
 import NextLink from 'next/link';
+import NumberWithCommas from '@/lib/types/number-commas';
 export interface IProduct {
   image: any;
   name: string;
@@ -23,7 +24,7 @@ export interface IProduct {
   location: string;
   tags: string[];
   imagesURL: string[];
-  price: string;
+  price: number;
 }
 
 type carProp = {
@@ -31,36 +32,6 @@ type carProp = {
   url: string;
 };
 const CategoryPage: NextPage = () => {
-  const typesOfCar = [
-    {
-      name: 'Toyota',
-      url: 'https://assets.jiji.com.et/art/attributes/top-selection/cars2x-tinifield/toyota2x.png',
-    },
-    {
-      name: 'Hyundai',
-      url: 'https://assets.jiji.com.et/art/attributes/top-selection/cars2x-tinifield/hyundai.png',
-    },
-    {
-      name: 'Nissan',
-      url: 'https://assets.jiji.com.et/art/attributes/top-selection/cars2x-tinifield/nissan2x.png',
-    },
-    {
-      name: 'Volkswagen',
-      url: 'https://assets.jiji.com.et/art/attributes/top-selection/buses-and-microbuses/volkswagen.png',
-    },
-    {
-      name: 'Mitsubishi',
-      url: 'https://assets.jiji.com.et/art/attributes/top-selection/cars2x-tinifield/mitsubishi.png',
-    },
-    {
-      name: 'Ford',
-      url: 'https://assets.jiji.com.et/art/attributes/top-selection/cars2x-tinifield/ford2x.png',
-    },
-    {
-      name: 'Peugeot',
-      url: 'https://assets.jiji.com.et/art/attributes/top-selection/cars2x-tinifield/peugeot.png',
-    },
-  ];
   const apiKey = 'AIzaSyDdfMxmTxz8u1XdD99_JCEX_9S41PbcJPE';
   const locationName = 'Debre Elias, Ethiopia';
   const hhh = async () => {
@@ -107,13 +78,13 @@ const CategoryPage: NextPage = () => {
       <div className="px-12">
         <Breadcrumb />
       </div>
-      <div className="px-14 font-roboto-regular" >
-        <div className="flex h-full w-full flex-row gap-x-4" >
-          <div className="flex w-1/4 flex-col items-start justify-start" >
+      <div className="font-roboto-regular px-14">
+        <div className="flex h-full w-full flex-row gap-x-4">
+          <div className="flex w-1/4 flex-col items-start justify-start">
             {/* Categories Box */}
             {!sm && (
               <div className="mb-4  w-full bg-white">
-                <div className="mb-2 flex h-14 items-center justify-start rounded-t-md border-b-2 bg-primary pl-4 text-white">
+                <div className="bg-primary mb-2 flex h-14 items-center justify-start rounded-t-md border-b-2 pl-4 text-white">
                   <span className="text-lg font-bold">Categories</span>
                 </div>
                 {mainCategory && (
@@ -160,22 +131,21 @@ const CategoryPage: NextPage = () => {
             <span className="font-roboto-bold text-3xl text-gray-500">
               {query.name} in Ethiopia
             </span>
-            <div className="mt-2 flex h-42 w-full flex-col rounded-md bg-white pt-4" >
-              <div className="flex flex-row justify-around gap-x-4 px-8" >
-                <div className="flex w-full justify-center rounded-xl bg-gray-200 px-14 py-4" >
+            <div className="h-42 mt-2 flex w-full flex-col rounded-md bg-white pt-4">
+              <div className="flex flex-row justify-around gap-x-4 px-8">
+                <div className="flex w-full justify-center rounded-xl bg-gray-200 px-14 py-4">
                   {'< ETB 500K'}
                 </div>
-                <div className="flex w-full justify-center rounded-xl bg-gray-200 px-14 py-4" >
+                <div className="flex w-full justify-center rounded-xl bg-gray-200 px-14 py-4">
                   {'< ETB 500K'}
                 </div>
-                <div className="flex w-full justify-center rounded-xl bg-gray-200 px-14 py-4" >
+                <div className="flex w-full justify-center rounded-xl bg-gray-200 px-14 py-4">
                   {'< ETB 500K'}
                 </div>
-                <div className="flex w-full justify-center rounded-xl bg-gray-200 px-14 py-4" >
+                <div className="flex w-full justify-center rounded-xl bg-gray-200 px-14 py-4">
                   {'< ETB 500K'}
                 </div>
               </div>
-           
             </div>
             <div className="mt-4 flex w-full items-center justify-between">
               <div className="flex gap-x-3">
@@ -198,7 +168,7 @@ const CategoryPage: NextPage = () => {
                       {sm ? (
                         <div className="grid grid-cols-2  gap-x-4">
                           {subCategorie.data.product.map((ad: IProduct) => (
-                            <div className="min-h-96 mb-4 flex w-full cursor-pointer flex-col justify-between rounded-lg bg-white font-roboto-regular shadow">
+                            <div className="min-h-96 font-roboto-regular mb-4 flex w-full cursor-pointer flex-col justify-between rounded-lg bg-white shadow">
                               <div className="relative flex h-[55%]">
                                 <img
                                   src={`${baseURL}/${ad.imagesURL[0]}`}
@@ -206,9 +176,9 @@ const CategoryPage: NextPage = () => {
                                   alt={ad.name}
                                 />
                               </div>
-                              <div className="flex flex-col px-4 pt-2 pb-6">
-                                <span className="font-roboto-bold text-xl text-primary">
-                                  ETB {ad.price}
+                              <div className="flex flex-col px-4 pb-6 pt-2">
+                                <span className="font-roboto-bold text-primary text-xl">
+                                  ETB {NumberWithCommas(ad.price)}
                                 </span>
                                 <span className="text-ellipsis text-lg">
                                   {ad.name}
@@ -230,7 +200,7 @@ const CategoryPage: NextPage = () => {
                         >
                           {subCategorie.data.product.map((ad: IProduct) => (
                             <NextLink href={`/products/${ad.id}`} passHref>
-                              <div className="min-h-96 mb-4 flex w-full cursor-pointer flex-col justify-between rounded-lg bg-white font-roboto-regular shadow">
+                              <div className="min-h-96 font-roboto-regular mb-4 flex w-full cursor-pointer flex-col justify-between rounded-lg bg-white shadow">
                                 <div className="relative flex h-[55%]">
                                   <img
                                     src={`${baseURL}/${ad.imagesURL[0]}`}
@@ -238,9 +208,9 @@ const CategoryPage: NextPage = () => {
                                     alt={ad.name}
                                   />
                                 </div>
-                                <div className="flex flex-col px-4 pt-2 pb-6">
-                                  <span className="font-roboto-bold text-xl text-primary">
-                                    ETB {ad.price}
+                                <div className="flex flex-col px-4 pb-6 pt-2">
+                                  <span className="font-roboto-bold text-primary text-xl">
+                                    ETB {NumberWithCommas(ad.price)}
                                   </span>
                                   <span className="text-ellipsis text-lg">
                                     {ad.name}

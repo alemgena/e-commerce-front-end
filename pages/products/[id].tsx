@@ -36,30 +36,15 @@ import { GET_PRODUCT } from '@/types';
 import PageSpinner from '@/components/Ui/PageSpinner';
 import CarouselBox from '@/components/carousel';
 import CarouselBoxCard from '@/components/carousel/Slide';
+import NumberWithCommas from '@/lib/types/number-commas';
+import timeSince from '@/lib/types/time-since';
+import { IoCheckmarkCircleOutline } from 'react-icons/io5';
+import FormatNumber from '@/lib/types/number-format';
+import { Avatar } from '@mui/material';
 const Map = dynamic(() => import('@/components/map').then((mod) => mod.Map), {
   ssr: false,
 });
 
-const options = [
-  {
-    id: 'o-1',
-    title: 'Spec',
-  },
-  {
-    id: 'o-2',
-    title: 'Materials',
-  },
-  {
-    id: 'o-3',
-    title: 'Dimention',
-  },
-  {
-    id: '-4',
-    title: 'Shipping',
-  },
-];
-
-const colors = ['#F62424', '#3399FF', '#33FFAF', '#B533FF'];
 <head></head>;
 function ProductDetailPage() {
   const dispatch = useDispatch();
@@ -74,8 +59,6 @@ function ProductDetailPage() {
   const products = useSelector(
     (state: RootStateOrAny) => state.products.products
   );
-  console.log('products', products);
-
   //favorite
   const favorite = useSelector((state: RootStateOrAny) => state.favorite);
   const { isLoading } = useSelector((state: RootStateOrAny) => state.product);
@@ -120,7 +103,12 @@ function ProductDetailPage() {
       });
     }
   }, [favorite.favorite]);
-
+  const filteredRelatedProducts = productData?.data?.relatedProducts.filter(
+    (relatedProduct: any) => {
+      return relatedProduct.id !== productData?.data?.product.id;
+    }
+  );
+  console.log('fillll', filteredRelatedProducts);
   return (
     <>
       <Head>
@@ -141,12 +129,12 @@ function ProductDetailPage() {
         <PageSpinner />
       ) : (
         <div className=" bg-gray-350 w-full overflow-x-hidden px-12 pb-32">
-          <div
-            onClick={() => router.push('/')}
-            className="flex flex items-center gap-2 py-4 text-xl  hover:cursor-pointer"
-          >
-            <h1 className="flex text-center">
-              <FiArrowLeft className="ml-3" />
+          <div className="flex flex items-center gap-2 py-4 text-xl  ">
+            <h1
+              onClick={() => router.push('/')}
+              className=" flex text-center hover:cursor-pointer"
+            >
+              <FiArrowLeft className="ml-3 mt-1" />
               Product List
             </h1>
           </div>
@@ -201,58 +189,63 @@ function ProductDetailPage() {
                 {/* div two */}
 
                 {/* div2 */}
-                <div className="md:w-3/2 w-full">
+                <div className="ml-2 w-full md:w-1/2">
                   <div className="md:w-3/2 flex w-full flex-col gap-6 ">
                     <div className="rounded-md bg-white px-4 py-6 shadow-sm">
-                      <h2 className="font-roboto-medium text-xl">
-                        Tesla Model X
+                      <h2 className="text-xl  font-bold">
+                        {`${productData?.data?.product?.name}`}
                       </h2>
-                      <p className="mb-4 text-sm text-blue-800">
-                        BelayAb Motors
+                      <p className="mb-4 text-sm text-gray-500">
+                        {productData?.data?.product?.subcategory?.name}{' '}
                       </p>
-                      <h2 className="font-roboto-light text-xl">
-                        {productData.data.product.price}
+                      <h2 className="text-xl font-bold">
+                        <span>ETB</span>{' '}
+                        {NumberWithCommas(productData.data.product.price)}
                       </h2>
+                      <h6 className="flex text-center font-bold text-blue-700">
+                        <IoCheckmarkCircleOutline className="mt-1" />
+                        Posted {''}{' '}
+                        {timeSince(productData?.data?.product?.createdAt)}{' '}
+                      </h6>
                     </div>
-                    <div className="font-roboto-light flex flex-col gap-2 rounded-md bg-white p-4 shadow-sm md:flex-col md:gap-6 lg:flex-row">
-                      {/*  */}
-                      <div className="flex flex-grow  flex-col sm:flex-row sm:flex-col md:flex-row md:gap-6">
-                        <Link href="/chat">
-                          <button className="mt-3 flex-grow rounded-full bg-blue-800 py-2 text-white md:mt-0">
-                            Make an Offer
-                          </button>
-                        </Link>
+                    <div className="rounded-md bg-white px-4 py-6 shadow-sm">
+                      <h2 className="mb-4 text-lg font-bold">Description</h2>
+                      <p className="text-sm text-gray-600">
+                        {productData.data.product.description}
+                      </p>
+                    </div>
+
+                    <div
+                      className="font-roboto-light flex flex-col justify-between gap-2 rounded-md bg-white p-4 shadow-sm
+                     md:flex-col md:flex-col md:gap-6 lg:flex-row"
+                    >
+                      <div className="mt-2 flex items-center font-bold md:mt-0">
+                        <p>
+                          <BsEye />
+                        </p>
+                        <span className="p-2">
+                          {FormatNumber(productData.data.product.viewCount)}
+                        </span>
+                        {''} Views
                         <button
-                          onClick={() => setShowContact(true)}
-                          className="font-roboto-medium mt-3 flex items-center gap-2 rounded-full bg-white px-4 py-2 text-blue-800 ring-2 ring-blue-800 sm:gap-1 md:mt-0"
+                          onClick={(e) => addFavorite(e)}
+                          className="font-roboto-light ml-5 flex items-center gap-2 py-2 text-xl"
                         >
-                          <IoIosCall />
-                          <p>
-                            {showContact ? (
-                              <p className="font-roboto-medium text-blue-800">
-                                {productData.data.product.seller.phone}
-                              </p>
-                            ) : (
-                              <p>Show Contact</p>
-                            )}
-                          </p>
-                        </button>
-                        <button
-                          onClick={() => router.push('/chat')}
-                          className="font-roboto-medium mt-3 flex items-center gap-2 rounded-full bg-white px-4 py-2 text-blue-800 ring-2 ring-blue-800 md:mt-0"
-                        >
-                          <BsFillChatLeftTextFill />
-                          <p>Chat</p>
+                          <BsHeart size={16} />
                         </button>
                       </div>
 
-                      <div className="mt-3 flex items-center gap-6 sm:mt-0">
+                      {/*      <div className="mt-2 flex items-center font-bold md:mt-0">
                         <button
-                          onClick={(e) => addFavorite(e)}
-                          className="font-roboto-light flex items-center gap-2 py-2 text-3xl"
+                          className="font-roboto-medium mt-2 flex items-center gap-1
+                       rounded-full px-6 py-1 text-sm text-white ring-1 ring-blue-700 md:mt-0"
                         >
-                          <BsHeart />
+                          <p className="text-gray-500">In Stock</p>
+                          <p className="text-blue-800">60</p>
                         </button>
+                      </div> */}
+                      <div className="mt-3 flex items-center gap-6 sm:mt-0">
+                        <h1 className="text-blue font-bold"> Share On</h1>
                         <FacebookShareButton
                           url={`http://liyumarket.com/products/${id}`}
                           quote={''}
@@ -276,96 +269,143 @@ function ProductDetailPage() {
                           </TwitterShareButton>
                         </button>
                       </div>
-                      {/*  */}
                     </div>
 
-                    <div
-                      className="font-roboto-light flex flex-col justify-between gap-2 rounded-md bg-white p-4 shadow-sm
-                     md:flex-col md:flex-col md:gap-6 lg:flex-row"
-                    >
-                      <div className="flex items-center gap-2 md:gap-14">
-                        <h6 className="font-roboto-medium">Color</h6>
-                        <div className="flex flex-wrap gap-2 sm:flex-row">
-                          {colors.map((color, index) => (
-                            <div
-                              key={index.toString()}
-                              className="h-8 w-8 rounded-sm ring-1 ring-gray-100 sm:flex-row"
-                              style={{ backgroundColor: color }}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                      <div className="mt-2 flex items-center font-bold md:mt-0">
-                        <p>{productData.data.product.viewCount}</p>
-                        <span className="p-2">
-                          <BsEye />
-                        </span>
-                      </div>
-
-                      <div className="mt-2 flex items-center font-bold md:mt-0">
-                        <span className="p-2">ETB </span>
-                        <p>{productData.data.product.price}</p>
-                      </div>
-                      <div className="mt-2 flex items-center font-bold md:mt-0">
-                        <button
-                          className="font-roboto-medium mt-2 flex items-center gap-1
-                       rounded-full px-6 py-1 text-sm text-white ring-1 ring-blue-700 md:mt-0"
-                        >
-                          <p className="text-gray-500">In Stock</p>
-                          <p className="text-blue-800">60 Piece</p>
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="rounded-md bg-white px-4 py-6 shadow-sm">
-                      <h2 className="font-roboto-medium mb-4 text-lg">
-                        Description
-                      </h2>
-                      <p className="text-sm text-gray-600">
-                        {productData.data.product.description}
-                      </p>
-                    </div>
                     <div className="  font-roboto-light rounded-md bg-white p-4 shadow-sm">
-                      <h2 className="font-roboto-bold mb-4 text-lg">
-                        Store Detail
+                      <h2 className="mb-4 text-lg font-bold">
+                        Seller Address{' '}
                       </h2>
                       <div className="flex items-center gap-6">
-                        <img
-                          src={`${baseURL}/${productData.data.product.imagesURL[0]}`}
-                          className="h-16 w-16 rounded-full object-cover"
-                        />
+                        <div className="relative">
+                          {`${baseURL}/${productData?.data?.product?.seller?.imageURL}` ? (
+                            <img
+                              src={`${baseURL}/${productData?.data?.product?.seller?.imageURL}`}
+                              className="h-16 w-16 rounded-full object-cover"
+                            />
+                          ) : (
+                            <Avatar />
+                          )}
+
+                          <span
+                            className={`absolute bottom-0 left-7  h-3.5 w-3.5 rounded-full border-2 
+                          border-white ${
+                            productData?.data?.product?.seller?.status ===
+                            'ACTIVE'
+                              ? 'bg-blue-700'
+                              : 'bg-gray-400'
+                          } dark:border-gray-800`}
+                          ></span>
+                        </div>
+
                         <div>
                           <h2 className="font-roboto-medium text-lg">
-                            Ambassador Clothing
+                            {`${productData?.data?.product?.seller?.first_name} ${productData?.data?.product?.seller?.last_name}`}
                           </h2>
                           <p className="text-sm text-gray-400">
-                            Mexico, Abebe Bldg - 4th Flr, Addis Ababa, Ethiopia
+                            {`${productData?.data?.product?.location}, ${productData?.data?.product?.region},Ethiopia`}
                           </p>
+                          <h6 className="text-blue flex text-center">
+                            <IoCheckmarkCircleOutline className="mt-1 text-blue-800" />
+                            joined {''}{' '}
+                            {timeSince(
+                              productData?.data?.product?.seller?.createdAt
+                            )}{' '}
+                          </h6>
                         </div>
                       </div>
                     </div>
+                    <div
+                      className="font-roboto-light flex flex-col gap-2 rounded-md bg-white p-2 shadow-sm 
+                    md:flex-col md:gap-6 lg:flex-row"
+                    >
+                      {/*  */}
+
+                      <div className="flex flex-grow flex-col sm:flex-row  md:flex-row md:flex-col md:gap-6">
+                        <Link href="/chat">
+                          <button className="mt-3 rounded-full bg-blue-800 py-2 text-white sm:flex-grow md:mt-0">
+                            Make an Offer
+                          </button>
+                        </Link>
+                        <button
+                          onClick={() => setShowContact(true)}
+                          className="font-roboto-medium mt-3 flex items-center gap-2 rounded-full bg-white px-4 py-2 text-blue-800 ring-2 ring-blue-800 sm:gap-1 md:mt-0"
+                        >
+                          <IoIosCall />
+                          <p>
+                            {showContact ? (
+                              <p className="font-roboto-medium text-blue-800">
+                                {productData?.data?.product?.seller?.phone}
+                              </p>
+                            ) : (
+                              <p>Show Contact</p>
+                            )}
+                          </p>
+                        </button>
+                        <button
+                          onClick={() => router.push('/chat')}
+                          className="font-roboto-medium mt-3 flex items-center gap-2 rounded-full bg-white px-4 py-2 text-blue-800 ring-2 ring-blue-800 md:mt-0"
+                        >
+                          <BsFillChatLeftTextFill />
+                          <p>Chat</p>
+                        </button>
+                      </div>
+
+                      {/*  */}
+                    </div>
                     <div className="font-roboto-light rounded-md bg-white shadow-sm">
-                      {options.map((option) => (
-                        <Disclosure key={option.id}>
-                          {({ open }) => (
-                            <>
-                              <Disclosure.Button className="text-blac font-roboto-bold flex  w-full justify-between border-b-2 border-gray-100 p-4 text-left  text-lg">
-                                <span>{option.title}</span>
-                                <BsChevronUp
-                                  className={`${
-                                    open ? 'rotate-180 transform' : ''
-                                  } h-5 w-5 `}
-                                />
-                              </Disclosure.Button>
-                              <Disclosure.Panel className="px-4 pb-2 pt-4  text-gray-500">
-                                If you're unhappy with your purchase for any
-                                reason, email us within 90 days and we'll refund
-                                you in full, no questions asked.
-                              </Disclosure.Panel>
-                            </>
-                          )}
-                        </Disclosure>
-                      ))}
+                      {productData?.data?.product?.options?.map(
+                        (option: {
+                          id: React.Key | null | undefined;
+                          title:
+                            | string
+                            | number
+                            | boolean
+                            | React.ReactElement<
+                                any,
+                                string | React.JSXElementConstructor<any>
+                              >
+                            | React.ReactFragment
+                            | React.ReactPortal
+                            | null
+                            | undefined;
+                        }) => (
+                          <Disclosure key={option.id}>
+                            {({ open }) => (
+                              <>
+                                <Disclosure.Button className="text-blac font-roboto-bold flex  w-full justify-between border-b-2 border-gray-100 p-4 text-left  text-lg">
+                                  <span>{option.title}</span>
+                                  <BsChevronUp
+                                    className={`${
+                                      open ? 'rotate-180 transform' : ''
+                                    } h-5 w-5 `}
+                                  />
+                                </Disclosure.Button>
+                                <Disclosure.Panel className="px-4 pb-2 pt-4  text-gray-500">
+                                  If you're unhappy with your purchase for any
+                                  reason, email us within 90 days and we'll
+                                  refund you in full, no questions asked.
+                                </Disclosure.Panel>
+                              </>
+                            )}
+                          </Disclosure>
+                        )
+                      )}
+                      <div className="mt-0 rounded-md bg-white font-bold shadow-sm">
+                        <h5 className="ml-2 p-2">Safety Tips</h5>
+                        <ul className=" ml-6  list-disc bg-white p-4 font-light">
+                          <li>Don't pay in advance, including for delivery</li>
+                          <li>Meet the seller at a safe public place</li>
+                          <li>
+                            Inspect the item and ensure it's exactly what you
+                            want
+                          </li>
+                          <li>
+                            On delivery, check that the item delivered is what
+                            was inspected
+                          </li>
+                          <li>Only pay when you're satisfied</li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -375,18 +415,16 @@ function ProductDetailPage() {
                 <div className=" overflow-hidden ">
                   <div className="w-full overflow-x-hidden">
                     <CarouselBox title="Related Products" full={true}>
-                      {productData?.data?.relatedProducts?.map(
-                        (productItem: any) => {
-                          return (
-                            <>
-                              <CarouselBoxCard
-                                key={productItem.id}
-                                product={productItem}
-                              />
-                            </>
-                          );
-                        }
-                      )}
+                      {filteredRelatedProducts?.map((productItem: any) => {
+                        return (
+                          <>
+                            <CarouselBoxCard
+                              key={productItem.id}
+                              product={productItem}
+                            />
+                          </>
+                        );
+                      })}
                     </CarouselBox>{' '}
                   </div>
                 </div>
