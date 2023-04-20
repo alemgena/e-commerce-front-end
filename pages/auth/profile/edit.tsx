@@ -52,7 +52,13 @@ function EditProfilePage() {
     formData.append('last_name', lastName);
     formData.append('phone', phone);
     formData.append('image', image);
-    dispatch({ type: UPDATE_PROFILE, data: formData });
+       let token = localStorage.getItem('token');
+       let config = {
+         headers: {
+           Authorization: `Bearer ${token}`,
+         },
+       };
+    dispatch({ type: UPDATE_PROFILE, data: formData,config:config });
     setSubmit(true);
   };
   const [submit, setSubmit] = useState(false);
