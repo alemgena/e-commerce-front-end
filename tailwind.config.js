@@ -1,16 +1,18 @@
 /** @type {import('tailwindcss').Config} */
 const defaultTheme = require('tailwindcss/defaultTheme');
-
-/* const { createGlobPatternsForDependencies } = require('@nrwl/next/tailwind'); */
-
 module.exports = {
   mode: 'jit',
   content: [
+    './public/**/*.html',
     './pages/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
     './page-components/**/*.{js,ts,jsx,tsx}',
-    /*         ...createGlobPatternsForDependencies(__dirname),
-     */
+  ],
+  purge: [
+    './public/**/*.html',
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+    './page-components/**/*.{js,ts,jsx,tsx}',
   ],
   important: true,
   darkMode: 'class', // or 'media' or 'class'
