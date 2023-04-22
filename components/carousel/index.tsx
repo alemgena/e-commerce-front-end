@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { NextArrow, PrevArrow } from './Arrows';
 import Slider from 'react-slick';
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
+import { sliderContent } from './slider-content';
 
 interface Props {
   title: string;
@@ -22,8 +23,8 @@ const CarouselBox: React.FC<Props> = ({ title, className, children, full }) => {
     // initialSlide: 0,
     swipeToSlide: true,
     // rtl: true,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
+    nextArrow: <NextArrow to={''} />,
+    prevArrow: <PrevArrow to={''} />,
     responsive: [
       {
         breakpoint: 1324,
@@ -42,8 +43,8 @@ const CarouselBox: React.FC<Props> = ({ title, className, children, full }) => {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
+          slidesToShow: 2,
+          slidesToScroll: 2,
         },
       },
       {
@@ -89,7 +90,13 @@ const CarouselBox: React.FC<Props> = ({ title, className, children, full }) => {
             : 'w-[65%] overflow-x-hidden sm:w-[65%] md:w-[75%]'
         }`}
       >
-        <Slider {...settings}>{children}</Slider>
+        <Slider {...settings}>
+          {children}
+
+          {sliderContent.map((slideContent) => {
+            return <Slider key={slideContent.ID} {...slideContent} />;
+          })}
+        </Slider>
 
         <div>
           <div
