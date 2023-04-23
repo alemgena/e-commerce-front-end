@@ -19,12 +19,14 @@ import dynamic from 'next/dynamic';
 import CarouselBox from '@/components/carousel';
 import CarouselBoxCard from '@/components/carousel/Slide';
 import Carousel from '@/components/slide-show';
+import NumberWithCommas from '@/lib/types/number-commas';
+import Link from 'next/link';
 const MegaMenu = dynamic(() => import('../components/menu/MegaMenu'));
 const Category = dynamic(() => import('../components/CategorySection'));
 type AdsProp = {
   name: string;
   url: string;
-  price: string;
+  price: number;
   qty: string;
   imagesURL: string[];
   id: string;
@@ -93,16 +95,20 @@ const Index = ({ user }) => {
 
         <div className="flex w-full flex-col lg:w-3/4">
           <div className="flex w-full justify-between gap-x-4">
-            <div
-              onClick={() => router.push('/products')}
-              className="flex grow cursor-pointer flex-col  rounded-md bg-cover bg-center  shadow"
-            >
-              <img
-                className="h-56 w-full"
-                src="/images/banner.png"
-                alt="product image"
-                loading="lazy"
-              />
+            <div className="flex grow cursor-pointer flex-col  rounded-md bg-cover bg-center  shadow">
+              <a
+                href="/about#howtobuy"
+                target="_blank"
+                className="bg-cover"
+                rel="noopener noreferrer"
+              >
+                <img
+                  className="h-56 w-full"
+                  src="/images/banner.png"
+                  alt="product image"
+                  loading="lazy"
+                />
+              </a>
             </div>
             <div
               className=" hidden h-full w-1/4 cursor-pointer  rounded-md  bg-blue-800 shadow lg:block"
@@ -166,8 +172,8 @@ const Index = ({ user }) => {
                                 <span className="text-sm text-slate-900">
                                   ETB
                                 </span>
-                                <span className="text-xl  font-bold text-slate-900">
-                                  {ad.price}{' '}
+                                <span className="ml-2 text-xl font-bold text-slate-900">
+                                  {NumberWithCommas(ad.price)}{' '}
                                 </span>
                               </p>
                             </div>
