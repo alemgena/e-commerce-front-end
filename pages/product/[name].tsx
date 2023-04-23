@@ -90,7 +90,7 @@ const ProdcutPage = () => {
                 ))}
               </div>
             ) : (
-              <Norecords col={5} />
+              <Norecords/>
             )}
           </div>
         </div>

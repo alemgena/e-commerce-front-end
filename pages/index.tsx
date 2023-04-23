@@ -16,11 +16,8 @@ import { GET_PRODUCTS_BY_FEATURED } from '@/types';
 import { setCredentials } from '@/store/auth';
 import { RootState, useAppDispatch, useAppSelector } from '@/store';
 import dynamic from 'next/dynamic';
-import CarouselBox from '@/components/carousel';
-import CarouselBoxCard from '@/components/carousel/Slide';
 import Carousel from '@/components/slide-show';
 import NumberWithCommas from '@/lib/types/number-commas';
-import Link from 'next/link';
 const MegaMenu = dynamic(() => import('../components/menu/MegaMenu'));
 const Category = dynamic(() => import('../components/CategorySection'));
 type AdsProp = {
@@ -31,7 +28,7 @@ type AdsProp = {
   imagesURL: string[];
   id: string;
 };
-const Index = ({ user }) => {
+const Index = ({ user }:any) => {
   const dispatch = useAppDispatch();
   //  const { logout } = useAppSelector(
   //    (state: RootState) => state.login
@@ -185,7 +182,7 @@ const Index = ({ user }) => {
                     {hasData && (
                       <span>
                         {' '}
-                        <Norecords col={5} />
+                        <Norecords/>
                       </span>
                     )}
                   </div>

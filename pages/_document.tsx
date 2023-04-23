@@ -10,6 +10,7 @@ class MyDocument extends Document {
           <title>Liyu market</title>
           <meta charSet="utf-8" />
           <meta name="description" content="Liyu Market" />
+          <link rel="shortcut icon" href="/logo.ico" />
         </Head>
         <body>
           <Main />

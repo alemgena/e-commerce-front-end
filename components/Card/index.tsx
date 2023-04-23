@@ -5,7 +5,6 @@ import React from 'react';
 import { BsHeart } from 'react-icons/bs';
 // import StarRatingComponent from 'react-star-rating-component';
 // import Image from 'next/image';
-import Link from 'next/link';
 import { baseURL } from '@/config';
 import NextLink from 'next/link';
 // import ProductPrice from '../ProductPrice';
@@ -16,9 +15,10 @@ interface Props {
 export interface IProduct {
   image: any;
   name: string;
-
+id:string;
   price: number;
   discount?: number;
+  imagesURL:string[];
   brand: string;
   category: string[];
   isOffer?: boolean;
@@ -27,7 +27,7 @@ export interface IProduct {
   starRating: number;
 }
 
-const Card = ({ product }) => {
+const Card = ({ product }:Props) => {
   console.log('products', product);
   return (
     <div className="bg-palette-card relative col-span-6 my-1 flex rounded-xl shadow-xl ltr:mr-2 rtl:ml-1 sm:col-span-3 md:col-span-4  md:mx-6 md:my-4 lg:col-span-3 2xl:col-span-2">

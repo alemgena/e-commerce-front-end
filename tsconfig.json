@@ -30,6 +30,6 @@
     "**/*.ts",
     "**/*.tsx",
     "components/design-system/pagination/index.js"
-, "components/Ui/ActionButton.js", "components/Ui/AutoComplet.js", "config.js", "components/ProtectedRoute.js"  ],
+, "components/Ui/ActionButton.js", "components/Ui/AutoComplet.js", "config.js", "components/ProtectedRoute.js", "components/Ui/Norecords.js"  ],
   "exclude": ["node_modules"]
 }

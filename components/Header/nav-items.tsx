@@ -34,11 +34,11 @@ export function NavItems() {
   const handleLogout = () => {
     localStorage.removeItem('userInfo');
     localStorage.removeItem('token');
-   localStorage.removeItem('logout');
+    localStorage.removeItem('logout');
     dispatch(removedCredentials());
-    router.push('/')
+    router.push('/');
   };
-  
+
   const handleClick = () => {
     if (token) {
       dispatch(loginAction.setIsUserLogged(true));
@@ -101,7 +101,9 @@ export function NavItems() {
             {token ? (
               <div onClick={() => router.push('/auth/profile')}>
                 <Avatar
-                  src={`https://api.liyumarket.com/${user.user?user.user.imageURL:user.imageURL}`}
+                  src={`https://api.liyumarket.com/${
+                    user.user ? user.user.imageURL : user.imageURL
+                  }`}
                   alt="User profile image"
                   onClick={() => router.push('/auth/profile')}
                   className="cursor-pointer"

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaThList } from 'react-icons/fa';
 import { IoLocationSharp } from 'react-icons/io5';
 import { RxCaretRight } from 'react-icons/rx';
@@ -19,6 +19,18 @@ import PageSpinner from '@/components/Ui/PageSpinner';
 import Notification from '@/components/Ui/Notification';
 import Notify from '@/components/Ui/Notify';
 import NumberWithCommas from '@/lib/types/number-commas';
+import ServiceCard from '@/components/Card/product-card';
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  Menu,
+  MenuItem,
+  Popover,
+  Select,
+} from '@mui/material';
+import { Filter } from '@mui/icons-material';
+import { iteratorSymbol } from 'immer/dist/internal';
 export interface IProduct {
   image: any;
   name: string;
@@ -29,6 +41,7 @@ export interface IProduct {
   tags: string[];
   imagesURL: string[];
   price: any;
+  viewCount?:number
 }
 
 type carProp = {
@@ -37,36 +50,7 @@ type carProp = {
 };
 const CategoryPage: NextPage = () => {
   const { NotifyMessage, notify, setNotify } = Notify();
-  const typesOfCar = [
-    {
-      name: 'Toyota',
-      url: 'https://assets.jiji.com.et/art/attributes/top-selection/cars2x-tinifield/toyota2x.png',
-    },
-    {
-      name: 'Hyundai',
-      url: 'https://assets.jiji.com.et/art/attributes/top-selection/cars2x-tinifield/hyundai.png',
-    },
-    {
-      name: 'Nissan',
-      url: 'https://assets.jiji.com.et/art/attributes/top-selection/cars2x-tinifield/nissan2x.png',
-    },
-    {
-      name: 'Volkswagen',
-      url: 'https://assets.jiji.com.et/art/attributes/top-selection/buses-and-microbuses/volkswagen.png',
-    },
-    {
-      name: 'Mitsubishi',
-      url: 'https://assets.jiji.com.et/art/attributes/top-selection/cars2x-tinifield/mitsubishi.png',
-    },
-    {
-      name: 'Ford',
-      url: 'https://assets.jiji.com.et/art/attributes/top-selection/cars2x-tinifield/ford2x.png',
-    },
-    {
-      name: 'Peugeot',
-      url: 'https://assets.jiji.com.et/art/attributes/top-selection/cars2x-tinifield/peugeot.png',
-    },
-  ];
+  const [list, setList] = useState('Grid');
   const apiKey = 'AIzaSyDdfMxmTxz8u1XdD99_JCEX_9S41PbcJPE';
   const locationName = 'Debre Elias, Ethiopia';
   const hhh = async () => {
@@ -129,7 +113,7 @@ const CategoryPage: NextPage = () => {
     }
   }, [query.name, categories.data]);
   const searchByPrice = async (from: number, to: number) => {
-  setLoading(true)
+    setLoading(true);
     try {
       const { data } = await axios.get(
         `${baseURL}api/products?filters=[{"price":{"from":${from},"to":${to}}},{"subcategory":${JSON.stringify(
@@ -148,10 +132,33 @@ const CategoryPage: NextPage = () => {
       });
     }
   };
+
+  const handleMouseEnter = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMouseLeave = () => {
+    setAnchorEl(null);
+  };
+  const [value, setValue] = useState('');
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleSelectChange = (event: any) => {
+    setValue(event.target.value);
+  };
+
+  const handleOpen = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <>
       <div className="px-12">
-        <Breadcrumb />
+        <Breadcrumb mainCategory={mainCategory ? mainCategory.name : null} />
       </div>
       <Notification notify={notify} setNotify={setNotify} />
       <div className="font-roboto-regular px-14">
@@ -161,36 +168,36 @@ const CategoryPage: NextPage = () => {
           <div className="flex h-full w-full flex-row gap-x-4">
             <div className="flex w-1/4 flex-col items-start justify-start">
               {/* Categories Box */}
-              {!sm && (
-                <div className="mb-4  w-full bg-white">
-                  <div className="bg-primary mb-2 flex h-14 items-center justify-start rounded-t-md border-b-2 pl-4 text-white">
-                    <span className="text-lg font-bold">Categories</span>
+              {!sm && mainCategory && (
+                <div className="mb-4 w-full bg-white">
+                  <div className="bg-primary mb-2 flex h-14 items-center justify-start rounded-t-md border-b-2 pl-2 ">
+                    <span className="text-lg font-bold">
+                      {mainCategory ? mainCategory.name : null}
+                    </span>
                   </div>
-                  {mainCategory && (
+                  <div className="mx-auto flex h-fit flex-col">
+                    <span className="text-main-secondary"></span>
                     <div className="flex h-fit flex-col pl-4">
-                      <span className="text-main-secondary">
-                        {mainCategory ? mainCategory.name : null}
-                      </span>
-                      <div className="flex h-fit flex-col pl-4">
-                        {mainCategory.subcategory.map((item: any) => (
-                          <div>
-                            {item.name !== query.name && (
-                              <Link
-                                href={{
-                                  pathname: '/category',
-                                  query: { name: item.name },
-                                }}
-                              >
-                                <div className="mt-2 cursor-pointer">
-                                  {item.name}
-                                </div>
-                              </Link>
-                            )}
-                          </div>
-                        ))}
-                      </div>
+                      {mainCategory.subcategory.map((item: any) => (
+                        <div>
+                          <Link
+                            href={{
+                              pathname: '/category',
+                              query: { name: item.name },
+                            }}
+                          >
+                            <div
+                              className={`mt-2 p-2 ${
+                                item?.name === query?.name ? `bg-blue-100` : ''
+                              } cursor-pointer`}
+                            >
+                              {item.name}
+                            </div>
+                          </Link>
+                        </div>
+                      ))}
                     </div>
-                  )}
+                  </div>
                 </div>
               )}
               {/* Location */}
@@ -206,11 +213,11 @@ const CategoryPage: NextPage = () => {
                   : 'flex w-4/5 flex-col items-start'
               }
             >
-              <span className="font-roboto-bold text-3xl text-gray-500">
+              <span className="text-3xl font-bold ">
                 {query.name} in Ethiopia
               </span>
-              <div className="h-42 mt-2 flex w-full flex-col rounded-md bg-white pt-4">
-                <div className="flex flex-row justify-around gap-x-4 px-8">
+              {/*    <div className="h-42  mt-2 flex w-full flex-col rounded-md bg-white pt-4">
+                <div className="mb-2 flex flex-row justify-around gap-x-4 px-8">
                   <div
                     onClick={() => searchByPrice(1, 500000)}
                     className="flex  w-full cursor-pointer justify-center rounded-xl bg-gray-200 px-14 py-4"
@@ -236,12 +243,151 @@ const CategoryPage: NextPage = () => {
                     {'> ETB 3M'}
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className="mt-4 flex w-full items-center justify-between">
                 <div className="flex gap-x-3">
-                  <TfiLayoutGrid3Alt size={18} className="text-primary" />
-                  <FaThList size={18} className="text-gray-400" />
+                  <TfiLayoutGrid3Alt
+                    size={18}
+                    onClick={() => setList('Grid')}
+                    className={` text-gray-400 ${
+                      list === 'Grid' ? 'text-sky-800' : ''
+                    } hover:cursor-pointer`}
+                  />
+                  <FaThList
+                    size={18}
+                    onClick={() => setList('List')}
+                    className={`text-gray-400 ${
+                      list !== 'Grid' ? 'text-sky-800' : ''
+                    } hover:cursor-pointer`}
+                  />
                 </div>
+                <div className="flex items-center gap-x-2 text-gray-600">
+                  <div className="flex items-center gap-x-1">
+                    <FormControl>
+                      <InputLabel id="my-select-label">
+                        Select an option
+                      </InputLabel>
+                      <Select
+                        labelId="my-select-label"
+                        id="my-select"
+                        value={value}
+                        onChange={handleSelectChange}
+                        onOpen={handleOpen}
+                        onClose={handleClose}
+                        MenuProps={{
+                          anchorEl,
+                          anchorOrigin: {
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                          },
+                          transformOrigin: {
+                            vertical: 'top',
+                            horizontal: 'left',
+                          },
+                        }}
+                      >
+                        <MenuItem
+                          value={'option1'}
+                          onClick={() => searchByPrice(1, 500000)}
+                        >
+                          {' '}
+                          {'< ETB 500K'}
+                        </MenuItem>
+                        <MenuItem
+                          value={'option2'}
+                          onClick={() => searchByPrice(500001, 1500000)}
+                        >
+                          {' '}
+                          {'ETB 500K-1.5M'}
+                        </MenuItem>
+                        <MenuItem
+                          value={'option3'}
+                          onClick={() => searchByPrice(1500000, 3000000)}
+                        >
+                          {' '}
+                          {'ETB 1.5M-3M'}
+                        </MenuItem>
+                        <MenuItem
+                          value={'option4'}
+                          onClick={() => searchByPrice(3000000, 10000000)}
+                        >
+                          {' '}
+                          {'> ETB 3M'}
+                        </MenuItem>
+                      </Select>
+                    </FormControl>
+                  </div>
+                </div>
+
+                <button
+                  id="dropdownHoverButton"
+                  data-dropdown-toggle="dropdownHover"
+                  data-dropdown-trigger="hover"
+                  className="inline-flex items-center rounded-lg bg-blue-700 px-4 py-2.5 text-center text-sm font-medium
+                   text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 
+                   dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  type="button"
+                >
+                  Dropdown hover{' '}
+                  <svg
+                    className="ml-2 h-4 w-4"
+                    aria-hidden="true"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    ></path>
+                  </svg>
+                </button>
+                <div
+                  id="dropdownHover"
+                  className="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow dark:bg-gray-700"
+                >
+                  <ul
+                    className="py-2 text-sm text-gray-700 dark:text-gray-200"
+                    aria-labelledby="dropdownHoverButton"
+                  >
+                    <li>
+                      <a
+                        href="#"
+                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      >
+                        Dashboard
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      >
+                        Settings
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      >
+                        Earnings
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      >
+                        Sign out
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
                 <div className="flex items-center gap-x-2 text-gray-600">
                   <span>Sort by:</span>
                   <div className="flex items-center gap-x-1">
@@ -265,7 +411,7 @@ const CategoryPage: NextPage = () => {
                                   alt={ad.name}
                                 />
                               </div>
-                              <div className="flex flex-col px-4 pt-2 pb-6">
+                              <div className="flex flex-col px-4 pb-6 pt-2">
                                 <span className="font-roboto-bold text-primary text-xl">
                                   ETB {NumberWithCommas(ad.price)}
                                 </span>
@@ -281,13 +427,14 @@ const CategoryPage: NextPage = () => {
                         </div>
                       ) : (
                         <div
-                          className={
-                            md2 && md3
-                              ? 'grid grid-cols-3  gap-x-4'
-                              : 'grid grid-cols-4  gap-x-4'
+                          className={`grid gap-3 px-2 pr-0  md:grid-flow-row ${
+                            list === 'Grid'
+                              ? 'grid md:grid-cols-2 lg:grid-cols-3'
+                              : 'md:grid-cols-1 lg:grid-cols-1'
                           }
+`}
                         >
-                          {products.map((ad: IProduct) => (
+                          {/*      {products.map((ad: IProduct) => (
                             <NextLink href={`/products/${ad.id}`} passHref>
                               <div className="min-h-96 font-roboto-regular mb-4 flex w-full cursor-pointer flex-col justify-between rounded-lg bg-white shadow">
                                 <div className="relative flex h-[55%]">
@@ -297,7 +444,7 @@ const CategoryPage: NextPage = () => {
                                     alt={ad.name}
                                   />
                                 </div>
-                                <div className="flex flex-col px-4 pt-2 pb-6">
+                                <div className="flex flex-col px-4 pb-6 pt-2">
                                   <span className="font-roboto-bold text-primary text-xl">
                                     ETB {NumberWithCommas(ad.price)}
                                   </span>
@@ -310,12 +457,29 @@ const CategoryPage: NextPage = () => {
                                 </div>
                               </div>
                             </NextLink>
-                          ))}
+                          ))} */}
+                          {products?.map((item: IProduct) => {
+                            return (
+                              <>
+                                <ServiceCard
+                                  description={item.description}
+                                  title={item?.name}
+                                  isOnline={true}
+                                  onFavorite={undefined}
+                                  onApply={undefined}
+                                  views={item.viewCount}
+                                  listType={list}
+                                  rate={0}
+                                  price={item.price}
+                                />
+                              </>
+                            );
+                          })}
                         </div>
                       )}
                     </>
                   ) : (
-                    <Norecords col={5} />
+                    <Norecords />
                   )}
                 </>
               </div>
