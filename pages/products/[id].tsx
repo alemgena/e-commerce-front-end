@@ -7,6 +7,7 @@ import {
 } from 'react-icons/bs';
 import { FiArrowLeft } from 'react-icons/fi';
 import { IoIosCall } from 'react-icons/io';
+import axios from 'axios';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { Disclosure } from '@headlessui/react';
@@ -120,7 +121,61 @@ function ProductDetailPage() {
       });
     }
   }, [favorite.favorite]);
-
+  const handleChat=async()=>{
+     try {
+       const { data } = await axios.post(
+         `${baseURL}api/notifications/sendNotification`,
+         {
+           notification: {
+             title: 'Firebase',
+             body: 'Firebase is awesome',
+             click_action: 'http://localhost:3000/',
+             icon: 'http://url-to-an-icon/icon.png',
+           },
+           to: productData.data.product.seller.device_token,
+         }
+       );
+       if(data.success){
+    let login_token = localStorage.getItem('token');
+    let config = {
+      headers: {
+        Authorization: `Bearer ${login_token}`,
+      },
+    };
+    try {
+      const { data } = await axios.post(
+        `${baseURL}api/notifications`,
+        {
+          title: 'Test ghghgjg Cat4455',
+          description: 'tyfbhbb',
+          body: 'Description',
+          status: 'un read',
+          type: 'chat',
+          image: 'images/notification/image_1680007561342.png',
+          userId: productData.data.product.seller._id,
+        },
+        config
+      );
+      if(data){
+        router.push('/chat');
+      }
+    } catch (error: any) {
+      let message: string;
+      if (error.response.data.error.message === 'Please authenticate')
+        message = 'your sesstion is expired login again';
+      else {
+        message = error.response.data.error.message;
+      }
+      NotifyMessage({
+        message: message,
+        type: 'error',
+      });
+    }
+       }
+     } catch (error: any) {
+       console.log(error);
+     }
+  }
   return (
     <>
       <Head>
@@ -238,7 +293,7 @@ function ProductDetailPage() {
                           </p>
                         </button>
                         <button
-                          onClick={() => router.push('/chat')}
+                          onClick={() => handleChat()}
                           className="font-roboto-medium mt-3 flex items-center gap-2 rounded-full bg-white px-4 py-2 text-blue-800 ring-2 ring-blue-800 md:mt-0"
                         >
                           <BsFillChatLeftTextFill />

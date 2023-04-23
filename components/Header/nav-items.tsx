@@ -17,12 +17,16 @@ import {
 } from '@/store/auth';
 import { Register } from '../auth/register';
 import { loginAction } from '@/store/login';
+import { RootStateOrAny } from 'react-redux';
+let notificatioCount:any;
 export function NavItems() {
   const { user, token } = useAppSelector(selectCurrentUser);
   const [redirectToSell, setRedirectToSell] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
+  
   useEffect(() => {
+
     const token = localStorage.getItem('token');
     const userInfo = localStorage.getItem('userInfo');
 
@@ -34,11 +38,14 @@ export function NavItems() {
   const handleLogout = () => {
     localStorage.removeItem('userInfo');
     localStorage.removeItem('token');
-   localStorage.removeItem('logout');
+    localStorage.removeItem('logout');
     dispatch(removedCredentials());
-    router.push('/')
+    router.push('/');
   };
-  
+  //notification
+   const { notificationCount } = useAppSelector(
+     (state: RootStateOrAny) => state.notification
+   );
   const handleClick = () => {
     if (token) {
       dispatch(loginAction.setIsUserLogged(true));
@@ -57,6 +64,7 @@ export function NavItems() {
     }
   };
   useEffect(() => {
+
     if (user && token) {
       dispatch(loginAction.setIsUserLogged(true));
       if (redirectToSell) {
@@ -95,13 +103,15 @@ export function NavItems() {
             >
               <IoIosNotificationsOutline size={30} className=" text-gray-900" />
               <div className="absolute -right-1 -top-2 rounded-full bg-gradient-to-b from-blue-800 via-blue-600 to-blue-500 px-2 py-1 text-xs text-white">
-                <p>2</p>
+                {notificationCount && <p>{notificationCount}</p>}
               </div>
             </button>
             {token ? (
               <div onClick={() => router.push('/auth/profile')}>
                 <Avatar
-                  src={`https://api.liyumarket.com/${user.user?user.user.imageURL:user.imageURL}`}
+                  src={`https://api.liyumarket.com/${
+                    user.user ? user.user.imageURL : user.imageURL
+                  }`}
                   alt="User profile image"
                   onClick={() => router.push('/auth/profile')}
                   className="cursor-pointer"

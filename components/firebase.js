@@ -62,7 +62,6 @@ const useFirebaseMessaging = () => {
         console.log('Notification permission granted.');
       }
     });
-
     getToken(messaging, {
       vapidKey:
         'BNCkuOKBuVBW-A7J6JUwGIpJ3iyDIVO7w_7izCKCXKU68ycRyDBYq0CQiLDmBm6U4ywtLzJVovDsazgxplPjN-Q',
