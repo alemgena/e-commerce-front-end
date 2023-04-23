@@ -45,7 +45,7 @@ const ProdcutPage = () => {
       {isLoading ? (
         <PageSpinner />
       ) : (
-        <div className=" min-h-[86vh] bg-gray-50 py-6 px-4  md:px-12">
+        <div className=" min-h-[86vh] bg-gray-50 px-4 py-6  md:px-12">
           <Notification notify={notify} setNotify={setNotify} />
           <div className="font-roboto-regular flex gap-2 rounded-md bg-white px-4 py-5 text-xl text-gray-400">
             <h4>Showing Result For </h4>
@@ -56,10 +56,10 @@ const ProdcutPage = () => {
               ALL PRODUCTS
             </h3>
             {productData.length ? (
-                <div className=" grid grid-cols-2 items-center justify-center gap-4 pb-8 sm:grid-cols-3 md:grid-cols-4">
+              <div className=" grid grid-cols-2 items-center justify-center gap-4 pb-8 sm:grid-cols-3 md:grid-cols-4">
                 {productData?.map((data: any) => (
                   <NextLink href={`/products/${data.id}`} passHref>
-               <div className="flex cursor-pointer w-full flex-col rounded-lg border border-gray-100 bg-white shadow-md">
+                    <div className="flex w-full cursor-pointer flex-col rounded-lg border border-gray-100 bg-white shadow-md">
                       <img
                         src={`${baseURL}/${data.imagesURL[0]}`}
                         className="h-52 object-cover"
