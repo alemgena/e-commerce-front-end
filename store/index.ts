@@ -5,6 +5,7 @@ import productReducer from './products-slice';
 import categorieReducer from './category-slice';
 import featuredProducts from './featured-products-slice';
 import subCategories from './subCategory-slice';
+import notification from './notification';
 import login from './login';
 import register from './register';
 import { configureStore } from '@reduxjs/toolkit';
@@ -31,6 +32,7 @@ const store = configureStore({
     login: login,
     modal: modal,
     auth: auth,
+    notification:notification,
     register: register,
     recoverPassword: forgetPassword,
     shops: shops,

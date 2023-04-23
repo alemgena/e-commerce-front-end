@@ -4,6 +4,7 @@ import { FiArrowLeft } from 'react-icons/fi';
 
 const NotificationsPage = () => {
   const router = useRouter();
+  
   return (
     <>
       <Head>

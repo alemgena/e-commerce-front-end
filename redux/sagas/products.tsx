@@ -30,6 +30,7 @@ export function* getProduct(actions:any): any {
     yield put(productActions.setIsLoading(true));
     const response = yield getProductAPI(actions.id);
     yield put(productActions.setProduct(response.data));
+    localStorage.setItem("productDetail",JSON.stringify(response.data.data.product.seller))
     yield put(productActions.setIsLoading(false));
   } catch (error: any) {
     yield put(productActions.setError(error.response.data.error));
