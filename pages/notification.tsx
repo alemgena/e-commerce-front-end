@@ -7,11 +7,15 @@ import { FiArrowLeft } from 'react-icons/fi';
 import Notification from '@/components/Ui/Notification';
 import Notify from '@/components/Ui/Notify';
 import ProtectedRoute from '@/components/protected/protected';
+import Norecords from '@/components/Ui/Norecords';
+import PageSpinner from '@/components/Ui/PageSpinner';
 const NotificationsPage = () => {
+  const[loading,setLoading]=useState<boolean>(false)
     const { NotifyMessage, notify, setNotify } = Notify();
   const[data,setData]=useState<any>([])
    useEffect(() => {
   const getNotification=async()=>{
+    setLoading(true)
     let login_token = localStorage.getItem('token');
     let config = {
       headers: {
@@ -24,6 +28,7 @@ const NotificationsPage = () => {
          config
        );
        setData(data.data);
+       setLoading(false)
      } catch (error: any) {
        let message: string;
        if (error.response.data.error.message === 'Please authenticate')
@@ -35,6 +40,7 @@ const NotificationsPage = () => {
          message: message,
          type: 'error',
        });
+       setLoading(false)
      }
   }
   getNotification()
@@ -47,6 +53,9 @@ const NotificationsPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Notification notify={notify} setNotify={setNotify} />
+      {loading?
+    <PageSpinner/>:  
+    
       <div className=" bg-gray-50 px-12 pb-32">
         <div
           onClick={() => router.push('/')}
@@ -55,6 +64,7 @@ const NotificationsPage = () => {
           <FiArrowLeft />
           <h2 className="font-roboto-medium ">Notification</h2>
         </div>
+        {data.length?
         <div className="mt-4 flex flex-col gap-8">
           {data.map((item: any, idx: any) => (
             <div
@@ -81,8 +91,11 @@ const NotificationsPage = () => {
               </div>
             </div>
           ))}
-        </div>
+        </div>:
+        <Norecords col={5}/>
+}
       </div>
+}
     </ProtectedRoute>
   );
 };
