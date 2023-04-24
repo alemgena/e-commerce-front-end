@@ -4,6 +4,7 @@ import {
   BsEye,
   BsFillChatLeftTextFill,
   BsHeart,
+  BsMap,
 } from 'react-icons/bs';
 import { FiArrowLeft } from 'react-icons/fi';
 import { IoIosCall } from 'react-icons/io';
@@ -41,6 +42,8 @@ import timeSince from '@/lib/types/time-since';
 import { IoCheckmarkCircleOutline } from 'react-icons/io5';
 import FormatNumber from '@/lib/types/number-format';
 import { Avatar } from '@mui/material';
+import { LocationCity, MapOutlined } from '@mui/icons-material';
+import { MdLocationOn } from 'react-icons/md';
 const Map = dynamic(() => import('@/components/map').then((mod) => mod.Map), {
   ssr: false,
 });
@@ -202,7 +205,7 @@ function ProductDetailPage() {
                         <span>ETB</span>{' '}
                         {NumberWithCommas(productData.data.product.price)}
                       </h2>
-                      <h6 className="flex text-center font-bold text-blue-700">
+                      <h6 className="text-blue flex text-center font-bold ">
                         <IoCheckmarkCircleOutline className="mt-1" />
                         Posted {''}{' '}
                         {timeSince(productData?.data?.product?.createdAt)}{' '}
@@ -301,7 +304,8 @@ function ProductDetailPage() {
                           <h2 className="font-roboto-medium text-lg">
                             {`${productData?.data?.product?.seller?.first_name} ${productData?.data?.product?.seller?.last_name}`}
                           </h2>
-                          <p className="text-sm text-gray-400">
+                          <p className="flex text-sm text-gray-400">
+                            <MdLocationOn className="mt-1" />{' '}
                             {`${productData?.data?.product?.location}, ${productData?.data?.product?.region},Ethiopia`}
                           </p>
                           <h6 className="text-blue flex text-center">

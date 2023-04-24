@@ -11,14 +11,14 @@ import Link from 'next/link';
 import PageSpinner from '../Ui/PageSpinner';
 import Norecords from '../Ui/Norecords';
 import axios from 'axios';
-  interface Category {
-    id: number;
-    subcategory: SubCategory[];
-  }
+interface Category {
+  id: number;
+  subcategory: SubCategory[];
+}
 
-  interface SubCategory {
-    id: number;
-  }
+interface SubCategory {
+  id: number;
+}
 
 type CategoryProps = {
   id: number;
@@ -44,6 +44,19 @@ function MegaMenu() {
     (state: RootStateOrAny) => state.categories
   );
   const [hasData, setHasData] = useState(false);
+
+  const memoizedHoveredCategory = useMemo(() => {
+    if (categoriesData.data) {
+      const hoveredCategoryIn = categoriesData.data.find(
+        (category: CategoryProps) => category.id === hoveredCategoryId
+      );
+      if (hoveredCategoryIn) {
+        setHoveredCategory(hoveredCategoryIn?.subcategory);
+      } else {
+        setHoveredCategory([]);
+      }
+    }
+  }, [hoveredCategoryId, categoriesData.data]);
   useEffect(() => {
     if (categoriesData.data) {
       if (!categoriesData.data.length) setHasData(true);
