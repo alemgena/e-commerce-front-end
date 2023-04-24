@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { BiSend } from 'react-icons/bi';
 import { FiArrowLeft } from 'react-icons/fi';
-import ProtectedRoute from '@/components/ProtectedRoute';
+import ProtectedRoute from '@/components/protected/protected';
 import useFirebaseMessaging from '../components/firebase';
 import axios from 'axios';
 import { baseURL } from '@/config';
@@ -14,7 +14,6 @@ const Chat = () => {
   useEffect(() => {
   
   }, []);
-  
   return (
     <ProtectedRoute>
       <div className=" mx-11 mb-32 bg-white">

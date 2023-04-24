@@ -9,23 +9,8 @@ import {
   requestPermission,
   onMessage,
 } from 'firebase/messaging';
-export const initializeFirebase = () => {
-  firebase.initializeApp({
-    apiKey: 'AIzaSyDBy7FeVpx69zV6ty-lKmV7qsGA-OAhYf4',
-    authDomain: 'mohas-ecommerce.firebaseapp.com',
-    projectId: 'mohas-ecommerce',
-    storageBucket: 'mohas-ecommerce.appspot.com',
-    messagingSenderId: '807553429591',
-    appId: '1:807553429591:web:e0d81642e0dae148f0f312',
-  });
-};
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: 'AIzaSyDBy7FeVpx69zV6ty-lKmV7qsGA-OAhYf4',
   authDomain: 'mohas-ecommerce.firebaseapp.com',
@@ -34,29 +19,14 @@ const firebaseConfig = {
   messagingSenderId: '807553429591',
   appId: '1:807553429591:web:e0d81642e0dae148f0f312',
 };
-
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
 export const auth = getAuth(app);
 
 const useFirebaseMessaging = () => {
   const [token, setToken] = useState(null);
   const [message, setMessage] = useState(null);
-
   useEffect(() => {
     const messaging = getMessaging();
-    console.log(messaging);
-    // Notification.requestPermission().then((permission) => {
-    //   if (permission === 'granted') {
-    //     messaging.getToken().then((token) => {
-    //       console.log('Token:', token);
-    //       setToken(token);
-    //     }).catch((err) => {
-    //       console.log('Error getting token:', err);
-    //     });
-    //   }
-    // });
     Notification.requestPermission().then((permission) => {
       if (permission === 'granted') {
         console.log('Notification permission granted.');

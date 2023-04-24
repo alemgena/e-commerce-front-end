@@ -10,7 +10,9 @@ import { useAppSelector } from '@/store';
 import { selectCurrentUser } from '@/store/auth';
 import { notificationAction } from '@/store/notification';
 export default function FetchData() {
+  
     const { token } = useFirebaseMessaging();
+    console.log('tttttttt',token);
     const { user} = useAppSelector(selectCurrentUser);
   const [notification, setNotification] = useState({ title: '', body: '' });
   const dispatch = useDispatch();
@@ -41,15 +43,14 @@ const updateDeviceToken=async()=>{
                { device_token: token }
              );
              if (data) {
-               console.log('response', data);
+               console.log('updateResponse', data);
              }
            } catch (error: any) {
            }
       }
     }
       updateDeviceToken()
-  }, []);
-
+  }, [user]);
   onMessageListener()
     .then((payload) => {
       let notificationCount:any= localStorage.getItem("notificatioCount")!;

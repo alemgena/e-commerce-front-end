@@ -45,8 +45,6 @@ import { Avatar } from '@mui/material';
 const Map = dynamic(() => import('@/components/map').then((mod) => mod.Map), {
   ssr: false,
 });
-
-<head></head>;
 function ProductDetailPage() {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -156,7 +154,10 @@ function ProductDetailPage() {
     }
        }
      } catch (error: any) {
-       console.log(error);
+    NotifyMessage({
+      message: error.response.data.error.message,
+      type: 'error',
+    });
      }
   }
   const filteredRelatedProducts = productData?.data?.relatedProducts.filter(
@@ -164,7 +165,6 @@ function ProductDetailPage() {
       return relatedProduct.id !== productData?.data?.product.id;
     }
   );
-  console.log('fillll', filteredRelatedProducts);
 
   return (
     <>
@@ -288,26 +288,7 @@ function ProductDetailPage() {
                           onClick={(e) => addFavorite(e)}
                           className="font-roboto-light ml-5 flex items-center gap-2 py-2 text-xl"
                         >
-                          <IoIosCall />
-                          <p>
-                            {showContact ? (
-                              <p className="font-roboto-medium text-blue-800">
-                                {productData.data.product.seller.phone}
-                              </p>
-                            ) : (
-                              <p>Show Contact</p>
-                            )}
-                          </p>
-                        </button>
-                        <button
-                          onClick={() => handleChat()}
-                          className="font-roboto-medium mt-3 flex items-center gap-2 rounded-full bg-white px-4 py-2 text-blue-800 ring-2 ring-blue-800 md:mt-0"
-                        >
-                          <BsFillChatLeftTextFill />
-                          <p>Chat</p>
-
                           <BsHeart size={16} />
-
                         </button>
                       </div>
 
@@ -418,7 +399,7 @@ function ProductDetailPage() {
                           </p>
                         </button>
                         <button
-                          onClick={() => router.push('/chat')}
+                          onClick={() => handleChat()}
                           className="font-roboto-medium mt-3 flex items-center gap-2 rounded-full bg-white px-4 py-2 text-blue-800 ring-2 ring-blue-800 md:mt-0"
                         >
                           <BsFillChatLeftTextFill />

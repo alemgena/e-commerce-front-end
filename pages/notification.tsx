@@ -1,16 +1,52 @@
 import Head from 'next/head';
+import React,{useState,useEffect} from 'react'
 import { useRouter } from 'next/router';
+import axios from 'axios';
+import { baseURL } from '@/config';
 import { FiArrowLeft } from 'react-icons/fi';
-
+import Notification from '@/components/Ui/Notification';
+import Notify from '@/components/Ui/Notify';
+import ProtectedRoute from '@/components/protected/protected';
 const NotificationsPage = () => {
+    const { NotifyMessage, notify, setNotify } = Notify();
+  const[data,setData]=useState<any>([])
+   useEffect(() => {
+  const getNotification=async()=>{
+    let login_token = localStorage.getItem('token');
+    let config = {
+      headers: {
+        Authorization: `Bearer ${login_token}`,
+      },
+    };
+     try {
+       const { data } = await axios.get(
+         `${baseURL}api/notifications/userNotification`,
+         config
+       );
+       setData(data.data);
+     } catch (error: any) {
+       let message: string;
+       if (error.response.data.error.message === 'Please authenticate')
+         message = 'your sesstion is expired login again';
+       else {
+         message = error.response.data.error.message;
+       }
+       NotifyMessage({
+         message: message,
+         type: 'error',
+       });
+     }
+  }
+  getNotification()
+  }, []);
   const router = useRouter();
-  
   return (
-    <>
+    <ProtectedRoute>
       <Head>
         <title>Notification</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Notification notify={notify} setNotify={setNotify} />
       <div className=" bg-gray-50 px-12 pb-32">
         <div
           onClick={() => router.push('/')}
@@ -19,41 +55,8 @@ const NotificationsPage = () => {
           <FiArrowLeft />
           <h2 className="font-roboto-medium ">Notification</h2>
         </div>
-        <h4 className="font-roboto-regular">New</h4>
         <div className="mt-4 flex flex-col gap-8">
-          {[1, 2].map((_, idx) => (
-            <div
-              key={idx.toString()}
-              className=" flex items-center justify-between gap-12 bg-white px-6 py-8"
-            >
-              <div className="overflow-hidden rounded-full">
-                <img
-                  src="/images/product/product.png"
-                  className="h-16 w-16 "
-                  alt="product image"
-                />
-              </div>
-              <div className="flex w-2/3 flex-grow flex-col gap-2">
-                <h6 className=" font-roboto-medium text-lg text-blue-800">
-                  Product Created
-                </h6>
-                <h3 className="font-roboto-light text-sm text-gray-500">
-                  It is a long established fact that a reader will be distracted
-                  by the readable content of a page when looking at its layout.
-                  The point of using Lorem Ipsum is that it has a more-or-less
-                  normal distribution of letters, as opposed to using 'Content
-                  here, content here', making it look like readable English.
-                </h3>
-              </div>
-              <div className="font-roboto-regular self-end whitespace-nowrap text-sm text-gray-600">
-                <p>5 Min</p>
-              </div>
-            </div>
-          ))}
-        </div>
-        <h4 className="font-roboto-regular mt-8">Yesterday</h4>
-        <div className="mt-4 flex flex-col gap-8">
-          {[1, 2, 3, 4].map((_, idx) => (
+          {data.map((item: any, idx: any) => (
             <div
               key={idx.toString()}
               className=" flex items-center justify-between gap-12 bg-white px-6 py-8"
@@ -67,24 +70,20 @@ const NotificationsPage = () => {
               </div>
               <div className="flex w-2/3 flex-grow flex-col gap-2">
                 <h6 className=" font-roboto-medium text-lg text-gray-600">
-                  Product Created
+                  {item.title}
                 </h6>
                 <h3 className="font-roboto-light text-sm text-gray-500">
-                  It is a long established fact that a reader will be distracted
-                  by the readable content of a page when looking at its layout.
-                  The point of using Lorem Ipsum is that it has a more-or-less
-                  normal distribution of letters, as opposed to using 'Content
-                  here, content here', making it look like readable English.
+                  {item.description}
                 </h3>
               </div>
               <div className="font-roboto-regular self-end whitespace-nowrap text-sm text-gray-600">
-                <p>5 Min</p>
+                <p>{new Date(item.createdAt).toLocaleTimeString()}</p>
               </div>
             </div>
           ))}
         </div>
       </div>
-    </>
+    </ProtectedRoute>
   );
 };
 
