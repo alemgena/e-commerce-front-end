@@ -31,6 +31,7 @@ import {
 } from '@mui/material';
 import { Filter } from '@mui/icons-material';
 import { iteratorSymbol } from 'immer/dist/internal';
+import ProductFilter from './filter';
 export interface IProduct {
   image: any;
   name: string;
@@ -41,7 +42,7 @@ export interface IProduct {
   tags: string[];
   imagesURL: string[];
   price: any;
-  viewCount?:number
+  viewCount?: number;
 }
 
 type carProp = {
@@ -216,34 +217,7 @@ const CategoryPage: NextPage = () => {
               <span className="text-3xl font-bold ">
                 {query.name} in Ethiopia
               </span>
-              {/*    <div className="h-42  mt-2 flex w-full flex-col rounded-md bg-white pt-4">
-                <div className="mb-2 flex flex-row justify-around gap-x-4 px-8">
-                  <div
-                    onClick={() => searchByPrice(1, 500000)}
-                    className="flex  w-full cursor-pointer justify-center rounded-xl bg-gray-200 px-14 py-4"
-                  >
-                    {'< ETB 500K'}
-                  </div>
-                  <div
-                    onClick={() => searchByPrice(500001, 1500000)}
-                    className="flex w-full cursor-pointer justify-center rounded-xl bg-gray-200 px-14 py-4"
-                  >
-                    {'ETB 500K-1.5M'}
-                  </div>
-                  <div
-                    onClick={() => searchByPrice(1500000, 3000000)}
-                    className="flex w-full cursor-pointer justify-center rounded-xl bg-gray-200 px-14 py-4"
-                  >
-                    {'ETB 1.5M-3M'}
-                  </div>
-                  <div
-                    onClick={() => searchByPrice(3000000, 10000000)}
-                    className="flex w-full cursor-pointer justify-center rounded-xl bg-gray-200 px-14 py-4"
-                  >
-                    {'> ETB 3M'}
-                  </div>
-                </div>
-              </div> */}
+
               <div className="mt-4 flex w-full items-center justify-between">
                 <div className="flex gap-x-3">
                   <TfiLayoutGrid3Alt
@@ -318,7 +292,7 @@ const CategoryPage: NextPage = () => {
                     </FormControl>
                   </div>
                 </div>
-
+                <ProductFilter />
                 <button
                   id="dropdownHoverButton"
                   data-dropdown-toggle="dropdownHover"
@@ -471,6 +445,7 @@ const CategoryPage: NextPage = () => {
                                   listType={list}
                                   rate={0}
                                   price={item.price}
+                                  imageURL={item.imagesURL}
                                 />
                               </>
                             );

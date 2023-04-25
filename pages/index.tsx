@@ -178,17 +178,16 @@ const Index = ({ user }:any) => {
                         </div>
                       </NextLink>
                     ))}
-
-                    {hasData && (
-                      <span>
-                        {' '}
-                        <Norecords/>
-                      </span>
-                    )}
                   </div>
                 )}
               </span>
             </div>
+          )}
+          {hasData && (
+            <span>
+              {' '}
+              <Norecords />
+            </span>
           )}
         </div>
       </div>

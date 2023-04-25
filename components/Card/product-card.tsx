@@ -11,6 +11,7 @@ import { ReactChild } from 'react';
 import { AiOutlineEye } from 'react-icons/ai';
 import { BiBuildings, BiHeartCircle } from 'react-icons/bi';
 import { FaHeart, FaStar } from 'react-icons/fa';
+import { useRouter } from 'next/router';
 import NumberWithCommas from '@/lib/types/number-commas';
 interface Color {
   className: string;
@@ -36,7 +37,7 @@ interface Props {
   price: number;
   favoriteLoading?: boolean;
 }
-function ServiceCard(props: Props) {
+function ProductCard(props: Props) {
   const {
     description,
     title,
@@ -55,6 +56,7 @@ function ServiceCard(props: Props) {
     price,
   } = props;
   const list = listType ? listType : 'Grid';
+  const router = useRouter();
   return list === 'Grid' ? (
     <div ref={ref} className="">
       <div className={`group rounded-md`}>
@@ -206,20 +208,6 @@ function ServiceCard(props: Props) {
                     <FaStar
                       key={idx}
                       className="mr-1"
-                      fill={`${
-                        rate !== null
-                          ? idx < props?.rate
-                            ? 'orange'
-                            : 'white'
-                          : 'white'
-                      }`}
-                      color={`${
-                        rate !== null
-                          ? idx < props?.rate
-                            ? 'orange'
-                            : 'gray'
-                          : 'gray'
-                      }`}
                       strokeWidth={'1.25'}
                       width={16}
                       height={16}
@@ -227,13 +215,15 @@ function ServiceCard(props: Props) {
                   ))}
                 </div>
                 <div
+                  onClick={() => router.push('/chat')}
                   className={`mt-4 h-8  cursor-pointer rounded-md
-                              border   ${color?.borderColor} ${color?.className} text-center text-sm text-white
-                              md:bg-white md:text-black ${color?.buttonColor}
+                              border   text-center text-sm text-white
+                              md:bg-white md:text-black 
                               md:group-hover:text-white`}
-                  onClick={() => onApply()}
                 >
-                  <span className="mt-1 inline-block align-bottom">Apply</span>
+                  <span className="text-blue-500 mt-1 inline-block align-bottom">
+                    Offer
+                  </span>
                 </div>
               </div>
             </div>
@@ -329,16 +319,16 @@ function ServiceCard(props: Props) {
         </Typography>
         <div className="absolute bottom-2 right-2">
           <div
-            onClick={() => onApply()}
-            className="invisible flex  items-center justify-center  group-hover:visible"
+            onClick={() => router.push('/chat')}
+            className="flex  items-center justify-center  "
           >
             <div
               className={`cursor-pointer self-center rounded py-1
            text-center text-sm
-              text-white contrast-150
-               md:w-40 ${color?.buttonColor}`}
+              text-black contrast-150
+               md:w-40`}
             >
-              <span>Apply</span>
+              <span>Offer</span>
             </div>
           </div>
         </div>
@@ -347,4 +337,4 @@ function ServiceCard(props: Props) {
   );
 }
 
-export default ServiceCard;
+export default ProductCard;

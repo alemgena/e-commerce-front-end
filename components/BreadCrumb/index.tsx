@@ -50,7 +50,7 @@ function Breadcrumb({ mainCategory }: ImainCategory) {
                 <HiChevronRight />
               </span>
               <Link href={breadcrumb.href}>
-                <a className="inline-block px-0 text-xl font-bold">
+                <a className="font-semi-bold inline-block px-0 text-xl">
                   <span>
                     {`${mainCategory} ${decodeURIComponent(
                       breadcrumb.breadcrumb.replace(/\+\+/g, ' ')
