@@ -163,7 +163,8 @@ const CategoryPage: NextPage = () => {
               {/* Categories Box */}
               {!sm && (
                 <div className="mb-4  w-full bg-white">
-                  <div className="bg-primary mb-2 flex h-14 items-center justify-start rounded-t-md border-b-2 pl-4 text-white">
+                  <div className="bg-primary mb-2 flex h-14 items-center justify-start rounded-t-md border-b-2 pl-4 ">
+                    
                     <span className="text-lg font-bold">Categories</span>
                   </div>
                   {mainCategory && (
@@ -194,9 +195,7 @@ const CategoryPage: NextPage = () => {
                 </div>
               )}
               {/* Location */}
-
               {/* Make */}
-
               {/* Year of Manifacture */}
             </div>
             <div

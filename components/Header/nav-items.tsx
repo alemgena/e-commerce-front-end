@@ -102,9 +102,10 @@ export function NavItems() {
               onClick={() => router.push('/notification')}
             >
               <IoIosNotificationsOutline size={30} className=" text-gray-900" />
-              <div className="absolute -right-1 -top-2 rounded-full bg-gradient-to-b from-blue-800 via-blue-600 to-blue-500 px-2 py-1 text-xs text-white">
-                {notificationCount && <p>{notificationCount}</p>}
+               {notificationCount &&<div className="absolute -right-1 -top-2 rounded-full bg-gradient-to-b from-blue-800 via-blue-600 to-blue-500 px-2 py-1 text-xs text-white">
+                <p>{notificationCount}</p>
               </div>
+}
             </button>
             {token ? (
               <div onClick={() => router.push('/auth/profile')}>
