@@ -9,9 +9,6 @@ module.exports = () => ({
       },
     ],
   },
-  serviceWorker: {
-    enable: false,
-  },
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
