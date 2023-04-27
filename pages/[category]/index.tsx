@@ -229,7 +229,7 @@ const CategoryPage: NextPage = () => {
                     {'ETB 1.5M-3M'}
                   </div>
                   <div
-                    onClick={() => searchByPrice(3000000, 10000000)}
+                    onClick={() => searchByPrice(3000000, 200000000)}
                     className="flex w-full cursor-pointer justify-center rounded-xl bg-gray-200 px-14 py-4"
                   >
                     {'> ETB 3M'}
