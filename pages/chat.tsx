@@ -17,7 +17,7 @@ const Chat = () => {
     <ProtectedRoute>
       <div className=" mx-11 mb-32 bg-white">
         <div
-          onClick={() => router.push('/chat')}
+          onClick={() => router.push('/')}
           className="my-4 flex items-center gap-2 bg-gray-50 py-4 text-xl hover:cursor-pointer"
         >
           <FiArrowLeft />
