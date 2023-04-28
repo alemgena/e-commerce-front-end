@@ -59,12 +59,14 @@ const ProdcutPage = () => {
             {productData.length ? (
               <div className=" grid grid-cols-2 items-center justify-center gap-4 pb-8 sm:grid-cols-3 md:grid-cols-4">
                 {productData?.map((data: any) => (
+                  <>
+                   {data.imagesURL.length>0&&
                   <NextLink
                     key={data.id}
                     href={`/products/${data.id}`}
                     passHref
                   >
-                    {data.imagesURL.length>0&&
+                   
                     <div className="flex w-full cursor-pointer flex-col rounded-lg border border-gray-100 bg-white shadow-md">
                       <img
                         src={`${baseURL}/${data.imagesURL[0]}`}
@@ -98,8 +100,10 @@ const ProdcutPage = () => {
                         </div>
                       </div>
                     </div>
-                }
+                
                   </NextLink>
+}
+</>
                 ))}
               </div>
             ) : (

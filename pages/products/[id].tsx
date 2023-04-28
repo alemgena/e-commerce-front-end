@@ -81,10 +81,10 @@ function ProductDetailPage() {
   }, []);
     const handleSearch = async () => {
       const apiKey = 'AIzaSyDdfMxmTxz8u1XdD99_JCEX_9S41PbcJPE';
-      const locationNmae = `${productData?.location}, ${productData?.region}`;
+      const locationName = `${productData.data.product?.location}, ${productData.data.product?.region}`;
       try {
         const response = await fetch(
-          `https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${apiKey}`
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${locationName}&key=${apiKey}`
         );
         const data = await response.json();
         if (data.status === 'OK') {
@@ -281,7 +281,7 @@ console.log('longitude', longitude);
                    object-contain md:mt-6"
                   >
                     <Suspense fallback={<div>Loading...</div>}>
-                      <Map center={[9.005401, 38.763611]} />
+                      <Map center={[latitude, longitude]} />
                     </Suspense>
                   </div>
                 </div>
