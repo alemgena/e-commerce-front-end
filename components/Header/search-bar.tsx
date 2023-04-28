@@ -78,7 +78,7 @@ export function SearchBar() {
                   {({ selected }) => (
                     <>
                       <span
-                        className={`block truncate  ${
+                        className={`block truncate cursor-pointer  ${
                           selected ? 'font-roboto-medium text-blue-800' : ''
                         }`}
                         onClick={() => handleLogout(city.name)}

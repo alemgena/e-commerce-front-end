@@ -62,6 +62,9 @@ function ProductDetailPage() {
     (state: RootStateOrAny) => state.products.products
   );
   //favorite
+   const [activeImage, setActiveImage] = useState<any>([]);
+   const [productImage, setProductImage] = useState();
+
   const favorite = useSelector((state: RootStateOrAny) => state.favorite);
   const { isLoading } = useSelector((state: RootStateOrAny) => state.product);
   useEffect(() => {
@@ -130,8 +133,8 @@ function ProductDetailPage() {
           const { data } = await axios.post(
             `${baseURL}api/notifications`,
             {
-              title: 'Test ghghgjg Cat4455',
-              description: 'tyfbhbb',
+              title: 'Product buyer ',
+              description: `Some one is contacting you on the chat${productData.data.product.name} `,
               body: 'Description',
               status: 'un read',
               type: 'chat',
@@ -406,7 +409,7 @@ function ProductDetailPage() {
                           </p>
                         </button>
                         <button
-                          onClick={() => router.push('/chat')}
+                          onClick={() => handleChat()}
                           className="font-roboto-medium mt-3 flex items-center gap-2 rounded-full bg-white px-4 py-2 text-blue-800 ring-2 ring-blue-800 md:mt-0"
                         >
                           <BsFillChatLeftTextFill />
