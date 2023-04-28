@@ -3,6 +3,12 @@
 module.exports = {
   images: {
     domains: ['api.liyumarket.com', 'lh3.googleusercontent.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'api.liyumarket.com',
+      },
+    ],
   },
   typescript: {
     // !! WARN !!

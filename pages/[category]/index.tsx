@@ -168,12 +168,20 @@ const CategoryPage: NextPage = () => {
           <div className="flex h-full w-full flex-row gap-x-4">
             <div className="flex w-1/4 flex-col items-start justify-start">
               {/* Categories Box */}
+<<<<<<< HEAD
               {!sm && mainCategory && (
                 <div className="mb-4 w-full bg-white">
                   <div className="bg-primary mb-2 flex h-14 items-center justify-start rounded-t-md border-b-2 pl-2 ">
                     <span className="text-lg font-bold">
                       {mainCategory ? mainCategory.name : null}
                     </span>
+=======
+              {!sm && (
+                <div className="mb-4  w-full bg-white">
+                  <div className="bg-primary mb-2 flex h-14 items-center justify-start rounded-t-md border-b-2 pl-4 ">
+                    
+                    <span className="text-lg font-bold">Categories</span>
+>>>>>>> 7c09984de1600e392e480bc26053ef2771ec6153
                   </div>
                   <div className="mx-auto flex h-fit flex-col">
                     <span className="text-main-secondary"></span>
@@ -201,9 +209,7 @@ const CategoryPage: NextPage = () => {
                 </div>
               )}
               {/* Location */}
-
               {/* Make */}
-
               {/* Year of Manifacture */}
             </div>
             <div
@@ -266,6 +272,7 @@ const CategoryPage: NextPage = () => {
                       ))}
                     </Select>
                   </div>
+<<<<<<< HEAD
 
                   <div className="flex items-center gap-x-2 text-gray-600 lg:mb-0">
                     <button
@@ -288,6 +295,19 @@ const CategoryPage: NextPage = () => {
                         </span>
                       </div>
                     </button>
+=======
+                  <div
+                    onClick={() => searchByPrice(1500000, 3000000)}
+                    className="flex w-full cursor-pointer justify-center rounded-xl bg-gray-200 px-14 py-4"
+                  >
+                    {'ETB 1.5M-3M'}
+                  </div>
+                  <div
+                    onClick={() => searchByPrice(3000000, 200000000)}
+                    className="flex w-full cursor-pointer justify-center rounded-xl bg-gray-200 px-14 py-4"
+                  >
+                    {'> ETB 3M'}
+>>>>>>> 7c09984de1600e392e480bc26053ef2771ec6153
                   </div>
                 </div>
               </>

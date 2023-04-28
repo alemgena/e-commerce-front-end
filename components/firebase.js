@@ -27,6 +27,7 @@ const useFirebaseMessaging = () => {
   const [message, setMessage] = useState(null);
   useEffect(() => {
     const messaging = getMessaging();
+   
     Notification.requestPermission().then((permission) => {
       if (permission === 'granted') {
         console.log('Notification permission granted.');

@@ -35,7 +35,7 @@ export default function FetchData() {
   useEffect(() => {
     dispatch({ type: GET_CATEGORIES });
 const updateDeviceToken=async()=>{
-      if (!!user){
+      if (!!user&&token){
         let id = user.user ? user.user._id : user._id;
            try {
              const { data } = await axios.patch(
@@ -50,7 +50,7 @@ const updateDeviceToken=async()=>{
       }
     }
       updateDeviceToken()
-  }, [user]);
+  }, [user,token]);
   onMessageListener()
     .then((payload) => {
       let notificationCount:any= localStorage.getItem("notificatioCount")!;
@@ -67,26 +67,7 @@ const updateDeviceToken=async()=>{
     .catch((err) => console.log('failed: ', err));
   return (
     <div>
-      <Toaster
-        toastOptions={{
-          // Define default options
-          className: '',
-          duration: 5000,
-          style: {
-            background: '#363636',
-            color: '#fff',
-          },
 
-          // Default options for specific types
-          success: {
-            duration: 3000,
-            theme: {
-              primary: 'green',
-              secondary: 'black',
-            },
-          },
-        }}
-      />
     </div>
   );
 }
