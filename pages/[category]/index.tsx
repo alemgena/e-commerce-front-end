@@ -1,24 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaThList } from 'react-icons/fa';
-import { IoLocationSharp } from 'react-icons/io5';
-import { RxCaretRight } from 'react-icons/rx';
 import { TbArrowsSort } from 'react-icons/tb';
+import { BsSortAlphaDownAlt, BsSortAlphaUp } from 'react-icons/bs';
 import { TfiLayoutGrid3Alt } from 'react-icons/tfi';
 import type { NextPage } from 'next';
 import Breadcrumb from '@/components/BreadCrumb';
 import { useRouter } from 'next/router';
 import Norecords from '@/components/Ui/Norecords';
 import Link from 'next/link';
-import { GET_SUB_CATEGORIE } from '@/types';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { baseURL } from '@/config';
 import { useMediaQuery } from 'react-responsive';
-import NextLink from 'next/link';
 import axios from 'axios';
 import PageSpinner from '@/components/Ui/PageSpinner';
 import Notification from '@/components/Ui/Notification';
 import Notify from '@/components/Ui/Notify';
-import NumberWithCommas from '@/lib/types/number-commas';
+import { MenuItem, Select } from '@mui/material';
+import ProductCard from '@/components/Card/product-card';
 export interface IProduct {
   image: any;
   name: string;
@@ -29,6 +27,9 @@ export interface IProduct {
   tags: string[];
   imagesURL: string[];
   price: any;
+  views: number;
+  viewCount?: number;
+  region: string;
 }
 
 type carProp = {
@@ -37,36 +38,7 @@ type carProp = {
 };
 const CategoryPage: NextPage = () => {
   const { NotifyMessage, notify, setNotify } = Notify();
-  const typesOfCar = [
-    {
-      name: 'Toyota',
-      url: 'https://assets.jiji.com.et/art/attributes/top-selection/cars2x-tinifield/toyota2x.png',
-    },
-    {
-      name: 'Hyundai',
-      url: 'https://assets.jiji.com.et/art/attributes/top-selection/cars2x-tinifield/hyundai.png',
-    },
-    {
-      name: 'Nissan',
-      url: 'https://assets.jiji.com.et/art/attributes/top-selection/cars2x-tinifield/nissan2x.png',
-    },
-    {
-      name: 'Volkswagen',
-      url: 'https://assets.jiji.com.et/art/attributes/top-selection/buses-and-microbuses/volkswagen.png',
-    },
-    {
-      name: 'Mitsubishi',
-      url: 'https://assets.jiji.com.et/art/attributes/top-selection/cars2x-tinifield/mitsubishi.png',
-    },
-    {
-      name: 'Ford',
-      url: 'https://assets.jiji.com.et/art/attributes/top-selection/cars2x-tinifield/ford2x.png',
-    },
-    {
-      name: 'Peugeot',
-      url: 'https://assets.jiji.com.et/art/attributes/top-selection/cars2x-tinifield/peugeot.png',
-    },
-  ];
+  const [list, setList] = useState('Grid');
   const apiKey = 'AIzaSyDdfMxmTxz8u1XdD99_JCEX_9S41PbcJPE';
   const locationName = 'Debre Elias, Ethiopia';
   const hhh = async () => {
@@ -88,6 +60,7 @@ const CategoryPage: NextPage = () => {
   const [subCategoryId, setSubCategory] = React.useState<string>();
   const [mainCategory, setMainCategory] = React.useState<any>();
   const [products, setProducts] = React.useState<any>([]);
+  console.log(products);
   const [loading, setLoading] = React.useState<boolean>(false);
   React.useEffect(() => {
     if (categories.data) {
@@ -129,7 +102,7 @@ const CategoryPage: NextPage = () => {
     }
   }, [query.name, categories.data]);
   const searchByPrice = async (from: number, to: number) => {
-  setLoading(true)
+    setLoading(true);
     try {
       const { data } = await axios.get(
         `${baseURL}api/products?filters=[{"price":{"from":${from},"to":${to}}},{"subcategory":${JSON.stringify(
@@ -148,10 +121,44 @@ const CategoryPage: NextPage = () => {
       });
     }
   };
+  const prices = [
+    { id: 1, label: '< ETB 500K', from: 0, to: 500000 },
+    { id: 2, label: 'ETB 500K - 1M', from: 500001, to: 1000000 },
+    { id: 3, label: 'ETB 1M - 2M', from: 1000001, to: 2000000 },
+    { id: 4, label: 'ETB 2M+', from: 2000001, to: Number.MAX_SAFE_INTEGER },
+  ];
+  const [selectedPrice, setSelectedPrice] = useState(prices[0].id);
+  const [sortOrder, setSortOrder] = useState('asc'); // default sorting order is ascending
+
+  const handlePriceChange = (event: any) => {
+    setSelectedPrice(event.target.value);
+    const price = prices.find((p: any) => p.id === event.target.value);
+    if (price) {
+      searchByPrice(price?.from, price?.to);
+    }
+  };
+  const handleSortByPrice = () => {
+    let sortedProducts = [];
+
+    if (sortOrder === 'asc') {
+      sortedProducts = products.sort(
+        (a: { price: number }, b: { price: number }) => a.price - b.price
+      );
+      setSortOrder('desc');
+    } else {
+      sortedProducts = products.sort(
+        (a: { price: number }, b: { price: number }) => b.price - a.price
+      );
+      setSortOrder('asc');
+    }
+
+    setProducts([...sortedProducts]);
+  };
+
   return (
     <>
       <div className="px-12">
-        <Breadcrumb />
+        <Breadcrumb mainCategory={mainCategory ? mainCategory.name : null} />
       </div>
       <Notification notify={notify} setNotify={setNotify} />
       <div className="font-roboto-regular px-14">
@@ -161,37 +168,44 @@ const CategoryPage: NextPage = () => {
           <div className="flex h-full w-full flex-row gap-x-4">
             <div className="flex w-1/4 flex-col items-start justify-start">
               {/* Categories Box */}
+<<<<<<< HEAD
+              {!sm && mainCategory && (
+                <div className="mb-4 w-full bg-white">
+                  <div className="bg-primary mb-2 flex h-14 items-center justify-start rounded-t-md border-b-2 pl-2 ">
+                    <span className="text-lg font-bold">
+                      {mainCategory ? mainCategory.name : null}
+                    </span>
+=======
               {!sm && (
                 <div className="mb-4  w-full bg-white">
                   <div className="bg-primary mb-2 flex h-14 items-center justify-start rounded-t-md border-b-2 pl-4 ">
                     
                     <span className="text-lg font-bold">Categories</span>
+>>>>>>> 7c09984de1600e392e480bc26053ef2771ec6153
                   </div>
-                  {mainCategory && (
+                  <div className="mx-auto flex h-fit flex-col">
+                    <span className="text-main-secondary"></span>
                     <div className="flex h-fit flex-col pl-4">
-                      <span className="text-main-secondary">
-                        {mainCategory ? mainCategory.name : null}
-                      </span>
-                      <div className="flex h-fit flex-col pl-4">
-                        {mainCategory.subcategory.map((item: any) => (
-                          <div>
-                            {item.name !== query.name && (
-                              <Link
-                                href={{
-                                  pathname: '/category',
-                                  query: { name: item.name },
-                                }}
-                              >
-                                <div className="mt-2 cursor-pointer">
-                                  {item.name}
-                                </div>
-                              </Link>
-                            )}
-                          </div>
-                        ))}
-                      </div>
+                      {mainCategory.subcategory.map((item: any) => (
+                        <div key={item.id}>
+                          <Link
+                            href={{
+                              pathname: '/category',
+                              query: { name: item.name },
+                            }}
+                          >
+                            <div
+                              className={`mt-2 p-2 ${
+                                item?.name === query?.name ? `bg-blue-100` : ''
+                              } cursor-pointer`}
+                            >
+                              {item.name}
+                            </div>
+                          </Link>
+                        </div>
+                      ))}
                     </div>
-                  )}
+                  </div>
                 </div>
               )}
               {/* Location */}
@@ -205,23 +219,83 @@ const CategoryPage: NextPage = () => {
                   : 'flex w-4/5 flex-col items-start'
               }
             >
-              <span className="font-roboto-bold text-3xl text-gray-500">
+              <span className="text-3xl font-bold ">
                 {query.name} in Ethiopia
               </span>
-              <div className="h-42 mt-2 flex w-full flex-col rounded-md bg-white pt-4">
-                <div className="flex flex-row justify-around gap-x-4 px-8">
-                  <div
-                    onClick={() => searchByPrice(1, 500000)}
-                    className="flex  w-full cursor-pointer justify-center rounded-xl bg-gray-200 px-14 py-4"
-                  >
-                    {'< ETB 500K'}
+              <>
+                <div className=" mt-2 flex w-full flex-col items-center justify-between bg-gray-200 px-2 py-2 md:flex-row lg:flex-row">
+                  <div className=" mb-2 flex gap-x-3 sm:mb-0">
+                    <TfiLayoutGrid3Alt
+                      size={18}
+                      onClick={() => setList('Grid')}
+                      className={` text-gray-400 ${
+                        list === 'Grid' ? 'text-sky-800' : ''
+                      } hover:cursor-pointer`}
+                    />
+                    <FaThList
+                      size={18}
+                      onClick={() => setList('List')}
+                      className={`text-gray-400 ${
+                        list !== 'Grid' ? 'text-sky-800' : ''
+                      } hover:cursor-pointer`}
+                    />
                   </div>
-                  <div
-                    onClick={() => searchByPrice(500001, 1500000)}
-                    className="flex w-full cursor-pointer justify-center rounded-xl bg-gray-200 px-14 py-4"
-                  >
-                    {'ETB 500K-1.5M'}
+                  <div className="flex flex-col items-center gap-x-1 md:flex-row">
+                    <span className="hidden text-xl md:block">
+                      Filter By Price:
+                    </span>
+                    <Select
+                      value={selectedPrice || ''}
+                      onChange={handlePriceChange}
+                      displayEmpty
+                      sx={{
+                        height: '2.5rem', // Set the height to 2.5rem
+                        backgroundColor: '#fff',
+                        borderRadius: '4px',
+                        boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+                        padding: '0.5rem 1rem',
+                        appearance: 'none',
+                        fontSize: '1rem',
+                        lineHeight: '1.5',
+                        border: '1px solid #d2d6dc',
+                        '&:focus': {
+                          outline: 'none',
+                          borderColor: '#4c9aff',
+                          boxShadow: '0 0 0 3px rgba(76, 154, 255, 0.25)',
+                        },
+                      }}
+                    >
+                      {prices.map((price) => (
+                        <MenuItem key={price.id} value={price.id}>
+                          {price.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
                   </div>
+<<<<<<< HEAD
+
+                  <div className="flex items-center gap-x-2 text-gray-600 lg:mb-0">
+                    <button
+                      onClick={handleSortByPrice}
+                      className="text-gray-600 hover:text-gray-800 focus:outline-none"
+                    >
+                      <div className="flex items-center  gap-x-1">
+                        {sortOrder == 'asc' ? (
+                          <BsSortAlphaDownAlt
+                            size={18}
+                            className="text-primary"
+                          />
+                        ) : (
+                          <BsSortAlphaUp size={18} className="text-primary" />
+                        )}
+                        <span>
+                          {sortOrder === 'asc'
+                            ? 'Price (low to high)'
+                            : 'Price (high to low)'}
+                        </span>
+                      </div>
+                    </button>
+=======
                   <div
                     onClick={() => searchByPrice(1500000, 3000000)}
                     className="flex w-full cursor-pointer justify-center rounded-xl bg-gray-200 px-14 py-4"
@@ -233,88 +307,42 @@ const CategoryPage: NextPage = () => {
                     className="flex w-full cursor-pointer justify-center rounded-xl bg-gray-200 px-14 py-4"
                   >
                     {'> ETB 3M'}
+>>>>>>> 7c09984de1600e392e480bc26053ef2771ec6153
                   </div>
                 </div>
-              </div>
-              <div className="mt-4 flex w-full items-center justify-between">
-                <div className="flex gap-x-3">
-                  <TfiLayoutGrid3Alt size={18} className="text-primary" />
-                  <FaThList size={18} className="text-gray-400" />
-                </div>
-                <div className="flex items-center gap-x-2 text-gray-600">
-                  <span>Sort by:</span>
-                  <div className="flex items-center gap-x-1">
-                    <TbArrowsSort size={18} className="text-primary" />
-                    <span>Recommended</span>
-                  </div>
-                </div>
-              </div>
+              </>
+
               <div className="mt-5 flex w-full flex-col">
                 <>
                   {products.length ? (
                     <>
-                      {sm ? (
-                        <div className="grid grid-cols-2  gap-x-4">
-                          {products.map((ad: IProduct) => (
-                            <div className="min-h-96 font-roboto-regular mb-4 flex w-full cursor-pointer flex-col justify-between rounded-lg bg-white shadow">
-                              <div className="relative flex h-[55%]">
-                                <img
-                                  src={`${baseURL}/${ad.imagesURL[0]}`}
-                                  className="w-full rounded-t-lg object-contain object-top"
-                                  alt={ad.name}
-                                />
-                              </div>
-                              <div className="flex flex-col px-4 pt-2 pb-6">
-                                <span className="font-roboto-bold text-primary text-xl">
-                                  ETB {NumberWithCommas(ad.price)}
-                                </span>
-                                <span className="text-ellipsis text-lg">
-                                  {ad.name}
-                                </span>
-                                <span className="text-sm text-gray-400">
-                                  {ad.description}
-                                </span>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <div
-                          className={
-                            md2 && md3
-                              ? 'grid grid-cols-3  gap-x-4'
-                              : 'grid grid-cols-4  gap-x-4'
-                          }
-                        >
-                          {products.map((ad: IProduct) => (
-                            <NextLink href={`/products/${ad.id}`} passHref>
-                              <div className="min-h-96 font-roboto-regular mb-4 flex w-full cursor-pointer flex-col justify-between rounded-lg bg-white shadow">
-                                <div className="relative flex h-[55%]">
-                                  <img
-                                    src={`${baseURL}/${ad.imagesURL[0]}`}
-                                    className="w-full rounded-t-lg object-contain object-top"
-                                    alt={ad.name}
-                                  />
-                                </div>
-                                <div className="flex flex-col px-4 pt-2 pb-6">
-                                  <span className="font-roboto-bold text-primary text-xl">
-                                    ETB {NumberWithCommas(ad.price)}
-                                  </span>
-                                  <span className="text-ellipsis text-lg">
-                                    {ad.name}
-                                  </span>
-                                  <span className="text-sm text-gray-400">
-                                    {ad.description}
-                                  </span>
-                                </div>
-                              </div>
-                            </NextLink>
-                          ))}
-                        </div>
-                      )}
+                      <div
+                        className={`grid gap-3 px-2 pr-0  md:grid-flow-row ${
+                          list === 'Grid'
+                            ? 'grid md:grid-cols-2 lg:grid-cols-3'
+                            : 'md:grid-cols-1 lg:grid-cols-1'
+                        }`}
+                      >
+                        {products?.map((item: IProduct) => {
+                          return (
+                            <>
+                              <ProductCard
+                                description={item.description}
+                                title={item.name}
+                                views={item.viewCount}
+                                price={item.price}
+                                listType={list}
+                                id={item.id}
+                                imageUrl={`${baseURL}${item.imagesURL[0]}`}
+                                region={item?.region}
+                              />
+                            </>
+                          );
+                        })}
+                      </div>
                     </>
                   ) : (
-                    <Norecords col={5} />
+                    <Norecords />
                   )}
                 </>
               </div>

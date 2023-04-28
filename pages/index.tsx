@@ -16,11 +16,8 @@ import { GET_PRODUCTS_BY_FEATURED } from '@/types';
 import { setCredentials } from '@/store/auth';
 import { RootState, useAppDispatch, useAppSelector } from '@/store';
 import dynamic from 'next/dynamic';
-import CarouselBox from '@/components/carousel';
-import CarouselBoxCard from '@/components/carousel/Slide';
 import Carousel from '@/components/slide-show';
 import NumberWithCommas from '@/lib/types/number-commas';
-import Link from 'next/link';
 const MegaMenu = dynamic(() => import('../components/menu/MegaMenu'));
 const Category = dynamic(() => import('../components/CategorySection'));
 type AdsProp = {
@@ -31,7 +28,7 @@ type AdsProp = {
   imagesURL: string[];
   id: string;
 };
-const Index = ({ user }) => {
+const Index = ({ user }: any) => {
   const dispatch = useAppDispatch();
   //  const { logout } = useAppSelector(
   //    (state: RootState) => state.login
@@ -136,7 +133,7 @@ const Index = ({ user }) => {
             <div className="mt-2 flex flex-col">
               <div className="my-3">
                 <span className="font-roboto-bold text-main-secondary text-2xl">
-                  Trending products
+                  {hasData ? 'Trending products' : ''}
                 </span>
               </div>
 
@@ -181,17 +178,16 @@ const Index = ({ user }) => {
                         </div>
                       </NextLink>
                     ))}
-
-                    {hasData && (
-                      <span>
-                        {' '}
-                        <Norecords col={5} />
-                      </span>
-                    )}
                   </div>
                 )}
               </span>
             </div>
+          )}
+          {hasData && (
+            <span>
+              {' '}
+              <Norecords />
+            </span>
           )}
         </div>
       </div>

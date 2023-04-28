@@ -47,13 +47,13 @@ const subCategory: NextPage<{
       {subCategorie.data ? (
         <div>
           {subCategorie.data.product.length ? (
-            <ProductList product={subCategorie.data.product} />
+            <ProductList productList={subCategorie.data.product} />
           ) : (
-            <Norecords col={5} />
+            <Norecords/>
           )}
         </div>
       ) : (
-        <Norecords col={5} />
+        <Norecords/>
       )}
     </>
   );

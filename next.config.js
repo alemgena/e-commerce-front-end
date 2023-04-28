@@ -1,7 +1,8 @@
-module.exports = () => ({
-  images: {
-    domains: ['api.liyumarket.com/'],
+// next.config.js
 
+module.exports = {
+  images: {
+    domains: ['api.liyumarket.com', 'lh3.googleusercontent.com'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -27,7 +28,4 @@ module.exports = () => ({
     BACKEND_ENDPOINT: process.env.API_URL,
     CONSOLE_BACKEND_IMG_ENDPOIN: process.env.CONSOLE_BACKEND_IMG_ENDPOIN,
   },
-  images: {
-    domains: ['lh3.googleusercontent.com'],
-  },
-});
+};

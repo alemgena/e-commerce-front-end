@@ -4,6 +4,7 @@ import {
   BsEye,
   BsFillChatLeftTextFill,
   BsHeart,
+  BsMap,
 } from 'react-icons/bs';
 import { FiArrowLeft } from 'react-icons/fi';
 import { IoIosCall } from 'react-icons/io';
@@ -35,13 +36,16 @@ import {
 import React, { lazy, Suspense } from 'react';
 import { GET_PRODUCT } from '@/types';
 import PageSpinner from '@/components/Ui/PageSpinner';
-import CarouselBox from '@/components/carousel';
-import CarouselBoxCard from '@/components/carousel/Slide';
+import CarouselBox from '@/components/carousel/carousel-box';
+import CarouselBoxCard from '@/components/carousel/carousel-box-card';
 import NumberWithCommas from '@/lib/types/number-commas';
 import timeSince from '@/lib/types/time-since';
 import { IoCheckmarkCircleOutline } from 'react-icons/io5';
 import FormatNumber from '@/lib/types/number-format';
 import { Avatar } from '@mui/material';
+import { LocationCity, MapOutlined } from '@mui/icons-material';
+import { MdLocationOn } from 'react-icons/md';
+import { FaCamera } from 'react-icons/fa';
 const Map = dynamic(() => import('@/components/map').then((mod) => mod.Map), {
   ssr: false,
 });
@@ -49,8 +53,7 @@ function ProductDetailPage() {
   const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
-  const [activeImage, setActiveImage] = useState<any>([]);
-  const [productImage, setProductImage] = useState();
+  const [selectedImg, setSelectedImg] = useState(0);
   const [showContact, setShowContact] = useState(false);
   const productData = useSelector(
     (state: RootStateOrAny) => state.product.product
@@ -102,69 +105,78 @@ function ProductDetailPage() {
       });
     }
   }, [favorite.favorite]);
-  const handleChat=async()=>{
-     try {
-       const { data } = await axios.post(
-         `${baseURL}api/notifications/sendNotification`,
-         {
-           notification: {
-             title: 'Firebase',
-             body: 'Firebase is awesome',
-             click_action: 'http://localhost:3000/',
-             icon: 'http://url-to-an-icon/icon.png',
-           },
-           to: productData.data.product.seller.device_token,
-         }
-       );
-       if(data.success){
-    let login_token = localStorage.getItem('token');
-    let config = {
-      headers: {
-        Authorization: `Bearer ${login_token}`,
-      },
-    };
+  const handleChat = async () => {
     try {
       const { data } = await axios.post(
-        `${baseURL}api/notifications`,
+        `${baseURL}api/notifications/sendNotification`,
         {
-          title: 'Test ghghgjg Cat4455',
-          description: 'tyfbhbb',
-          body: 'Description',
-          status: 'un read',
-          type: 'chat',
-          image: 'images/notification/image_1680007561342.png',
-          userId: productData.data.product.seller._id,
-        },
-        config
+          notification: {
+            title: 'Firebase',
+            body: 'Firebase is awesome',
+            click_action: 'http://localhost:3000/',
+            icon: 'http://url-to-an-icon/icon.png',
+          },
+          to: productData.data.product.seller.device_token,
+        }
       );
-      if(data){
-        router.push('/chat');
+      if (data.success) {
+        let login_token = localStorage.getItem('token');
+        let config = {
+          headers: {
+            Authorization: `Bearer ${login_token}`,
+          },
+        };
+        try {
+          const { data } = await axios.post(
+            `${baseURL}api/notifications`,
+            {
+              title: 'Test ghghgjg Cat4455',
+              description: 'tyfbhbb',
+              body: 'Description',
+              status: 'un read',
+              type: 'chat',
+              image: 'images/notification/image_1680007561342.png',
+              userId: productData.data.product.seller._id,
+            },
+            config
+          );
+          if (data) {
+            router.push('/chat');
+          }
+        } catch (error: any) {
+          let message: string;
+          if (error.response.data.error.message === 'Please authenticate')
+            message = 'your sesstion is expired login again';
+          else {
+            message = error.response.data.error.message;
+          }
+          NotifyMessage({
+            message: message,
+            type: 'error',
+          });
+        }
       }
     } catch (error: any) {
-      let message: string;
-      if (error.response.data.error.message === 'Please authenticate')
-        message = 'your sesstion is expired login again';
-      else {
-        message = error.response.data.error.message;
-      }
       NotifyMessage({
-        message: message,
+        message: error.response.data.error.message,
         type: 'error',
       });
     }
-       }
-     } catch (error: any) {
-    NotifyMessage({
-      message: error.response.data.error.message,
-      type: 'error',
-    });
-     }
-  }
+  };
   const filteredRelatedProducts = productData?.data?.relatedProducts.filter(
     (relatedProduct: any) => {
       return relatedProduct.id !== productData?.data?.product.id;
     }
   );
+
+  function onClickHandler(index: number) {
+    setSelectedImg(index);
+  }
+  const handleClick = () => {
+    setSelectedImg(
+      (selectedImg + 1) % productData.data.product.imagesURL.length
+    );
+  };
 
   return (
     <>
@@ -198,53 +210,55 @@ function ProductDetailPage() {
           {productData.data && (
             <>
               <div className="flex flex-col md:flex-row">
-                <div className="w-full md:w-3/4">
-                  <img
-                    src={`${baseURL}${productData?.data?.product?.imagesURL[0]}`}
-                    className="w-full overflow-hidden rounded-sm object-cover"
-                  />
+                <div className="md:w-3/2 w-full">
+                  <div className="w-150  h-86 relative mx-auto">
+                    <img
+                      loading="lazy"
+                      alt="product img"
+                      className="dark:bg-palette-card h-90    left-0 top-20 h-full
+                       w-full overflow-hidden rounded-sm object-contain object-center
+                     md:drop-shadow-xl"
+                      src={`${baseURL}${productData?.data?.product?.imagesURL[selectedImg]}`}
+                    />
 
+                    <button
+                      onClick={handleClick}
+                      className="absolute bottom-2 left-2 flex rounded-lg bg-gray-100 px-2 py-1 text-gray-800 shadow-md"
+                    >
+                      <span className="flex">
+                        <FaCamera size={20} className="mx-2 pt-1" />
+                        {`${selectedImg + 1}/${
+                          productData?.data?.product?.imagesURL.length
+                        }`}
+                      </span>
+                    </button>
+                  </div>
                   <div className="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-4">
-                    {activeImage.length ? (
-                      <>
-                        {activeImage.map((image: any, index: number) => (
-                          <img
-                            key={index}
-                            src={`${baseURL}${image}`}
-                            className={`h-24 w-full cursor-pointer overflow-hidden rounded-sm object-cover sm:h-32 ${
-                              activeImage.id === image.id &&
-                              'ring-2 ring-blue-800'
-                            } `}
-                            onClick={() => setProductImage(image)}
-                          />
-                        ))}
-                      </>
-                    ) : (
-                      <>
-                        {productData.data.product.imagesURL.map(
-                          (image: any, index: number) => (
-                            <img
-                              key={index}
-                              src={`${baseURL}${image}`}
-                              className={`h-24 w-full cursor-pointer overflow-hidden rounded-sm object-cover sm:h-32 ${
-                                activeImage.id === image.id &&
-                                'ring-2 ring-blue-800'
-                              } `}
-                              onClick={() => setProductImage(image)}
-                            />
-                          )
-                        )}
-                      </>
+                    {productData.data.product.imagesURL.map(
+                      (image: any, index: number) => (
+                        <img
+                          loading="lazy"
+                          key={index}
+                          src={`${baseURL}${productData?.data?.product?.imagesURL[index]}`}
+                          className={`h-24 w-full cursor-pointer overflow-hidden rounded-sm object-cover sm:h-32 ${
+                            index === selectedImg && 'ring-2 ring-blue-800 '
+                          } `}
+                          onClick={() => onClickHandler(index)}
+                        />
+                      )
                     )}
                   </div>
-                  <div className="aspect-w-16 aspect-h-9 relative z-0 mt-10 w-full overflow-hidden rounded-sm md:mt-6 md:w-full">
+                  <div
+                    className="aspect-w-16 aspect-h-9 md:w-3/2 relative z-0 mt-10 w-full overflow-hidden rounded-sm
+                   object-contain md:mt-6"
+                  >
                     <Suspense fallback={<div>Loading...</div>}>
                       <Map center={[9.005401, 38.763611]} />
                     </Suspense>
                   </div>
                 </div>
-                {/* div two */}
 
+                {/* div two */}
                 {/* div2 */}
                 <div className="ml-2 w-full md:w-1/2">
                   <div className="md:w-3/2 flex w-full flex-col gap-6 ">
@@ -255,11 +269,11 @@ function ProductDetailPage() {
                       <p className="mb-4 text-sm text-gray-500">
                         {productData?.data?.product?.subcategory?.name}{' '}
                       </p>
-                      <h2 className="text-xl font-bold">
+                      <h2 className="text-xl font-bold text-blue-600">
                         <span>ETB</span>{' '}
                         {NumberWithCommas(productData.data.product.price)}
                       </h2>
-                      <h6 className="flex text-center font-bold text-blue-700">
+                      <h6 className="text-blue flex text-center font-bold ">
                         <IoCheckmarkCircleOutline className="mt-1" />
                         Posted {''}{' '}
                         {timeSince(productData?.data?.product?.createdAt)}{' '}
@@ -292,15 +306,6 @@ function ProductDetailPage() {
                         </button>
                       </div>
 
-                      {/*      <div className="mt-2 flex items-center font-bold md:mt-0">
-                        <button
-                          className="font-roboto-medium mt-2 flex items-center gap-1
-                       rounded-full px-6 py-1 text-sm text-white ring-1 ring-blue-700 md:mt-0"
-                        >
-                          <p className="text-gray-500">In Stock</p>
-                          <p className="text-blue-800">60</p>
-                        </button>
-                      </div> */}
                       <div className="mt-3 flex items-center gap-6 sm:mt-0">
                         <h1 className="text-blue font-bold"> Share On</h1>
                         <FacebookShareButton
@@ -358,7 +363,8 @@ function ProductDetailPage() {
                           <h2 className="font-roboto-medium text-lg">
                             {`${productData?.data?.product?.seller?.first_name} ${productData?.data?.product?.seller?.last_name}`}
                           </h2>
-                          <p className="text-sm text-gray-400">
+                          <p className="flex text-sm text-gray-400">
+                            <MdLocationOn className="mt-1" />{' '}
                             {`${productData?.data?.product?.location}, ${productData?.data?.product?.region},Ethiopia`}
                           </p>
                           <h6 className="text-blue flex text-center">
@@ -391,7 +397,8 @@ function ProductDetailPage() {
                           <p>
                             {showContact ? (
                               <p className="font-roboto-medium text-blue-800">
-                                {productData?.data?.product?.seller?.phone}
+                                {productData?.data?.product?.seller?.phone ??
+                                  productData?.data?.product?.seller?.email}
                               </p>
                             ) : (
                               <p>Show Contact</p>
@@ -399,7 +406,7 @@ function ProductDetailPage() {
                           </p>
                         </button>
                         <button
-                          onClick={() => handleChat()}
+                          onClick={() => router.push('/chat')}
                           className="font-roboto-medium mt-3 flex items-center gap-2 rounded-full bg-white px-4 py-2 text-blue-800 ring-2 ring-blue-800 md:mt-0"
                         >
                           <BsFillChatLeftTextFill />
@@ -468,24 +475,28 @@ function ProductDetailPage() {
                 </div>
               </div>
               {/* div2 end here */}
-              <div className="w-100 flex flex-col">
-                <div className=" overflow-hidden ">
-                  <div className="w-full overflow-x-hidden">
-                    <CarouselBox title="Related Products" full={true}>
-                      {filteredRelatedProducts?.map((productItem: any) => {
-                        return (
-                          <>
-                            <CarouselBoxCard
-                              key={productItem.id}
-                              product={productItem}
-                            />
-                          </>
-                        );
-                      })}
-                    </CarouselBox>{' '}
+              {filteredRelatedProducts?.length > 0 ? (
+                <div className="w-100 flex flex-col">
+                  <div className=" overflow-hidden ">
+                    <div className="w-full overflow-x-hidden">
+                      <CarouselBox title="Related Products" full={true}>
+                        {filteredRelatedProducts?.map((productItem: any) => {
+                          console.log(filteredRelatedProducts.length);
+                          return (
+                            <>
+                              <CarouselBoxCard
+                                key={productItem.id}
+                                product={productItem}
+                                length={filteredRelatedProducts?.length}
+                              />
+                            </>
+                          );
+                        })}
+                      </CarouselBox>{' '}
+                    </div>
                   </div>
                 </div>
-              </div>{' '}
+              ) : null}
             </>
           )}
         </div>

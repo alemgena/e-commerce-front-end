@@ -18,15 +18,16 @@ import {
 import { Register } from '../auth/register';
 import { loginAction } from '@/store/login';
 import { RootStateOrAny } from 'react-redux';
-let notificatioCount:any;
+import { FaUserCircle } from 'react-icons/fa';
+import { baseURL } from '@/config';
+let notificatioCount: any;
 export function NavItems() {
   const { user, token } = useAppSelector(selectCurrentUser);
   const [redirectToSell, setRedirectToSell] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  
-  useEffect(() => {
 
+  useEffect(() => {
     const token = localStorage.getItem('token');
     const userInfo = localStorage.getItem('userInfo');
 
@@ -43,9 +44,9 @@ export function NavItems() {
     router.push('/');
   };
   //notification
-   const { notificationCount } = useAppSelector(
-     (state: RootStateOrAny) => state.notification
-   );
+  const { notificationCount } = useAppSelector(
+    (state: RootStateOrAny) => state.notification
+  );
   const handleClick = () => {
     if (token) {
       dispatch(loginAction.setIsUserLogged(true));
@@ -64,7 +65,6 @@ export function NavItems() {
     }
   };
   useEffect(() => {
-
     if (user && token) {
       dispatch(loginAction.setIsUserLogged(true));
       if (redirectToSell) {
@@ -110,8 +110,8 @@ export function NavItems() {
             {token ? (
               <div onClick={() => router.push('/auth/profile')}>
                 <Avatar
-                  src={`https://api.liyumarket.com/${
-                    user.user ? user.user.imageURL : user.imageURL
+                  src={`${baseURL}${
+                    user.user ? user?.user?.imageURL : user?.imageURL
                   }`}
                   alt="User profile image"
                   onClick={() => router.push('/auth/profile')}
@@ -121,7 +121,7 @@ export function NavItems() {
             ) : (
               <div onClick={() => router.push('/auth/signin')}>
                 <Avatar className="cursor-pointer">
-                  <CgProfile size={30} />
+                  <FaUserCircle size={30} />
                 </Avatar>
               </div>
             )}

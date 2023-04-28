@@ -6,7 +6,7 @@ import {
   RiShoppingCart2Line,
 } from 'react-icons/ri';
 
-import { IProduct } from '../../../lib/types/products';
+import { IProduct } from '../../lib/types/products';
 
 interface Props {
   product: IProduct;

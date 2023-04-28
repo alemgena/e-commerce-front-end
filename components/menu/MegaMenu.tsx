@@ -6,12 +6,20 @@ import React, { useMemo, useEffect, useState } from 'react';
 import { AiOutlineRight } from 'react-icons/ai';
 import { RxCaretDown, RxCaretUp } from 'react-icons/rx';
 import { RootStateOrAny, useSelector } from 'react-redux';
-import CategoryData from '../../lib/data/categories.json';
 import { baseURL } from '@/config';
 import Link from 'next/link';
 import PageSpinner from '../Ui/PageSpinner';
 import Norecords from '../Ui/Norecords';
 import axios from 'axios';
+interface Category {
+  id: number;
+  subcategory: SubCategory[];
+}
+
+interface SubCategory {
+  id: number;
+}
+
 type CategoryProps = {
   id: number;
   parent_id: number | null;
@@ -36,11 +44,15 @@ function MegaMenu() {
   const categoriesData = useSelector(
     (state: RootStateOrAny) => state.categories.categories
   );
-  const [categories] = useState(CategoryData.categories);
   const [hoveredCategoryId, setHoveredCategoryId] = useState(0);
   const [hoveredCategory, setHoveredCategory] = useState([] as CategoryProps[]);
   const [scrollTopValue, setScrollTopValue] = useState(0);
   const [scrollTopValueForSubMenu, setScrollTopValueForSubMenu] = useState(0);
+  const { isLoading } = useSelector(
+    (state: RootStateOrAny) => state.categories
+  );
+  console.log('baseURl', baseURL);
+  const [hasData, setHasData] = useState(false);
 
   const memoizedHoveredCategory = useMemo(() => {
     if (categoriesData.data) {
@@ -54,10 +66,6 @@ function MegaMenu() {
       }
     }
   }, [hoveredCategoryId, categoriesData.data]);
-  const { isLoading } = useSelector(
-    (state: RootStateOrAny) => state.categories
-  );
-  const [hasData, setHasData] = useState(false);
   useEffect(() => {
     if (categoriesData.data) {
       if (!categoriesData.data.length) setHasData(true);
@@ -190,7 +198,7 @@ function MegaMenu() {
                     </>
                   );
                 })}
-                <span>{hasData && <Norecords col={5} />}</span>
+                <span>{hasData && <Norecords />}</span>
                 <div
                   className={`${
                     scrollTopValue < 382.5 && scrollTopValue >= 0
@@ -245,7 +253,6 @@ function MegaMenu() {
                     />
                   </div>
                 </div>
-
                 <div className="pb-2" />
 
                 {hoveredCategory.map((category: CategoryProps) => {
@@ -299,7 +306,6 @@ function MegaMenu() {
                   <div
                     className="flex h-10 items-center justify-center"
                     onClick={(e) => {
-                      console.log(e.currentTarget.scrollTop);
                       setScrollTopValueForSubMenu(382.5);
                       e.currentTarget.parentElement?.parentElement?.scrollTo({
                         top: 382.5,

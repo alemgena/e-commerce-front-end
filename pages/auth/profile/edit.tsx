@@ -16,7 +16,7 @@ import Notification from '@/components/Ui/Notification';
 import { baseURL } from '@/config';
 function EditProfilePage() {
   const dispatch = useDispatch();
-   const User = useSelector((state: RootStateOrAny) => state.user.user);
+  const User = useSelector((state: RootStateOrAny) => state.user.user);
   const { firstName, lastName, phone } = useSelector(
     (state: RootStateOrAny) => state.profile.inputValues
   );
@@ -35,10 +35,10 @@ function EditProfilePage() {
     setPreviewImage(URL.createObjectURL(event.target.files[0]));
   };
   const setDefaultValues = () => {
-    if(User.data){
-    dispatch(profileActions.setFirstName(User.data.first_name));
-    dispatch(profileActions.setLastName(User.data.last_name));
-    dispatch(profileActions.setPhone(User.data.phone));
+    if (User.data) {
+      dispatch(profileActions.setFirstName(User.data.first_name));
+      dispatch(profileActions.setLastName(User.data.last_name));
+      dispatch(profileActions.setPhone(User.data.phone));
     }
   };
   const validate = (event: React.FormEvent<HTMLFormElement>) => {
@@ -52,13 +52,13 @@ function EditProfilePage() {
     formData.append('last_name', lastName);
     formData.append('phone', phone);
     formData.append('image', image);
-       let token = localStorage.getItem('token');
-       let config = {
-         headers: {
-           Authorization: `Bearer ${token}`,
-         },
-       };
-    dispatch({ type: UPDATE_PROFILE, data: formData,config:config });
+    let token = localStorage.getItem('token');
+    let config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    dispatch({ type: UPDATE_PROFILE, data: formData, config: config });
     setSubmit(true);
   };
   const [submit, setSubmit] = useState(false);
@@ -73,15 +73,13 @@ function EditProfilePage() {
   }, [profile.error]);
   useEffect(() => {
     if (profile.profileUpdated && submit) {
-     NotifyMessage({
-       message: 'Your profile updated successfully',
-       type: 'success',
-     });
+      NotifyMessage({
+        message: 'Your profile updated successfully',
+        type: 'success',
+      });
     }
   }, [profile.profileUpdated]);
-    useEffect(() => {
-     
-    }, []);
+  useEffect(() => {}, []);
 
   return (
     <>
@@ -91,7 +89,10 @@ function EditProfilePage() {
       </Head>
       <div className=" bg-gray-50 px-12 pb-32">
         <div className="flex items-center justify-between py-4  text-xl">
-          <div className="flex items-center gap-2 text-xl">
+          <div
+            onClick={() => router.push('/auth/profile')}
+            className=" flex items-center gap-2 text-xl hover:cursor-pointer"
+          >
             <FiArrowLeft />
             <h2>Edit Profile</h2>
           </div>
@@ -105,21 +106,21 @@ function EditProfilePage() {
                   <img src={previewImage} width="100px" height="100px" alt="" />
                 ) : (
                   <>
-                  {User.data&&
-                  <>
-                    {User.data.imageURL ? (
-                      <img
-                        src={`${baseURL}/${User.data.imageURL}`}
-                        width="100px"
-                        height="100px"
-                        alt=""
-                      />
-                    ) : (
-                      <RxAvatar size={100} className="text-gray-400" />
+                    {User.data && (
+                      <>
+                        {User.data.imageURL ? (
+                          <img
+                            src={`${baseURL}/${User.data.imageURL}`}
+                            width="100px"
+                            height="100px"
+                            alt=""
+                          />
+                        ) : (
+                          <RxAvatar size={100} className="text-gray-400" />
+                        )}
+                      </>
                     )}
                   </>
-                    }
-                    </>
                 )}
 
                 <Grid container item xs={12} md={6} spacing={2}>
@@ -157,7 +158,7 @@ function EditProfilePage() {
                 </Grid>
               </div>
               <div className="flex w-full gap-16">
-                <div className="flex w-1/2 items-center gap-4  border-b  py-1 font-roboto-regular">
+                <div className="font-roboto-regular flex w-1/2 items-center  gap-4  border-b py-1">
                   <FaRegUser />
                   <input
                     type="text"
@@ -169,7 +170,7 @@ function EditProfilePage() {
                     }}
                   />
                 </div>
-                <div className="flex w-1/2 items-center gap-4  border-b  py-1 font-roboto-regular">
+                <div className="font-roboto-regular flex w-1/2 items-center  gap-4  border-b py-1">
                   <FaRegUser />
                   <input
                     type="text"
@@ -183,7 +184,7 @@ function EditProfilePage() {
                 </div>
               </div>
               <div className="flex w-full gap-16">
-                <div className="flex w-1/2 items-center gap-4  border-b  py-1 font-roboto-regular">
+                <div className="font-roboto-regular flex w-1/2 items-center  gap-4  border-b py-1">
                   <MdPhone />
                   <input
                     type="text"
@@ -199,7 +200,7 @@ function EditProfilePage() {
               <div className="flex w-full gap-16">
                 <button
                   onClick={() => router.push('/changePassword')}
-                  className="flex items-center gap-2 self-end rounded-md bg-blue-800 px-10 py-2 font-roboto-regular  text-white"
+                  className="font-roboto-regular flex items-center gap-2 self-end rounded-md bg-blue-800 px-10 py-2  text-white"
                 >
                   Change Password
                 </button>
@@ -207,12 +208,12 @@ function EditProfilePage() {
               {isLoading ? (
                 <button
                   disabled
-                  className="flex items-center gap-2 self-end rounded-md bg-blue-800 px-10 py-2 font-roboto-regular  text-white"
+                  className="font-roboto-regular flex items-center gap-2 self-end rounded-md bg-blue-800 px-10 py-2  text-white"
                 >
                   Updateing....
                 </button>
               ) : (
-                <button className="flex items-center gap-2 self-end rounded-md bg-blue-800 px-10 py-2 font-roboto-regular  text-white">
+                <button className="font-roboto-regular flex items-center gap-2 self-end rounded-md bg-blue-800 px-10 py-2  text-white">
                   Update
                 </button>
               )}

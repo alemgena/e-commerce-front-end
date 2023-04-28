@@ -5,7 +5,6 @@ import React from 'react';
 import { BsHeart } from 'react-icons/bs';
 // import StarRatingComponent from 'react-star-rating-component';
 // import Image from 'next/image';
-import Link from 'next/link';
 import { baseURL } from '@/config';
 import NextLink from 'next/link';
 // import ProductPrice from '../ProductPrice';
@@ -16,9 +15,10 @@ interface Props {
 export interface IProduct {
   image: any;
   name: string;
-
+  id:string;
   price: number;
   discount?: number;
+  imagesURL:string[];
   brand: string;
   category: string[];
   isOffer?: boolean;
@@ -27,11 +27,10 @@ export interface IProduct {
   starRating: number;
 }
 
-
-const Card = ({product}) => {
-    console.log("products",product)
+const Card = ({ product }:Props) => {
+  console.log('products', product);
   return (
-    <div className="bg-palette-card relative col-span-6 my-1 flex rounded-xl shadow-xl ltr:mr-2 rtl:ml-1 sm:col-span-3 md:col-span-4  md:my-4 md:mx-6 lg:col-span-3 2xl:col-span-2">
+    <div className="bg-palette-card relative col-span-6 my-1 flex rounded-xl shadow-xl ltr:mr-2 rtl:ml-1 sm:col-span-3 md:col-span-4  md:mx-6 md:my-4 lg:col-span-3 2xl:col-span-2">
       {product && (
         <NextLink href={`/products/${product.id}`} passHref>
           <div className="w-full flex-shrink-0">
@@ -48,12 +47,12 @@ const Card = ({product}) => {
                 </div>
               </div>
               <div className="h-0.5 w-full bg-gray-200" />
-              <div className="flex  gap-6  rounded-md p-2 font-roboto-light">
+              <div className="font-roboto-light  flex  gap-6 rounded-md p-2">
                 <button className=" rounded-full bg-blue-800 px-3 py-2 text-sm text-white">
                   Make Offer
                 </button>
 
-                <button className="flex flex-grow items-center justify-center  font-roboto-light text-xl text-gray-400">
+                <button className="font-roboto-light flex flex-grow items-center  justify-center text-xl text-gray-400">
                   <BsHeart />
                 </button>
               </div>
@@ -64,6 +63,6 @@ const Card = ({product}) => {
       {/* <CardActions product={product} /> */}
     </div>
   );
-  }
+};
 
 export default Card;
