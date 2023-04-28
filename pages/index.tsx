@@ -28,7 +28,7 @@ type AdsProp = {
   imagesURL: string[];
   id: string;
 };
-const Index = ({ user }:any) => {
+const Index = ({ user }: any) => {
   const dispatch = useAppDispatch();
   //  const { logout } = useAppSelector(
   //    (state: RootState) => state.login
@@ -133,7 +133,7 @@ const Index = ({ user }:any) => {
             <div className="mt-2 flex flex-col">
               <div className="my-3">
                 <span className="font-roboto-bold text-main-secondary text-2xl">
-                  Trending products
+                  {hasData ? 'Trending products' : ''}
                 </span>
               </div>
 

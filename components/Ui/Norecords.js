@@ -5,7 +5,7 @@ const Norecords = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-100 flex w-full bg-white">
+    <div className="flex min-h-screen w-full bg-white">
       <div className="flex w-full justify-center self-center">
         <div className="">
           <svg
@@ -83,19 +83,21 @@ const Norecords = () => {
               />
             </g>
           </svg>
-          <div className="mb-12 flex w-full justify-center">
+          <div className="mb-12 flex justify-center">
             <button
               onClick={() => router.back()}
-              className="group relative inline-flex w-screen items-center justify-center overflow-hidden 
-              rounded-lg bg-gradient-to-br from-blue-500 to-blue-500 p-0.5 text-sm font-medium text-gray-900
-               hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-200 group-hover:from-blue-500 
-               group-hover:to-blue-500 md:w-full"
+              className="lg:w-3/2  group relative flex items-center justify-center overflow-hidden 
+               rounded-lg bg-gradient-to-br from-blue-500 to-blue-500 p-0.5 text-sm font-medium 
+               text-gray-900 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-200 
+               group-hover:from-blue-500 group-hover:to-blue-500  md:w-full"
             >
               <span
                 className="relative flex h-8 w-full items-center justify-center space-x-5 rounded-md 
-              bg-white px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0"
+                    bg-white px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0"
               >
-                <Typography size="xs">No data is available</Typography>
+                <Typography size="xs" className="hidden sm:block">
+                  No data is available
+                </Typography>
                 {router?.pathname !== '/' && (
                   <span className="flex items-center space-x-1 ">
                     <KeyboardReturn />

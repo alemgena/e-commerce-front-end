@@ -1,339 +1,148 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Typography } from '@mui/material';
-import {
-  Star,
-  HeartBroken,
-  BuildCircleRounded,
-  PriceChange,
-  Payment,
-} from '@mui/icons-material';
+import { MapOutlined, Place } from '@mui/icons-material';
 import { ReactChild } from 'react';
 import { AiOutlineEye } from 'react-icons/ai';
-import { BiBuildings, BiHeartCircle } from 'react-icons/bi';
-import { FaHeart, FaStar } from 'react-icons/fa';
+import { BiBuildings, BiHeartCircle, BiMap } from 'react-icons/bi';
+import { FaHeart, FaStar, FaMapMarker } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import NumberWithCommas from '@/lib/types/number-commas';
-interface Color {
-  className: string;
-  boxColor: string;
-  buttonColor: string;
-  borderColor: string;
-  shadowColor?: string;
-}
+import { baseURL } from '@/config';
+import Link from 'next/link';
+import { BsEyeFill, BsHeart } from 'react-icons/bs';
+
 interface Props {
   description: string;
   title: string;
-  isOnline: boolean;
-  onFavorite: any;
-  onApply: any;
-  views: number;
-  icon?: ReactChild;
-  color?: Color;
-  rate: number;
+  views: any;
+  imageUrl?: any;
   isFavorite?: boolean;
   className?: string;
   listType?: string;
   ref?: any;
   price: number;
-  favoriteLoading?: boolean;
+  id: string;
+  region: string;
 }
 function ProductCard(props: Props) {
   const {
     description,
     title,
-    isOnline,
-    onFavorite,
-    onApply,
     views,
-    icon,
-    color,
-    rate,
-    isFavorite,
-    className,
+    imageUrl,
+    id,
+    region,
     listType,
     ref,
-    favoriteLoading,
     price,
   } = props;
   const list = listType ? listType : 'Grid';
   const router = useRouter();
   return list === 'Grid' ? (
     <div ref={ref} className="">
-      <div className={`group rounded-md`}>
-        {/*hover:z-50   hover:delay-1000   lg:hover:scale-125 */}
-        <div className={`relative h-20 `}>
+      <div className="md:w-3/2 mt-100 my-2 h-full w-full px-2">
+        <>
           <div
-            className={`absolute -top-5 z-40 flex w-full items-center justify-center `}
+            key={id}
+            className="bg-palette-card/80 flex w-full flex-col rounded-md p-2 shadow-lg backdrop-blur-[10px] backdrop-filter"
           >
-            <div
-              className={`m-6 flex h-20 w-20 items-center justify-center rounded-full   text-white ${color?.className} shadow-xl`}
-            >
-              {icon}
-            </div>
-          </div>
-          <div
-            onClick={() => onFavorite()}
-            className={`visible absolute right-2 top-12 z-40 flex  cursor-pointer  px-2 ${
-              isFavorite ? '' : 'lg:invisible lg:group-hover:visible'
-            }`}
-          >
-            <div className="space-y-3">
-              {favoriteLoading ? (
+            <Link href={`/products/${id}`} passHref>
+              <>
                 <div
-                  className={` flex h-10 w-10  items-center justify-center rounded-full `}
+                  onClick={() => router.push(`/products/${id}`)}
+                  className="bg-white hover:cursor-pointer"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    style={{ display: 'block' }}
-                    width="20px"
-                    height="20px"
-                    viewBox="0 0 100 100"
-                    preserveAspectRatio="xMidYMid"
-                  >
-                    <circle
-                      cx="50"
-                      cy="50"
-                      fill="none"
-                      stroke="#1af9dd"
-                      strokeWidth="10"
-                      r="35"
-                      strokeDasharray="164.93361431346415 56.97787143782138"
-                    >
-                      <animateTransform
-                        attributeName="transform"
-                        type="rotate"
-                        repeatCount="indefinite"
-                        dur="1s"
-                        values="0 50 50;360 50 50"
-                        keyTimes="0;1"
-                      />
-                    </circle>
-                  </svg>
-                </div>
-              ) : (
-                <div
-                  className={` flex h-10 w-10  items-center justify-center rounded-full `}
-                >
-                  <BiHeartCircle
-                    className={`${isFavorite ? 'fill-red-400' : 'white'}`}
-                    strokeWidth={'1.25'}
-                    color={'red'}
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-          <div
-            className={`visible absolute left-2 top-12 z-40 flex cursor-pointer px-2 sm:opacity-100`}
-          >
-            <div className="space-y-3">
-              <div
-                className={` flex h-10 w-10 items-center justify-center space-x-1 rounded-full text-sm text-gray-500 `}
-              >
-                <AiOutlineEye />
-                <Typography className="text-sm">{views}</Typography>
-              </div>
-            </div>
-          </div>
+                  <div className="flex-grow text-center">
+                    <img
+                      key={id}
+                      src={imageUrl}
+                      className="w-100 h-32 rounded-md object-cover  transition-transform hover:scale-105 sm:h-48 md:h-64"
+                    />
+                  </div>
 
-          <div
-            className={`absolute bottom-0 h-10 w-full rounded-t-lg  bg-white group-hover:shadow-lg ${className}`}
-          ></div>
-        </div>
-
-        <div
-          className={`relative h-80 flex-col ${color?.shadowColor} rounded-b-lg  bg-white p-4 pt-10 group-hover:shadow-lg ${className}`}
-        >
-          <div className="flex justify-between">
-            <div>
-              <div className=" mb-2 mt-1">
-                <Typography
-                  className="cursor-pointer text-sm  font-bold capitalize hover:text-sky-700"
-                  style={{ fontFamily: 'Raleway' }}
-                  onClick={() => onApply()}
-                >
-                  {title}
-                </Typography>
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center justify-between">
-            {isOnline ? (
-              <div className="mb-4 flex items-center">
-                <div className=" flex space-x-1">
-                  <div className="h-3 w-3 self-center  rounded-full border border-solid border-gray-300 bg-green-500"></div>
-                  <div className="inline-block align-middle text-xs">
-                    Online
+                  <div className="bg-white">
+                    <div className="mx-auto flex flex-col gap-3">
+                      <h6 className="p-2 text-sm text-gray-500">
+                        {description}
+                      </h6>
+                      <div className="flex items-center justify-between">
+                        <h6 className="font-roboto-bold p-2 text-blue-500">
+                          ETB {NumberWithCommas(price)}
+                        </h6>
+                        <h6 className="mr-1 rounded-full bg-gray-100 px-4 py-1">
+                          Used
+                        </h6>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ) : (
-              <div className="mb-4 flex items-center space-x-1">
-                <div className="h-3 w-3 self-center  rounded-full border-2 border-solid border-gray-300 bg-gray-400 "></div>
-                <div className="inline-block align-middle text-xs">Offline</div>
-              </div>
-            )}
-            <div
-              className={`mb-4 flex h-6 md:bg-white md:text-black ${color?.buttonColor}
-              cursor-pointer items-center space-x-2 rounded-md border px-1 text-gray-500  group-hover:text-white md:group-hover:text-white ${color?.borderColor}`}
-            >
-              <span className="text-lg font-bold">ETB</span>
-              <Typography className="text-xs">
-                {NumberWithCommas(price)}
-              </Typography>
+              </>
+            </Link>
+
+            <div className="h-0.5 w-full bg-gray-200" />
+            <div className="font-roboto-light mb-2  flex  gap-6 rounded-md p-2">
+              <Link href="/chat">
+                <button className=" flex-grow rounded-full bg-blue-800 py-2 text-white md:mt-0">
+                  Offer
+                </button>
+              </Link>
+              <button className="font-roboto-light flex flex-grow items-center  justify-center text-xl text-gray-400">
+                <BsHeart className="text-gray-400" />
+              </button>
             </div>
           </div>
-          <Typography
-            onClick={() => onApply()}
-            className=" font-Raleway cursor-pointer text-slate-700 hover:text-sky-700"
-            style={{
-              fontFamily: 'Raleway',
-            }}
-          >
-            {description}
-          </Typography>
-          {description?.length > 120 && (
-            <Typography
-              className="cursor-pointer hover:text-sky-700"
-              onClick={() => onApply()}
-            >
-              Read more
-            </Typography>
-          )}
-          <div className=" absolute bottom-3 right-0 flex w-full justify-center">
-            <div className=" flex w-full justify-center">
-              <div className="w-10/12">
-                <div className=" flex justify-center space-x-2">
-                  {Array.from({ length: 5 }).map((_, idx) => (
-                    <FaStar
-                      key={idx}
-                      className="mr-1"
-                      strokeWidth={'1.25'}
-                      width={16}
-                      height={16}
-                    />
-                  ))}
-                </div>
-                <div
-                  onClick={() => router.push('/chat')}
-                  className={`mt-4 h-8  cursor-pointer rounded-md
-                              border   text-center text-sm text-white
-                              md:bg-white md:text-black 
-                              md:group-hover:text-white`}
-                >
-                  <span className="text-blue-500 mt-1 inline-block align-bottom">
-                    Offer
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        </>
       </div>
     </div>
   ) : (
-    <div className="md:w-3/2 group relative flex h-40 w-full flex-col items-center rounded-lg border bg-white shadow-md md:flex-row">
+    <>
       <div
-        onClick={() => onFavorite()}
-        className={` visible absolute top-2 z-40 flex w-full justify-start px-2 sm:opacity-100  ${
-          isFavorite ? '' : 'lg:invisible lg:group-hover:visible'
-        }`}
+        onClick={() => router.push(`/products/${id}`)}
+        className="group relative z-0 mt-0 flex flex-col items-center rounded-lg border bg-white py-2 shadow-md hover:cursor-pointer hover:bg-blue-50 sm:flex-row"
       >
-        <div className="space-y-3">
-          <div className="flex h-10 w-10  items-center justify-center rounded-full border border-solid border-gray-300">
-            <FaHeart
-              className={`${isFavorite ? 'fill-red-400' : 'white'}`}
-              strokeWidth={'1.25'}
-              color={'red'}
-            />
+        <div className="mx-4 h-44 py-2 text-center sm:h-60 sm:w-1/3">
+          <img
+            key={id}
+            src={imageUrl}
+            className="mb-2 h-full w-full rounded-md object-cover sm:h-56 sm:rounded-none"
+          />
+        </div>
+        <div className="flex flex-col justify-between px-4 py-2 sm:w-2/3">
+          <div>
+            <h1 className="text-lg font-bold text-black sm:text-2xl">
+              {title}
+            </h1>
+            <p className="mt-1 text-sm text-gray-600 sm:text-base">
+              {description}
+            </p>
+            <div className="mt-1 text-xs text-gray-600 sm:text-sm">used</div>
           </div>
-        </div>
-      </div>
-      <div
-        className={`${color?.boxColor} flex h-full flex-col items-center rounded object-cover text-purple-500  md:w-64 md:rounded-none md:rounded-l-lg`}
-      >
-        <div className="flex w-full justify-end space-y-3 pr-2">
-          <div
-            className={` flex h-10 w-10 items-center justify-end space-x-1 rounded-full text-sm text-gray-500 `}
-          >
-            <AiOutlineEye />
-            <Typography className="text-sm">{views}</Typography>
-          </div>
-        </div>
-        <div
-          className={`${color?.buttonColor} flex h-24 w-24 items-center justify-center rounded-full group-hover:text-white`}
-        >
-          {icon}
-        </div>
-      </div>
-      <div className="relative flex h-full w-full flex-col space-y-1 p-2">
-        <div className="flex w-full justify-between">
-          <Typography
-            className=" cursor-pointer font-bold capitalize text-gray-700 hover:text-sky-700 "
-            style={{ fontFamily: 'Raleway' }}
-            onClick={() => onApply()}
-          >
-            {title}
-          </Typography>
-          <div className="flex space-x-2 px-5">
-            {Array.from({ length: 5 }).map((_, idx) => (
-              <FaStar
-                key={idx}
-                className="mr-1"
-                fill={`${
-                  rate !== null ? (idx < rate ? 'orange' : 'white') : 'white'
-                }`}
-                color={`${
-                  rate !== null ? (idx < rate ? 'orange' : 'gray') : 'gray'
-                }`}
-                strokeWidth={'1.25'}
-                width={16}
-                height={16}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="mb-1 flex space-x-1">
-          {isOnline ? (
-            <div className="flex items-center">
-              <div className=" flex space-x-1">
-                <div className="h-3 w-3 self-center  rounded-full border border-solid border-gray-300 bg-green-500"></div>
-                <div className="inline-block align-middle text-xs">Online</div>
+          <div className="mt-2 flex items-center justify-between">
+            <h1 className="text-sm font-bold text-blue-700 sm:text-lg">
+              ETB {NumberWithCommas(price)}
+            </h1>
+            <div className="ml-2 mr-1 mt-2 flex items-center text-xs font-bold uppercase sm:text-sm">
+              <BiMap className="font-semibold text-gray-600" />
+              <div className="ml-1 truncate text-gray-600">
+                {region}, Ethiopia
               </div>
             </div>
-          ) : (
-            <div className="flex items-center space-x-1">
-              <div className="h-3 w-3 self-center  rounded-full border-2 border-solid border-gray-300 "></div>
-              <div className="inline-block align-middle text-xs">Offline</div>
-            </div>
-          )}
-        </div>
-        <Typography
-          className="cursor-pointer text-sm font-normal text-gray-700 hover:text-sky-700"
-          onClick={() => onApply()}
-          style={{
-            fontFamily: 'Raleway',
-          }}
-        >
-          {description}
-        </Typography>
-        <div className="absolute bottom-2 right-2">
-          <div
-            onClick={() => router.push('/chat')}
-            className="flex  items-center justify-center  "
-          >
-            <div
-              className={`cursor-pointer self-center rounded py-1
-           text-center text-sm
-              text-black contrast-150
-               md:w-40`}
-            >
-              <span>Offer</span>
+            <div className="mr-2 flex items-center">
+              <div className="mx-2 mr-auto flex py-1 text-xs font-semibold uppercase sm:text-sm">
+                <BsEyeFill
+                  size={18}
+                  className="mr-1 pt-1 font-semibold text-gray-600"
+                />
+                <span className=" mr-1 mt-0">{views}</span>
+              </div>
+              <span className="hidden text-xs font-semibold uppercase text-gray-600 sm:block">
+                views
+              </span>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

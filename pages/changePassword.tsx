@@ -6,6 +6,7 @@ import axios from 'axios';
 import { baseURL } from '@/config';
 import Notify from '@/components/Ui/Notify';
 import Notification from '@/components/Ui/Notification';
+import { useRouter } from 'next/router';
 type changePassword = {
   message: string;
   newPassword: string;
@@ -13,6 +14,7 @@ type changePassword = {
 };
 function ChangePasswordPage() {
   const { NotifyMessage, notify, setNotify } = Notify();
+  const router=useRouter()
   const [loading, setLoading] = useState(false);
   const [password1, setPassword1] = useState('');
   const [password2, setPassword2] = useState('');
@@ -62,15 +64,15 @@ function ChangePasswordPage() {
           },
         }
       );
-      if(data){
-         setLoading(false);
-         NotifyMessage({
-           message: data.message,
-           type: 'success',
-         });
+      if (data) {
+        setLoading(false);
+        NotifyMessage({
+          message: data.message,
+          type: 'success',
+        });
       }
     } catch (error: any) {
-      console.log(error.response.data)
+      console.log(error.response.data);
       NotifyMessage({
         message: error.response.data.error.message,
         type: 'error',
@@ -86,7 +88,10 @@ function ChangePasswordPage() {
       </Head>
       <div className=" bg-gray-50 px-12 pb-32">
         <div className="flex items-center justify-between py-4  text-xl">
-          <div className="flex items-center gap-2 text-xl">
+          <div
+            onClick={() => router.push('/')}
+            className="flex items-center gap-2 text-xl hover:cursor-pointer"
+          >
             <FiArrowLeft />
             <h2>Change Password</h2>
           </div>
@@ -117,7 +122,7 @@ function ChangePasswordPage() {
                     setPassword1(e.target.value);
                   }}
                   placeholder="Current Password"
-                  className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                 />
                 <div className="text-red-600">{password1Err}</div>
               </div>
@@ -136,7 +141,7 @@ function ChangePasswordPage() {
                     setPassword2(e.target.value);
                   }}
                   placeholder="New Password"
-                  className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                 />
                 <div className="text-red-600">{password2Err}</div>
               </div>
@@ -155,7 +160,7 @@ function ChangePasswordPage() {
                   }}
                   id="confirm-password"
                   placeholder="Confirm password"
-                  className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                 />
                 <div className="text-red-600">{password3Err}</div>
               </div>
@@ -164,12 +169,12 @@ function ChangePasswordPage() {
                 {loading ? (
                   <button
                     disabled
-                    className="flex items-center gap-2 self-end rounded-md bg-blue-800 px-10 py-2 font-roboto-regular  text-white"
+                    className="font-roboto-regular flex items-center gap-2 self-end rounded-md bg-blue-800 px-10 py-2  text-white"
                   >
                     Updateing Password ...
                   </button>
                 ) : (
-                  <button className="flex items-center gap-2 self-end rounded-md bg-blue-800 px-10 py-2 font-roboto-regular  text-white">
+                  <button className="font-roboto-regular flex items-center gap-2 self-end rounded-md bg-blue-800 px-10 py-2  text-white">
                     Update Password
                   </button>
                 )}

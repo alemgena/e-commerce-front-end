@@ -1,6 +1,8 @@
-module.exports = () => ({
+// next.config.js
+
+module.exports = {
   images: {
-    domains: ['api.liyumarket.com/images'],
+    domains: ['api.liyumarket.com', 'lh3.googleusercontent.com'],
   },
   typescript: {
     // !! WARN !!
@@ -20,7 +22,4 @@ module.exports = () => ({
     BACKEND_ENDPOINT: process.env.API_URL,
     CONSOLE_BACKEND_IMG_ENDPOIN: process.env.CONSOLE_BACKEND_IMG_ENDPOIN,
   },
-  images: {
-    domains: ['lh3.googleusercontent.com'],
-  },
-});
+};

@@ -15,7 +15,7 @@ interface Props {
 export interface IProduct {
   image: any;
   name: string;
-id:string;
+  id:string;
   price: number;
   discount?: number;
   imagesURL:string[];

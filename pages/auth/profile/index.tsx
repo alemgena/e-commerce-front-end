@@ -11,17 +11,14 @@ import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import PageSpinner from '@/components/Ui/PageSpinner';
 import { baseURL } from '@/config';
 import { useAppSelector } from '@/store';
-import {
-  selectCurrentUser,
- 
-} from '@/store/auth';
+import { selectCurrentUser } from '@/store/auth';
 import Protected from '@/components/protected/protected';
 const ProfilePage = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector(
     (state: RootStateOrAny) => state.login.loggedUser
   );
-  const { user,token} = useAppSelector(selectCurrentUser);
+  const { user, token } = useAppSelector(selectCurrentUser);
   const User = useSelector((state: RootStateOrAny) => state.user.user);
   const { isLoading, error } = useSelector(
     (state: RootStateOrAny) => state.user
@@ -34,7 +31,7 @@ const ProfilePage = () => {
           Authorization: `Bearer ${token}`,
         },
       };
-      let id=user.user?user.user._id:user._id;
+      let id = user.user ? user.user._id : user._id;
       dispatch({ type: GET_USER, id: id, config: config });
     }
   }, [user]);
@@ -52,7 +49,10 @@ const ProfilePage = () => {
           {User.data && (
             <>
               <div className="flex flex-col items-center justify-between py-4 text-xl sm:flex-row">
-                <div className="flex items-center gap-2 text-xl">
+                <div
+                  onClick={() => router.push('/')}
+                  className="flex items-center gap-2 text-xl hover:cursor-pointer"
+                >
                   <FiArrowLeft />
                   <h2>Profile</h2>
                 </div>

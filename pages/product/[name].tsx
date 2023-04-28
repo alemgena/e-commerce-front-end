@@ -9,6 +9,7 @@ import Norecords from '@/components/Ui/Norecords';
 import Notification from '@/components/Ui/Notification';
 import Notify from '@/components/Ui/Notify';
 import NextLink from 'next/link';
+import NumberWithCommas from '@/lib/types/number-commas';
 const ProdcutPage = () => {
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
@@ -45,7 +46,7 @@ const ProdcutPage = () => {
       {isLoading ? (
         <PageSpinner />
       ) : (
-        <div className=" min-h-[86vh] bg-gray-50 py-6 px-4  md:px-12">
+        <div className=" min-h-[86vh] bg-gray-50 px-4 py-6  md:px-12">
           <Notification notify={notify} setNotify={setNotify} />
           <div className="font-roboto-regular flex gap-2 rounded-md bg-white px-4 py-5 text-xl text-gray-400">
             <h4>Showing Result For </h4>
@@ -56,10 +57,14 @@ const ProdcutPage = () => {
               ALL PRODUCTS
             </h3>
             {productData.length ? (
-                <div className=" grid grid-cols-2 items-center justify-center gap-4 pb-8 sm:grid-cols-3 md:grid-cols-4">
+              <div className=" grid grid-cols-2 items-center justify-center gap-4 pb-8 sm:grid-cols-3 md:grid-cols-4">
                 {productData?.map((data: any) => (
-                  <NextLink href={`/products/${data.id}`} passHref>
-               <div className="flex cursor-pointer w-full flex-col rounded-lg border border-gray-100 bg-white shadow-md">
+                  <NextLink
+                    key={data.id}
+                    href={`/products/${data.id}`}
+                    passHref
+                  >
+                    <div className="flex w-full cursor-pointer flex-col rounded-lg border border-gray-100 bg-white shadow-md">
                       <img
                         src={`${baseURL}/${data.imagesURL[0]}`}
                         className="h-52 object-cover"
@@ -68,7 +73,10 @@ const ProdcutPage = () => {
                         <div className="flex flex-col gap-3 p-2">
                           <h6 className="text-sm text-gray-500">{data.name}</h6>
                           <div className="flex items-center justify-between">
-                            <h6 className="font-roboto-bold ">{data.price}</h6>
+                            <h6 className="font-roboto-bold ">
+                              ETB {''}
+                              {NumberWithCommas(data.price)}
+                            </h6>
                             <h6 className="rounded-full bg-gray-100 px-3 py-1">
                               Used
                             </h6>
@@ -76,7 +84,10 @@ const ProdcutPage = () => {
                         </div>
                         <div className="h-0.5 w-full bg-gray-200" />
                         <div className="font-roboto-light  flex  gap-6 rounded-md p-2">
-                          <button className=" rounded-full bg-blue-800 px-3 py-2 text-sm text-white">
+                          <button
+                            onClick={() => router.push('/chat')}
+                            className=" rounded-full bg-blue-800 px-3 py-2 text-sm text-white"
+                          >
                             Make Offer
                           </button>
 
@@ -90,7 +101,7 @@ const ProdcutPage = () => {
                 ))}
               </div>
             ) : (
-              <Norecords/>
+              <Norecords />
             )}
           </div>
         </div>

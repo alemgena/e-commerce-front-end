@@ -1,5 +1,5 @@
 import React from 'react';
-import Carousel from '../carousel';
+import Carousel from '../carousel/carousel-box';
 import CategoryShop from '../CategorySection/CategoryShop';
 import Featured from '../featured/FeaturedProducts';
 import FeaturedShop from '../featured/featuredShop';
@@ -10,7 +10,7 @@ import MegaMenu from './MegaMenu';
 
 const index = () => (
   <div className="mr-6 sm:ml-0 sm:w-full sm:flex-col md:flex  md:flex-row md:items-start md:justify-between  md:overflow-hidden">
-    <div className=" sm:hidden md:mr-10 md:ml-40 md:flex ">
+    <div className=" sm:hidden md:ml-40 md:mr-10 md:flex ">
       <MegaMenu />
     </div>
     <div className="top-0  flex-grow sm:w-full md:hidden lg:hidden">

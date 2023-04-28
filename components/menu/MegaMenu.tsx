@@ -31,6 +31,14 @@ type CategoryProps = {
   imageURL: any;
   subcategory: CategoryProps[] | [];
 };
+interface Category {
+  id: number;
+  subcategory: SubCategory[];
+}
+
+interface SubCategory {
+  id: number;
+}
 
 function MegaMenu() {
   const categoriesData = useSelector(
@@ -43,6 +51,7 @@ function MegaMenu() {
   const { isLoading } = useSelector(
     (state: RootStateOrAny) => state.categories
   );
+  console.log('baseURl', baseURL);
   const [hasData, setHasData] = useState(false);
 
   const memoizedHoveredCategory = useMemo(() => {
