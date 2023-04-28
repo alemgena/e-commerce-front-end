@@ -82,6 +82,7 @@ const SearchPage = () => {
                              <div className=" grid grid-cols-2 items-center justify-center gap-4 pb-8 sm:grid-cols-3 md:grid-cols-4">
                 {productData.data.product?.map((data: any) => (
                      <NextLink href={`/products/${data.id}`} passHref>
+                      {data.imagesURL.length>0&&
                         <div className="flex w-full cursor-pointer flex-col rounded-lg border border-gray-100 bg-white shadow-md">
                     <img
                       src={`${baseURL}/${data.imagesURL[0]}`}
@@ -110,6 +111,7 @@ const SearchPage = () => {
                       </div>
                     </div>
                   </div>
+}
                   </NextLink>
                 ))}
               </div>

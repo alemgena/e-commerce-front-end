@@ -304,6 +304,7 @@ const CategoryPage: NextPage = () => {
                         {products?.map((item: IProduct) => {
                           return (
                             <>
+                            {item.imagesURL.length>0&&
                               <ProductCard
                                 description={item.description}
                                 title={item.name}
@@ -314,7 +315,9 @@ const CategoryPage: NextPage = () => {
                                 imageUrl={`${baseURL}${item.imagesURL[0]}`}
                                 region={item?.region}
                               />
+                            }
                             </>
+                        
                           );
                         })}
                       </div>

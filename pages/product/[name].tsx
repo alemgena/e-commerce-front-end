@@ -64,6 +64,7 @@ const ProdcutPage = () => {
                     href={`/products/${data.id}`}
                     passHref
                   >
+                    {data.imagesURL.length>0&&
                     <div className="flex w-full cursor-pointer flex-col rounded-lg border border-gray-100 bg-white shadow-md">
                       <img
                         src={`${baseURL}/${data.imagesURL[0]}`}
@@ -97,6 +98,7 @@ const ProdcutPage = () => {
                         </div>
                       </div>
                     </div>
+                }
                   </NextLink>
                 ))}
               </div>
