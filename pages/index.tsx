@@ -141,12 +141,14 @@ const Index = ({ user }: any) => {
                 {products.data && (
                   <div className=" grid grid-cols-2 items-center justify-center gap-4 pb-8 sm:grid-cols-3 md:grid-cols-4">
                     {products.data.map((ad: AdsProp, idx: number) => (
+                      <>
+                        {ad.imagesURL.length>0&&
                       <NextLink
                         key={idx.toString()}
                         href={`/products/${ad.id}`}
                         passHref
                       >
-                        {ad.imagesURL.length>0&&
+                      
                         <div className="flex w-full flex-col rounded-lg border border-gray-100 bg-white shadow-md">
                           <a
                             className=" mx-1 mt-1 flex h-60 overflow-hidden rounded-xl"
@@ -176,8 +178,10 @@ const Index = ({ user }: any) => {
                               </p>
                             </div>
                           </div>
-                        </div>}
+                        </div>
                       </NextLink>
+}
+                      </>
                     ))}
                   </div>
                 )}

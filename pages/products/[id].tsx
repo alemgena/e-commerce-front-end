@@ -64,11 +64,14 @@ function ProductDetailPage() {
   //favorite
    const [activeImage, setActiveImage] = useState<any>([]);
    const [productImage, setProductImage] = useState();
+     const [latitude, setLatitude] = useState<any>('');
+     const [longitude, setLongitude] = useState<any>('');
 
   const favorite = useSelector((state: RootStateOrAny) => state.favorite);
   const { isLoading } = useSelector((state: RootStateOrAny) => state.product);
   useEffect(() => {
     dispatch({ type: GET_PRODUCT, id: id });
+    handleSearch()
   }, [id]);
   useEffect(() => {
     if (productData?.data?.imagesURL) {
@@ -76,6 +79,26 @@ function ProductDetailPage() {
       setActiveImage(productData.data.product.imagesURL);
     }
   }, []);
+    const handleSearch = async () => {
+      const apiKey = 'AIzaSyDdfMxmTxz8u1XdD99_JCEX_9S41PbcJPE';
+      const locationNmae = `${productData?.location}, ${productData?.region}`;
+      try {
+        const response = await fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${apiKey}`
+        );
+        const data = await response.json();
+        if (data.status === 'OK') {
+          setLatitude(data.results[0].geometry.location.lat);
+          setLongitude(data.results[0].geometry.location.lng);
+       
+        } else {
+          console.log('Location not found');
+        }
+      } catch (error) {
+        console.error(error);
+      
+      }
+    };
   const addFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     let token = localStorage.getItem('token');
@@ -100,6 +123,7 @@ function ProductDetailPage() {
       });
     }
   }, [favorite.error]);
+  
   useEffect(() => {
     if (favorite.favorite && submit) {
       NotifyMessage({
@@ -180,7 +204,8 @@ function ProductDetailPage() {
       (selectedImg + 1) % productData.data.product.imagesURL.length
     );
   };
-
+console.log("latitude",latitude)
+console.log('longitude', longitude);
   return (
     <>
       <Head>
