@@ -104,6 +104,8 @@ const CategoryPage: NextPage = () => {
   const searchByPrice = async (from: number, to: number) => {
     setLoading(true);
     try {
+      console.log("from",from)
+      console.log("to",to)
       const { data } = await axios.get(
         `${baseURL}api/products?filters=[{"price":{"from":${from},"to":${to}}},{"subcategory":${JSON.stringify(
           subCategoryId
@@ -122,7 +124,7 @@ const CategoryPage: NextPage = () => {
     }
   };
   const prices = [
-    { id: 1, label: '< ETB 500K', from: 0, to: 500000 },
+    { id: 1, label: '< ETB 500K', from: 1, to: 500000 },
     { id: 2, label: 'ETB 500K - 1M', from: 500001, to: 1000000 },
     { id: 3, label: 'ETB 1M - 2M', from: 1000001, to: 2000000 },
     { id: 4, label: 'ETB 2M+', from: 2000001, to: Number.MAX_SAFE_INTEGER },
