@@ -58,12 +58,7 @@ function ProductDetailPage() {
   const productData = useSelector(
     (state: RootStateOrAny) => state.product.product
   );
-  const products = useSelector(
-    (state: RootStateOrAny) => state.products.products
-  );
   //favorite
-   const [activeImage, setActiveImage] = useState<any>([]);
-   const [productImage, setProductImage] = useState();
      const [latitude, setLatitude] = useState<any>('');
      const [longitude, setLongitude] = useState<any>('');
 
@@ -73,15 +68,10 @@ function ProductDetailPage() {
     dispatch({ type: GET_PRODUCT, id: id });
     handleSearch()
   }, [id]);
-  useEffect(() => {
-    if (productData?.data?.imagesURL) {
-      setProductImage(productData.data.product.imagesURL[0]);
-      setActiveImage(productData.data.product.imagesURL);
-    }
-  }, []);
+
     const handleSearch = async () => {
       const apiKey = 'AIzaSyDdfMxmTxz8u1XdD99_JCEX_9S41PbcJPE';
-      const locationName = `${productData.data.product?.location}, ${productData.data.product?.region}`;
+      const locationName = `${productData.data?.product?.location}, ${productData.data.product?.region}`;
       try {
         const response = await fetch(
           `https://maps.googleapis.com/maps/api/geocode/json?address=${locationName}&key=${apiKey}`
@@ -204,8 +194,6 @@ function ProductDetailPage() {
       (selectedImg + 1) % productData.data.product.imagesURL.length
     );
   };
-console.log("latitude",latitude)
-console.log('longitude', longitude);
   return (
     <>
       <Head>
@@ -281,7 +269,9 @@ console.log('longitude', longitude);
                    object-contain md:mt-6"
                   >
                     <Suspense fallback={<div>Loading...</div>}>
-                      <Map center={[latitude, longitude]} />
+                      {latitude&&longitude&&
+                      <Map center={[latitude, longitude]} location={productData.data?.product?.location} region={productData.data.product?.region} />
+}
                     </Suspense>
                   </div>
                 </div>
@@ -512,6 +502,7 @@ console.log('longitude', longitude);
                           console.log(filteredRelatedProducts.length);
                           return (
                             <>
+                            
                               <CarouselBoxCard
                                 key={productItem.id}
                                 product={productItem}

@@ -6,6 +6,8 @@ import L from 'leaflet';
 
 interface IMapProps {
   center: [number, number];
+  location: string;
+  region:string
 }
 
 const Icon = L.icon({
@@ -13,7 +15,7 @@ const Icon = L.icon({
   iconSize: [25, 40],
 });
 
-export const Map: React.FC<IMapProps> = ({ center }) => {
+export const Map: React.FC<IMapProps> = ({ center,location,region }) => {
   return (
     <MapContainer center={center} zoom={14} style={{ height: '420px' }}>
       <TileLayer
@@ -22,7 +24,7 @@ export const Map: React.FC<IMapProps> = ({ center }) => {
       />
 
       <Marker position={center} icon={Icon}>
-        <Popup>Mexico, Abebe Bldg - 4th Flr, Addis Ababa, Ethiopia</Popup>
+        <Popup>{location},{region}</Popup>
       </Marker>
     </MapContainer>
   );

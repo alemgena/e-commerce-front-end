@@ -17,6 +17,7 @@ const CarouselBoxCard: any = (product: any) => {
           key={product.product.toString()}
           className="bg-palette-card/80 flex w-full flex-col rounded-md p-2 shadow-lg backdrop-blur-[10px] backdrop-filter"
         >
+          
           <Link href={`/products/${product.product?.id}`} passHref>
             <>
               <div
