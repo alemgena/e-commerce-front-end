@@ -86,7 +86,10 @@ export function NavItems() {
       <div className="flex items-center justify-center gap-4">
         {!!user && token && (
           <>
-            <button className="relative">
+            <button
+              onClick={() => router.push('/chat')}
+              className="relative"
+            >
               <BiMessage size={30} className=" text-gray-900" />
               <div className="absolute -right-1 -top-2 rounded-full bg-gradient-to-b from-blue-800 via-blue-600 to-blue-500 px-2 py-1 text-xs text-white">
                 <p>1</p>
@@ -102,10 +105,11 @@ export function NavItems() {
               onClick={() => router.push('/notification')}
             >
               <IoIosNotificationsOutline size={30} className=" text-gray-900" />
-               {notificationCount &&<div className="absolute -right-1 -top-2 rounded-full bg-gradient-to-b from-blue-800 via-blue-600 to-blue-500 px-2 py-1 text-xs text-white">
-                <p>{notificationCount}</p>
-              </div>
-}
+              {notificationCount && (
+                <div className="absolute -right-1 -top-2 rounded-full bg-gradient-to-b from-blue-800 via-blue-600 to-blue-500 px-2 py-1 text-xs text-white">
+                  <p>{notificationCount}</p>
+                </div>
+              )}
             </button>
             {token ? (
               <div onClick={() => router.push('/auth/profile')}>

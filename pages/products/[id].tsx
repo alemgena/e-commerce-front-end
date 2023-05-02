@@ -58,21 +58,37 @@ function ProductDetailPage() {
   const productData = useSelector(
     (state: RootStateOrAny) => state.product.product
   );
-  const products = useSelector(
-    (state: RootStateOrAny) => state.products.products
-  );
   //favorite
+     const [latitude, setLatitude] = useState<any>('');
+     const [longitude, setLongitude] = useState<any>('');
+
   const favorite = useSelector((state: RootStateOrAny) => state.favorite);
   const { isLoading } = useSelector((state: RootStateOrAny) => state.product);
   useEffect(() => {
     dispatch({ type: GET_PRODUCT, id: id });
+    handleSearch()
   }, [id]);
-  useEffect(() => {
-    if (productData?.data?.imagesURL) {
-      setProductImage(productData.data.product.imagesURL[0]);
-      setActiveImage(productData.data.product.imagesURL);
-    }
-  }, []);
+
+    const handleSearch = async () => {
+      const apiKey = 'AIzaSyDdfMxmTxz8u1XdD99_JCEX_9S41PbcJPE';
+      const locationName = `${productData.data?.product?.location}, ${productData.data.product?.region}`;
+      try {
+        const response = await fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${locationName}&key=${apiKey}`
+        );
+        const data = await response.json();
+        if (data.status === 'OK') {
+          setLatitude(data.results[0].geometry.location.lat);
+          setLongitude(data.results[0].geometry.location.lng);
+       
+        } else {
+          console.log('Location not found');
+        }
+      } catch (error) {
+        console.error(error);
+      
+      }
+    };
   const addFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     let token = localStorage.getItem('token');
@@ -97,6 +113,7 @@ function ProductDetailPage() {
       });
     }
   }, [favorite.error]);
+  
   useEffect(() => {
     if (favorite.favorite && submit) {
       NotifyMessage({
@@ -130,8 +147,8 @@ function ProductDetailPage() {
           const { data } = await axios.post(
             `${baseURL}api/notifications`,
             {
-              title: 'Test ghghgjg Cat4455',
-              description: 'tyfbhbb',
+              title: 'Product buyer ',
+              description: `Some one is contacting you on the chat${productData.data.product.name} `,
               body: 'Description',
               status: 'un read',
               type: 'chat',
@@ -177,7 +194,6 @@ function ProductDetailPage() {
       (selectedImg + 1) % productData.data.product.imagesURL.length
     );
   };
-
   return (
     <>
       <Head>
@@ -253,7 +269,9 @@ function ProductDetailPage() {
                    object-contain md:mt-6"
                   >
                     <Suspense fallback={<div>Loading...</div>}>
-                      <Map center={[9.005401, 38.763611]} />
+                      {latitude&&longitude&&
+                      <Map center={[latitude, longitude]} location={productData.data?.product?.location} region={productData.data.product?.region} />
+}
                     </Suspense>
                   </div>
                 </div>
@@ -406,7 +424,7 @@ function ProductDetailPage() {
                           </p>
                         </button>
                         <button
-                          onClick={() => router.push('/chat')}
+                          onClick={() => handleChat()}
                           className="font-roboto-medium mt-3 flex items-center gap-2 rounded-full bg-white px-4 py-2 text-blue-800 ring-2 ring-blue-800 md:mt-0"
                         >
                           <BsFillChatLeftTextFill />
@@ -484,6 +502,7 @@ function ProductDetailPage() {
                           console.log(filteredRelatedProducts.length);
                           return (
                             <>
+                            
                               <CarouselBoxCard
                                 key={productItem.id}
                                 product={productItem}
