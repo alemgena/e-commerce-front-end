@@ -71,7 +71,7 @@ function ProductDetailPage() {
 
     const handleSearch = async () => {
       const apiKey = 'AIzaSyDdfMxmTxz8u1XdD99_JCEX_9S41PbcJPE';
-      const locationName = `${productData.data?.product?.location}, ${productData.data.product?.region}`;
+      const locationName = `${productData.data?.product?.location}, ${productData.data?.product?.region}`;
       try {
         const response = await fetch(
           `https://maps.googleapis.com/maps/api/geocode/json?address=${locationName}&key=${apiKey}`
