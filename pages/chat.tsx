@@ -59,6 +59,7 @@ const router=useRouter();
         setMessages(uniqueArray);
         setLoading(false)
       } catch (error: any) {
+        setLoading(false)
         NotifyMessage({
           message: error.response?.data.error.message,
           type: 'error',

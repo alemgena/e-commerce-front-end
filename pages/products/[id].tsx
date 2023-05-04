@@ -70,24 +70,29 @@ function ProductDetailPage() {
     handleSearch();
   }, [id]);
 
-  const handleSearch = async () => {
-    const apiKey = 'AIzaSyDdfMxmTxz8u1XdD99_JCEX_9S41PbcJPE';
-    const locationName = `${productData?.data?.product?.location}, ${productData?.data?.product?.region}`;
-    try {
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${locationName}&key=${apiKey}`
-      );
-      const data = await response.json();
-      if (data.status === 'OK') {
-        setLatitude(data.results[0].geometry.location.lat);
-        setLongitude(data.results[0].geometry.location.lng);
-      } else {
-        console.log('Location not found');
+  
+    const handleSearch = async () => {
+      const apiKey = 'AIzaSyDdfMxmTxz8u1XdD99_JCEX_9S41PbcJPE';
+      const locationName = `${productData.data?.product?.location}, ${productData.data?.product?.region}`;
+      try {
+        const response = await fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${locationName}&key=${apiKey}`
+        );
+        const data = await response.json();
+        if (data.status === 'OK') {
+          setLatitude(data.results[0].geometry.location.lat);
+          setLongitude(data.results[0].geometry.location.lng);
+       
+        } else {
+          console.log('Location not found');
+        }
+      } catch (error) {
+        console.error(error);
+      
       }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    } 
+    
+
   const addFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     let token = localStorage.getItem('token');
@@ -523,7 +528,8 @@ function ProductDetailPage() {
         </div>
       )}
     </>
-  );
-}
+  )}
+
+
 
 export default ProductDetailPage;
