@@ -1,5 +1,4 @@
 // next.config.js
-
 module.exports = {
   images: {
     domains: ['api.liyumarket.com', 'lh3.googleusercontent.com'],

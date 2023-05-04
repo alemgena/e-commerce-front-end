@@ -90,11 +90,11 @@ dispatch({type:GET_FAVOURITE,config:config})
                   </Link>
                 ))}
               </>):(
-            <Norecords col={5}/>)}
+            <Norecords/>)}
           </div>
         </div>
       ):(
-        <Norecords col={5}/>
+        <Norecords/>
       )}
       </div>
     </ProtectedRoute>

@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { FaCartPlus } from 'react-icons/fa';
 import { RootStateOrAny, useSelector } from 'react-redux';
-//import MegaMenu from '../components/menu/MegaMenu';
 import PageSpinner from '@/components/Ui/PageSpinner';
 import Norecords from '@/components/Ui/Norecords';
 import { baseURL } from '@/config';
 import { useRouter } from 'next/router';
-import { useMediaQuery } from 'react-responsive';
 import { getSession } from 'next-auth/client';
-import { useSession } from 'next-auth/client';
 import NextLink from 'next/link';
 import axios from 'axios';
-
+import Head from 'next/head';
 import { GET_PRODUCTS_BY_FEATURED } from '@/types';
 import { setCredentials } from '@/store/auth';
-import { RootState, useAppDispatch, useAppSelector } from '@/store';
+import { useAppDispatch } from '@/store';
 import dynamic from 'next/dynamic';
 import Carousel from '@/components/slide-show';
 import NumberWithCommas from '@/lib/types/number-commas';
@@ -30,9 +27,6 @@ type AdsProp = {
 };
 const Index = ({ user }: any) => {
   const dispatch = useAppDispatch();
-  //  const { logout } = useAppSelector(
-  //    (state: RootState) => state.login
-  //  );
   useEffect(() => {
     const logout = localStorage.getItem('logout');
     if (logout) {
@@ -81,6 +75,9 @@ const Index = ({ user }: any) => {
 
   return (
     <>
+      <Head>
+        <title>Welcome to Liyu Market</title>
+      </Head>
       <div className=" mx-auto">
         <Carousel />
       </div>
@@ -142,45 +139,45 @@ const Index = ({ user }: any) => {
                   <div className=" grid grid-cols-2 items-center justify-center gap-4 pb-8 sm:grid-cols-3 md:grid-cols-4">
                     {products.data.map((ad: AdsProp, idx: number) => (
                       <>
-                        {ad.imagesURL.length>0&&
-                      <NextLink
-                        key={idx.toString()}
-                        href={`/products/${ad.id}`}
-                        passHref
-                      >
-                      
-                        <div className="flex w-full flex-col rounded-lg border border-gray-100 bg-white shadow-md">
-                          <a
-                            className=" mx-1 mt-1 flex h-60 overflow-hidden rounded-xl"
-                            href="#"
+                        {ad.imagesURL.length > 0 && (
+                          <NextLink
+                            key={idx.toString()}
+                            href={`/products/${ad.id}`}
+                            passHref
                           >
-                            <img
-                              className="object-cover"
-                              src={`${baseURL}${ad.imagesURL[0]}`}
-                              alt="product image"
-                              loading="lazy"
-                            />
-                          </a>
-                          <div className="mt-4 px-2 pb-2">
-                            <a href="#">
-                              <h5 className="text-xl font-bold tracking-tight text-slate-900">
-                                {ad.name}
-                              </h5>
-                            </a>
-                            <div className="mb-2 mt-2 flex items-center justify-between">
-                              <p>
-                                <span className="text-sm text-slate-900">
-                                  ETB
-                                </span>
-                                <span className="ml-2 text-xl font-bold text-slate-900">
-                                  {NumberWithCommas(ad.price)}{' '}
-                                </span>
-                              </p>
+                            <div className="flex w-full flex-col rounded-lg border border-gray-100 bg-white shadow-md">
+                              <a
+                                className=" mx-1 mt-1 flex h-60 overflow-hidden rounded-xl"
+                                href="#"
+                              >
+                                <img
+                                  className="object-contain"
+                                  src={`${baseURL}${ad.imagesURL[0]}`}
+                                  alt="product image"
+                                  loading="lazy"
+                                />
+                              </a>
+
+                              <div className="mt-4 px-2 pb-2">
+                                <a href="#">
+                                  <h5 className="text-xl font-bold tracking-tight text-slate-900">
+                                    {ad.name}
+                                  </h5>
+                                </a>
+                                <div className="mb-2 mt-2 flex items-center justify-between">
+                                  <p>
+                                    <span className="text-sm text-slate-900">
+                                      ETB
+                                    </span>
+                                    <span className="ml-2 text-xl font-bold text-slate-900">
+                                      {NumberWithCommas(ad.price)}{' '}
+                                    </span>
+                                  </p>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                      </NextLink>
-}
+                          </NextLink>
+                        )}
                       </>
                     ))}
                   </div>
