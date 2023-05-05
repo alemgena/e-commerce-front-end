@@ -60,7 +60,7 @@ const CategoryPage: NextPage = () => {
   const [subCategoryId, setSubCategory] = React.useState<string>();
   const [mainCategory, setMainCategory] = React.useState<any>();
   const [products, setProducts] = React.useState<any>([]);
-  console.log(products);
+  console.log("count",products);
   const [loading, setLoading] = React.useState<boolean>(false);
   React.useEffect(() => {
     if (categories.data) {

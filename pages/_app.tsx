@@ -22,12 +22,15 @@ function MyApp({ Component, pageProps }: AppProps) {
    }
    },[])
   return (
+      <React.StrictMode>
     <Layout>
       <div id="react-modals" />
       <Provider session={pageProps.session}>
         <Component {...pageProps} />
       </Provider>
     </Layout>
+      </React.StrictMode>
+
   );
 }
 

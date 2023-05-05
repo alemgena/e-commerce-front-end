@@ -59,16 +59,18 @@ function ProductDetailPage() {
     (state: RootStateOrAny) => state.product.product
   );
   //favorite
-     const [latitude, setLatitude] = useState<any>('');
-     const [longitude, setLongitude] = useState<any>('');
+  const [latitude, setLatitude] = useState<any>('');
+  const [longitude, setLongitude] = useState<any>('');
 
   const favorite = useSelector((state: RootStateOrAny) => state.favorite);
-  const { isLoading } = useSelector((state: RootStateOrAny) => state.product);
+  console.log(favorite);
+  const { isLoading } = useSelector((state: RootStateOrAny) => state?.product);
   useEffect(() => {
     dispatch({ type: GET_PRODUCT, id: id });
-    handleSearch()
+    handleSearch();
   }, [id]);
 
+  
     const handleSearch = async () => {
       const apiKey = 'AIzaSyDdfMxmTxz8u1XdD99_JCEX_9S41PbcJPE';
       const locationName = `${productData.data?.product?.location}, ${productData.data?.product?.region}`;
@@ -88,7 +90,9 @@ function ProductDetailPage() {
         console.error(error);
       
       }
-    };
+    } 
+    
+
   const addFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     let token = localStorage.getItem('token');
@@ -113,7 +117,7 @@ function ProductDetailPage() {
       });
     }
   }, [favorite.error]);
-  
+
   useEffect(() => {
     if (favorite.favorite && submit) {
       NotifyMessage({
@@ -213,7 +217,7 @@ function ProductDetailPage() {
       {isLoading ? (
         <PageSpinner />
       ) : (
-        <div className=" bg-gray-350 w-full overflow-x-hidden px-12 pb-32">
+        <div className=" bg-gray-350 mx-auto w-full overflow-x-hidden px-24 pb-32">
           <div className="flex flex items-center gap-2 py-4 text-xl  ">
             <h1
               onClick={() => router.push('/')}
@@ -226,14 +230,13 @@ function ProductDetailPage() {
           {productData.data && (
             <>
               <div className="flex flex-col md:flex-row">
-                <div className="md:w-3/2 w-full">
-                  <div className="w-150  h-86 relative mx-auto">
+                <div className="mx-auto w-full md:w-1/2">
+                  <div className="w-150 max-h-30 relative mx-auto">
                     <img
                       loading="lazy"
                       alt="product img"
-                      className="dark:bg-palette-card h-90    left-0 top-20 h-full
-                       w-full overflow-hidden rounded-sm object-contain object-center
-                     md:drop-shadow-xl"
+                      className="dark:bg-palette-card mx-h-30 left-0 top-20 w-full overflow-hidden rounded-sm object-contain
+                       object-center md:drop-shadow-xl"
                       src={`${baseURL}${productData?.data?.product?.imagesURL[selectedImg]}`}
                     />
 
@@ -249,6 +252,7 @@ function ProductDetailPage() {
                       </span>
                     </button>
                   </div>
+
                   <div className="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-4">
                     {productData.data.product.imagesURL.map(
                       (image: any, index: number) => (
@@ -256,7 +260,7 @@ function ProductDetailPage() {
                           loading="lazy"
                           key={index}
                           src={`${baseURL}${productData?.data?.product?.imagesURL[index]}`}
-                          className={`h-24 w-full cursor-pointer overflow-hidden rounded-sm object-cover sm:h-32 ${
+                          className={`sm:h-22 h-20 w-full cursor-pointer overflow-hidden rounded-sm object-contain ${
                             index === selectedImg && 'ring-2 ring-blue-800 '
                           } `}
                           onClick={() => onClickHandler(index)}
@@ -269,9 +273,13 @@ function ProductDetailPage() {
                    object-contain md:mt-6"
                   >
                     <Suspense fallback={<div>Loading...</div>}>
-                      {latitude&&longitude&&
-                      <Map center={[latitude, longitude]} location={productData.data?.product?.location} region={productData.data.product?.region} />
-}
+                      {latitude && longitude && (
+                        <Map
+                          center={[latitude, longitude]}
+                          location={productData.data?.product?.location}
+                          region={productData.data.product?.region}
+                        />
+                      )}
                     </Suspense>
                   </div>
                 </div>
@@ -502,7 +510,6 @@ function ProductDetailPage() {
                           console.log(filteredRelatedProducts.length);
                           return (
                             <>
-                            
                               <CarouselBoxCard
                                 key={productItem.id}
                                 product={productItem}
@@ -521,7 +528,8 @@ function ProductDetailPage() {
         </div>
       )}
     </>
-  );
-}
+  )}
+
+
 
 export default ProductDetailPage;

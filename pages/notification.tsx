@@ -92,7 +92,7 @@ const NotificationsPage = () => {
             </div>
           ))}
         </div>:
-        <Norecords col={5}/>
+        <Norecords/>
 }
       </div>
 }
