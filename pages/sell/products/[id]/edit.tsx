@@ -1,18 +1,20 @@
 import Head from 'next/head';
-import { FiArrowLeft } from 'react-icons/fi';
 import { AiOutlinePicture } from 'react-icons/ai';
 import { SelectInput } from '@/components/select-input';
+import { IoIosArrowBack } from 'react-icons/io';
+import { useRouter } from 'next/router';
 
 const EditProductPage = () => {
+  const router=useRouter()
   return (
     <>
       <Head>
-        <title>Sell Product</title>
+        <title>Edit Product</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className=" bg-gray-50 px-12 pb-32">
-        <div className="flex items-center gap-2 py-4  text-xl">
-          <FiArrowLeft />
+        <div onClick={()=>router.push("/")} className="flex items-center gap-2 py-4 text-xl  hover:cursor-pointer">
+          <IoIosArrowBack />
           <h2>Edit Product</h2>
         </div>
         <div className="mt-4 flex">
@@ -35,7 +37,8 @@ const EditProductPage = () => {
                 <input
                   type="text"
                   placeholder="Title"
-                  className="w-1/2 rounded-md bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
+                  value={""}
+                  className="font-roboto-regular placeholder:font-roboto-regular w-1/2 rounded-md bg-gray-100 p-3 text-gray-700 placeholder:text-gray-700"
                 />
                 <div className="w-1/2">
                   <SelectInput
@@ -56,7 +59,7 @@ const EditProductPage = () => {
               <textarea
                 rows={4}
                 placeholder="Description"
-                className="w-full resize-none rounded-md bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
+                className="font-roboto-regular placeholder:font-roboto-regular w-full resize-none rounded-md bg-gray-100 p-3 text-gray-700 placeholder:text-gray-700"
               ></textarea>
               <div className="w-1/2">
                 <SelectInput
@@ -76,7 +79,7 @@ const EditProductPage = () => {
               <input
                 type="text"
                 placeholder="Price"
-                className="w-1/2 rounded-md bg-gray-100 p-3 font-roboto-regular text-gray-700 placeholder:font-roboto-regular placeholder:text-gray-700"
+                className="font-roboto-regular placeholder:font-roboto-regular w-1/2 rounded-md bg-gray-100 p-3 text-gray-700 placeholder:text-gray-700"
               />
               <div className="flex items-center gap-2">
                 <input
@@ -93,7 +96,7 @@ const EditProductPage = () => {
                 </label>
               </div>
               <div className="w-1/2">
-                <button className="w-full rounded-md bg-blue-800 py-3 font-roboto-regular text-sm text-white">
+                <button className="font-roboto-regular w-full rounded-md bg-blue-800 py-3 text-sm text-white">
                   Update
                 </button>
               </div>

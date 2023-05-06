@@ -7,7 +7,7 @@ import {
   BsMap,
 } from 'react-icons/bs';
 import { FiArrowLeft } from 'react-icons/fi';
-import { IoIosCall } from 'react-icons/io';
+import { IoIosArrowBack, IoIosCall } from 'react-icons/io';
 import axios from 'axios';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -70,28 +70,24 @@ function ProductDetailPage() {
     handleSearch();
   }, [id]);
 
-  
-    const handleSearch = async () => {
-      const apiKey = 'AIzaSyDdfMxmTxz8u1XdD99_JCEX_9S41PbcJPE';
-      const locationName = `${productData.data?.product?.location}, ${productData.data?.product?.region}`;
-      try {
-        const response = await fetch(
-          `https://maps.googleapis.com/maps/api/geocode/json?address=${locationName}&key=${apiKey}`
-        );
-        const data = await response.json();
-        if (data.status === 'OK') {
-          setLatitude(data.results[0].geometry.location.lat);
-          setLongitude(data.results[0].geometry.location.lng);
-       
-        } else {
-          console.log('Location not found');
-        }
-      } catch (error) {
-        console.error(error);
-      
+  const handleSearch = async () => {
+    const apiKey = 'AIzaSyDdfMxmTxz8u1XdD99_JCEX_9S41PbcJPE';
+    const locationName = `${productData.data?.product?.location}, ${productData.data?.product?.region}`;
+    try {
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${locationName}&key=${apiKey}`
+      );
+      const data = await response.json();
+      if (data.status === 'OK') {
+        setLatitude(data.results[0].geometry.location.lat);
+        setLongitude(data.results[0].geometry.location.lng);
+      } else {
+        console.log('Location not found');
       }
-    } 
-    
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const addFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -223,7 +219,7 @@ function ProductDetailPage() {
               onClick={() => router.push('/')}
               className=" flex text-center hover:cursor-pointer"
             >
-              <FiArrowLeft className="ml-3 mt-1" />
+              <IoIosArrowBack className="ml-3 mt-1" />
               Product List
             </h1>
           </div>
@@ -326,15 +322,19 @@ function ProductDetailPage() {
                         {''} Views
                         <button
                           onClick={(e) => addFavorite(e)}
-                          className="font-roboto-light ml-5 flex items-center gap-2 py-2 text-xl"
+                          className="font-roboto-light ml-5 flex  items-center gap-2 py-2 text-xl hover:text-red-600"
                         >
                           <BsHeart size={16} />
                         </button>
                       </div>
 
                       <div className="mt-3 flex items-center gap-6 sm:mt-0">
-                        <h1 className="text-blue font-bold"> Share On</h1>
+                        <h1 className="text-blue font-bold hover:text-blue-700">
+                          {' '}
+                          Share On
+                        </h1>
                         <FacebookShareButton
+                          
                           url={`http://liyumarket.com/products/${id}`}
                           quote={''}
                           hashtag={productData.data.product.name}
@@ -528,8 +528,7 @@ function ProductDetailPage() {
         </div>
       )}
     </>
-  )}
-
-
+  );
+}
 
 export default ProductDetailPage;

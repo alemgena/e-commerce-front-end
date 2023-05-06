@@ -14,6 +14,7 @@ import { baseURL } from '@/config';
 import { useRouter } from 'next/router';
 import Protected from '@/components/protected/protected';
 import { useAppDispatch } from '@/store';
+import { IoIosArrowBack } from 'react-icons/io';
 const CreateProductPage = () => {
   const [regions, setRegions] = useState<any>([]);
   React.useEffect(() => {
@@ -237,7 +238,7 @@ const CreateProductPage = () => {
       </Head>
       <div className=" m-auto max-w-5xl px-6 md:px-8">
         <div className="flex cursor-pointer items-center  gap-2  py-4 text-xl">
-          <FiArrowLeft
+          <IoIosArrowBack
             className="cursor-pointer"
             onClick={() => router.push('/')}
           />

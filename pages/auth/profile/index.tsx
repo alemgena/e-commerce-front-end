@@ -13,6 +13,7 @@ import { baseURL } from '@/config';
 import { useAppSelector } from '@/store';
 import { selectCurrentUser } from '@/store/auth';
 import Protected from '@/components/protected/protected';
+import { IoIosArrowBack } from 'react-icons/io';
 const ProfilePage = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector(
@@ -23,6 +24,7 @@ const ProfilePage = () => {
   const { isLoading, error } = useSelector(
     (state: RootStateOrAny) => state.user
   );
+  console.log('current user', currentUser);
   useEffect(() => {
     if (!!user && token) {
       let token = localStorage.getItem('token');
@@ -53,7 +55,7 @@ const ProfilePage = () => {
                   onClick={() => router.push('/')}
                   className="flex items-center gap-2 text-xl hover:cursor-pointer"
                 >
-                  <FiArrowLeft />
+                  <IoIosArrowBack />
                   <h2>Profile</h2>
                 </div>
                 <button
