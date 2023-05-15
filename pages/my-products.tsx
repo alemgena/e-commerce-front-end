@@ -1,13 +1,10 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react/button-has-type */
-import { BsEye, BsHeart, BsMap, BsMapFill } from 'react-icons/bs';
+import { BsEye } from 'react-icons/bs';
 import React, { useEffect, useState } from 'react';
-import { FiArrowLeft, FiMapPin } from 'react-icons/fi';
-import { MdDelete } from 'react-icons/md';
+import { FiMapPin } from 'react-icons/fi';
 import Head from 'next/head';
 import Link from 'next/link';
-import { GET_FAVOURITE } from '@/types';
-import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { baseURL } from '@/config';
 import { useRouter } from 'next/router';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -19,15 +16,56 @@ import { useAppSelector } from '@/store';
 import { selectCurrentUser } from '@/store/auth';
 import timeSince from '@/lib/types/time-since';
 import NumberWithCommas from '@/lib/types/number-commas';
-import Edit from './sell/products/[id]/edit';
-import { Delete, EditAttributes } from '@mui/icons-material';
 import { AiFillEdit, AiTwotoneDelete } from 'react-icons/ai';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
+} from '@mui/material';
 function MyProducts() {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
   const [productData, setProductDta] = useState<any>([]);
   const { NotifyMessage, notify, setNotify } = Notify();
   const { user, token } = useAppSelector(selectCurrentUser);
+  const [open, setOpen] = React.useState(false);
+  const [itemTobeDelete, setItemTObeDeleted] = useState('');
+  console.log('itemTobeDelete'), itemTobeDelete;
+  const handleClickOpen = (Id: string) => {
+    setItemTObeDeleted(Id);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleDelete = (pId: string) => {
+    const response=axios
+      .delete(`${baseURL}api/products/${pId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        // handle success
+        NotifyMessage({
+          message: 'product deleted successfully',
+          type: 'error',
+        });
+      })
+      .catch((error) => {
+        // handle error
+        NotifyMessage({
+          message: error.message,
+          type: 'error',
+        });
+      });
+    setOpen(false);
+  };
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -55,6 +93,7 @@ function MyProducts() {
 
     fetchData();
   }, [user]);
+
   console.log('product data', productData[0]);
   return (
     <ProtectedRoute>
@@ -125,9 +164,7 @@ function MyProducts() {
                               Edit
                             </button>
                             <button
-                              onClick={() =>
-                                router.push(`/sell/products/${data.id}/edit`)
-                              }
+                              onClick={() => handleClickOpen(data?.id)}
                               className="flex text-xl font-bold text-red-600"
                             >
                               <AiTwotoneDelete size={20} className="mt-1" />
@@ -149,6 +186,31 @@ function MyProducts() {
           <Norecords />
         )}
       </div>
+      {open && (
+        <>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {'Delete Product'}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Are You Sure to Delete This Product?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button onClick={() => handleDelete(itemTobeDelete)} autoFocus>
+                Ok
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </>
+      )}
     </ProtectedRoute>
   );
 }
