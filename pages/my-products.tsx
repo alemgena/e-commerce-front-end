@@ -43,26 +43,29 @@ function MyProducts() {
     setOpen(false);
   };
   const handleDelete = (pId: string) => {
-    const response=axios
+    const token = localStorage.getItem('token');
+    axios
       .delete(`${baseURL}api/products/${pId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
-        // handle success
-        NotifyMessage({
-          message: 'product deleted successfully',
-          type: 'error',
-        });
+        if (response) {
+          setLoading(false);
+          NotifyMessage({
+            message: 'Product is deleted',
+            type: 'success',
+          });
+        }
       })
       .catch((error) => {
-        // handle error
         NotifyMessage({
           message: error.message,
           type: 'error',
         });
       });
+
     setOpen(false);
   };
 

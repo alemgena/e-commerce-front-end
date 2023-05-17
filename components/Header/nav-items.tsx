@@ -39,7 +39,6 @@ import {
   ShopRounded,
 } from '@mui/icons-material';
 import { RiProfileFill } from 'react-icons/ri';
-import { IoChevronDown } from 'react-icons/io5';
 import timeSince from '@/lib/types/time-since';
 let notificatioCount: any;
 export function NavItems() {

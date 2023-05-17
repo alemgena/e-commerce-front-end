@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import React, { useEffect } from 'react';
-import { FiArrowLeft } from 'react-icons/fi';
 import { useState } from 'react';
 import { SelectInput } from '@/components/select-input';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
@@ -15,11 +14,10 @@ import { useRouter } from 'next/router';
 import Protected from '@/components/protected/protected';
 import { useAppDispatch } from '@/store';
 import { IoIosArrowBack } from 'react-icons/io';
-const CreateProductPage = (props: { mode: 'new' | 'update' }) => {
+const CreateProductPage = () => {
   const [regions, setRegions] = useState<any>([]);
   const router = useRouter();
   const { id } = router.query;
-  console.log("props mode",props?.mode)
   React.useEffect(() => {
     async function fetcRegions() {
       try {
@@ -50,7 +48,6 @@ const CreateProductPage = (props: { mode: 'new' | 'update' }) => {
   );
   /*  */
 
-  const [productDataForUpdate, setProductDtaforUpdate] = useState<any>([]);
   useEffect(() => {
     async function fetchData() {
       try {
@@ -59,7 +56,6 @@ const CreateProductPage = (props: { mode: 'new' | 'update' }) => {
         );
         if (data) {
           setLoading(false);
-          setProductDtaforUpdate(data.data);
         }
       } catch (error: any) {
         setLoading(false);
@@ -159,7 +155,6 @@ const CreateProductPage = (props: { mode: 'new' | 'update' }) => {
     });
     let token = localStorage.getItem('token');
     setLoading(true);
-    dispatch(productAction.setName(productDataForUpdate?.data?.product?.name));
 
     const productData = {
       name: name,
@@ -259,7 +254,6 @@ const CreateProductPage = (props: { mode: 'new' | 'update' }) => {
     );
     setSelectedFiles(updatedFiles);
   };
-  console.log('product data form', productDataForUpdate);
   /*  */
   return (
     <Protected>

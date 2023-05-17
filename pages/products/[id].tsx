@@ -194,11 +194,7 @@ function ProductDetailPage() {
       (selectedImg + 1) % productData.data.product.imagesURL.length
     );
   };
-  const [isOpen, setIsOpen] = useState(false);
 
-  const handleClickFullScreen = () => {
-    setIsOpen(!isOpen);
-  };
   return (
     <>
       <Head>
@@ -219,17 +215,6 @@ function ProductDetailPage() {
         <PageSpinner />
       ) : (
         <>
-          {isOpen && (
-            <div
-              className="fixed left-0 top-0 flex h-screen w-screen items-center justify-center bg-black bg-opacity-75"
-              onClick={handleClickFullScreen}
-            >
-              <img
-                src={`${baseURL}${productData?.data?.product?.imagesURL[selectedImg]}`}
-                className="max-h-full max-w-full"
-              />
-            </div>
-          )}
           <div className=" bg-gray-350 mx-auto w-full overflow-x-hidden px-24 pb-32">
             <div className="flex flex items-center gap-2 py-4 text-xl  ">
               <h1
