@@ -51,7 +51,6 @@ function MegaMenu() {
   const { isLoading } = useSelector(
     (state: RootStateOrAny) => state.categories
   );
-  console.log('baseURl', baseURL);
   const [hasData, setHasData] = useState(false);
 
   const memoizedHoveredCategory = useMemo(() => {

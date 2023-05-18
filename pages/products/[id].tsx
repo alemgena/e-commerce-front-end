@@ -123,6 +123,7 @@ function ProductDetailPage() {
     }
   }, [favorite.favorite]);
   const handleChat = async () => {
+    setClickOnChat(true)
     try {
       const { data } = await axios.post(
         `${baseURL}api/notifications/sendNotification`,
@@ -158,7 +159,31 @@ function ProductDetailPage() {
             config
           );
           if (data) {
-            router.push('/chat');
+             try {
+      let login_token = localStorage.getItem('token');
+      let config = {
+        headers: {
+          Authorization: `Bearer ${login_token}`,
+        },
+      };
+      const { data } = await axios.post(
+        `${baseURL}api/chat`,
+        {
+          message_data: "Can you hir me??",
+          to: productData.data.product.seller._id,
+          product:id,
+        },
+        config
+      );
+      router.push('/chat');
+    } catch (error: any) {
+      setClickOnChat(false)
+      NotifyMessage({
+        message: error.response?.data.error.message,
+        type: 'error',
+      });
+    }
+          
           }
         } catch (error: any) {
           let message: string;
@@ -174,6 +199,7 @@ function ProductDetailPage() {
         }
       }
     } catch (error: any) {
+      setClickOnChat(false)
       NotifyMessage({
         message: error.response.data.error.message,
         type: 'error',
@@ -194,6 +220,7 @@ function ProductDetailPage() {
       (selectedImg + 1) % productData.data.product.imagesURL.length
     );
   };
+  const [clickOnChat,setClickOnChat]=useState<boolean>(false)
   return (
     <>
       <Head>
@@ -425,10 +452,11 @@ function ProductDetailPage() {
                         </button>
                         <button
                           onClick={() => handleChat()}
+                          disabled={clickOnChat}
                           className="font-roboto-medium mt-3 flex items-center gap-2 rounded-full bg-white px-4 py-2 text-blue-800 ring-2 ring-blue-800 md:mt-0"
                         >
                           <BsFillChatLeftTextFill />
-                          <p>Chat</p>
+                          <p>{clickOnChat?'Wating':'Chat'}</p>
                         </button>
                       </div>
 

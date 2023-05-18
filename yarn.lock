@@ -3990,7 +3990,7 @@ __metadata:
     firebase: ^9.17.2
     husky: ^7.0.0
     identity-obj-proxy: ^3.0.0
-    immer: ^9.0.19
+    immer: ^10.0.2
     isomorphic-fetch: ^3.0.0
     jest: ^27.5.1
     leaflet: ^1.9.3
@@ -5464,7 +5464,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"immer@npm:^9.0.16, immer@npm:^9.0.19":
+"immer@npm:^10.0.2":
+  version: 10.0.2
+  resolution: "immer@npm:10.0.2"
+  checksum: 525a3b14210d02ae420c3b9f6ca14f7e9bcf625611d1356e773e7739f14c7c8de50dac442e6c7de3a6e24a782f7b792b6b8666bc0b3f00269d21a95f8f68ca84
+  languageName: node
+  linkType: hard
+
+"immer@npm:^9.0.16":
   version: 9.0.19
   resolution: "immer@npm:9.0.19"
   checksum: f02ee53989989c287cd548a3d817fccf0bfe56db919755ee94a72ea3ae78a00363fba93ee6c010fe54a664380c29c53d44ed4091c6a86cae60957ad2cfabc010

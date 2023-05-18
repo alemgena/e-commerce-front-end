@@ -65,7 +65,7 @@ export function SearchBar() {
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute mt-1  w-full  rounded-md bg-white py-1  text-sm shadow-lg">
-              {regions.map((city, cityIdx) => (
+              {regions.map((city:any, cityIdx:any) => (
                 <Listbox.Option
                   key={cityIdx}
                   className={({ active }) =>

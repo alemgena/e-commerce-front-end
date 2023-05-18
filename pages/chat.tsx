@@ -88,9 +88,8 @@ const router=useRouter();
         `${baseURL}api/chat`,
         {
           message_data: inputMessage,
-          // to: productDetail.seller._id,
           to: reciver,
-          product: '63da74d8ef4c5a0c5f0d70fd',
+          product:productDetail._id,
         },
         config
       );

@@ -13,7 +13,7 @@ export function* updateProfile(actions:any): any {
   try {
     yield put(profileActions.setIsLoading(true));
     console.log("yess")
-    const response = yield updateProfileApi(actions.data);
+    const response = yield updateProfileApi(actions.data, actions.config);
     console.log(response)
     yield put(profileActions.setProfileUpdated(response.data));
     yield put(profileActions.setIsLoading(false));

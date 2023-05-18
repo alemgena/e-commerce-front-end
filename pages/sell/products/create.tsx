@@ -185,7 +185,6 @@ const CreateProductPage = () => {
   const [regionValue, setRegionValue] = useState<any>(null);
   const [subCity, setSubCity] = useState<any>(null);
   const handlRegion = (event: any) => {
-    console.log(event);
     dispatch(productAction.setRegion(event?.name));
     setRegionValue(event);
     setSubCity(regions.find((region: any) => region.name === event?.name));
