@@ -5,7 +5,7 @@ const Norecords = () => {
   const router = useRouter();
 
   return (
-    <div className="flex min-h-screen w-full bg-white">
+    <div className="flex h-auto w-full bg-white">
       <div className="flex w-full justify-center self-center">
         <div className="">
           <svg

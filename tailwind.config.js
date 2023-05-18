@@ -3,13 +3,13 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 module.exports = {
   mode: 'jit',
   content: [
-    './public/**/*.html',
-    './pages/**/*.{js,ts,jsx,tsx}',
+'./public/*.html' ,   
+'./pages/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
     './page-components/**/*.{js,ts,jsx,tsx}',
   ],
   purge: [
-    './public/**/*.html',
+    './public/*.html',
     './pages/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
     './page-components/**/*.{js,ts,jsx,tsx}',
@@ -72,4 +72,5 @@ module.exports = {
   },
 
   plugins: [require('tailwind-scrollbar-hide')],
+  
 };

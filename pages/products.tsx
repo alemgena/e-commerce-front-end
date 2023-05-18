@@ -1,18 +1,17 @@
 /* eslint-disable no-shadow */
 import React, { useState } from 'react';
 import type { NextPage } from 'next';
-import { GetStaticPaths, GetStaticProps } from 'next';
 
 import ProductList from '@/components/productList/ProductList';
-import { ISubCategoryPathsParams } from '@/lib/types/pagePathsParams';
 import { IProduct } from '@/lib/types/products';
 import { useRouter } from 'next/router';
 import { GET_SUB_CATEGORIE } from '@/types';
 import Norecords from '@/components/Ui/Norecords';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
+import Head from 'next/head';
 const subCategory: NextPage<{
   products: IProduct[];
-}> = ({ products }) => {
+}> = ({ }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const query = router.query;
@@ -22,7 +21,7 @@ const subCategory: NextPage<{
   const subCategorie = useSelector(
     (state: RootStateOrAny) => state.subCategories.subCategories
   );
-  const [product, setProduct] = useState<any>([]);
+  const [, setProduct] = useState<any>([]);
   let found: any;
   React.useEffect(() => {
     if (categories.data) {
@@ -44,16 +43,19 @@ const subCategory: NextPage<{
   }, []);
   return (
     <>
+      <Head>
+        <title>Products</title>
+      </Head>
       {subCategorie.data ? (
         <div>
           {subCategorie.data.product.length ? (
             <ProductList productList={subCategorie.data.product} />
           ) : (
-            <Norecords/>
+            <Norecords />
           )}
         </div>
       ) : (
-        <Norecords/>
+        <Norecords />
       )}
     </>
   );

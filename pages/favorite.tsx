@@ -17,6 +17,7 @@ import ConfirmDialog from '../components/Ui/ConfirmDialog';
 import axios from 'axios';
 import Notify from '@/components/Ui/Notify';
 import Notification from '@/components/Ui/Notification';
+import { IoIosArrowBack } from 'react-icons/io';
 function FavoritePage() {
   const router = useRouter();
   let favorite = useSelector((state: RootStateOrAny) => state.favorite);
@@ -81,7 +82,7 @@ function FavoritePage() {
   return (
     <ProtectedRoute>
       <Head>
-        <title>Favorites</title>
+        <title>Favorite</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className=" bg-gray-50 px-12 pb-32">
