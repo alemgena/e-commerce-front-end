@@ -16,6 +16,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import Norecords from '@/components/Ui/Norecords';
 import PageSpinner from '@/components/Ui/PageSpinner';
 import Head from 'next/head';
+import { IoIosArrowBack } from 'react-icons/io';
 let productDetail: any;
 const Chat = () => {
   const { NotifyMessage, notify, setNotify } = Notify();
@@ -142,7 +143,7 @@ setReciverData(data)
             onClick={() => router.push('/')}
             className="my-4 flex items-center gap-2 bg-gray-50 py-4 text-xl hover:cursor-pointer"
           >
-            <FiArrowLeft />
+            <IoIosArrowBack />
             <h2>Chat</h2>
           </div>
           <Notification notify={notify} setNotify={setNotify} />

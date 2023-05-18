@@ -1,6 +1,5 @@
 import Head from 'next/head';
-import React from 'react';
-import { FiArrowLeft } from 'react-icons/fi';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { SelectInput } from '@/components/select-input';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
@@ -14,8 +13,11 @@ import { baseURL } from '@/config';
 import { useRouter } from 'next/router';
 import Protected from '@/components/protected/protected';
 import { useAppDispatch } from '@/store';
+import { IoIosArrowBack } from 'react-icons/io';
 const CreateProductPage = () => {
   const [regions, setRegions] = useState<any>([]);
+  const router = useRouter();
+  const { id } = router.query;
   React.useEffect(() => {
     async function fetcRegions() {
       try {
@@ -27,7 +29,6 @@ const CreateProductPage = () => {
     }
     fetcRegions();
   }, []);
-  const router = useRouter();
   const { NotifyMessage, notify, setNotify } = Notify();
   const dispatch = useAppDispatch();
   const [category, setCategory] = useState<any>();
@@ -45,6 +46,30 @@ const CreateProductPage = () => {
   const { name, description, price, city, region } = useSelector(
     (state: RootStateOrAny) => state.products.inputValues
   );
+  /*  */
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const { data } = await axios.get(
+          `${baseURL}api/products/${id?.toString()}`
+        );
+        if (data) {
+          setLoading(false);
+        }
+      } catch (error: any) {
+        setLoading(false);
+        NotifyMessage({
+          message: error.message,
+          type: 'error',
+        });
+      }
+    }
+
+    fetchData();
+  }, [name]);
+
+  /*  */
   const {
     nameErr,
     descriptionErr,
@@ -66,13 +91,13 @@ const CreateProductPage = () => {
     dispatch(productAction.setCityErr(''));
     let isValid = true;
 
-    if (name.length < 4) {
+    if (name?.length < 4) {
       dispatch(
         productAction.setNameErr('Product name must be at least 4 characters!')
       );
       isValid = false;
     }
-    if (description.length < 4) {
+    if (description?.length < 4) {
       dispatch(
         productAction.setDescriptionErr(
           'description must be longer than 4 characters!'
@@ -130,6 +155,7 @@ const CreateProductPage = () => {
     });
     let token = localStorage.getItem('token');
     setLoading(true);
+
     const productData = {
       name: name,
       description: description,
@@ -174,6 +200,7 @@ const CreateProductPage = () => {
       setLoading(false);
     }
   };
+
   const handlClick = (event: any) => {
     if (event) {
       setOptionsValues(event.value);
@@ -227,7 +254,6 @@ const CreateProductPage = () => {
     );
     setSelectedFiles(updatedFiles);
   };
-
   /*  */
   return (
     <Protected>
@@ -237,11 +263,12 @@ const CreateProductPage = () => {
       </Head>
       <div className=" m-auto max-w-5xl px-6 md:px-8">
         <div className="flex cursor-pointer items-center  gap-2  py-4 text-xl">
-          <FiArrowLeft
+          <IoIosArrowBack
             className="cursor-pointer"
             onClick={() => router.push('/')}
           />
           <h2>Home</h2>
+          {id?.toString()}
         </div>
         <Notification notify={notify} setNotify={setNotify} />
         <div className="mt-4 grid grid-flow-row-dense gap-2 md:grid-cols-3">
@@ -378,7 +405,7 @@ const CreateProductPage = () => {
                           }}
                           getOptionLabel={(option) => option.value}
                           renderInput={(params) => (
-                            <TextField {...params} label={item.name} />
+                            <TextField {...params} label={item?.name} />
                           )}
                         />
                       </Grid>
@@ -414,7 +441,7 @@ const CreateProductPage = () => {
                   value={regionValue}
                   id="combo-box-demo"
                   options={regions}
-                  getOptionLabel={(option) => option.name}
+                  getOptionLabel={(option) => option?.name}
                   renderInput={(params) => (
                     <TextField {...params} label="Regions" />
                   )}

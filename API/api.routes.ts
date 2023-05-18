@@ -15,7 +15,6 @@ const user = {
   updateAccount: `${bases.user}/update-account`,
   forgetPassword: `${bases.user}/forget-password`,
 };
-
 const routes = {
   user,
 };

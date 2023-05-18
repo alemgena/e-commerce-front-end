@@ -21,16 +21,35 @@ function MyApp({ Component, pageProps }: AppProps) {
        });
    }
    },[])
+     const [darkMode, setDarkMode] = useState(false);
+
+     useEffect(() => {
+       const prefersDarkMode = window.matchMedia(
+         '(prefers-color-scheme: dark)'
+       ).matches;
+       setDarkMode(prefersDarkMode);
+     }, []);
+
+     useEffect(() => {
+       if (darkMode) {
+         document.documentElement.classList.add('dark');
+       } else {
+         document.documentElement.classList.remove('dark');
+       }
+     }, [darkMode]);
   return (
       <React.StrictMode>
-    <Layout>
-      <div id="react-modals" />
-      <Provider session={pageProps.session}>
-        <Component {...pageProps} />
-      </Provider>
-    </Layout>
+        <Layout>
+          <div id="react-modals" />
+          <Provider session={pageProps.session}>
+            <Component
+              {...pageProps}
+              darkMode={darkMode}
+              setDarkMode={setDarkMode}
+            />
+          </Provider>
+        </Layout>
       </React.StrictMode>
-
   );
 }
 

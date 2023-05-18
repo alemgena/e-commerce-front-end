@@ -14,6 +14,7 @@ import { PhotoCamera } from '@mui/icons-material';
 import Notify from '@/components/Ui/Notify';
 import Notification from '@/components/Ui/Notification';
 import { baseURL } from '@/config';
+import { IoIosArrowBack } from 'react-icons/io';
 function EditProfilePage() {
   const dispatch = useDispatch();
   const User = useSelector((state: RootStateOrAny) => state.user.user);
@@ -93,7 +94,7 @@ function EditProfilePage() {
             onClick={() => router.push('/auth/profile')}
             className=" flex items-center gap-2 text-xl hover:cursor-pointer"
           >
-            <FiArrowLeft />
+            <IoIosArrowBack />
             <h2>Edit Profile</h2>
           </div>
         </div>
