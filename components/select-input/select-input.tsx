@@ -2,9 +2,6 @@ import React, { Fragment, useState } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { HiChevronDown } from 'react-icons/hi';
 import { AiOutlineCheck } from 'react-icons/ai';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import Chip from '@mui/material/Chip';
 interface IOption {
   label: string;
   name: string;
@@ -57,7 +54,7 @@ export const SelectInput: React.FC<SelectInputProps> = (props) => {
           className="relative z-0 block w-full"
         >
           <Listbox.Button className="flex w-full items-center justify-between rounded-md bg-gray-100 p-3 py-4">
-            <p className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+            <p className="mb-2 block text-sm font-medium text-gray-900 dark:text-black">
               {value ? value.name : placeholder}
             </p>
             <HiChevronDown size={20} />

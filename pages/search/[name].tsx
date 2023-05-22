@@ -7,6 +7,8 @@ import axios from 'axios';
 import { Url } from '@/utils/url';
 import { baseURL } from '@/config';
 import NextLink from 'next/link';
+import PageSpinner from '@/components/Ui/PageSpinner';
+import NumberWithCommas from '@/lib/types/number-commas';
 const SearchPage = () => {
      const [isLoading, setLoading] = useState(false);
      const router = useRouter();
@@ -17,23 +19,21 @@ const SearchPage = () => {
         const [productByName, setProductByName] = useState<any>([]);
      useEffect(() => {
        async function fetchData() {
+        setLoading(true)
          try {
-            
            const { data } = await axios.get(`${baseURL}api/subcategories/byName/${name}`);
-           console.log(data)
-           if (data) {
+           if (data.data.length>0) {
+             console.log(data);
              setLoading(false);
              setProductDta(data);
           setProductByName([])
            }
+           else{
+    handleProductSearch();
+    setSearchProductByName(true);
+           }
+          
          } catch (error: any) {
-            console.log(error.response.data.error.message);
-            setProductDta([])
-
-            if (error.response.data.error.message === 'Sub category not found'){
-                handleProductSearch()
-                   setSearchProductByName(true);
-            }
               setLoading(false);
            NotifyMessage({
              message: error.message,
@@ -44,10 +44,10 @@ const SearchPage = () => {
        fetchData();
      }, [name]);
      const handleProductSearch=async()=>{
+ setLoading(true)
             try {
               const { data } = await axios.get(
-                `${baseURL}api/products?filters=[{"name":${JSON.stringify(name)}}]`
-              );
+                `${baseURL}api/products/byName/${name}`)
               if (data) {
                 setLoading(false);
                 setProductByName(data);
@@ -62,104 +62,122 @@ const SearchPage = () => {
               });
             }
      }
+   
   return (
     <>
       <Head>
         <title>Search Product</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className=" min-h-[86vh] bg-gray-50 py-6  px-12">
-        <div className="flex gap-2 rounded-md bg-white px-4 py-5 font-roboto-regular text-xl text-gray-400">
-          <h4>Showing Result For</h4>
-          <h4 className="text-gray-800">{name}</h4>
-        </div>
-        <div className="mt-10 flex gap-14">
-          <div className="w-full">
-            <h3 className="border-b font-roboto-medium text-xl leading-10">
-              ALL PRODUCTS
-            </h3>
-            {productData.data && (
-                             <div className=" grid grid-cols-2 items-center justify-center gap-4 pb-8 sm:grid-cols-3 md:grid-cols-4">
-                {productData.data.product?.map((data: any) => (
-                  <>
-                  {data.imagesURL.length>0&&
-                     <NextLink href={`/products/${data.id}`} passHref>
-                      
-                        <div className="flex w-full cursor-pointer flex-col rounded-lg border border-gray-100 bg-white shadow-md">
-                    <img
-                      src={`${baseURL}/${data.imagesURL[0]}`}
-                      className=" h-52 object-cover"
-                      alt={data.name}
-                    />
-                    <div className="bg-white">
-                      <div className="flex flex-col gap-3 p-2">
-                        <h6 className="text-sm text-gray-500">{data.name}</h6>
-                        <div className="flex items-center justify-between">
-                          <h6 className="font-roboto-bold ">{data.price}</h6>
-                          <h6 className="rounded-full bg-gray-100 px-3 py-1">
-                            Used
-                          </h6>
-                        </div>
-                      </div>
-                      <div className="h-0.5 w-full bg-gray-200" />
-                      <div className="flex  gap-6  rounded-md p-2 font-roboto-light">
-                        <button className=" rounded-full bg-blue-800 px-3 py-2 text-sm text-white">
-                          Make Offer
-                        </button>
+      {isLoading ? (
+        <PageSpinner />
+      ) : (
+        <div className=" min-h-[86vh] bg-gray-50 px-12  py-6">
+          <div className="font-roboto-regular flex gap-2 rounded-md bg-white px-4 py-5 text-xl text-gray-400">
+            <h4>Showing Result For</h4>
+            <h4 className="text-gray-800">{name}</h4>
+          </div>
+          <div className="mt-10 flex gap-14">
+            <div className="w-full">
+              <h3 className="font-roboto-medium border-b text-xl leading-10">
+                ALL PRODUCTS
+              </h3>
+              {productData.data && (
+                <>
+                  {productData.data.map((item: any) => (
+                    <div className=" grid grid-cols-2 items-center justify-center gap-4 pb-8 sm:grid-cols-3 md:grid-cols-4">
+                      {item.product?.map((data: any) => (
+                        <>
+                          {data.imagesURL.length > 0 && (
+                            <NextLink href={`/products/${data.id}`} passHref>
+                              <div className="flex w-full flex-col rounded-lg border border-gray-100 bg-white shadow-md">
+                                <a
+                                  className=" mx-1 mt-1 flex h-60 overflow-hidden rounded-xl"
+                                  href="#"
+                                >
+                                  <img
+                                    className="object-contain"
+                                    src={`${baseURL}${data.imagesURL[0]}`}
+                                    alt="product image"
+                                    loading="lazy"
+                                  />
+                                </a>
 
-                        <button className="flex flex-grow items-center justify-center  font-roboto-light text-xl text-gray-400">
-                          <BsHeart />
-                        </button>
-                      </div>
+                                <div className="mt-4 px-2 pb-2">
+                                  <a href="#">
+                                    <h5 className="text-xl font-bold tracking-tight text-slate-900">
+                                      {data.name}
+                                    </h5>
+                                  </a>
+                                  <div className="mb-2 mt-2 flex items-center justify-between">
+                                    <p>
+                                      <span className="text-sm text-slate-900">
+                                        ETB
+                                      </span>
+                                      <span className="ml-2 text-xl font-bold text-slate-900">
+                                        {NumberWithCommas(data.price)}{' '}
+                                      </span>
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </NextLink>
+                          )}
+                        </>
+                      ))}
                     </div>
-                  </div>
-
-                  </NextLink>
-}
-                  </>
-                ))}
-              </div>
-            )}
-            <>
-              {searchProductByName && productByName.data && (
-             <div className=" grid grid-cols-2 items-center justify-center gap-4 pb-8 sm:grid-cols-3 md:grid-cols-4">
-                  {productByName?.data.map((data: any) => (
-                         <NextLink href={`/products/${data.id}`} passHref>
-                       <div className="flex w-full flex-col rounded-lg border border-gray-100 bg-white shadow-md">
-                      <img
-                        src={`${baseURL}/${data.imagesURL[0]}`}
-                        className="h-52 w-full object-cover"
-                      />
-                      <div className="bg-white">
-                        <div className="flex flex-col gap-3 p-2">
-                          <h6 className="text-sm text-gray-500">{data.name}</h6>
-                          <div className="flex items-center justify-between">
-                            <h6 className="font-roboto-bold ">{data.price}</h6>
-                            <h6 className="rounded-full bg-gray-100 px-3 py-1">
-                              Used
-                            </h6>
-                          </div>
-                        </div>
-                        <div className="h-0.5 w-full bg-gray-200" />
-                        <div className="flex  gap-6  rounded-md p-2 font-roboto-light">
-                          <button className=" rounded-full bg-blue-800 px-3 py-2 text-sm text-white">
-                            Make Offer
-                          </button>
-
-                          <button className="flex flex-grow items-center justify-center  font-roboto-light text-xl text-gray-400">
-                            <BsHeart />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    </NextLink>
                   ))}
-                </div>
+                </>
               )}
-            </>
+              <>
+                {searchProductByName && productByName.data && (
+                  <div className=" grid grid-cols-2 items-center justify-center gap-4 pb-8 sm:grid-cols-3 md:grid-cols-4">
+                    {productByName?.data.map((data: any) => (
+                      <>
+                        {data.imagesURL.length > 0 && (
+                          <NextLink href={`/products/${data.id}`} passHref>
+                            <div className="flex w-full flex-col rounded-lg border border-gray-100 bg-white shadow-md">
+                              <a
+                                className=" mx-1 mt-1 flex h-60 overflow-hidden rounded-xl"
+                                href="#"
+                              >
+                                <img
+                                  className="object-contain"
+                                  src={`${baseURL}${data.imagesURL[0]}`}
+                                  alt="product image"
+                                  loading="lazy"
+                                />
+                              </a>
+
+                              <div className="mt-4 px-2 pb-2">
+                                <a href="#">
+                                  <h5 className="text-xl font-bold tracking-tight text-slate-900">
+                                    {data.name}
+                                  </h5>
+                                </a>
+                                <div className="mb-2 mt-2 flex items-center justify-between">
+                                  <p>
+                                    <span className="text-sm text-slate-900">
+                                      ETB
+                                    </span>
+                                    <span className="ml-2 text-xl font-bold text-slate-900">
+                                      {NumberWithCommas(data.price)}{' '}
+                                    </span>
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </NextLink>
+                        )}
+                      </>
+                    ))}
+                  </div>
+                )}
+              </>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

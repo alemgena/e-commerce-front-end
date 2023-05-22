@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 /* eslint-disable react/no-array-index-key */
 import axios from 'axios';
-import React from 'react'
+import React from 'react';
 import { Fragment, useState } from 'react';
 import { AiOutlineCheck } from 'react-icons/ai';
 import { MdOutlineArrowDropDown } from 'react-icons/md';
@@ -27,18 +27,18 @@ const cities = [
 ];
 
 export function SearchBar() {
-    const [regions, setRegions] = useState<any>([]);
-    React.useEffect(() => {
-      async function fetcRegions() {
-        try {
-          const { data } = await axios.get(`${baseURL}api/regions/`);
-          if (data) {
-            setRegions(data.data);
-          }
-        } catch (error: any) {}
-      }
-      fetcRegions();
-    }, []);
+  const [regions, setRegions] = useState<any>([]);
+  React.useEffect(() => {
+    async function fetcRegions() {
+      try {
+        const { data } = await axios.get(`${baseURL}api/regions/`);
+        if (data) {
+          setRegions(data.data);
+        }
+      } catch (error: any) {}
+    }
+    fetcRegions();
+  }, []);
   const router = useRouter();
   const [q, setQ] = useState('');
   const [selected, setSelected] = useState(cities[0]);
@@ -48,14 +48,13 @@ export function SearchBar() {
   const handleLSearch = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (q) router.push(`/search/${q}`);
-    setQ('')
   };
 
   return (
-    <div className="font-roboto-regular hidden md:flex lg:flex">
-      <Listbox value={selected} onChange={setSelected}>
-        <div className="relative">
-          <Listbox.Button className="font-roboto-light flex  w-40 justify-between gap-2 rounded-l-lg bg-blue-800 py-3 px-3 text-sm text-white  ">
+    <div className="font-roboto-regular flex   md:hidden lg:hidden">
+      <Listbox  value={selected} onChange={setSelected}>
+        <div className="w-60 relative">
+          <Listbox.Button className="font-roboto-light flex  w-40 justify-between gap-2 rounded-l-lg bg-blue-800 px-3 py-3 text-sm text-white  ">
             <span className="">{selected.name}</span>
             <MdOutlineArrowDropDown className="h-5 w-5  text-white" />
           </Listbox.Button>
@@ -65,12 +64,12 @@ export function SearchBar() {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="absolute mt-1  w-full  rounded-md bg-white py-1  text-sm shadow-lg">
-              {regions.map((city:any, cityIdx:any) => (
+            <Listbox.Options className="absolute mt-1 w-52  rounded-md bg-white py-1  text-sm shadow-lg">
+              {regions.map((city: any, cityIdx: any) => (
                 <Listbox.Option
                   key={cityIdx}
                   className={({ active }) =>
-                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                    `relative cursor-default select-none ${
                       active ? ' text-blue-800' : 'text-gray-900'
                     }`
                   }
@@ -79,7 +78,7 @@ export function SearchBar() {
                   {({ selected }) => (
                     <>
                       <span
-                        className={`block truncate cursor-pointer  ${
+                        className={`block cursor-pointer truncate mt-4 ml-3 ${
                           selected ? 'font-roboto-medium text-blue-800' : ''
                         }`}
                         onClick={() => handleLogout(city.name)}
@@ -88,7 +87,7 @@ export function SearchBar() {
                       </span>
                       {selected ? (
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-blue-800">
-                          <AiOutlineCheck className="h-5 w-5" />
+                          <AiOutlineCheck className="h-5" />
                         </span>
                       ) : null}
                     </>
@@ -107,7 +106,7 @@ export function SearchBar() {
           }}
           type="text"
           placeholder="Search items"
-          className=" h-11 w-80 rounded-r-lg border px-3 py-2 text-sm placeholder-gray-700 focus:outline-none"
+          className=" border-light-blue-500 h-11 w-64 rounded-r-lg border  border-4 border-opacity-100  text-sm placeholder-gray-700 opacity-100 focus:outline-none"
         />
       </form>
     </div>

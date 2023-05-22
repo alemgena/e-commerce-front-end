@@ -126,9 +126,7 @@ export function NavItems() {
                       : 'cursor-pointer text-gray-900'
                   }`}
                 />
-                <div className="absolute -right-1 -top-2 rounded-full bg-gradient-to-b from-blue-800 via-blue-600 to-blue-500 px-2 py-1 text-xs text-white">
-                  <p>1</p>
-                </div>
+               
               </button>
             </Tooltip>
 
@@ -183,7 +181,7 @@ export function NavItems() {
                   {token ? (
                     <>
                       <div
-                        onClick={() => router.push('/auth/profile/')}
+                        
                         style={{
                           display: 'flex',
                           alignItems: 'center',
@@ -203,10 +201,19 @@ export function NavItems() {
                             variant="subtitle1"
                             className="mb-0 text-black"
                           >
-                            {`${user?.user?.first_name}`}
+                            {`${
+                              user.user
+                                ? user?.user?.first_name
+                                : user.first_name
+                            }`}
                           </Typography>
                           <Typography variant="subtitle2" className="">
-                            {`${timeSince(user?.user?.createdAt, true)} ${' '}`}{' '}
+                            {`${timeSince(
+                              user.user
+                                ? user?.user?.createdAt
+                                : user.createdAt,
+                              true
+                            )} ${' '}`}{' '}
                             on Liyu
                           </Typography>
                         </div>

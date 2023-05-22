@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
    name: 'products',
    initialState: {
      inputValues: {
-       name: '',
+       productName:'',
        description: '',
        price: '',
        subcategory: '',
@@ -41,7 +41,7 @@ import { createSlice } from "@reduxjs/toolkit";
        state.productAddError = action.payload;
      },
      setName: (state, action) => {
-       state.inputValues.name = action.payload;
+       state.inputValues.productName = action.payload;
      },
      setRegionErr: (state, action) => {
        state.inputErrors.regionErr = action.payload;

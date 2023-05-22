@@ -7,6 +7,7 @@ type AuthState = {
   token: string | null;
 };
 export interface User {
+  createdAt: any;
   user: any;
   _id: string;
   first_name: string;

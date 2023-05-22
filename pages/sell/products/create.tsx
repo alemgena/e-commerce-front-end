@@ -46,30 +46,6 @@ const CreateProductPage = () => {
   const { name, description, price, city, region } = useSelector(
     (state: RootStateOrAny) => state.products.inputValues
   );
-  /*  */
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const { data } = await axios.get(
-          `${baseURL}api/products/${id?.toString()}`
-        );
-        if (data) {
-          setLoading(false);
-        }
-      } catch (error: any) {
-        setLoading(false);
-        NotifyMessage({
-          message: error.message,
-          type: 'error',
-        });
-      }
-    }
-
-    fetchData();
-  }, [name]);
-
-  /*  */
   const {
     nameErr,
     descriptionErr,

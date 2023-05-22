@@ -18,8 +18,8 @@ import { IoIosArrowBack } from 'react-icons/io';
 const EditProduct = (props: { mode: 'new' | 'update' }) => {
   const [regions, setRegions] = useState<any>([]);
   const router = useRouter();
-  const { id } = router.query;
-  console.log('props mode', props?.mode);
+  const id = router.query.id;
+  console.log(router.query.id);
   React.useEffect(() => {
     async function fetcRegions() {
       try {
@@ -45,32 +45,38 @@ const EditProduct = (props: { mode: 'new' | 'update' }) => {
   const categories = useSelector(
     (state: RootStateOrAny) => state.categories.categories
   );
-  const { name, description, price, city, region } = useSelector(
+  const { productName, description, price, city, region } = useSelector(
     (state: RootStateOrAny) => state.products.inputValues
   );
   /*  */
-
+  const [regionValue, setRegionValue] = useState<any>(null);
+  const [subCity, setSubCity] = useState<any>(null);
   const [productDataForUpdate, setProductDtaforUpdate] = useState<any>([]);
   useEffect(() => {
     async function fetchData() {
-      try {
-        const { data } = await axios.get(
-          `${baseURL}api/products/${id?.toString()}`
-        );
-        if (data) {
+      if (id) {
+        try {
+          console.log('iddd', id);
+          const { data } = await axios.get(`${baseURL}api/products/${id}`);
+          if (data) {
+            setLoading(false);
+            setProductDtaforUpdate(data.data);
+            dispatch(
+              productAction.setDescription(data?.data?.product?.description)
+            );
+            dispatch(productAction.setName(data?.data?.product?.name));
+            dispatch(productAction.setPrice(data.data.product.price))
+            setRegionValue({name:data.data.product.region})
+            dispatch(productAction.setRegion(data.data.product.region));
+            dispatch(productAction.setCity(data.data.product.location))
+          }
+        } catch (error: any) {
           setLoading(false);
-          setProductDtaforUpdate(data.data);
-          console.log("rrrrrr",data.data)
-           dispatch(
-             productAction.setName(data?.data?.product?.name)
-           );
+          NotifyMessage({
+            message: error.message,
+            type: 'error',
+          });
         }
-      } catch (error: any) {
-        setLoading(false);
-        NotifyMessage({
-          message: error.message,
-          type: 'error',
-        });
       }
     }
 
@@ -87,7 +93,6 @@ const EditProduct = (props: { mode: 'new' | 'update' }) => {
     regionErr,
     optionsErr,
   } = useSelector((state: RootStateOrAny) => state.products.inputErrors);
-  dispatch(productAction.setName(productDataForUpdate?.data?.product?.name));
   const validate = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Resetting input errors to default
@@ -100,7 +105,7 @@ const EditProduct = (props: { mode: 'new' | 'update' }) => {
     dispatch(productAction.setCityErr(''));
     let isValid = true;
 
-    if (name?.length < 4) {
+    if (productName?.length < 4) {
       dispatch(
         productAction.setNameErr('Product name must be at least 4 characters!')
       );
@@ -114,35 +119,10 @@ const EditProduct = (props: { mode: 'new' | 'update' }) => {
       );
       isValid = false;
     }
-    if (!subCategory) {
-      dispatch(
-        productAction.setSubcategoryErr('Select category and subcategory!')
-      );
-      isValid = false;
-    }
-    if (!category) {
-      dispatch(
-        productAction.setSubcategoryErr('Select category and subcategory!')
-      );
-      isValid = false;
-    }
     if (!price) {
       dispatch(productAction.setPriceErr('Price Is required!'));
       isValid = false;
     }
-    if (!city) {
-      dispatch(productAction.setCityErr('Subcity Is required!'));
-      isValid = false;
-    }
-    if (!region) {
-      dispatch(productAction.setRegionErr('Region Is required!'));
-      isValid = false;
-    }
-    if (!selectedFiles.length) {
-      setImageError('Pleas Select at leas one image');
-      isValid = false;
-    }
-
     if (isValid) {
       handleSubmit();
     }
@@ -164,10 +144,8 @@ const EditProduct = (props: { mode: 'new' | 'update' }) => {
     });
     let token = localStorage.getItem('token');
     setLoading(true);
-    dispatch(productAction.setName(productDataForUpdate?.data?.product?.name));
-    console.log('nmae', name);
     const productData = {
-      name: name,
+      name: productName,
       description: description,
       price: price,
       subcategory: subCategory.id,
@@ -175,42 +153,32 @@ const EditProduct = (props: { mode: 'new' | 'update' }) => {
       region: region,
       location: city,
     };
-    let formData = new FormData();
-    Array.from(selectedFiles).forEach((item: any) => {
-      formData.append('images', item);
-    });
-    try {
-      const { data } = await axios.post(
-        `${baseURL}api/products/`,
-        productData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (data.data) {
-        await axios
-          .post(`${baseURL}api/products/uploadImages/${data.data.id}`, formData)
-          .then((response) => {
-            if (response.data) {
-              setLoading(false);
-              NotifyMessage({
-                message: 'product is added',
-                type: 'success',
-              });
+        try {
+          const { data } = await axios.patch(
+            `${baseURL}api/products/${id}`,
+            productData,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             }
-          });
-      }
-    } catch (error: any) {
-      NotifyMessage({
-        message: error.response.data.error.message,
-        type: 'error',
-      });
-      setLoading(false);
-    }
-  };
+          );
 
+          if (data.data) {
+            setLoading(false);
+            NotifyMessage({
+              message: 'Successfully updated product',
+              type: 'success',
+            });
+          }
+        } catch (error: any) {
+          NotifyMessage({
+            message: error.response.data.error.message,
+            type: 'error',
+          });
+          setLoading(false);
+        }
+      }
   const handlClick = (event: any) => {
     if (event) {
       setOptionsValues(event.value);
@@ -219,8 +187,7 @@ const EditProduct = (props: { mode: 'new' | 'update' }) => {
       setValuesData((values: any) => [...values, event]);
     }
   };
-  const [regionValue, setRegionValue] = useState<any>(null);
-  const [subCity, setSubCity] = useState<any>(null);
+
   const handlRegion = (event: any) => {
     console.log(event);
     dispatch(productAction.setRegion(event?.name));
@@ -265,10 +232,11 @@ const EditProduct = (props: { mode: 'new' | 'update' }) => {
     setSelectedFiles(updatedFiles);
   };
   /*  */
+  console.log("ttt",subCity)
   return (
     <Protected>
       <Head>
-        <title>Sell Product</title>
+        <title>Edit Product</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className=" m-auto max-w-5xl px-6 md:px-8">
@@ -281,72 +249,6 @@ const EditProduct = (props: { mode: 'new' | 'update' }) => {
         </div>
         <Notification notify={notify} setNotify={setNotify} />
         <div className="mt-4 grid grid-flow-row-dense gap-2 md:grid-cols-3">
-          <div>
-            <label
-              className="text-blue border-blue flex w-64 cursor-pointer
-             flex-col items-center rounded-lg border bg-white px-4 py-6 
-             uppercase tracking-wide shadow-lg hover:bg-blue-800 hover:text-white"
-            >
-              <svg
-                className="h-8 w-8"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-              >
-                <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
-              </svg>
-              <span className="mt-2 text-base leading-normal">
-                Select a file
-              </span>
-              <input
-                type="file"
-                className="hidden"
-                accept="image/*"
-                onChange={handleFileSelect}
-                name="images"
-                multiple
-              />
-            </label>
-            {imageError && <div>{imageError}</div>}
-            <div
-              className={`flex ${
-                selectedFiles.length > 1 ? 'flex-col' : 'flex-row'
-              }`}
-            >
-              {selectedFiles.map(
-                (
-                  image: Blob | MediaSource,
-                  index: React.Key | null | undefined
-                ) => (
-                  <div key={index} className="mt-2 w-1/2">
-                    <div className="relative w-64">
-                      <button
-                        className="absolute right-0 top-0 m-1 rounded-full bg-red-500 p-1
-                       transition duration-200 hover:bg-red-300 focus:bg-red-300"
-                        onClick={() => removeImage(index)}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          className="h-4 w-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                      </button>
-                      <img src={URL.createObjectURL(image)} alt="" />
-                    </div>
-                  </div>
-                )
-              )}
-            </div>
-          </div>
           <div className="col-span-3 rounded-sm bg-white shadow-sm md:col-span-2">
             <form
               onSubmit={(e) => validate(e)}
@@ -362,7 +264,7 @@ const EditProduct = (props: { mode: 'new' | 'update' }) => {
                 <input
                   className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  "
                   type="text"
-                  value={name}
+                  value={productName}
                   id="name"
                   placeholder="Enter product name"
                   onChange={(e) => {

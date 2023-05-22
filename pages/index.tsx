@@ -17,6 +17,7 @@ import Carousel from '@/components/slide-show';
 import NumberWithCommas from '@/lib/types/number-commas';
 const MegaMenu = dynamic(() => import('../components/menu/MegaMenu'));
 const Category = dynamic(() => import('../components/CategorySection'));
+import { SearchBar } from '../components/Header/mobilSearch-bar';
 type AdsProp = {
   name: string;
   url: string;
@@ -78,10 +79,12 @@ const Index = ({ user }: any) => {
       <Head>
         <title>Welcome to Liyu Market</title>
       </Head>
-      <div className=" mx-auto">
+      <div className="hidden md:block lg:block mx-auto">
         <Carousel />
       </div>
-      <></>
+   <div className='mb-8'>
+    <SearchBar/>
+   </div>
       <div className="flex justify-between gap-x-4 px-2 md:px-6">
         <div className=" hidden w-1/4 lg:block">
           <MegaMenu />

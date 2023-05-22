@@ -9,6 +9,7 @@ class MyDocument extends Document {
         <Head>
           <meta charSet="utf-8" />
           <meta name="description" content="Liyu Market" />
+          <meta name="theme-color" content="#FF0000" />
           <link rel="shortcut icon" href="/logo.ico" />
         </Head>
         <body>

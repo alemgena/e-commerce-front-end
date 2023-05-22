@@ -97,7 +97,7 @@ function FavoritePage() {
         </div>
         {favorite.products.data ? (
           <div className=" grid grid-cols-2 items-center justify-center gap-4 pb-8 sm:grid-cols-3 md:grid-cols-4">
-            {products.length>0 ? (
+            {products?.length>0 ? (
               <>
                 {products?.map((data: any) => (
                   <div
