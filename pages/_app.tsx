@@ -6,19 +6,8 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/globals.css';
-import dynamic from 'next/dynamic';
-
-const ServiceWorkerComponent = dynamic(
-  () => import('./ServiceWorkerComponent'),
-  {
-    ssr: false,
-  }
-);
 function MyApp({ Component, pageProps }: AppProps) {
-
-
      const [darkMode, setDarkMode] = useState(false);
-
      useEffect(() => {
        const prefersDarkMode = window.matchMedia(
          '(prefers-color-scheme: dark)'
@@ -37,7 +26,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       <React.StrictMode>
         <Layout>
           <div id="react-modals" />
-          <ServiceWorkerComponent/>
           <Provider session={pageProps.session}>
             <Component
               {...pageProps}
