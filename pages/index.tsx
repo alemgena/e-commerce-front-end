@@ -64,13 +64,15 @@ const Index = ({ user }: any) => {
   const { isLoading } = useSelector(
     (state: RootStateOrAny) => state.featuredProducts
   );
+  const[productData,setProductDta]=useState<any>([])
   const [hasData, setHasData] = useState(false);
   useEffect(() => {
-    dispatch({ type: GET_PRODUCTS_BY_FEATURED, featured: true });
+    dispatch({ type: GET_PRODUCTS_BY_FEATURED});
   }, []);
   useEffect(() => {
     if (products.data) {
       if (!products.data.length) setHasData(true);
+      setProductDta( [...products.data].sort((a, b) => a.createdAt - b.createdAt).reverse())
     }
   }, [products.data]);
 
@@ -140,7 +142,7 @@ const Index = ({ user }: any) => {
               <span>
                 {products.data && (
                   <div className=" grid grid-cols-2 items-center justify-center gap-4 pb-8 sm:grid-cols-3 md:grid-cols-4">
-                    {products.data.map((ad: AdsProp, idx: number) => (
+                    {productData.map((ad: AdsProp, idx: number) => (
                       <>
                         {ad.imagesURL.length > 0 && (
                           <NextLink

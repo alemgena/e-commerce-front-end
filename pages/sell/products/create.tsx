@@ -43,7 +43,7 @@ const CreateProductPage = () => {
   const categories = useSelector(
     (state: RootStateOrAny) => state.categories.categories
   );
-  const { name, description, price, city, region } = useSelector(
+  const { productName, description, price, city, region } = useSelector(
     (state: RootStateOrAny) => state.products.inputValues
   );
   const {
@@ -67,7 +67,7 @@ const CreateProductPage = () => {
     dispatch(productAction.setCityErr(''));
     let isValid = true;
 
-    if (name?.length < 4) {
+    if (productName?.length < 4) {
       dispatch(
         productAction.setNameErr('Product name must be at least 4 characters!')
       );
@@ -133,7 +133,7 @@ const CreateProductPage = () => {
     setLoading(true);
 
     const productData = {
-      name: name,
+      name: productName,
       description: description,
       price: price,
       subcategory: subCategory.id,
@@ -328,7 +328,7 @@ const CreateProductPage = () => {
                 <input
                   className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  "
                   type="text"
-                  value={name}
+                  value={productName}
                   id="name"
                   placeholder="Enter product name"
                   onChange={(e) => {

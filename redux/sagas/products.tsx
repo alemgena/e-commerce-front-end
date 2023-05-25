@@ -40,7 +40,7 @@ export function* getProduct(actions:any): any {
 export function* getFeaturedProducts(actions: any): any {
   try {
     yield put(productAction.setIsLoading(true));
-    const response = yield getProductsByFeaturedAPI(actions.featured);
+    const response = yield getProductsByFeaturedAPI();
     yield put(featuredProductsAction.setProducts(response.data));
     yield put(productAction.setIsLoading(false));
   } catch (error: any) {
