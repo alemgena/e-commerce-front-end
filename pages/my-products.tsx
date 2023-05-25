@@ -7,7 +7,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { baseURL } from '@/config';
 import { useRouter } from 'next/router';
-import ProtectedRoute from '@/components/ProtectedRoute';
+import ProtectedRoute from '@/components/protected/protected';
 import Norecords from '@/components/Ui/Norecords';
 import { IoIosArrowBack } from 'react-icons/io';
 import axios from 'axios';
