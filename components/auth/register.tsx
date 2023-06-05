@@ -8,7 +8,7 @@ import Notification from '../../components/Ui/Notification';
 import { RootState, useAppDispatch, useAppSelector } from '@/store';
 import { closeModal, openModal } from '@/store/modal';
 import { Login } from './login';
-
+import { useTranslation } from 'react-i18next';
 function validateEmail(email: string) {
   const email_pattern =
     /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -16,6 +16,7 @@ function validateEmail(email: string) {
 }
 
 export const Register: React.FC = () => {
+  const {t}=useTranslation()
   const dispatch = useAppDispatch();
   const { NotifyMessage, notify, setNotify } = Notify();
   const { first_name, last_name, email, phone, password1, password2 } =
@@ -129,7 +130,7 @@ export const Register: React.FC = () => {
       <div className="w-full rounded-lg bg-white  sm:max-w-md md:mt-0 xl:p-0 ">
         <div className="flex flex-col items-center justify-start space-y-4 space-y-6">
           <h1 className="flex items-center justify-between text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-            <span className="flex-grow">Register To Liyu</span>
+            <span className="flex-grow">{t('register to liyu')}</span>
             <span className="ml-10 mt-1 flex-shrink-0">
               <button>
                 <FaTimes
@@ -148,7 +149,7 @@ export const Register: React.FC = () => {
                 htmlFor="First Name"
                 className="mb-2 block text-sm font-medium text-gray-900"
               >
-                First Name
+                {t('first name')}
               </label>
               <input
                 name="First Name"
@@ -169,7 +170,7 @@ export const Register: React.FC = () => {
                 htmlFor="Last Name"
                 className="mb-2 block text-sm font-medium text-gray-900"
               >
-                Last Name
+                {t('last name')}
               </label>
               <input
                 name="Last Name"
@@ -188,7 +189,7 @@ export const Register: React.FC = () => {
                 htmlFor="Email"
                 className="mb-2 block text-sm font-medium text-gray-900"
               >
-                Email
+                {t('email')}
               </label>
               <input
                 name="Email"
@@ -208,7 +209,7 @@ export const Register: React.FC = () => {
                 htmlFor="Phone Number"
                 className="mb-2 block text-sm font-medium text-gray-900"
               >
-                Phone Number
+                {t('phone number')}
               </label>
               <input
                 name="Phone Number"
@@ -227,7 +228,7 @@ export const Register: React.FC = () => {
                 htmlFor="password"
                 className="mb-2 block text-sm font-medium text-gray-900"
               >
-                Password
+                {t('password')}
               </label>
               <input
                 name="password"
@@ -249,7 +250,7 @@ export const Register: React.FC = () => {
                 htmlFor="confirm"
                 className="mb-2 block text-sm font-medium text-gray-900"
               >
-                Confirm password
+                {t('confirm password')}
               </label>
               <input
                 name="confirm"
@@ -271,17 +272,17 @@ export const Register: React.FC = () => {
               type="submit"
               className="mt-4 inline-flex w-full items-center justify-center rounded bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800"
             >
-              {isLoading ? 'Signing up' : 'Sign up'}
+              {isLoading ? t('signing up') : t('sign up')}
             </button>
           </form>
           <div className="font-roboto-regular my-8 flex flex-col items-center gap-4 text-sm">
             <p>
-              Already have an account?{' '}
+              {t('already have an account')}?{' '}
               <span
                 className="cursor-pointer text-blue-800"
                 onClick={() => dispatch(openModal({ Component: Login }))}
               >
-                Login
+                {t('login')}
               </span>
             </p>
           </div>

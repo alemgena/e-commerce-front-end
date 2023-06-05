@@ -1,17 +1,10 @@
 import { useState, useEffect } from 'react';
-import {
-  BsChevronUp,
-  BsEye,
-  BsFillChatLeftTextFill,
-  BsHeart,
-  BsMap,
-} from 'react-icons/bs';
+import { BsEye, BsFillChatLeftTextFill, BsHeart } from 'react-icons/bs';
 import { FiArrowLeft } from 'react-icons/fi';
-import { IoIosArrowBack, IoIosCall } from 'react-icons/io';
+import { IoIosCall } from 'react-icons/io';
 import axios from 'axios';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { Disclosure } from '@headlessui/react';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -42,14 +35,21 @@ import NumberWithCommas from '@/lib/types/number-commas';
 import timeSince from '@/lib/types/time-since';
 import { IoCheckmarkCircleOutline } from 'react-icons/io5';
 import FormatNumber from '@/lib/types/number-format';
-import { Avatar } from '@mui/material';
-import { LocationCity, MapOutlined } from '@mui/icons-material';
+import { Avatar, TextField } from '@mui/material';
+import { Add, LocationCity, MapOutlined } from '@mui/icons-material';
+import { useTranslation } from 'react-i18next';
 import { MdLocationOn } from 'react-icons/md';
 import { FaCamera } from 'react-icons/fa';
+import Controls from '@/components/Ui/controls/Controls';
+import { useAppSelector } from '@/store';
+import { selectCurrentUser } from '@/store/auth';
 const Map = dynamic(() => import('@/components/map').then((mod) => mod.Map), {
   ssr: false,
 });
 function ProductDetailPage() {
+    const [userInfo, setUserInfo] = useState<any>();
+    const { user } = useAppSelector(selectCurrentUser);
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
@@ -58,18 +58,19 @@ function ProductDetailPage() {
   const productData = useSelector(
     (state: RootStateOrAny) => state.product.product
   );
-  //favorite
   const [latitude, setLatitude] = useState<any>('');
   const [longitude, setLongitude] = useState<any>('');
-
   const favorite = useSelector((state: RootStateOrAny) => state.favorite);
-  console.log(favorite);
   const { isLoading } = useSelector((state: RootStateOrAny) => state?.product);
   useEffect(() => {
     dispatch({ type: GET_PRODUCT, id: id });
     handleSearch();
   }, [id]);
-
+   useEffect(() => {
+   if (!!user) {
+     setUserInfo(user.user ? user.user : user);
+   }
+   }, [user]);
   const handleSearch = async () => {
     const apiKey = 'AIzaSyDdfMxmTxz8u1XdD99_JCEX_9S41PbcJPE';
     const locationName = `${productData.data?.product?.location}, ${productData.data?.product?.region}`;
@@ -88,7 +89,6 @@ function ProductDetailPage() {
       console.error(error);
     }
   };
-
   const addFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     let token = localStorage.getItem('token');
@@ -113,7 +113,6 @@ function ProductDetailPage() {
       });
     }
   }, [favorite.error]);
-
   useEffect(() => {
     if (favorite.favorite && submit) {
       NotifyMessage({
@@ -122,85 +121,43 @@ function ProductDetailPage() {
       });
     }
   }, [favorite.favorite]);
-  const handleChat = async () => {
-    setClickOnChat(true);
+  const[message,setMessage]=useState<string>()
+   const [isMessageSend, setIsMessageSend] = useState<boolean>(false);
+  const handleChat = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setIsMessageSend(true)
     try {
+      let login_token = localStorage.getItem('token');
+      let config = {
+        headers: {
+          Authorization: `Bearer ${login_token}`,
+        },
+      };
       const { data } = await axios.post(
-        `${baseURL}api/notifications/sendNotification`,
+        `${baseURL}api/chat`,
         {
-          notification: {
-            title: 'Firebase',
-            body: 'Firebase is awesome',
-            click_action: 'http://localhost:3000/',
-            icon: 'http://url-to-an-icon/icon.png',
-          },
-          to: productData.data.product.seller.device_token,
-        }
+          message_data: message,
+          to: productData.data.product.seller._id,
+          product: id,
+        },
+        config
       );
-      if (data.success) {
-        let login_token = localStorage.getItem('token');
-        let config = {
-          headers: {
-            Authorization: `Bearer ${login_token}`,
-          },
-        };
-        try {
-          const { data } = await axios.post(
-            `${baseURL}api/notifications`,
-            {
-              title: 'Product buyer ',
-              description: `Some one is contacting you on the chat${productData.data.product.name} `,
-              body: 'Description',
-              status: 'un read',
-              type: 'chat',
-              image: 'images/notification/image_1680007561342.png',
-              userId: productData.data.product.seller._id,
-            },
-            config
-          );
-          if (data) {
-            try {
-              let login_token = localStorage.getItem('token');
-              let config = {
-                headers: {
-                  Authorization: `Bearer ${login_token}`,
-                },
-              };
-              const { data } = await axios.post(
-                `${baseURL}api/chat`,
-                {
-                  message_data: 'Can you hir me??',
-                  to: productData.data.product.seller._id,
-                  product: id,
-                },
-                config
-              );
-              router.push('/chat');
-            } catch (error: any) {
-              setClickOnChat(false);
-              NotifyMessage({
-                message: error.response?.data.error.message,
-                type: 'error',
-              });
-            }
-          }
-        } catch (error: any) {
-          let message: string;
-          if (error.response.data.error.message === 'Please authenticate')
-            message = 'your sesstion is expired login again';
-          else {
-            message = error.response.data.error.message;
-          }
-          NotifyMessage({
-            message: message,
-            type: 'error',
-          });
-        }
-      }
+      setMessage('')
+      setIsMessageSend(false)
+        NotifyMessage({
+          message: 'message  send successfully  ',
+          type: 'success',
+        });
     } catch (error: any) {
-      setClickOnChat(false);
+      let message: string;
+      if (error.response.data.error.message === 'Please authenticate')
+        message = 'your sesstion is expired login again';
+      else {
+        message = error.response.data.error.message;
+      }
+      setIsMessageSend(false)
       NotifyMessage({
-        message: error.response.data.error.message,
+        message: message,
         type: 'error',
       });
     }
@@ -221,7 +178,6 @@ function ProductDetailPage() {
   };
 
   const [clickOnChat, setClickOnChat] = useState<boolean>(false);
-
   return (
     <>
       <Head>
@@ -296,14 +252,31 @@ function ProductDetailPage() {
                     className="aspect-w-16 aspect-h-9 md:w-3/2 relative z-0 mt-10 w-full overflow-hidden rounded-sm
                    object-contain md:mt-6"
                   >
+                    <div className="font-roboto-light  mb-8 mt-8 grid w-full grid-cols-2 gap-4 rounded-md bg-white shadow-sm lg:mb-4">
+                      {productData?.data?.product?.options?.map((item: any) => (
+                        <>
+                          <div
+                            className="font-bold"
+                            style={{ color: '#000000', fontSize: '18px' }}
+                          >
+                            {item.id.name}
+                          </div>
+                          {item.values.map((data: any) => (
+                            <div>{data.value}</div>
+                          ))}
+                        </>
+                      ))}
+                    </div>
                     <Suspense fallback={<div>Loading...</div>}>
-                      {latitude && longitude? (
+                      {latitude && longitude ? (
                         <Map
                           center={[latitude, longitude]}
                           location={productData.data?.product?.location}
                           region={productData.data.product?.region}
-                        />):(
-                        <Map center={[9.005401, 38.763611]} 
+                        />
+                      ) : (
+                        <Map
+                          center={[9.005401, 38.763611]}
                           location={productData.data?.product?.location}
                           region={productData.data.product?.region}
                         />
@@ -334,7 +307,9 @@ function ProductDetailPage() {
                       </h6>
                     </div>
                     <div className="rounded-md bg-white px-4 py-6 shadow-sm">
-                      <h2 className="mb-4 text-lg font-bold">Description</h2>
+                      <h2 className="mb-4 text-lg font-bold">
+                        {t('description')}
+                      </h2>
                       <p className="text-sm text-gray-600">
                         {productData.data.product.description}
                       </p>
@@ -351,7 +326,7 @@ function ProductDetailPage() {
                         <span className="p-2">
                           {FormatNumber(productData.data.product.viewCount)}
                         </span>
-                        {''} Views
+                        {''} {t('views')}
                         <button
                           onClick={(e) => addFavorite(e)}
                           className="font-roboto-light ml-5 flex items-center gap-2 py-2 text-xl"
@@ -389,7 +364,7 @@ function ProductDetailPage() {
 
                     <div className="  font-roboto-light rounded-md bg-white p-4 shadow-sm">
                       <h2 className="mb-4 text-lg font-bold">
-                        Seller Address{' '}
+                        {t('seller address')}{' '}
                       </h2>
                       <div className="flex items-center gap-6">
                         <div className="relative">
@@ -457,55 +432,39 @@ function ProductDetailPage() {
                             )}
                           </p>
                         </button>
+                        {!!user&&productData.data.product.seller._id!==userInfo?._id&&
                         <button
-                          onClick={() => handleChat()}
+                          onClick={() => setClickOnChat(true)}
+                          disabled={clickOnChat}
                           className="font-roboto-medium mt-3 flex items-center gap-2 rounded-full bg-white px-4 py-2 text-blue-800 ring-2 ring-blue-800 md:mt-0"
                         >
                           <BsFillChatLeftTextFill />
                           <p>Chat</p>
                         </button>
+}
+                        {clickOnChat && (
+                          <form onSubmit={(e) => handleChat(e)}>
+                            <TextField
+                              fullWidth
+                              label="Message"
+                              id="fullWidth"
+                              value={message}
+                              onChange={(e) => {
+                                setMessage(e.target.value);
+                              }}
+                            />
+                            <Controls.Button
+                              text={isMessageSend?"Sending":"Start Chat"}
+                              variant="outlined"
+                              startIcon={<Add />}
+                              type="submit"
+                              disabled={isMessageSend}
+                            />
+                          </form>
+                        )}
                       </div>
-
-                      {/*  */}
                     </div>
                     <div className="font-roboto-light rounded-md bg-white shadow-sm">
-                      {productData?.data?.product?.options?.map(
-                        (option: {
-                          id: React.Key | null | undefined;
-                          title:
-                            | string
-                            | number
-                            | boolean
-                            | React.ReactElement<
-                                any,
-                                string | React.JSXElementConstructor<any>
-                              >
-                            | React.ReactFragment
-                            | React.ReactPortal
-                            | null
-                            | undefined;
-                        }) => (
-                          <Disclosure key={option.id}>
-                            {({ open }) => (
-                              <>
-                                <Disclosure.Button className="text-blac font-roboto-bold flex  w-full justify-between border-b-2 border-gray-100 p-4 text-left  text-lg">
-                                  <span>{option.title}</span>
-                                  <BsChevronUp
-                                    className={`${
-                                      open ? 'rotate-180 transform' : ''
-                                    } h-5 w-5 `}
-                                  />
-                                </Disclosure.Button>
-                                <Disclosure.Panel className="px-4 pb-2 pt-4  text-gray-500">
-                                  If you're unhappy with your purchase for any
-                                  reason, email us within 90 days and we'll
-                                  refund you in full, no questions asked.
-                                </Disclosure.Panel>
-                              </>
-                            )}
-                          </Disclosure>
-                        )
-                      )}
                       <div className="mt-0 rounded-md bg-white font-bold shadow-sm">
                         <h5 className="ml-2 p-2">Safety Tips</h5>
                         <ul className=" ml-6  list-disc bg-white p-4 font-light">
@@ -526,14 +485,13 @@ function ProductDetailPage() {
                   </div>
                 </div>
               </div>
-              {/* div2 end here */}
+
               {filteredRelatedProducts?.length > 0 ? (
                 <div className="w-100 flex flex-col">
                   <div className=" overflow-hidden ">
                     <div className="w-full overflow-x-hidden">
                       <CarouselBox title="Related Products" full={true}>
                         {filteredRelatedProducts?.map((productItem: any) => {
-                          console.log(filteredRelatedProducts.length);
                           return (
                             <>
                               <CarouselBoxCard
@@ -558,5 +516,3 @@ function ProductDetailPage() {
 }
 
 export default ProductDetailPage;
-
-

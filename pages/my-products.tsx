@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     width: 400,
     // height:200,
     padding: '0px',
-bottom:50
+    bottom: 50,
   },
   dialogTitle: {
     paddingRight: '0px',
@@ -55,7 +55,7 @@ bottom:50
   },
 }));
 function MyProducts() {
-  const classes=useStyles()
+  const classes = useStyles();
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
   const [productData, setProductDta] = useState<any>([]);
@@ -67,141 +67,136 @@ function MyProducts() {
     title: '',
     subTitle: '',
   });
-  const handleDelete = (pId: string) => {
-      setProductDta(productData.filter((item: any) => item.id !== pId));
-     setConfirmDialog({
-       ...confirmDialog,
-       isOpen: false,
-     });
+  const handleDelete = async (pId: string) => {
+    setProductDta(productData.filter((item: any) => item.id !== pId));
+    setConfirmDialog({
+      ...confirmDialog,
+      isOpen: false,
+    });
     const token = localStorage.getItem('token');
-    axios
-      .delete(`${baseURL}api/products/${pId}`, {
+    try {
+      const { data } = await axios.delete(`${baseURL}api/products/${pId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
-      .then((response) => {
-        if (response) {
-          setLoading(false);
-          setProductDta(productData.filter((item: any) => item.id !== pId));
-          NotifyMessage({
-            message: 'Product is deleted',
-            type: 'success',
-          });
-        }
-      })
-      .catch((error) => {
-        NotifyMessage({
-          message: error.message,
-          type: 'error',
-        });
       });
+      if (data.data) {
+        setLoading(false);
+        setProductDta(productData.filter((item: any) => item.id !== pId));
+        NotifyMessage({
+          message: 'Product is deleted',
+          type: 'success',
+        });
+      }
+    } catch (error: any) {
+      NotifyMessage({
+        message: error.response.data.error.message,
+        type: 'error',
+      });
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-   
-
     fetchData();
   }, [user]);
-   const fetchData=async()=> {
-     try {
-       const { data } = await axios.get(
-         `${baseURL}api/products?filters=[{"seller":${JSON.stringify(
-           user.user ? user?.user?._id : user._id
-         )}}]`
-       );
-       if (data) {
-         setLoading(false);
-         setProductDta(data.data);
-       }
-       if (data) {
-         setLoading(false);
-         setProductDta(data.data);
-       }
-     } catch (error: any) {
-       setLoading(false);
-       NotifyMessage({
-         message: error.message,
-         type: 'error',
-       });
-     }
-   }
-  const[productId,setProductId]=useState<string>()
-  const handleOpenDialog=(id:string)=>{
-    setOpen(true)
-    setProductId(id)
-  }
-   const [selectedFiles, setSelectedFiles] = useState<any>([]);
-     const [imageError, setImageError] = useState<string>();
-   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-     const files = e.target.files;
-     if (!files || files.length === 0) {
-       return;
-     }
-     const invalidImages: File[] = [];
-     const validImagesFormats: File[] = [];
-     for (let i = 0; i < files.length; i++) {
-       const file = files[i];
-       if (!file.type.startsWith('image/')) {
-         invalidImages.push(file);
-       } else {
-         validImagesFormats.push(file);
-       }
-     }
-     if (validImagesFormats.length > 0) {
-       setSelectedFiles([...selectedFiles, ...validImagesFormats]);
-     }
-     if (invalidImages.length > 0) {
-       setImageError('Only images are allowed');
-     } else {
-       setImageError('');
-     }
-   };
-   const handleSubmit=async(event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setLoading(true)
-     if (!selectedFiles.length) {
-       setImageError('Pleas Select at leas one image');
-     }
-     else{
- let formData = new FormData();
-    Array.from(selectedFiles).forEach((item: any) => {
-      formData.append('images', item);
-    });
-    //uploadImages
-    //formData
+  const fetchData = async () => {
     try {
-      const { data } = await axios.post(
-        `${baseURL}api/products/updateImages/${productId}`,
-        formData
+      const { data } = await axios.get(
+        `${baseURL}api/products?filters=[{"seller":${JSON.stringify(
+          user.user ? user?.user?._id : user._id
+        )}}]`
       );
-         if (data.data) {
-           setLoading(false);
-           NotifyMessage({
-             message: 'Successfully updated product images',
-             type: 'success',
-           });
-           fetchData()
-           setLoading(false)
-           setOpen(false)
-         }
-   } catch (error: any) {
-          NotifyMessage({
-            message: error.response.data.error.message,
-            type: 'error',
-          });
+      if (data) {
+        setLoading(false);
+        setProductDta(data.data);
+      }
+      if (data) {
+        setLoading(false);
+        setProductDta(data.data);
+      }
+    } catch (error: any) {
+      setLoading(false);
+      NotifyMessage({
+        message: error.message,
+        type: 'error',
+      });
+    }
+  };
+  const [productId, setProductId] = useState<string>();
+  const handleOpenDialog = (id: string) => {
+    setOpen(true);
+    setProductId(id);
+  };
+  const [selectedFiles, setSelectedFiles] = useState<any>([]);
+  const [imageError, setImageError] = useState<string>();
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) {
+      return;
+    }
+    const invalidImages: File[] = [];
+    const validImagesFormats: File[] = [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (!file.type.startsWith('image/')) {
+        invalidImages.push(file);
+      } else {
+        validImagesFormats.push(file);
+      }
+    }
+    if (validImagesFormats.length > 0) {
+      setSelectedFiles([...selectedFiles, ...validImagesFormats]);
+    }
+    if (invalidImages.length > 0) {
+      setImageError('Only images are allowed');
+    } else {
+      setImageError('');
+    }
+  };
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setLoading(true);
+    if (!selectedFiles.length) {
+      setImageError('Pleas Select at leas one image');
+    } else {
+      let formData = new FormData();
+      Array.from(selectedFiles).forEach((item: any) => {
+        formData.append('images', item);
+      });
+      //uploadImages
+      //formData
+      try {
+        const { data } = await axios.post(
+          `${baseURL}api/products/updateImages/${productId}`,
+          formData
+        );
+        if (data.data) {
           setLoading(false);
+          NotifyMessage({
+            message: 'Successfully updated product images',
+            type: 'success',
+          });
+          fetchData();
+          setLoading(false);
+          setOpen(false);
         }
-      }
-      }
-     const removeImage = (fileIndexToRemove: any) => {
-        setSelectedFiles((prevSelectedFiles:any) => {
-          const updatedFiles = [...prevSelectedFiles];
-          updatedFiles.splice(fileIndexToRemove, 1);
-          return updatedFiles;
+      } catch (error: any) {
+        NotifyMessage({
+          message: error.response.data.error.message,
+          type: 'error',
         });
-
-     };
+        setLoading(false);
+      }
+    }
+  };
+  const removeImage = (fileIndexToRemove: any) => {
+    setSelectedFiles((prevSelectedFiles: any) => {
+      const updatedFiles = [...prevSelectedFiles];
+      updatedFiles.splice(fileIndexToRemove, 1);
+      return updatedFiles;
+    });
+  };
   return (
     <ProtectedRoute>
       <Head>
@@ -229,32 +224,31 @@ function MyProducts() {
                           rounded-md p-2 shadow-lg backdrop-blur-[10px]
                            backdrop-filter"
                       >
-                      
-                          <div className="flex cursor-pointer flex-row">
-                              <Link key={data?._id} href={`/products/${data?.id}`}>
+                        <div className="flex cursor-pointer flex-row">
+                          <Link key={data?._id} href={`/products/${data?.id}`}>
                             <img
                               src={`${baseURL}/${data?.imagesURL[0]}`}
                               className="h-52 w-full object-cover"
                             />
-                            </Link>
-                            <div className="-ml-10 mt-4 h-7 w-8 rounded-full bg-white ">
-                              <MdDelete
-                                onClick={() => {
-                                  setConfirmDialog({
-                                    isOpen: true,
-                                    title:
-                                      'Are you sure to remove this product ?',
-                                    subTitle: "You can't undo this operation",
-                                    onConfirm: () => {
-                                      handleDelete(data?.id);
-                                    },
-                                  });
-                                }}
-                                className="mx-1 my-1"
-                                size={23}
-                              />
-                            </div>
+                          </Link>
+                          <div className="-ml-10 mt-4 h-7 w-8 rounded-full bg-white ">
+                            <MdDelete
+                              onClick={() => {
+                                setConfirmDialog({
+                                  isOpen: true,
+                                  title:
+                                    'Are you sure to remove this product ?',
+                                  subTitle: "You can't undo this operation",
+                                  onConfirm: () => {
+                                    handleDelete(data?.id);
+                                  },
+                                });
+                              }}
+                              className="mx-1 my-1"
+                              size={23}
+                            />
                           </div>
+                        </div>
                         <div className="bg-gray-400 bg-white">
                           <div className="flex flex-col gap-3 p-2">
                             <h6 className="text-sm text-gray-500">
@@ -289,7 +283,6 @@ function MyProducts() {
                               <AiFillEdit size={24} className="" />
                               <span className="mr-4">Upload_Images</span>
                             </button>
-                        
                           </div>
                         </div>
                       </div>

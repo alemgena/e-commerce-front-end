@@ -33,15 +33,14 @@ import { baseURL } from '@/config';
 import React from 'react';
 import {
   Logout,
-  PersonAdd,
-  ProductionQuantityLimits,
-  Settings,
-  ShopRounded,
 } from '@mui/icons-material';
 import { RiProfileFill } from 'react-icons/ri';
 import timeSince from '@/lib/types/time-since';
-let notificatioCount: any;
+import { useTranslation } from 'react-i18next';
+import LangugeTranslate from '../multiLanguge'
 export function NavItems() {
+  const { t } = useTranslation();
+
   const { user, token } = useAppSelector(selectCurrentUser);
   const [redirectToSell, setRedirectToSell] = useState(false);
   const dispatch = useAppDispatch();
@@ -100,23 +99,23 @@ export function NavItems() {
       }
     }
   }, [user, token, redirectToSell]);
-
   return (
     <div className="relative z-50  mr-10 flex items-center justify-start gap-3">
-      <Tooltip title={'Sell'}>
+      <LangugeTranslate />
+      <Tooltip title={t('sell')}>
         <button
           onClick={handleClick}
           className="hidden items-center gap-2 
           rounded-full bg-gradient-to-r from-blue-800 via-blue-600 to-blue-500 px-4 py-1 text-white lg:flex"
         >
-          <AiOutlinePlusCircle size={14} /> <p>Sell</p>
+          <AiOutlinePlusCircle size={14} /> <p>{t('sell')}</p>
         </button>
       </Tooltip>
 
       <div className="flex items-center justify-center gap-4">
         {!!user && token && (
           <>
-            <Tooltip title={'Message'}>
+            <Tooltip title={t('message')}>
               <button onClick={() => router.push('/chat')} className="relative">
                 <BiMessage
                   size={30}
@@ -126,11 +125,10 @@ export function NavItems() {
                       : 'cursor-pointer text-gray-900'
                   }`}
                 />
-               
               </button>
             </Tooltip>
 
-            <Tooltip title={'Favorite'}>
+            <Tooltip title={t('favorite')}>
               <button onClick={() => router.push('/favorite')}>
                 <BiHeart
                   className={`${
@@ -142,7 +140,7 @@ export function NavItems() {
                 />
               </button>
             </Tooltip>
-            <Tooltip title={'Notifications'}>
+            <Tooltip title={t('notification')}>
               <button
                 className="relative"
                 onClick={() => router.push('/notification')}
@@ -181,7 +179,6 @@ export function NavItems() {
                   {token ? (
                     <>
                       <div
-                        
                         style={{
                           display: 'flex',
                           alignItems: 'center',
@@ -250,7 +247,7 @@ export function NavItems() {
                 <ListItemIcon>
                   <RiProfileFill fontSize="small" />
                 </ListItemIcon>
-                My Profile
+                {t('my profile')}
               </MenuItem>
               <MenuItem
                 className="hover:cursor-pointer"
@@ -259,14 +256,14 @@ export function NavItems() {
                 <ListItemIcon>
                   <FiShoppingCart />
                 </ListItemIcon>
-                My Product
+                {t('my product')}
               </MenuItem>
               {!!user && token ? (
                 <MenuItem onClick={handleLogout}>
                   <ListItemIcon>
                     <Logout fontSize="small" />
                   </ListItemIcon>
-                  Logout
+                  {t('logout')}
                 </MenuItem>
               ) : null}
             </Menu>
@@ -287,7 +284,7 @@ export function NavItems() {
               className="hover:border-primary-accent-100 active:border-primary-accent-200 inline-block rounded border-2 border-primary-100 px-4 py-2 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-neutral-500 hover:bg-opacity-10 focus:outline-none focus:ring-0"
               data-te-ripple-init
             >
-              Login
+              {t('login')}
             </button>
             <button
               onClick={() =>
@@ -302,7 +299,7 @@ export function NavItems() {
               className="hover:border-primary-accent-100 active:border-primary-accent-200 inline-block rounded border-2 border-primary-100 px-4 py-2 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-neutral-500 hover:bg-opacity-10 focus:outline-none focus:ring-0"
               data-te-ripple-init
             >
-              Register
+              {t('register')}
             </button>
           </>
         ) : null}

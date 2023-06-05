@@ -28,6 +28,7 @@ const Chat = () => {
   const[loading,setLoading]=useState<boolean>(false)
   const [inputMessage, setInputMessage] = useState('');
   const [reciver, setReciver] = useState<string>('');
+    const [product, setProduct] = useState<string>('');
   const[reciverData,setReciverData]=useState<any>()
 const router=useRouter();
   useEffect(() => {
@@ -91,7 +92,7 @@ const router=useRouter();
         {
           message_data: inputMessage,
           to: reciver,
-          product:productDetail._id,
+          product: product ? product : messages[0].product,
         },
         config
       );
@@ -125,10 +126,10 @@ const router=useRouter();
       });
     }
   };
-const handleReciverData=(data:any)=>{
+const handleReciverData=(data:any,product:string)=>{
 setReciverData(data)
+setProduct(product)
 }
-
   return (
     <ProtectedRoute>
       <Head>
@@ -149,7 +150,7 @@ setReciverData(data)
           {messages.length ? (
             <div className="grid  min-w-full  rounded bg-white sm:grid-cols-1  md:grid-cols-2 lg:grid-cols-3">
               <div className="border-r border-gray-100 bg-gray-100 lg:col-span-1">
-                <ul className="h-64 overflow-auto sm:h-96">
+                <ul className="h-60 overflow-auto sm:h-96">
                   <h2 className="my-2 mb-2 ml-2 text-lg text-gray-600">
                     Chats
                   </h2>
@@ -160,7 +161,7 @@ setReciverData(data)
                           <div
                             onClick={() => {
                               getPrivateMessage(item.to?._id);
-                              handleReciverData(item.to);
+                              handleReciverData(item.to, item.product);
                             }}
                             className="flex cursor-pointer items-center border-b border-gray-300 px-3 py-2 text-sm transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none"
                           >
@@ -247,7 +248,13 @@ setReciverData(data)
                           ))}
                         </>
                       ) : (
-                        <li className="flex justify-start">
+                        <li
+                          className={
+                            messages[0].to._id === userInfo?._id
+                              ? 'flex justify-start'
+                              : 'flex justify-end'
+                          }
+                        >
                           <div className="relative max-w-xl rounded px-4 py-2 text-gray-700 shadow">
                             <span className="block">
                               {messages[0]?.message_data}

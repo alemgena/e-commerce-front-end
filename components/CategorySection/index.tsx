@@ -49,18 +49,18 @@ const index = () => {
       toggleModal('');
     }
   };
+ React.useEffect(() => {
+   if (isOpen) {
+     document.addEventListener('mousedown', handleOutsideClick);
+   } else {
+     document.removeEventListener('mousedown', handleOutsideClick);
+   }
 
-  React.useEffect(() => {
-    if (isOpen) {
-      document.addEventListener('mousedown', handleOutsideClick);
-    } else {
-      document.removeEventListener('mousedown', handleOutsideClick);
-    }
+   return () => {
+     document.removeEventListener('mousedown', handleOutsideClick);
+   };
+ }, [isOpen]);
 
-    return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
-    };
-  }, [isOpen]);
   const [redirectToSell, setRedirectToSell] = React.useState(false);
   const handleClick = () => {
     if (token) {

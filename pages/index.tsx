@@ -15,8 +15,14 @@ import { useAppDispatch } from '@/store';
 import dynamic from 'next/dynamic';
 import Carousel from '@/components/slide-show';
 import NumberWithCommas from '@/lib/types/number-commas';
+import { useTranslation } from 'react-i18next';
+import Convert from '@/components/menu/Convert';
+import { convertToAmharic } from 'amharic-converter';
 const MegaMenu = dynamic(() => import('../components/menu/MegaMenu'));
-const Category = dynamic(() => import('../components/CategorySection'));
+import i18next from 'i18next';
+const Category = dynamic(() => import('../components/CategorySection'),{
+  ssr: false, // Disable server-side rendering
+});
 import { SearchBar } from '../components/Header/mobilSearch-bar';
 type AdsProp = {
   name: string;
@@ -27,9 +33,11 @@ type AdsProp = {
   id: string;
 };
 const Index = ({ user }: any) => {
+  const{t}=useTranslation()
   const dispatch = useAppDispatch();
   useEffect(() => {
-    const logout = localStorage.getItem('logout');
+    let logout = localStorage.getItem('logout');
+      
     if (logout) {
       if (user) {
         console.log(user.accessToken);
@@ -115,13 +123,13 @@ const Index = ({ user }: any) => {
             >
               <div className="flex h-full flex-col items-center justify-center border border p-4 font-sans text-white">
                 <span className="text-center  text-xl">
-                  Got something to sell?
+                 {t("got something to sell")}?
                 </span>
                 <span className="py-4">
                   <FaCartPlus size={48} />
                 </span>
                 <span className="text-center text-lg">
-                  Post a product to sell For free!
+                  {t("post a product to sell For free")}!
                 </span>
               </div>
             </div>
@@ -166,7 +174,10 @@ const Index = ({ user }: any) => {
                               <div className="mt-4 px-2 pb-2">
                                 <a href="#">
                                   <h5 className="text-xl font-bold tracking-tight text-slate-900">
-                                    {ad.name}
+                                    {i18next.language==='am'?
+                                    ad.name
+                                  :
+                                   <Convert text={ad.name} language={i18next.language}/>}
                                   </h5>
                                 </a>
                                 <div className="mb-2 mt-2 flex items-center justify-between">

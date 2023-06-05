@@ -14,9 +14,13 @@ import { useRouter } from 'next/router';
 import Protected from '@/components/protected/protected';
 import { useAppDispatch } from '@/store';
 import { IoIosArrowBack } from 'react-icons/io';
+import { useTranslation } from 'react-i18next';
+import i18next from 'i18next';
 const CreateProductPage = () => {
+  const { t } = useTranslation();
   const [regions, setRegions] = useState<any>([]);
   const router = useRouter();
+  const [cat, setCat] = useState<any>([]);
   const { id } = router.query;
   React.useEffect(() => {
     async function fetcRegions() {
@@ -24,6 +28,14 @@ const CreateProductPage = () => {
         const { data } = await axios.get(`${baseURL}api/regions/`);
         if (data) {
           setRegions(data.data);
+        }
+      } catch (error: any) {}
+      try {
+        const { data } = await axios.get(
+          `http://localhost:5000/api/categories`
+        );
+        if (data) {
+          setCat(data.data);
         }
       } catch (error: any) {}
     }
@@ -230,6 +242,16 @@ const CreateProductPage = () => {
     setSelectedFiles(updatedFiles);
   };
   /*  */
+  const currentLanguage = i18next.language;
+
+  /*
+     {cat.map((item: any) => (
+              <div>{item.language[currentLanguage].label}</div>
+            ))}
+  */
+ const placeholders=(placeholder:string)=>{
+  return(t(placeholder))
+ }
   return (
     <Protected>
       <Head>
@@ -262,7 +284,7 @@ const CreateProductPage = () => {
                 <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
               </svg>
               <span className="mt-2 text-base leading-normal">
-                Select a file
+                {t('select file')}
               </span>
               <input
                 type="file"
@@ -320,10 +342,10 @@ const CreateProductPage = () => {
             >
               <div>
                 <label
-                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  className="mb-2 block text-sm font-medium text-gray-900 "
                   htmlFor="name"
                 >
-                  Name
+                  {t('name')}
                 </label>
                 <input
                   className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  "
@@ -345,7 +367,7 @@ const CreateProductPage = () => {
                     value={category}
                     setSubCategoryData={setSubCategoryData}
                     options={categories.data}
-                    placeholder="Category"
+                    placeholder={placeholders('category')}
                     setProductOptions={undefined}
                   />
                   <div className="text-red-600">{subcategoryErr}</div>
@@ -396,7 +418,7 @@ const CreateProductPage = () => {
                   className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   htmlFor="description"
                 >
-                  Description
+                  {t('description')}
                 </label>
                 <textarea
                   className=" w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  "
@@ -406,7 +428,7 @@ const CreateProductPage = () => {
                   }}
                   id="description"
                   rows={4}
-                  placeholder="Description"
+                  placeholder={placeholders('description')}
                 ></textarea>
                 <p className="text-xs italic text-red-500">{descriptionErr}</p>
               </div>
@@ -418,7 +440,7 @@ const CreateProductPage = () => {
                   options={regions}
                   getOptionLabel={(option) => option?.name}
                   renderInput={(params) => (
-                    <TextField {...params} label="Regions" />
+                    <TextField {...params} label={t('regions')} />
                   )}
                   onChange={(event, newValue: any) => {
                     handlRegion(newValue);
@@ -451,14 +473,14 @@ const CreateProductPage = () => {
                   className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   htmlFor="price"
                 >
-                  Price
+                  {t('price')}
                 </label>
                 <input
                   className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  "
                   type="number"
                   id="price"
                   pattern="[0-9]*"
-                  placeholder="Price"
+                  placeholder={placeholders('price')}
                   value={price}
                   onChange={(e) => {
                     dispatch(productAction.setPrice(e.target.value));
@@ -478,7 +500,7 @@ const CreateProductPage = () => {
                   htmlFor="negotiable"
                   className="font-roboto-regular text-sm text-gray-700"
                 >
-                  Negotiable
+                  {t('Negotiatable')}
                 </label>
               </div>
               <div className="w-1/2">
@@ -487,11 +509,11 @@ const CreateProductPage = () => {
                     disabled
                     className="font-roboto-regular w-full rounded-md bg-blue-800 py-3 text-sm text-white"
                   >
-                    Adding...
+                    {t("adding")}...
                   </button>
                 ) : (
                   <button className="font-roboto-regular w-full rounded-md bg-blue-800 py-3 text-sm text-white">
-                    Add
+                    {t("add")}
                   </button>
                 )}
               </div>

@@ -10,7 +10,11 @@ import { baseURL } from '@/config';
 import Link from 'next/link';
 import PageSpinner from '../Ui/PageSpinner';
 import Norecords from '../Ui/Norecords';
+//import Translate  from '@google-cloud/translate'.v2;
+import Convert from './Convert';
 import axios from 'axios';
+import i18next from 'i18next';
+import {useTranslation } from 'react-i18next';
 interface Category {
   id: number;
   subcategory: SubCategory[];
@@ -44,6 +48,7 @@ function MegaMenu() {
   const categoriesData = useSelector(
     (state: RootStateOrAny) => state.categories.categories
   );
+const{t}=useTranslation()
   const [hoveredCategoryId, setHoveredCategoryId] = useState(0);
   const [hoveredCategory, setHoveredCategory] = useState([] as CategoryProps[]);
   const [scrollTopValue, setScrollTopValue] = useState(0);
@@ -182,10 +187,10 @@ function MegaMenu() {
                             </div>
                             <div className="flex flex-col">
                               <span className="text-main-secondary text-lg">
-                                {category.name}
+                              <Convert text={category.name} language={i18next.language}/>
                               </span>
                               <span className="text-main-secondary text-xs">
-                                {categoryCount} products
+                                {categoryCount} {t("products")}
                               </span>
                             </div>
                           </div>
@@ -281,10 +286,13 @@ function MegaMenu() {
                           </div>
                           <div className="flex flex-col">
                             <span className="text-main-secondary cursor-pointer text-base">
-                              {category.name}
+                              <Convert
+                                text={category.name}
+                                language={i18next.language}
+                              />
                             </span>
                             <span className="text-sm">
-                              {subcategoryCount} products
+                              {subcategoryCount} {t("products")}
                             </span>
                           </div>
                         </div>

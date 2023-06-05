@@ -9,8 +9,9 @@ import { RootState, useAppDispatch, useAppSelector } from '@/store';
 import { Login } from './login';
 import { Register } from './register';
 import { closeModal, openModal } from '@/store/modal';
-
+import { useTranslation } from 'react-i18next';
 export const ForgotPassword: React.FC = () => {
+  const{t}=useTranslation()
   const dispatch = useAppDispatch();
   const { error, passwordRecovered, isLoading } = useAppSelector(
     (state: RootState) => state.recoverPassword
@@ -47,7 +48,7 @@ export const ForgotPassword: React.FC = () => {
       <Notification notify={notify} setNotify={setNotify} />
       <div className="max-w-sm">
         <h1 className="flex items-center justify-between text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-          <span className="flex-grow">Reset Your Password</span>
+          <span className="flex-grow">{t("reset your password")}</span>
           <span className="ml-4 flex-shrink-0">
             <button>
               <FaTimes

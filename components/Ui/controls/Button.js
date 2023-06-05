@@ -13,10 +13,9 @@ export default function Button(props) {
   const classes = useStyles();
   return (
     <MuiButton
-      //  style={{ color: 'white', backgroundColor: '#203040' }}
+     style={{ color: 'white'}}
       variant={variant || 'contained'}
       size={size || 'large'}
-      color={color || 'primary'}
       className="bg-blue-800"
       onClick={onClick}
       {...other}

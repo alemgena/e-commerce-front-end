@@ -80,9 +80,6 @@ const ProdcutPage = () => {
                               ETB {''}
                               {NumberWithCommas(data.price)}
                             </h6>
-                            <h6 className="rounded-full bg-gray-100 px-3 py-1">
-                              Used
-                            </h6>
                           </div>
                         </div>
                         <div className="h-0.5 w-full bg-gray-200" />

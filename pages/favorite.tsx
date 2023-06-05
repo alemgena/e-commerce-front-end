@@ -38,6 +38,7 @@ function FavoritePage() {
       dispatch(favoriteAction.setFavouriteError(null));
     }
   }, [favorite.viewFavouritError]);
+  const[option,setOption]=useState<any>([])
   const [products, setProducts] = useState<any>([]);
   useEffect(() => {
     setProducts(favorite?.products?.data);
@@ -138,9 +139,6 @@ function FavoritePage() {
                         <div className="flex items-center justify-between">
                           <h6 className="font-roboto-bold ">
                             {data.product?.price}
-                          </h6>
-                          <h6 className="rounded-full bg-gray-100 px-3 py-1">
-                            Used
                           </h6>
                         </div>
                       </div>

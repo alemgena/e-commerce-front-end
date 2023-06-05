@@ -13,8 +13,9 @@ import { closeModal, openModal } from '@/store/modal';
 import { selectCurrentUser } from '@/store/auth';
 import { FaRegUser, FaTimes } from 'react-icons/fa';
 import { IoContract, IoContrastSharp } from 'react-icons/io5';
-
+import { useTranslation } from 'react-i18next';
 export const Login: React.FC = () => {
+  const {t}=useTranslation()
   const { NotifyMessage, notify, setNotify } = Notify();
   const dispatch = useAppDispatch();
   const { input, password } = useAppSelector(
@@ -81,7 +82,7 @@ export const Login: React.FC = () => {
         <div>
           <div className="space-y-4">
             <h1 className="flex items-center justify-between text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-              <span className="flex-grow">Sign in to your account</span>
+              <span className="flex-grow">{t("sign in to your account")}</span>
               <span className="ml-4 flex-shrink-0">
                 <button>
                   <FaTimes
@@ -101,7 +102,7 @@ export const Login: React.FC = () => {
                   htmlFor="emailOrPhone"
                   className="mb-2 block text-sm font-medium text-gray-900"
                 >
-                  Email or Phone
+                 {t("email or phone")}
                 </label>
                 <input
                   name="emailOrPhone"
@@ -120,7 +121,7 @@ export const Login: React.FC = () => {
                   htmlFor="password"
                   className="mb-2 block text-sm font-medium text-gray-900"
                 >
-                  Password
+                  {t("password")}
                 </label>
                 <input
                   type="password"
@@ -145,7 +146,7 @@ export const Login: React.FC = () => {
                     dispatch(openModal({ Component: ForgotPassword }))
                   }
                 >
-                  Forgot password?
+                  {t("forgot password")}?
                 </a>
               </div>
               {/*  */}
@@ -179,24 +180,24 @@ export const Login: React.FC = () => {
                     </svg>
                   </span>
                 ) : (
-                  'Sign in'
+                  t('sign in')
                 )}
               </button>
 
               {/*  */}
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Don’t have an account yet?{' '}
+                {t("don’t have an account yet")}?
                 <a
                   href="#"
                   onClick={() => dispatch(openModal({ Component: Register }))}
                   className="cursor-pointer font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
-                  Sign up
+                  {t("sign up")}
                 </a>
               </p>
               <div className="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">
                 <p className="mx-4 mb-0 text-center font-semibold dark:text-neutral-200">
-                  OR
+                  {t("or")}
                 </p>
               </div>
               <div className="grid grid-cols-1 items-center gap-3 md:grid-cols-2">
@@ -207,7 +208,7 @@ export const Login: React.FC = () => {
                   onClick={() => handleLogin()}
                   data-te-ripple-color="light"
                 >
-                  <FcGoogle size={20} /> <p>Continue with Google</p>
+                  <FcGoogle size={20} /> <p>{t("continue with google")}</p>
                 </a>
 
                 <a
@@ -217,7 +218,7 @@ export const Login: React.FC = () => {
                   data-te-ripple-color="light"
                 >
                   <FaFacebookSquare size={20} className="text-blue-600" />{' '}
-                  <p>Continue with Facebook</p>
+                  <p>{t("continue with facebook")}</p>
                 </a>
               </div>
             </form>

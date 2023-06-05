@@ -6,6 +6,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/globals.css';
+import '../i18n';
 function MyApp({ Component, pageProps }: AppProps) {
      const [darkMode, setDarkMode] = useState(false);
      useEffect(() => {
@@ -15,6 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
        setDarkMode(prefersDarkMode);
      }, []);
 
+  
      useEffect(() => {
        if (darkMode) {
          document.documentElement.classList.add('dark');
@@ -22,6 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
          document.documentElement.classList.remove('dark');
        }
      }, [darkMode]);
+
   return (
       <React.StrictMode>
         <Layout>

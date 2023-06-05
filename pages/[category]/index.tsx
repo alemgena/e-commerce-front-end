@@ -40,13 +40,6 @@ const CategoryPage: NextPage = () => {
   const { NotifyMessage, notify, setNotify } = Notify();
   const [list, setList] = useState('Grid');
   const apiKey = 'AIzaSyDdfMxmTxz8u1XdD99_JCEX_9S41PbcJPE';
-  const locationName = 'Debre Elias, Ethiopia';
-  const hhh = async () => {
-    const response = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${locationName}&key=${apiKey}`
-    );
-    const data = await response.json();
-  };
   const sm = useMediaQuery({ query: '(max-width: 576px)' });
   const md2 = useMediaQuery({ query: '(min-width: 577px)' });
   const md3 = useMediaQuery({ query: '(max-width: 930px)' });

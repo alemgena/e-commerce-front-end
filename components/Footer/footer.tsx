@@ -4,8 +4,9 @@ import { IoLocationSharp } from 'react-icons/io5';
 import PlaystoreSVG from './playstore-svg';
 import AppStoreSVG from './appstore-svg';
 import router from 'next/router';
-
+import { useTranslation } from 'react-i18next';
 function Footer() {
+  const {t}=useTranslation()
   let currentTime = new Date();
   const year = currentTime.getFullYear();
 
@@ -15,7 +16,7 @@ function Footer() {
         <div className="md:min-w-screen-md grid gap-4 sm:grid-cols-2 md:grid-cols-3 md:grid-cols-3 lg:grid-cols-4">
           <div className="col-span-1 md:col-span-1 ">
             <h2 className="mb-6 text-sm font-semibold uppercase text-primary-900">
-              Company
+              {t('company')}
             </h2>
             <ul className="text-primary-600">
               <li className="mb-4 hover:cursor-pointer">
@@ -23,7 +24,7 @@ function Footer() {
                   onClick={() => router.push('/about')}
                   className="hover:underline"
                 >
-                  About us
+                  {t('about us')}
                 </a>
               </li>
               <li className="mb-4 hover:cursor-pointer">
@@ -31,7 +32,7 @@ function Footer() {
                   onClick={() => router.push('/terms-of-use')}
                   className="hover:underline"
                 >
-                  Terms & Conditions
+                  {t('terms and conditions')}
                 </a>
               </li>
               <li className="mb-4 hover:cursor-pointer">
@@ -39,7 +40,7 @@ function Footer() {
                   onClick={() => router.push('/privacy-policy')}
                   className="hover:underline"
                 >
-                  Privacy Policy
+                  {t('privacy policy')}
                 </a>
               </li>
             </ul>
@@ -47,7 +48,7 @@ function Footer() {
           <div className="col-span-1 md:col-span-1 ">
             <div>
               <h2 className="mb-6 text-sm font-semibold uppercase text-primary-900">
-                Contact us
+                {t('contact us')}
               </h2>
               <ul className="text-primary-600">
                 <li className="mb-4">
@@ -88,24 +89,24 @@ function Footer() {
           </div>
           <div className="col-span-1 md:col-span-1">
             <h2 className="mb-6 text-sm font-semibold uppercase text-primary-900">
-              Download on{' '}
+              {t('download on')}{' '}
             </h2>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2  ">
               <div className="flex cursor-pointer items-center justify-center gap-2 rounded-md bg-black p-2 text-white sm:mr-4">
                 <PlaystoreSVG />
                 <div className="flex h-full flex-col justify-between uppercase">
-                  <div className="text-xs">Get it on</div>
+                  <div className="text-xs">{t('download on')}</div>
                   <div className="font-roboto mt-1 text-sm font-bold">
-                    Google Play
+                    {t('google play store')}
                   </div>
                 </div>
               </div>
               <div className="flex cursor-pointer items-center justify-center gap-2 rounded-md bg-black p-2 text-white sm:mr-4">
                 <AppStoreSVG />
                 <div className="flex h-full flex-col justify-between">
-                  <div className="text-xs">Download our App On</div>
+                  <div className="text-xs">{t('download on')}</div>
                   <div className="mt-1 font-sans font-bold uppercase">
-                    App Store
+                    {t('app store')}
                   </div>
                 </div>
               </div>
