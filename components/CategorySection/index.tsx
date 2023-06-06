@@ -8,6 +8,8 @@ import { useRouter } from 'next/router';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { openModal } from '@/store/modal';
 import { Login } from '../auth/login';
+import Convert from '../menu/Convert';
+import i18next from 'i18next';
 import {
   selectCurrentUser,
 } from '@/store/auth';
@@ -109,7 +111,9 @@ const index = () => {
                       src={`${baseURL}/${data.imageURL}`}
                       // className="rounded-full object-none object-[59%_-4px] py-5"
                     />
-                    <h1 className="font-bold">{data.name}</h1>
+                    <h1 className="font-bold">
+                      <Convert text={data.name} language={i18next.language}/>
+                      </h1>
                   </div>
                 ) : null}
               </>

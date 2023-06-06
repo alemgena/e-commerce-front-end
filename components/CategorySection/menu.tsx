@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import i18next from 'i18next';
+import Convert from '../menu/Convert';
 import { baseURL } from '@/config';
 type CategoryProps = {
   id: string;
@@ -55,7 +57,9 @@ export const DialogMenu: React.FC<MenuProps> = (props) => {
                       alt={item.name}
                       className="mr-4 ml-4 h-16 w-16"
                     />
-                    <div className="text-lg font-bold">{item.name}</div>
+                    <div className="text-lg font-bold">
+                      <Convert text={item.name} language={i18next.language}/>
+                    </div>
                   </div>
                 </Link>
               ))}
