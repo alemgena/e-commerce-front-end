@@ -432,20 +432,23 @@ function ProductDetailPage() {
                             )}
                           </p>
                         </button>
-                        {!!user&&productData.data.product.seller._id!==userInfo?._id&&
-                        <button
-                          onClick={() => setClickOnChat(true)}
-                          disabled={clickOnChat}
-                          className="font-roboto-medium mt-3 flex items-center gap-2 rounded-full bg-white px-4 py-2 text-blue-800 ring-2 ring-blue-800 md:mt-0"
-                        >
-                          <BsFillChatLeftTextFill />
-                          <p>Chat</p>
-                        </button>
-}
+                        {!!user &&
+                          productData.data.product.seller._id !==
+                            userInfo?._id && (
+                            <button
+                              onClick={() => setClickOnChat(true)}
+                              disabled={clickOnChat}
+                              className="font-roboto-medium mt-3 flex items-center gap-2 rounded-full bg-white px-4 py-2 text-blue-800 ring-2 ring-blue-800 md:mt-0"
+                            >
+                              <BsFillChatLeftTextFill />
+                              <p>Chat</p>
+                            </button>
+                          )}
                         {clickOnChat && (
                           <form onSubmit={(e) => handleChat(e)}>
                             <TextField
                               fullWidth
+                              className="mt-10 sm:mt-4 md:mt-0 lg:mt-0"
                               label="Message"
                               id="fullWidth"
                               value={message}
@@ -453,13 +456,15 @@ function ProductDetailPage() {
                                 setMessage(e.target.value);
                               }}
                             />
-                            <Controls.Button
-                              text={isMessageSend?"Sending":"Start Chat"}
-                              variant="outlined"
-                              startIcon={<Add />}
-                              type="submit"
-                              disabled={isMessageSend}
-                            />
+                            <div className="mt-8 sm:mt-4 md:mt-0 lg:mt-0">
+                              <Controls.Button
+                                text={isMessageSend ? 'Sending' : 'Start Chat'}
+                                variant="outlined"
+                                startIcon={<Add />}
+                                type="submit"
+                                disabled={isMessageSend}
+                              />
+                            </div>
                           </form>
                         )}
                       </div>

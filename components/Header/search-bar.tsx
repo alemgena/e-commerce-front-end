@@ -44,7 +44,7 @@ export function SearchBar() {
     }, []);
   const router = useRouter();
   const [q, setQ] = useState('');
-  const [selected, setSelected] = useState(cities[0]);
+  const [selected, setSelected] = useState<any>('');
   const handleLogout = (event: any) => {
     router.push(`/product/${event}`);
   };
@@ -62,7 +62,11 @@ export function SearchBar() {
         <div className="relative">
           <Listbox.Button className="font-roboto-light flex  w-40 justify-between gap-2 rounded-l-lg bg-blue-800 px-3 py-3 text-sm text-white  ">
             <span className="">
-              <Convert text={selected.name} language={i18next.language} />
+              {selected ? (
+                <Convert text={selected.name} language={i18next.language} />
+              ) : (
+                <span> {t('ethiopian region')}</span>
+              )}
             </span>
             <MdOutlineArrowDropDown className="h-5 w-5  text-white" />
           </Listbox.Button>

@@ -8,7 +8,7 @@ import i18next from 'i18next';
 import axios from 'axios';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 const languageMap = {
-  en: { label: 'Eng', },
+  en: { label: 'English', },
   am: { label: 'አማርኛ',},
   om: { label: 'Oromipha', },
   so: { label: 'Somali' },

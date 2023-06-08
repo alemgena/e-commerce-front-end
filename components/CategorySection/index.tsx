@@ -10,6 +10,7 @@ import { openModal } from '@/store/modal';
 import { Login } from '../auth/login';
 import Convert from '../menu/Convert';
 import i18next from 'i18next';
+import { useTranslation } from 'react-i18next';
 import {
   selectCurrentUser,
 } from '@/store/auth';
@@ -26,6 +27,7 @@ import {
  };
 
 const index = () => {
+  const{t}=useTranslation()
     const dispatch = useAppDispatch();
     const { user, token } = useAppSelector(selectCurrentUser);
   const router=useRouter()
@@ -95,7 +97,7 @@ const index = () => {
           className="ml-6 mt-6 flex h-full flex-col bg-white"
         >
           <FaCartPlus size={48} />
-          <div className=" mt-7 font-bold text-gray-700">Post Product</div>
+          <div className=" mt-7 font-bold text-gray-700">{t("post product")}</div>
         </div>
         {categories.data && (
           <>

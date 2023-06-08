@@ -143,42 +143,50 @@ const CreateProductPage = () => {
     });
     let token = localStorage.getItem('token');
     setLoading(true);
-
-    const productData = {
-      name: productName,
-      description: description,
-      price: price,
-      subcategory: subCategory.id,
-      options: uniqueOption,
-      region: region,
-      location: city,
-    };
     let formData = new FormData();
     Array.from(selectedFiles).forEach((item: any) => {
       formData.append('images', item);
     });
     try {
       const { data } = await axios.post(
-        `${baseURL}api/products/`,
-        productData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `${baseURL}api/upload/types/products`,
+        formData
       );
       if (data.data) {
-        await axios
-          .post(`${baseURL}api/products/uploadImages/${data.data.id}`, formData)
-          .then((response) => {
-            if (response.data) {
-              setLoading(false);
-              NotifyMessage({
-                message: 'product is added',
-                type: 'success',
-              });
+        const productData = {
+          name: productName,
+          description: description,
+          price: price,
+          subcategory: subCategory.id,
+          imagesURL: data.data,
+          options: uniqueOption,
+          region: region,
+          location: city,
+        };
+        try {
+          const response = await axios.post(
+            `${baseURL}api/products`,
+            productData,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             }
+          );
+          if (response.data.data) {
+            setLoading(false);
+            NotifyMessage({
+              message: 'product is added',
+              type: 'success',
+            });
+          }
+        } catch (error: any) {
+          NotifyMessage({
+            message: error.response.data.error.message,
+            type: 'error',
           });
+          setLoading(false);
+        }
       }
     } catch (error: any) {
       NotifyMessage({
@@ -188,7 +196,6 @@ const CreateProductPage = () => {
       setLoading(false);
     }
   };
-
   const handlClick = (event: any) => {
     if (event) {
       setOptionsValues(event.value);
@@ -249,9 +256,9 @@ const CreateProductPage = () => {
               <div>{item.language[currentLanguage].label}</div>
             ))}
   */
- const placeholders=(placeholder:string)=>{
-  return(t(placeholder))
- }
+  const placeholders = (placeholder: string) => {
+    return t(placeholder);
+  };
   return (
     <Protected>
       <Head>
@@ -509,11 +516,11 @@ const CreateProductPage = () => {
                     disabled
                     className="font-roboto-regular w-full rounded-md bg-blue-800 py-3 text-sm text-white"
                   >
-                    {t("adding")}...
+                    {t('adding')}...
                   </button>
                 ) : (
                   <button className="font-roboto-regular w-full rounded-md bg-blue-800 py-3 text-sm text-white">
-                    {t("add")}
+                    {t('add')}
                   </button>
                 )}
               </div>

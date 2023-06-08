@@ -69,9 +69,7 @@ function ProductCard(props: Props) {
                         <h6 className="font-roboto-bold p-2 text-blue-500">
                           ETB {NumberWithCommas(price)}
                         </h6>
-                        <h6 className="mr-1 rounded-full bg-gray-100 px-4 py-1">
-                          Used
-                        </h6>
+                       
                       </div>
                     </div>
                   </div>
@@ -115,7 +113,6 @@ function ProductCard(props: Props) {
             <p className="mt-1 text-sm text-gray-600 sm:text-base">
               {description}
             </p>
-            <div className="mt-1 text-xs text-gray-600 sm:text-sm">used</div>
           </div>
           <div className="mt-2 flex items-center justify-between">
             <h1 className="text-sm font-bold text-blue-700 sm:text-lg">

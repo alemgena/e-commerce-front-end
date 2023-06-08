@@ -89,61 +89,57 @@ const Index = ({ user }: any) => {
       <Head>
         <title>Welcome to Liyu Market</title>
       </Head>
-      <div className="hidden md:block lg:block mx-auto">
-        <Carousel />
+      <div className="mb-8 md:mb-0 lg:mb-0">
+        <SearchBar />
       </div>
-   <div className='mb-8'>
-    <SearchBar/>
-   </div>
-      <div className="flex justify-between gap-x-4 px-2 md:px-6">
+      <div className="flex w-full justify-between gap-x-4 lg:ml-6">
+        <div className="lg:mr-10 flex grow cursor-pointer flex-col  rounded-md bg-cover bg-center  shadow">
+          <a
+            href="/about#howtobuy"
+            target="_blank"
+            className="bg-cover"
+            rel="noopener noreferrer"
+          >
+            <img
+              className="h-56 w-full"
+              src="/images/banner.png"
+              alt="product image"
+              loading="lazy"
+            />
+          </a>
+        </div>
+        <div
+          className="hidden h-56 w-1/4 cursor-pointer  rounded-md mr-12  bg-blue-800 shadow lg:block"
+          onClick={() => router.push('/sell/products/create')}
+        >
+          <div className=" flex h-full w-full flex-col items-center justify-center border border p-4 font-sans text-white">
+            <span className="text-center  text-xl">
+              {t('got something to sell')}?
+            </span>
+            <span className="py-4">
+              <FaCartPlus size={48} />
+            </span>
+            <span className="text-center text-lg">
+              {t('post a product to sell For free')}!
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="mt-4 flex justify-between gap-x-4 px-2 md:px-6">
         <div className=" hidden w-1/4 lg:block">
           <MegaMenu />
         </div>
 
         <div className="flex w-full flex-col lg:w-3/4">
-          <div className="flex w-full justify-between gap-x-4">
-            <div className="flex grow cursor-pointer flex-col  rounded-md bg-cover bg-center  shadow">
-              <a
-                href="/about#howtobuy"
-                target="_blank"
-                className="bg-cover"
-                rel="noopener noreferrer"
-              >
-                <img
-                  className="h-56 w-full"
-                  src="/images/banner.png"
-                  alt="product image"
-                  loading="lazy"
-                />
-              </a>
-            </div>
-            <div
-              className=" hidden h-full w-1/4 cursor-pointer  rounded-md  bg-blue-800 shadow lg:block"
-              onClick={() => router.push('/sell/products/create')}
-            >
-              <div className="flex h-full flex-col items-center justify-center border border p-4 font-sans text-white">
-                <span className="text-center  text-xl">
-                 {t("got something to sell")}?
-                </span>
-                <span className="py-4">
-                  <FaCartPlus size={48} />
-                </span>
-                <span className="text-center text-lg">
-                  {t("post a product to sell For free")}!
-                </span>
-              </div>
-            </div>
-          </div>
-
           <Category />
 
           {isLoading ? (
             <PageSpinner />
           ) : (
-            <div className="mt-2 flex flex-col">
-              <div className="my-3">
-                <span className="font-roboto-bold text-main-secondary text-2xl">
-                  {hasData ? 'Trending products' : ''}
+            <div className="lg:mt-0 mt-2 flex flex-col">
+              <div className="my-3 md:my-0 lg:my-0">
+                <span className="font-bold text-main-secondary text-2xl">
+                  Trending products
                 </span>
               </div>
 
@@ -174,10 +170,14 @@ const Index = ({ user }: any) => {
                               <div className="mt-4 px-2 pb-2">
                                 <a href="#">
                                   <h5 className="text-xl font-bold tracking-tight text-slate-900">
-                                    {i18next.language==='am'?
-                                    ad.name
-                                  :
-                                   <Convert text={ad.name} language={i18next.language}/>}
+                                    {i18next.language === 'am' ? (
+                                      ad.name
+                                    ) : (
+                                      <Convert
+                                        text={ad.name}
+                                        language={i18next.language}
+                                      />
+                                    )}
                                   </h5>
                                 </a>
                                 <div className="mb-2 mt-2 flex items-center justify-between">

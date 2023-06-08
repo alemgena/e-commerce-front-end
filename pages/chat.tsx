@@ -17,6 +17,8 @@ import Norecords from '@/components/Ui/Norecords';
 import PageSpinner from '@/components/Ui/PageSpinner';
 import Head from 'next/head';
 import { IoIosArrowBack } from 'react-icons/io';
+import Image from 'next/image';
+import timeSince from '@/lib/types/time-since';
 let productDetail: any;
 const Chat = () => {
   const { NotifyMessage, notify, setNotify } = Notify();
@@ -26,10 +28,12 @@ const Chat = () => {
   const { user} = useAppSelector(selectCurrentUser);
   const socket = io(baseURL);
   const[loading,setLoading]=useState<boolean>(false)
+    const [clickOnReciver, setClickOnReciver] = useState<boolean>(false);
   const [inputMessage, setInputMessage] = useState('');
   const [reciver, setReciver] = useState<string>('');
     const [product, setProduct] = useState<string>('');
   const[reciverData,setReciverData]=useState<any>()
+  
 const router=useRouter();
   useEffect(() => {
     if(!!user){
@@ -106,6 +110,7 @@ const router=useRouter();
     setInputMessage('');
   };
   const getPrivateMessage = async (to: string) => {
+    setClickOnReciver(true)
     setReciver(to);
     try {
       let login_token = localStorage.getItem('token');
@@ -139,11 +144,11 @@ setProduct(product)
         <PageSpinner />
       ) : (
         <div className=" mx-11 mb-32 bg-white">
-          <div
-            onClick={() => router.push('/')}
-            className="my-4 flex items-center gap-2 bg-gray-50 py-4 text-xl hover:cursor-pointer"
-          >
-            <IoIosArrowBack />
+          <div className="my-4 flex items-center gap-2 bg-gray-50 py-4 text-xl ">
+            <IoIosArrowBack
+              onClick={() => router.push('/')}
+              className="hover:cursor-pointer"
+            />
             <h2>Chat</h2>
           </div>
           <Notification notify={notify} setNotify={setNotify} />
@@ -185,9 +190,7 @@ setProduct(product)
                                   {item.to?.first_name}
                                 </span>
                                 <span className="ml-2 block text-sm text-gray-600">
-                                  {new Date(
-                                    item.createdAt
-                                  ).toLocaleTimeString()}
+                                  {timeSince(item.createdAt)}
                                 </span>
                               </div>
                               <span className="ml-2 block text-sm text-gray-600"></span>
@@ -219,16 +222,14 @@ setProduct(product)
                     )}
                     <div className="ml-2 flex flex-col justify-center">
                       <span className="block font-bold text-gray-600">
-                        {reciverData
-                          ? reciverData.first_name
-                          : messages[0]?.to.first_name}
+                        {reciverData ? reciverData.first_name : null}
                       </span>
                       <span className="absolute right-3 top-3 h-3 w-3 rounded-full bg-green-600" />
                     </div>
                   </div>
                   <div className="relative h-screen w-full overflow-y-auto p-6 sm:h-[40rem]">
                     <ul className="space-y-2">
-                      {privateSms.length ? (
+                      {privateSms.length > 0 && clickOnReciver ? (
                         <>
                           {' '}
                           {privateSms.map((item: any, idx: any) => (
@@ -247,20 +248,20 @@ setProduct(product)
                             </li>
                           ))}
                         </>
-                      ) : (
-                        <li
-                          className={
-                            messages[0].to._id === userInfo?._id
-                              ? 'flex justify-start'
-                              : 'flex justify-end'
-                          }
-                        >
-                          <div className="relative max-w-xl rounded px-4 py-2 text-gray-700 shadow">
-                            <span className="block">
-                              {messages[0]?.message_data}
-                            </span>
-                          </div>
-                        </li>
+                      ) : null}
+                      {!clickOnReciver && (
+                        <div className="ml-6">
+                          <img
+                            src="/images/messanger.jpg"
+                            alt="My Image"
+                            width={250}
+                            height={200}
+                          />
+                          <h4 className="block font-bold text-gray-600">
+                            {' '}
+                            Select a chat to view conversation
+                          </h4>
+                        </div>
                       )}{' '}
                     </ul>
                   </div>
