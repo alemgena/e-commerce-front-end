@@ -60,7 +60,7 @@ export function SearchBar() {
     <div className="font-roboto-regular hidden md:flex lg:flex">
       <Listbox value={selected} onChange={setSelected}>
         <div className="relative">
-          <Listbox.Button className="font-roboto-light flex  w-40 justify-between gap-2 rounded-l-lg bg-blue-800 px-3 py-3 text-sm text-white  ">
+          <Listbox.Button className="font-roboto-light flex  w-40 justify-between gap-2 rounded-l-lg bg-green-700 px-3 py-3 text-sm text-white  ">
             <span className="">
               {selected ? (
                 <Convert text={selected.name} language={i18next.language} />
@@ -68,7 +68,7 @@ export function SearchBar() {
                 <span> {t('ethiopian region')}</span>
               )}
             </span>
-            <MdOutlineArrowDropDown className="h-5 w-5  text-white" />
+            <MdOutlineArrowDropDown className="h-5 w-3.5 text-white" />
           </Listbox.Button>
           <Transition
             as={Fragment}
@@ -82,7 +82,7 @@ export function SearchBar() {
                   key={cityIdx}
                   className={({ active }) =>
                     `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                      active ? ' text-blue-800' : 'text-gray-900'
+                      active ? ' text-green-600' : 'text-gray-900'
                     }`
                   }
                   value={city}
@@ -91,14 +91,14 @@ export function SearchBar() {
                     <>
                       <span
                         className={`block cursor-pointer truncate  ${
-                          selected ? 'font-roboto-medium text-blue-800' : ''
+                          selected ? 'font-roboto-medium text-green-600' : ''
                         }`}
                         onClick={() => handleLogout(city.name)}
                       >
                         <Convert text={city.name} language={i18next.language} />
                       </span>
                       {selected ? (
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-blue-800">
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-white">
                           <AiOutlineCheck className="h-5 w-5" />
                         </span>
                       ) : null}

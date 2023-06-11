@@ -92,8 +92,9 @@ const Index = ({ user }: any) => {
       <div className="mb-8 md:mb-0 lg:mb-0">
         <SearchBar />
       </div>
-      <div className="flex w-full justify-between gap-x-4 lg:ml-6">
-        <div className="lg:mr-10 flex grow cursor-pointer flex-col  rounded-md bg-cover bg-center  shadow">
+      
+      <div className="flex w-full justify-between gap-x-4 lg:ml-10">
+        <div className="flex grow cursor-pointer flex-col rounded-md  bg-cover bg-center shadow  lg:mr-14">
           <a
             href="/about#howtobuy"
             target="_blank"
@@ -109,7 +110,8 @@ const Index = ({ user }: any) => {
           </a>
         </div>
         <div
-          className="hidden h-56 w-1/4 cursor-pointer  rounded-md mr-12  bg-blue-800 shadow lg:block"
+        style={{width:"450px"}}
+          className="mr-12 hidden h-56 cursor-pointer rounded-md  bg-green-700 shadow lg:block"
           onClick={() => router.push('/sell/products/create')}
         >
           <div className=" flex h-full w-full flex-col items-center justify-center border border p-4 font-sans text-white">
@@ -136,9 +138,9 @@ const Index = ({ user }: any) => {
           {isLoading ? (
             <PageSpinner />
           ) : (
-            <div className="lg:mt-0 mt-2 flex flex-col">
+            <div className="mt-2 flex flex-col lg:mt-0">
               <div className="my-3 md:my-0 lg:my-0">
-                <span className="font-bold text-main-secondary text-2xl">
+                <span className="text-green-600 text-2xl font-bold">
                   Trending products
                 </span>
               </div>

@@ -53,6 +53,7 @@ const{t}=useTranslation()
   const [hoveredCategory, setHoveredCategory] = useState([] as CategoryProps[]);
   const [scrollTopValue, setScrollTopValue] = useState(0);
   const [scrollTopValueForSubMenu, setScrollTopValueForSubMenu] = useState(0);
+  const[categories,setCategories]=useState<any>([])
   const { isLoading } = useSelector(
     (state: RootStateOrAny) => state.categories
   );
@@ -73,7 +74,32 @@ const{t}=useTranslation()
   useEffect(() => {
     if (categoriesData.data) {
       if (!categoriesData.data.length) setHasData(true);
+      const selectedObjects = categoriesData?.data?.filter(
+        (item: any) =>
+          item.name === 'Fashion' ||
+          item.name === 'mobile_phones'||
+          item.name==='Electronics'
+      );
+      const indexToPlace = 0; // After the first index
+const mutableArray = [...categoriesData.data];
+      if (selectedObjects.length > 0) {
+        selectedObjects.forEach((selectedObject: any) => {
+          const index = mutableArray.indexOf(selectedObject);
+          if (index > -1) {
+            mutableArray.splice(index, 1); // Remove the selected object from its current index
+          }
+        });
+        mutableArray.splice(indexToPlace + 1, 0, ...selectedObjects); // Place the selected objects after the first index
+      }
+      const cherryObject = mutableArray.find((obj) => obj.name === 'Property');
+      if (cherryObject) {
+        const cherryIndex = mutableArray.findIndex((obj) => obj.name === 'Property');
+        mutableArray.splice(cherryIndex, 1);
+        mutableArray.splice(0, 0, cherryObject);
+      }
+    setCategories(mutableArray)
     }
+
   }, [categoriesData]);
 
   const [categoryCounts, setCategoryCounts] = useState<Record<number, number>>(
@@ -113,7 +139,6 @@ const{t}=useTranslation()
     });
     setCategoryCounts(newCategoryCounts);
   }, [subcategoryCounts]);
-
   return (
     <div>
       {isLoading ? (
@@ -161,7 +186,7 @@ const{t}=useTranslation()
 
                 <div className="pb-2" />
 
-                {categoriesData.data.map((category: CategoryProps) => {
+                {categories.map((category: CategoryProps) => {
                   const categoryCount = categoryCounts[category.id];
 
                   return (

@@ -106,7 +106,7 @@ export function NavItems() {
         <button
           onClick={handleClick}
           className="hidden items-center gap-2 
-          rounded-full bg-gradient-to-r from-blue-800 via-blue-600 to-blue-500 px-4 py-1 text-white lg:flex"
+          rounded-full bg-gradient-to-r from-green-800 via-green-600 to-green-500 px-4 py-1 text-white lg:flex"
         >
           <AiOutlinePlusCircle size={14} /> <p>{t('sell')}</p>
         </button>

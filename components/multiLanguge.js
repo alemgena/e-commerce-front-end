@@ -25,7 +25,10 @@ const LanguageSelect = () => {
   return (
     <div className="d-flex justify-content-end align-items-center language-select-root">
       <Button onClick={({ currentTarget }) => setMenuAnchor(currentTarget)}>
-        {selectLable?selectLable:"English"}
+        <span style={{ textTransform: 'capitalize' }}>
+          {' '}
+          {selectLable ? selectLable : 'English'}
+        </span>
         <ArrowDropDownIcon fontSize="small" />
       </Button>
       <Popover
@@ -53,7 +56,9 @@ const LanguageSelect = () => {
                   selectedLabel(item);
                 }}
               >
-                {languageMap[item].label}
+                <span style={{ textTransform: 'capitalize' }}>
+                  {languageMap[item].label}
+                </span>
               </ListItemButton>
             ))}
           </List>
