@@ -11,7 +11,7 @@ function Footer() {
   const year = currentTime.getFullYear();
 
   return (
-    <div className="m-2 mx-auto rounded-lg bg-green-600 font-sans shadow md:m-4 ">
+    <div className="m-2 mx-auto rounded-lg bg-green-700 font-sans shadow md:m-4 ">
       <div className="container mx-auto ml-2 flex w-full justify-center p-4 sm:block sm:p-6">
         <div className="md:min-w-screen-md grid gap-4 sm:grid-cols-2 md:grid-cols-3 md:grid-cols-3 lg:grid-cols-4">
           <div className="col-span-1 md:col-span-1 ">
