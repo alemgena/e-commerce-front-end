@@ -94,7 +94,7 @@ const Index = ({ user }: any) => {
       </div>
       
       <div className="flex w-full justify-between gap-x-4 lg:ml-10">
-        <div className="flex grow cursor-pointer flex-col rounded-md  bg-cover bg-center shadow  lg:mr-14">
+        <div className="flex grow cursor-pointer flex-col rounded-md  bg-cover bg-center shadow  lg:mr-8">
           <a
             href="/about#howtobuy"
             target="_blank"
@@ -103,7 +103,7 @@ const Index = ({ user }: any) => {
           >
             <img
               className="h-56 w-full"
-              src="/images/banner.png"
+              src="/images/new.jpg"
               alt="product image"
               loading="lazy"
             />
