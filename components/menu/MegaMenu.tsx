@@ -97,6 +97,16 @@ const mutableArray = [...categoriesData.data];
         mutableArray.splice(cherryIndex, 1);
         mutableArray.splice(0, 0, cherryObject);
       }
+         const mobileObject = mutableArray.find(
+           (obj) => obj.name === 'mobile_phones'
+         );
+      if (mobileObject) {
+        const mobileIndex = mutableArray.findIndex(
+          (obj) => obj.name === 'mobile_phones'
+        );
+        mutableArray.splice(mobileIndex, 1);
+        mutableArray.splice(3, 0, mobileObject);
+      }
     setCategories(mutableArray)
     }
 
