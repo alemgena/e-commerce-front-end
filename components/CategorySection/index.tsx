@@ -89,6 +89,49 @@ const index = () => {
       }
     }
   }, [user, token, redirectToSell]);
+  const [categoriesData, setCategoriesData] = React.useState<any>([]);
+   React.useEffect(() => {
+      if (categories.data) {
+        const selectedObjects = categories?.data?.filter(
+          (item: any) =>
+            item.name === 'Fashion' ||
+            item.name === 'mobile_phones' ||
+            item.name === 'Electronics'
+        );
+        const indexToPlace = 0; // After the first index
+        const mutableArray = [...categories.data];
+        if (selectedObjects.length > 0) {
+          selectedObjects.forEach((selectedObject: any) => {
+            const index = mutableArray.indexOf(selectedObject);
+            if (index > -1) {
+              mutableArray.splice(index, 1); // Remove the selected object from its current index
+            }
+          });
+          mutableArray.splice(indexToPlace + 1, 0, ...selectedObjects); // Place the selected objects after the first index
+        }
+        const cherryObject = mutableArray.find(
+          (obj) => obj.name === 'Property'
+        );
+        if (cherryObject) {
+          const cherryIndex = mutableArray.findIndex(
+            (obj) => obj.name === 'Property'
+          );
+          mutableArray.splice(cherryIndex, 1);
+          mutableArray.splice(0, 0, cherryObject);
+        }
+        const mobileObject = mutableArray.find(
+          (obj) => obj.name === 'mobile_phones'
+        );
+        if (mobileObject) {
+          const mobileIndex = mutableArray.findIndex(
+            (obj) => obj.name === 'mobile_phones'
+          );
+          mutableArray.splice(mobileIndex, 1);
+          mutableArray.splice(3, 0, mobileObject);
+        }
+        setCategoriesData(mutableArray);
+      }
+    }, [categories.data]);
   return (
     <>
       <div className="mt-2 grid grid-cols-3 gap-1 sm:grid-cols-3 md:grid-cols-5 lg:hidden">
@@ -101,7 +144,7 @@ const index = () => {
         </div>
         {categories.data && (
           <>
-            {categories.data.map((data: any) => (
+            {categoriesData.map((data: any) => (
               <>
                 {data.subcategory.length ? (
                   <div
