@@ -12,11 +12,11 @@ export function Header() {
     },[])
   return (
     <div className="z-100  fixed sticky left-0 right-0 top-0 top-0 z-50 w-full bg-white bg-white shadow-lg">
-      <div className="container m-auto flex w-full items-center justify-between bg-white py-2">
+      <div className="container m-auto md:ml-0 flex w-full items-center justify-between bg-white py-2">
           <Link href="/">
             <img
               src="/images/newLogo.jpg"
-              className="h-14 w-20 lg:w-24 cursor-pointer lg:ml-2"
+              className="h-14 lg:h-16 w-20 lg:w-32 cursor-pointer lg:ml-2"
             />
           </Link>
         <SearchBar />

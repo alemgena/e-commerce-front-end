@@ -9,7 +9,7 @@ import axios from 'axios';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 const languageMap = {
   en: { label: 'English', },
-  am: { label: 'አማርኛ',},
+  am: { label: 'አማረኛ',},
   om: { label: 'Oromipha', },
   so: { label: 'Somali' },
   ti: { label: 'Tigreghna', },
