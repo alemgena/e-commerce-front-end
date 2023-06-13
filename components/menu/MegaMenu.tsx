@@ -78,7 +78,8 @@ const{t}=useTranslation()
         (item: any) =>
           item.name === 'Fashion' ||
           item.name === 'mobile_phones'||
-          item.name==='Electronics'
+          item.name==='Electronics'||
+          item.name==='Seeking Work CV'
       );
       const indexToPlace = 0; // After the first index
 const mutableArray = [...categoriesData.data];
@@ -242,7 +243,7 @@ const mutableArray = [...categoriesData.data];
                   className={`${
                     scrollTopValue < 382.5 && scrollTopValue >= 0
                       ? 'visible sticky bottom-0 transition-all'
-                      : 'animate-fadeExit hidden'
+                      : ''
                   } sticky bottom-0 w-full bg-white opacity-90`}
                 >
                   <div
