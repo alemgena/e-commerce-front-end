@@ -17,7 +17,7 @@ const Convert: React.FC<InputProps> = ({text,language}) => {
           params: {
             q: text,
             target: language,
-            key: 'AIzaSyDdfMxmTxz8u1XdD99_JCEX_9S41PbcJPE',
+            key: 'AIzaSyDYGjLaocLx3g5KXsfI2YoPF7uGPbSP7UY',
           },
         }
       )

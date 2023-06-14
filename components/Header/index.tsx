@@ -16,7 +16,7 @@ export function Header() {
           <Link href="/">
             <img
               src="/images/newLogo.jpg"
-              className="h-14 lg:h-16 w-20 lg:w-32 cursor-pointer lg:ml-2"
+              className="h-14 lg:h-16 w-24 lg:w-32 cursor-pointer lg:ml-2"
             />
           </Link>
         <SearchBar />
