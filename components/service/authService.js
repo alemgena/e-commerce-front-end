@@ -21,10 +21,7 @@ export function checkAutoLogin(dispatch, router) {
     if (typeof window !== 'undefined') {
   const tokenDetailsString = localStorage.getItem('userInfo');
   let tokenDetails = '';
-  console.log()
   if (!tokenDetailsString) {
-    clearTokenFromLocalStorage(dispatch);
-    router.push('/');
     return;
   }
   tokenDetails = JSON.parse(tokenDetailsString);
