@@ -1,5 +1,4 @@
 import React from 'react';
-
 const index = () => (
   <div className=" my-5 mx-auto bg-gray-100 px-6 py-8">
     <section className="my-10 text-center text-gray-800 lg:text-left ">

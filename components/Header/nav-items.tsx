@@ -31,6 +31,7 @@ import { RootStateOrAny } from 'react-redux';
 import { FaUserCircle } from 'react-icons/fa';
 import { baseURL } from '@/config';
 import React from 'react';
+import ThemeSwitcher from './ThemeSwitcher'
 import {
   Logout,
 } from '@mui/icons-material';
@@ -101,7 +102,11 @@ export function NavItems() {
   }, [user, token, redirectToSell]);
   return (
     <div className="relative z-50  mr-10 flex items-center justify-start gap-3">
+      <div className="lg:w-6">
+        <ThemeSwitcher />
+      </div>
       <LangugeTranslate />
+
       <Tooltip title={t('sell')}>
         <button
           onClick={handleClick}

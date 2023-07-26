@@ -15,7 +15,13 @@ import axios from 'axios';
 import PageSpinner from '@/components/Ui/PageSpinner';
 import Notification from '@/components/Ui/Notification';
 import Notify from '@/components/Ui/Notify';
-import { MenuItem, Select } from '@mui/material';
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material';
 import ProductCard from '@/components/Card/product-card';
 export interface IProduct {
   image: any;
@@ -53,8 +59,10 @@ const CategoryPage: NextPage = () => {
   const [subCategoryId, setSubCategory] = React.useState<string>();
   const [mainCategory, setMainCategory] = React.useState<any>();
   const [products, setProducts] = React.useState<any>([]);
-  console.log("count",products);
+  const [options, setOptions] = React.useState<any>([]);
+  console.log('count', products);
   const [loading, setLoading] = React.useState<boolean>(false);
+  const [productByOption, setProductByOptin] = React.useState<any>([]);
   React.useEffect(() => {
     if (categories.data) {
       setLoading(true);
@@ -65,6 +73,7 @@ const CategoryPage: NextPage = () => {
           });
         }
         if (found) {
+          setOptions(found.options);
           setMainCategory(
             categories.data.find(function (element: any) {
               return element.id == found.category;
@@ -97,8 +106,8 @@ const CategoryPage: NextPage = () => {
   const searchByPrice = async (from: number, to: number) => {
     setLoading(true);
     try {
-      console.log("from",from)
-      console.log("to",to)
+      console.log('from', from);
+      console.log('to', to);
       const { data } = await axios.get(
         `${baseURL}api/products?filters=[{"price":{"from":${from},"to":${to}}},{"subcategory":${JSON.stringify(
           subCategoryId
@@ -126,6 +135,7 @@ const CategoryPage: NextPage = () => {
   const [sortOrder, setSortOrder] = useState('asc'); // default sorting order is ascending
 
   const handlePriceChange = (event: any) => {
+    setClickValues(false);
     setSelectedPrice(event.target.value);
     const price = prices.find((p: any) => p.id === event.target.value);
     if (price) {
@@ -149,7 +159,52 @@ const CategoryPage: NextPage = () => {
 
     setProducts([...sortedProducts]);
   };
+  const [clickValues, setClickValues] = React.useState<boolean>(false);
+const [values,setValues]=useState<any>('')
+  const handleChange = async (event: any) => {
+    setClickValues(true);
+    setValues(event.target.value)
+    let optionName = findOptionNameByValue(event.target.value);
+    const filteredProducts = getProductsByOptionValue(
+      products,
+      optionName,
+      event.target.value
+    );
+    setProductByOptin(filteredProducts);
+  };
+  function findOptionNameByValue(value: string) {
+    for (const option of options) {
+      for (const optionValue of option.values) {
+        if (optionValue.value === value) {
+          return option.id.name;
+        }
+      }
+    }
 
+    return null;
+  }
+  function getProductsByOptionValue(
+    products: any,
+    optionName: any,
+    optionValue: any
+  ) {
+    const filteredProducts = [];
+    for (const product of products) {
+      for (const option of product.options) {
+        const optionValueExists = option.values.some(
+          (value: any) => value.value === optionValue
+        );
+
+        if (option.name === optionName && optionValueExists) {
+          filteredProducts.push(product);
+          break; // We can break here since the product has the desired option value
+        }
+      }
+    }
+
+    return filteredProducts;
+  }
+  console.log('products', products);
   return (
     <>
       <div className="px-12">
@@ -210,6 +265,37 @@ const CategoryPage: NextPage = () => {
                 {query.name} in Ethiopia
               </span>
               <>
+                <div className="mt-4  grid grid-cols-1 items-center justify-center gap-4 sm:grid-cols-3 md:grid-cols-4">
+                  {options.map((item: any) => (
+                    <>
+                      {item.values.length > 0 ? (
+                        <div className="w-40 lg:w-52 md:w-48">
+                          <FormControl fullWidth>
+                            <InputLabel
+                              className="absolute  bg-white px-1"
+                              margin="dense"
+                            >
+                              <span className="font-bold ">{item.name}</span>
+                            </InputLabel>
+                            <Select
+                              labelId="demo-select-small-label"
+                              id="demo-select-small"
+                              label={item.name}
+                              value={values}
+                              onChange={handleChange}
+                            >
+                              {item.values.map((data: any) => (
+                                <MenuItem value={data.value}>
+                                  {data.value}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        </div>
+                      ) : null}
+                    </>
+                  ))}
+                </div>
                 <div className=" mt-2 flex w-full flex-col items-center justify-between bg-gray-200 px-2 py-2 md:flex-row lg:flex-row">
                   <div className=" mb-2 flex gap-x-3 sm:mb-0">
                     <TfiLayoutGrid3Alt
@@ -284,44 +370,83 @@ const CategoryPage: NextPage = () => {
                   </div>
                 </div>
               </>
-
-              <div className="mt-5 flex w-full flex-col">
+              {clickValues ? (
                 <>
-                  {products.length ? (
-                    <>
-                      <div
-                        className={`grid gap-3 px-2 pr-0  md:grid-flow-row ${
-                          list === 'Grid'
-                            ? 'grid md:grid-cols-2 lg:grid-cols-3'
-                            : 'md:grid-cols-1 lg:grid-cols-1'
-                        }`}
-                      >
-                        {products?.map((item: IProduct) => {
-                          return (
-                            <>
-                            {item.imagesURL.length>0&&
-                              <ProductCard
-                                description={item.description}
-                                title={item.name}
-                                views={item.viewCount}
-                                price={item.price}
-                                listType={list}
-                                id={item.id}
-                                imageUrl={`${baseURL}${item.imagesURL[0]}`}
-                                region={item?.region}
-                              />
-                            }
-                            </>
-                        
-                          );
-                        })}
-                      </div>
-                    </>
-                  ) : (
-                    <Norecords />
-                  )}
+               <div className="mt-5 flex w-full flex-col">
+                  <>
+                    {productByOption.length ? (
+                      <>
+                        <div
+                          className={`grid gap-3 px-2 pr-0  md:grid-flow-row ${
+                            list === 'Grid'
+                              ? 'grid md:grid-cols-2 lg:grid-cols-3'
+                              : 'md:grid-cols-1 lg:grid-cols-1'
+                          }`}
+                        >
+                          {productByOption?.map((item: IProduct) => {
+                            return (
+                              <>
+                                {item.imagesURL.length > 0 && (
+                                  <ProductCard
+                                    description={item.description}
+                                    title={item.name}
+                                    views={item.viewCount}
+                                    price={item.price}
+                                    listType={list}
+                                    id={item.id}
+                                    imageUrl={`${baseURL}${item.imagesURL[0]}`}
+                                    region={item?.region}
+                                  />
+                                )}
+                              </>
+                            );
+                          })}
+                        </div>
+                      </>
+                    ) : (
+                      <Norecords />
+                    )}
+                  </>
+                </div>
                 </>
-              </div>
+              ) : (
+                <div className="mt-5 flex w-full flex-col">
+                  <>
+                    {products.length ? (
+                      <>
+                        <div
+                          className={`grid gap-3 px-2 pr-0  md:grid-flow-row ${
+                            list === 'Grid'
+                              ? 'grid md:grid-cols-2 lg:grid-cols-3'
+                              : 'md:grid-cols-1 lg:grid-cols-1'
+                          }`}
+                        >
+                          {products?.map((item: IProduct) => {
+                            return (
+                              <>
+                                {item.imagesURL.length > 0 && (
+                                  <ProductCard
+                                    description={item.description}
+                                    title={item.name}
+                                    views={item.viewCount}
+                                    price={item.price}
+                                    listType={list}
+                                    id={item.id}
+                                    imageUrl={`${baseURL}${item.imagesURL[0]}`}
+                                    region={item?.region}
+                                  />
+                                )}
+                              </>
+                            );
+                          })}
+                        </div>
+                      </>
+                    ) : (
+                      <Norecords />
+                    )}
+                  </>
+                </div>
+              )}
             </div>
           </div>
         )}

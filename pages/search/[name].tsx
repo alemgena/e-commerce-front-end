@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import React,{useState,useEffect} from 'react'
+import React, { useState, useEffect } from 'react';
 import { BsHeart } from 'react-icons/bs';
 import { useRouter } from 'next/router';
 import Notify from '@/components/Ui/Notify';
@@ -10,59 +10,63 @@ import NextLink from 'next/link';
 import PageSpinner from '@/components/Ui/PageSpinner';
 import NumberWithCommas from '@/lib/types/number-commas';
 const SearchPage = () => {
-     const [isLoading, setLoading] = useState(false);
-     const router = useRouter();
-     const { name } = router.query;
-     const { NotifyMessage, notify, setNotify } = Notify();
-     const [productData, setProductDta] = useState<any>([]);
-     const[searchProductByName,setSearchProductByName]=useState(false)
-        const [productByName, setProductByName] = useState<any>([]);
-     useEffect(() => {
-       async function fetchData() {
-        setLoading(true)
-         try {
-           const { data } = await axios.get(`${baseURL}api/subcategories/byName/${name}`);
-           if (data.data.length>0) {
-             console.log(data);
-             setLoading(false);
-             setProductDta(data);
-          setProductByName([])
-           }
-           else{
-    handleProductSearch();
-    setSearchProductByName(true);
-           }
-          
-         } catch (error: any) {
+  const [isLoading, setLoading] = useState(false);
+  const router = useRouter();
+  const { name } = router.query;
+  const { NotifyMessage, notify, setNotify } = Notify();
+  const [productData, setProductDta] = useState<any>([]);
+  const [searchProductByName, setSearchProductByName] = useState(false);
+  const [productByName, setProductByName] = useState<any>([]);
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      try {
+        const { data } = await axios.get(
+          `${baseURL}api/subcategories/byName/${name}`
+        );
+        if (data.data.length > 0) {
+          data.data.map((item: any) => {
+            if (item.product.length > 0) {
               setLoading(false);
-           NotifyMessage({
-             message: error.message,
-             type: 'error',
-           });
-         }
-       }
-       fetchData();
-     }, [name]);
-     const handleProductSearch=async()=>{
- setLoading(true)
-            try {
-              const { data } = await axios.get(
-                `${baseURL}api/products/byName/${name}`)
-              if (data) {
-                setLoading(false);
-                setProductByName(data);
-              }
-            } catch (error: any) {
-              console.log(error.response.data.error.message);
+              setProductDta(data);
               setProductByName([]);
-              setLoading(false);
-              NotifyMessage({
-                message: error.message,
-                type: 'error',
-              });
+            } else {
+              handleProductSearch();
+              setSearchProductByName(true);
             }
-     }
+          });
+        }
+      } catch (error: any) {
+           handleProductSearch();
+           setSearchProductByName(true);
+        setLoading(false);
+        NotifyMessage({
+          message: error.message,
+          type: 'error',
+        });
+      }
+    }
+    fetchData();
+  }, [name]);
+  const handleProductSearch = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(`${baseURL}api/products/byName/${name}`);
+      if (data) {
+        setLoading(false);
+        setProductByName(data);
+      }
+    } catch (error: any) {
    
+      setProductByName([]);
+      setLoading(false);
+      NotifyMessage({
+        message: error.message,
+        type: 'error',
+      });
+    }
+  };
+
   return (
     <>
       <Head>

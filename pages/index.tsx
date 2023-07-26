@@ -13,11 +13,9 @@ import { GET_PRODUCTS_BY_FEATURED } from '@/types';
 import { setCredentials } from '@/store/auth';
 import { useAppDispatch } from '@/store';
 import dynamic from 'next/dynamic';
-import Carousel from '@/components/slide-show';
 import NumberWithCommas from '@/lib/types/number-commas';
 import { useTranslation } from 'react-i18next';
 import Convert from '@/components/menu/Convert';
-import { convertToAmharic } from 'amharic-converter';
 const MegaMenu = dynamic(() => import('../components/menu/MegaMenu'));
 import i18next from 'i18next';
 const Category = dynamic(() => import('../components/CategorySection'),{
@@ -80,7 +78,7 @@ const Index = ({ user }: any) => {
   useEffect(() => {
     if (products.data) {
       if (!products.data.length) setHasData(true);
-      setProductDta( [...products.data].sort((a, b) => a.createdAt - b.createdAt).reverse())
+      setProductDta( products.data)
     }
   }, [products.data]);
 

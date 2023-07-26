@@ -7,6 +7,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/globals.css';
 import '../i18n';
+import {ThemeProvider } from '../components/ThemeContext'
 function MyApp({ Component, pageProps }: AppProps) {
      const [darkMode, setDarkMode] = useState(false);
      useEffect(() => {
@@ -26,7 +27,8 @@ function MyApp({ Component, pageProps }: AppProps) {
      }, [darkMode]);
 
   return (
-      <React.StrictMode>
+    <React.StrictMode>
+      <ThemeProvider>
         <Layout>
           <div id="react-modals" />
           <Provider session={pageProps.session}>
@@ -37,7 +39,8 @@ function MyApp({ Component, pageProps }: AppProps) {
             />
           </Provider>
         </Layout>
-      </React.StrictMode>
+      </ThemeProvider>
+    </React.StrictMode>
   );
 }
 
