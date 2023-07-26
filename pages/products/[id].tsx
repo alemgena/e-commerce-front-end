@@ -233,6 +233,7 @@ function ProductDetailPage() {
         }
     
   }
+  
   const[clickOnRating,setClickOnRating]=useState<boolean>(false)
   return (
     <>
