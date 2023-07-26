@@ -6,6 +6,7 @@ import axios from 'axios';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import dynamic from 'next/dynamic';
+import ReviewsIcon from '@mui/icons-material/Reviews';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useDispatch } from 'react-redux';
@@ -43,12 +44,16 @@ import { FaCamera } from 'react-icons/fa';
 import Controls from '@/components/Ui/controls/Controls';
 import { useAppSelector } from '@/store';
 import { selectCurrentUser } from '@/store/auth';
+import Box from '@mui/material/Box';
+import Rating from '@mui/material/Rating';
 const Map = dynamic(() => import('@/components/map').then((mod) => mod.Map), {
   ssr: false,
 });
 function ProductDetailPage() {
-    const [userInfo, setUserInfo] = useState<any>();
-    const { user } = useAppSelector(selectCurrentUser);
+  const [ratingValue, setRatingValue] = React.useState<number | null>(0);
+  const [reviewMessage,setReviewMessage] = React.useState<any>('');
+  const [userInfo, setUserInfo] = useState<any>();
+  const { user } = useAppSelector(selectCurrentUser);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const router = useRouter();
@@ -62,15 +67,26 @@ function ProductDetailPage() {
   const [longitude, setLongitude] = useState<any>('');
   const favorite = useSelector((state: RootStateOrAny) => state.favorite);
   const { isLoading } = useSelector((state: RootStateOrAny) => state?.product);
+  const[avarageRating,setAvarageRating]=React.useState<number>()
   useEffect(() => {
     dispatch({ type: GET_PRODUCT, id: id });
     handleSearch();
+    getRating()
+
   }, [id]);
-   useEffect(() => {
-   if (!!user) {
-     setUserInfo(user.user ? user.user : user);
-   }
-   }, [user]);
+  const getRating=async()=>{
+   try {
+     const { data } = await axios.get(`${baseURL}api/reviews/average/${id}`);
+     if (data) {
+      setAvarageRating(data.data)
+     }
+   } catch (error: any) {}
+  }
+  useEffect(() => {
+    if (!!user) {
+      setUserInfo(user.user ? user.user : user);
+    }
+  }, [user]);
   const handleSearch = async () => {
     const apiKey = 'AIzaSyDdfMxmTxz8u1XdD99_JCEX_9S41PbcJPE';
     const locationName = `${productData.data?.product?.location}, ${productData.data?.product?.region}`;
@@ -121,11 +137,11 @@ function ProductDetailPage() {
       });
     }
   }, [favorite.favorite]);
-  const[message,setMessage]=useState<string>()
-   const [isMessageSend, setIsMessageSend] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>();
+  const [isMessageSend, setIsMessageSend] = useState<boolean>(false);
   const handleChat = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setIsMessageSend(true)
+    event.preventDefault();
+    setIsMessageSend(true);
     try {
       let login_token = localStorage.getItem('token');
       let config = {
@@ -142,12 +158,12 @@ function ProductDetailPage() {
         },
         config
       );
-      setMessage('')
-      setIsMessageSend(false)
-        NotifyMessage({
-          message: 'message  send successfully  ',
-          type: 'success',
-        });
+      setMessage('');
+      setIsMessageSend(false);
+      NotifyMessage({
+        message: 'message  send successfully  ',
+        type: 'success',
+      });
     } catch (error: any) {
       let message: string;
       if (error.response.data.error.message === 'Please authenticate')
@@ -155,7 +171,7 @@ function ProductDetailPage() {
       else {
         message = error.response.data.error.message;
       }
-      setIsMessageSend(false)
+      setIsMessageSend(false);
       NotifyMessage({
         message: message,
         type: 'error',
@@ -178,6 +194,46 @@ function ProductDetailPage() {
   };
 
   const [clickOnChat, setClickOnChat] = useState<boolean>(false);
+    const [clickOnRatingForm, setClickOnRatingForm] = useState<boolean>(false);
+ async function handleRating(e: React.FormEvent<HTMLFormElement>) {
+  setClickOnRatingForm(true)
+    e.preventDefault()
+        try {
+          let login_token = localStorage.getItem('token');
+          let config = {
+            headers: {
+              Authorization: `Bearer ${login_token}`,
+            },
+          };
+          const dataRating = {
+            productId: id,
+            rating: ratingValue,
+            //seller:productData?.data?.product?.seller?._id,
+            review: reviewMessage,
+          };
+          const { data } = await axios.post(
+            `${baseURL}api/reviews`,
+              dataRating,config
+            
+          );
+          getRating()
+              NotifyMessage({
+                message: '"Review created successfully  ',
+                type: 'success',
+              });
+              setClickOnRating(false)
+              setClickOnRatingForm(false)
+        } catch (error: any) {
+          setClickOnRatingForm(false)
+          NotifyMessage({
+
+            message: error.response.data.error.message,
+            type: 'error',
+          });
+        }
+    
+  }
+  const[clickOnRating,setClickOnRating]=useState<boolean>(false)
   return (
     <>
       <Head>
@@ -411,11 +467,63 @@ function ProductDetailPage() {
                     md:flex-col md:gap-6 lg:flex-row"
                     >
                       <div className="flex flex-grow flex-col sm:flex-row  md:flex-row md:flex-col md:gap-6">
-                        <Link href="/chat">
-                          <button className="mt-3 rounded-full bg-blue-800 py-2 text-white sm:flex-grow md:mt-0">
-                            Make an Offer
-                          </button>
-                        </Link>
+                        {avarageRating && (
+                          <Rating
+                            name="read-only"
+                            value={avarageRating}
+                            readOnly
+                          />
+                        )}
+                        {!!user &&
+                          productData.data.product.seller._id !==
+                            userInfo?._id && (
+                            <button
+                              onClick={() => setClickOnRating(true)}
+                           
+                              className="font-roboto-medium mt-3 flex items-center gap-2 rounded-full bg-white px-4 py-2 text-blue-800 ring-2 ring-blue-800 md:mt-0"
+                            >
+                              <ReviewsIcon />
+                              <p>Review</p>
+                            </button>
+                          )}
+                        {clickOnRating && (
+                          <>
+                            <form onSubmit={(e) => handleRating(e)}>
+                              <Rating
+                                className="mt-10 sm:mt-4 md:mt-0 lg:mt-4"
+                                name="simple-controlled"
+                                value={ratingValue}
+                                onChange={(event, newValue) => {
+                                  setRatingValue(newValue);
+                                }}
+                              />
+                              <TextField
+                              required
+                                fullWidth
+                                className="mt-4 sm:mt-4 md:mt-4 lg:mt-4"
+                                label="Message"
+                                id="fullWidth"
+                                value={reviewMessage}
+                                onChange={(e) => {
+                                  setReviewMessage(e.target.value);
+                                }}
+                              />
+                              <div className="mt-8 sm:mt-4 md:mt-2 lg:mt-2">
+                                <Controls.Button
+                                  text={clickOnRatingForm?'Rating...':"Rating"}
+                                  variant="outlined"
+                                  startIcon={<Add />}
+                                  type="submit"
+                                  disabled={clickOnRatingForm}
+                                />
+                              </div>
+                            </form>
+                          </>
+                        )}
+                        <button className="mt-3 rounded-full bg-blue-800 py-2 text-white sm:flex-grow md:mt-0">
+                          Make an Offer
+                        </button>
+
                         <button
                           onClick={() => setShowContact(true)}
                           className="font-roboto-medium mt-3 flex items-center gap-2 rounded-full bg-white px-4 py-2 text-blue-800 ring-2 ring-blue-800 sm:gap-1 md:mt-0"
@@ -432,6 +540,7 @@ function ProductDetailPage() {
                             )}
                           </p>
                         </button>
+
                         {!!user &&
                           productData.data.product.seller._id !==
                             userInfo?._id && (
@@ -490,7 +599,6 @@ function ProductDetailPage() {
                   </div>
                 </div>
               </div>
-
               {filteredRelatedProducts?.length > 0 ? (
                 <div className="w-100 flex flex-col">
                   <div className=" overflow-hidden ">
@@ -507,7 +615,7 @@ function ProductDetailPage() {
                             </>
                           );
                         })}
-                      </CarouselBox>{' '}
+                      </CarouselBox>
                     </div>
                   </div>
                 </div>
