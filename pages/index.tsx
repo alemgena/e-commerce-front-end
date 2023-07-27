@@ -101,7 +101,7 @@ const Index = ({ user }: any) => {
           >
             <img
               className="h-56 w-full"
-              src="/images/new.jpg"
+              src="/images/newBa.jpg"
               alt="product image"
               loading="lazy"
             />
