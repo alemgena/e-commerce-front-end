@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { SelectInput } from '@/components/select-input';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, InputLabel, TextField } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { productAction } from '@/store/products-slice';
 import Notify from '@/components/Ui/Notify';
@@ -157,6 +157,7 @@ const CreateProductPage = () => {
           name: productName,
           description: description,
           price: price,
+          otherOptions:textFieldsValues,
           subcategory: subCategory.id,
           imagesURL: data.data,
           options: uniqueOption,
@@ -259,6 +260,21 @@ const CreateProductPage = () => {
   const placeholders = (placeholder: string) => {
     return t(placeholder);
   };
+   const [textFieldsValues, setTextFieldsValues] = useState<any>({});
+
+   // Define the onChange event handler
+   const handleTextFieldChange = (event:any) => {
+    const label = event.target.parentElement.previousSibling.textContent;
+     console.log("lable is",label)
+     const value = event.target.value;
+
+     // Update the state with the new value using the label as the key
+     setTextFieldsValues((prevValues:any) => ({
+       ...prevValues,
+       [label]: value,
+     }));
+   };
+
   return (
     <Protected>
       <Head>
@@ -399,19 +415,32 @@ const CreateProductPage = () => {
                   <Grid container spacing={2} columns={16}>
                     {optionAscending.map((item: any, index) => (
                       <Grid item xs={8} key={index}>
-                        <Autocomplete
-                          disablePortal
-                          value={optionValues}
-                          id="combo-box-demo"
-                          options={item.values}
-                          onChange={(event, newValue: any) => {
-                            handlClick(newValue);
-                          }}
-                          getOptionLabel={(option) => option.value}
-                          renderInput={(params) => (
-                            <TextField {...params} label={item?.name} />
-                          )}
-                        />
+                        {item.values.length > 0 ? (
+                          <Autocomplete
+                            disablePortal
+                            value={optionValues}
+                            id="combo-box-demo"
+                            options={item.values}
+                            onChange={(event, newValue: any) => {
+                              handlClick(newValue);
+                            }}
+                            getOptionLabel={(option) => option.value}
+                            renderInput={(params) => (
+                              <TextField {...params} label={item?.name} />
+                            )}
+                          />
+                        ) : (
+                            <><InputLabel className='hidden' htmlFor={`text-field-${index}`} shrink>
+                              {item?.name}
+                            </InputLabel><TextField
+                                fullWidth
+                                id="outlined-basic"
+                                label={item?.name}
+                                variant="outlined"
+                                onChange={handleTextFieldChange}
+                                // Set the value of the TextField based on the state
+                                value={textFieldsValues[item?.name] || ''} /></>
+                        )}
                       </Grid>
                     ))}
                   </Grid>

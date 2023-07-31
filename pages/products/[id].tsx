@@ -51,7 +51,7 @@ const Map = dynamic(() => import('@/components/map').then((mod) => mod.Map), {
 });
 function ProductDetailPage() {
   const [ratingValue, setRatingValue] = React.useState<number | null>(0);
-  const [reviewMessage,setReviewMessage] = React.useState<any>('');
+  const [reviewMessage, setReviewMessage] = React.useState<any>('');
   const [userInfo, setUserInfo] = useState<any>();
   const { user } = useAppSelector(selectCurrentUser);
   const { t } = useTranslation();
@@ -67,21 +67,20 @@ function ProductDetailPage() {
   const [longitude, setLongitude] = useState<any>('');
   const favorite = useSelector((state: RootStateOrAny) => state.favorite);
   const { isLoading } = useSelector((state: RootStateOrAny) => state?.product);
-  const[avarageRating,setAvarageRating]=React.useState<number>()
+  const [avarageRating, setAvarageRating] = React.useState<number>();
   useEffect(() => {
     dispatch({ type: GET_PRODUCT, id: id });
     handleSearch();
-    getRating()
-
+    getRating();
   }, [id]);
-  const getRating=async()=>{
-   try {
-     const { data } = await axios.get(`${baseURL}api/reviews/average/${id}`);
-     if (data) {
-      setAvarageRating(data.data)
-     }
-   } catch (error: any) {}
-  }
+  const getRating = async () => {
+    try {
+      const { data } = await axios.get(`${baseURL}api/reviews/average/${id}`);
+      if (data) {
+        setAvarageRating(data.data);
+      }
+    } catch (error: any) {}
+  };
   useEffect(() => {
     if (!!user) {
       setUserInfo(user.user ? user.user : user);
@@ -194,47 +193,45 @@ function ProductDetailPage() {
   };
 
   const [clickOnChat, setClickOnChat] = useState<boolean>(false);
-    const [clickOnRatingForm, setClickOnRatingForm] = useState<boolean>(false);
- async function handleRating(e: React.FormEvent<HTMLFormElement>) {
-  setClickOnRatingForm(true)
-    e.preventDefault()
-        try {
-          let login_token = localStorage.getItem('token');
-          let config = {
-            headers: {
-              Authorization: `Bearer ${login_token}`,
-            },
-          };
-          const dataRating = {
-            productId: id,
-            rating: ratingValue,
-            //seller:productData?.data?.product?.seller?._id,
-            review: reviewMessage,
-          };
-          const { data } = await axios.post(
-            `${baseURL}api/reviews`,
-              dataRating,config
-            
-          );
-          getRating()
-              NotifyMessage({
-                message: '"Review created successfully  ',
-                type: 'success',
-              });
-              setClickOnRating(false)
-              setClickOnRatingForm(false)
-        } catch (error: any) {
-          setClickOnRatingForm(false)
-          NotifyMessage({
-
-            message: error.response.data.error.message,
-            type: 'error',
-          });
-        }
-    
+  const [clickOnRatingForm, setClickOnRatingForm] = useState<boolean>(false);
+  async function handleRating(e: React.FormEvent<HTMLFormElement>) {
+    setClickOnRatingForm(true);
+    e.preventDefault();
+    try {
+      let login_token = localStorage.getItem('token');
+      let config = {
+        headers: {
+          Authorization: `Bearer ${login_token}`,
+        },
+      };
+      const dataRating = {
+        productId: id,
+        rating: ratingValue,
+        //seller:productData?.data?.product?.seller?._id,
+        review: reviewMessage,
+      };
+      const { data } = await axios.post(
+        `${baseURL}api/reviews`,
+        dataRating,
+        config
+      );
+      getRating();
+      NotifyMessage({
+        message: '"Review created successfully  ',
+        type: 'success',
+      });
+      setClickOnRating(false);
+      setClickOnRatingForm(false);
+    } catch (error: any) {
+      setClickOnRatingForm(false);
+      NotifyMessage({
+        message: error.response.data.error.message,
+        type: 'error',
+      });
+    }
   }
-  
-  const[clickOnRating,setClickOnRating]=useState<boolean>(false)
+
+  const [clickOnRating, setClickOnRating] = useState<boolean>(false);
   return (
     <>
       <Head>
@@ -309,20 +306,43 @@ function ProductDetailPage() {
                     className="aspect-w-16 aspect-h-9 md:w-3/2 relative z-0 mt-10 w-full overflow-hidden rounded-sm
                    object-contain md:mt-6"
                   >
-                    <div className="font-roboto-light  mb-8 mt-8 grid w-full grid-cols-2 gap-4 rounded-md bg-white shadow-sm lg:mb-4">
-                      {productData?.data?.product?.options?.map((item: any) => (
-                        <>
-                          <div
-                            className="font-bold"
-                            style={{ color: '#000000', fontSize: '18px' }}
-                          >
-                            {item.id.name}
-                          </div>
-                          {item.values.map((data: any) => (
-                            <div>{data.value}</div>
-                          ))}
-                        </>
-                      ))}
+                    <div className="bg-white">
+                      <div className="font-roboto-light  mb-8 mt-8 grid w-full grid-cols-2 gap-4 rounded-md  shadow-sm lg:mb-4">
+                        {productData?.data?.product?.options?.map(
+                          (item: any) => (
+                            <>
+                              <div
+                                className="ml-4 mt-4 font-bold"
+                                style={{ color: '#000000', fontSize: '18px' }}
+                              >
+                                {item.id.name}
+                              </div>
+                              {item.values.map((data: any) => (
+                                <div className='mt-4'>{data.value}</div>
+                              ))}
+                            </>
+                          )
+                        )}
+                      </div>
+                      <div className="font-roboto-light mb-8  mt-0  grid w-full grid-cols-2 gap-4 rounded-md  shadow-sm lg:mb-4">
+                        {productData?.data?.product.otherOptions && (
+                          <>
+                            {Object.entries(
+                              productData?.data?.product.otherOptions
+                            ).map(([key, value]) => (
+                              <>
+                                <div
+                                  className="ml-4  font-bold"
+                                  style={{ color: '#000000', fontSize: '18px' }}
+                                >
+                                  {key}
+                                </div>
+                                <div >{value}</div>
+                              </>
+                            ))}
+                          </>
+                        )}
+                      </div>
                     </div>
                     <Suspense fallback={<div>Loading...</div>}>
                       {latitude && longitude ? (
@@ -480,7 +500,6 @@ function ProductDetailPage() {
                             userInfo?._id && (
                             <button
                               onClick={() => setClickOnRating(true)}
-                           
                               className="font-roboto-medium mt-3 flex items-center gap-2 rounded-full bg-white px-4 py-2 text-blue-800 ring-2 ring-blue-800 md:mt-0"
                             >
                               <ReviewsIcon />
@@ -499,7 +518,7 @@ function ProductDetailPage() {
                                 }}
                               />
                               <TextField
-                              required
+                                required
                                 fullWidth
                                 className="mt-4 sm:mt-4 md:mt-4 lg:mt-4"
                                 label="Message"
@@ -511,7 +530,9 @@ function ProductDetailPage() {
                               />
                               <div className="mt-8 sm:mt-4 md:mt-2 lg:mt-2">
                                 <Controls.Button
-                                  text={clickOnRatingForm?'Rating...':"Rating"}
+                                  text={
+                                    clickOnRatingForm ? 'Rating...' : 'Rating'
+                                  }
                                   variant="outlined"
                                   startIcon={<Add />}
                                   type="submit"
